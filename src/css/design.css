@@ -86,3 +86,23 @@ p{text-wrap:pretty}
 
 /* Carte d'exemple sur la carte de Casablanca : déplacée par « translate ». */
 .fcard{left:0!important;top:0!important;transition:translate .9s cubic-bezier(.65,0,.35,1),opacity .4s!important;will-change:translate}
+
+/* Ouverture : le haut de page apparaît dès que la mise en page est prête (plus de compteur). */
+.hero{opacity:.01;transition:opacity .35s ease-out}
+.hero.ready{opacity:1}
+
+/* Sections du bas de l'accueil : le navigateur ne les calcule qu'en approchant
+   (content-visibility). Hauteurs de réserve mesurées sur ordinateur et téléphone. */
+#showcase,#sim,#trust,#gen,#moment,#guides{content-visibility:auto}
+#showcase{contain-intrinsic-size:auto calc(2051 * var(--u))}
+#sim{contain-intrinsic-size:auto calc(900 * var(--u))}
+#trust{contain-intrinsic-size:auto calc(798 * var(--u))}
+#gen{contain-intrinsic-size:auto calc(1156 * var(--u))}
+#moment{contain-intrinsic-size:auto calc(813 * var(--u))}
+#guides{contain-intrinsic-size:auto calc(1129 * var(--u))}
+[data-mode="M"] #showcase{contain-intrinsic-size:auto calc(2294 * var(--u))}
+[data-mode="M"] #sim{contain-intrinsic-size:auto calc(1838 * var(--u))}
+[data-mode="M"] #trust{contain-intrinsic-size:auto calc(587 * var(--u))}
+[data-mode="M"] #gen{contain-intrinsic-size:auto calc(1482 * var(--u))}
+[data-mode="M"] #moment{contain-intrinsic-size:auto calc(1475 * var(--u))}
+[data-mode="M"] #guides{contain-intrinsic-size:auto calc(935 * var(--u))}

@@ -2,7 +2,9 @@
 
 /* Apparitions nettes : opacité + mouvement, sans flou (le flou coûtait cher
    et laissait les titres « dans le brouillard » pendant plus d'une seconde). */
-@keyframes rise{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
+/* Départ à 1 % d'opacité (invisible à l'œil) plutôt que 0 : Chrome compte alors
+   le titre comme affiché dès qu'il est dessiné (LCP), au lieu de l'ignorer. */
+@keyframes rise{from{opacity:.01;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
 .in{animation-duration:.85s}
 .in2{animation-duration:.85s}
 

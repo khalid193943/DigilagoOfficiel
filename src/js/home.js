@@ -16,7 +16,8 @@
     return x < 0 ? 0 : x > 1 ? 1 : x;
   };
   // Écrit un style seulement s'il change : pas de travail inutile à chaque image.
-  var SR = [];
+  var SR = [],
+    LATE = [];
   function S(el, k, v) {
     var c = el._s;
     if (!c) {
@@ -995,8 +996,10 @@
     }
     el.insertBefore(d, el.firstChild);
   }
-  document.querySelectorAll("#gen, #vis").forEach(function (el) {
-    addPollen(el, 26);
+  LATE.push(function () {
+    document.querySelectorAll("#gen, #vis").forEach(function (el) {
+      addPollen(el, 26);
+    });
   });
   var dcEl = $("dayclock"),
     dcT = $("dcTime"),
@@ -1207,7 +1210,8 @@
       d.classList.toggle("on", y > VH * 0.9);
     };
   })();
-  (function () {
+  // Préparé après le premier affichage : le haut de page s'affiche d'abord.
+  LATE.push(function () {
     document.querySelectorAll(".scat").forEach(function (cat) {
       var wrap = cat.querySelector(".sc-wrap"),
         row = cat.querySelector(".sc-row");
@@ -1281,7 +1285,7 @@
         row.querySelectorAll(".lp").forEach(measure);
       });
     });
-  })();
+  });
   (function () {
     var vids = function () {
       return document.querySelectorAll(".lpv video");
@@ -1332,7 +1336,7 @@
     );
     io.observe(m);
   })();
-  (function () {
+  LATE.push(function () {
     var r = document.getElementById("lgRow");
     if (!r) return;
     var items = Array.prototype.slice.call(r.children);
@@ -1348,7 +1352,7 @@
       c.setAttribute("aria-hidden", "true");
       r.appendChild(c);
     });
-  })();
+  });
   // Boucle principale : elle ne tourne que lorsqu'il y a quelque chose à faire
   // (défilement, souris, ou carte du haut visible). Au repos : zéro travail.
   function frame(now) {
@@ -1386,6 +1390,14 @@
     });
   });
   layout(true);
+  requestAnimationFrame(function () {
+    setTimeout(function () {
+      LATE.forEach(function (f) {
+        f();
+      });
+      measure();
+    }, 0);
+  });
   if (document.fonts && document.fonts.ready)
     document.fonts.ready.then(function () {
       layout(true);

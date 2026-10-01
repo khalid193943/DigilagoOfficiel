@@ -6,6 +6,8 @@
 - Carte de Casablanca : les noms de quartiers cachés par une épingle passent
   juste sous la pointe de l'épingle.
 - « Pourquoi ai-je besoin d'un site ? » : explications réécrites, plus concrètes.
+- Ouverture : le compteur « 000 → 100 » est retiré ; l'entrée du haut de page
+  (titre, texte, boutons, carte) sert d'animation d'ouverture, sans attente.
 
 Usage : python3 tools/design_html.py
 """
@@ -75,8 +77,18 @@ def story(h):
     return h
 
 
+def no_preloader(h):
+    i = h.find('<div class="pre" id="pre"')
+    if i < 0:
+        return h
+    # le bloc se termine par la barre de progression <span class="pl" id="pl"></span></div>
+    j = h.index('<span class="pl" id="pl"></span></div>', i) + len('<span class="pl" id="pl"></span></div>')
+    return h[:i] + h[j:].lstrip('\n')
+
+
 def main():
     h = open(P, encoding='utf-8').read()
+    h = no_preloader(h)
     h = vision(h)
     h = pins(h)
     h = story(h)
