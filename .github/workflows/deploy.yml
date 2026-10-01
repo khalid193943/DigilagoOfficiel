@@ -1,21 +1,21 @@
-name: Tester et publier le site
+name: Tests du site et de la gestion
+
+# La mise en ligne est faite par Vercel à chaque envoi sur main
+# (projets digilago / digilago-officel pour le site, digilago-gestion pour la gestion).
+# Ce contrôle vérifie, en parallèle, que tout fonctionne : un ✗ rouge sur GitHub signale un problème.
 
 on:
   push:
-    branches: [main]
+    branches: [main, perf-design-pass]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
-  test:
+  site:
+    name: Site (FR, EN, AR) dans un vrai navigateur
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,20 +26,21 @@ jobs:
         run: |
           pip install pytest pytest-playwright
           python -m playwright install --with-deps chromium
-      - name: Lancer les tests (vrai navigateur)
+      - name: Lancer les tests
         run: pytest tests -q
 
-  deploy:
-    needs: test
+  gestion:
+    name: Espace de gestion
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/setup-node@v4
         with:
-          path: site
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm test

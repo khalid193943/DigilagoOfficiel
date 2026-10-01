@@ -21,28 +21,9 @@ Les 13 pages : accueil, services, réalisations, à propos, contact, démarrer u
 
 ## Mettre le site en ligne
 
-### Option 1 — GitHub Pages (automatique, recommandé)
+Le site et l'espace de gestion sont hébergés sur **Vercel**, relié à ce dépôt GitHub : chaque envoi sur la branche `main` met en ligne automatiquement le site (`www.digilago.ma`, dossier `site/`) et la gestion (`gestion.digilago.ma`, dossier `backend/`). Une autre branche crée des **versions de prévisualisation** (liens privés, visibles une fois connecté à Vercel).
 
-1. Créez un dépôt sur GitHub et envoyez-y ce dossier :
-   ```bash
-   git init
-   git add .
-   git commit -m "Site Digilago"
-   git branch -M main
-   git remote add origin https://github.com/VOTRE-COMPTE/digilago.git
-   git push -u origin main
-   ```
-2. Sur GitHub : **Settings → Pages → Build and deployment → Source : GitHub Actions**.
-3. L'onglet **Actions** lance le workflow « Tester et publier le site » : il reconstruit le site, lance tous les tests, puis publie. L'adresse en ligne s'affiche à la fin (du type `https://VOTRE-COMPTE.github.io/digilago/`).
-4. Pour votre domaine : **Settings → Pages → Custom domain** → `digilago.ma`, puis chez votre registrar un enregistrement `CNAME` vers `VOTRE-COMPTE.github.io`.
-
-### Option 2 — Netlify ou Vercel
-
-Importez le dépôt : le dossier à publier (`site`) est déjà configuré. Aucune commande de construction n'est nécessaire.
-
-### Option 3 — N'importe quel hébergeur
-
-Envoyez le **contenu** du dossier `site/` à la racine de votre hébergement (FTP ou gestionnaire de fichiers).
+À chaque envoi, GitHub lance aussi les tests (`.github/workflows/deploy.yml`) : le site dans les 3 langues dans un vrai navigateur, et la gestion. Une coche verte = tout fonctionne.
 
 ---
 
