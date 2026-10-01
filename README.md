@@ -53,7 +53,7 @@ pip install -r requirements.txt
 python -m playwright install chromium
 
 npm run start      # ou : make serve  → http://localhost:4173
-npm run test       # ou : make test   → 41 tests
+npm run test       # ou : make test   → 43 tests
 ```
 
 Les tests vérifient, sur un vrai navigateur :
@@ -69,15 +69,36 @@ Les tests vérifient, sur un vrai navigateur :
 
 ## Modifier puis reconstruire
 
-1. Modifiez les sources dans `src/` (textes de l'accueil dans `body.html`, autres pages dans `gen_pages.py`, guides dans `src/guides/articles.json`).
-2. Reconstruisez :
-   ```bash
-   npm run build      # ou : make build
-   ```
-   Étapes : `build.py` (accueil) → `gen_pages.py` (autres pages) → `finalize.py` (images en WebP, CSS inutile retiré, CSS et JavaScript compressés) → `extras.py` (sitemap et robots).
-3. Vérifiez avec `npm run test`, puis envoyez sur GitHub : la publication se fait toute seule.
+Le dossier `site/` est la version publiée. Les optimisations (vitesse, design, SEO) sont des **sources lisibles** appliquées par des scripts idempotents : on peut les relancer autant de fois que l'on veut.
 
-Variables utiles : `SITE_URL` (adresse utilisée dans le sitemap, par défaut `https://digilago.ma`).
+| Fichier | Rôle |
+|---|---|
+| `src/js/home.js` | Script de l'accueil (moteur de défilement : ne travaille que pendant le défilement, aucune mesure forcée). |
+| `src/js/pages.js` | Script de toutes les autres pages. |
+| `src/js/common.js` | Commun : animations en pause hors écran, carte du monde chargée à la demande. |
+| `src/css/perf.css` | Fluidité : apparitions sans flou, calques GPU, plus de décalage de mise en page. |
+| `src/css/design.css` | Retouches de design, section par section, ordinateur et téléphone. |
+| `tools/build.py` | Lance toutes les étapes ci-dessous dans l'ordre. |
+| `tools/simplify_map.py` | Carte du monde allégée (886 Ko → 231 Ko) et chargée à la demande. |
+| `tools/design_html.py` | Retouches de contenu de l'accueil (carte, quartiers, « Pourquoi un site ? »). |
+| `tools/dedupe_pages.py` | Retire les blocs en double entre les pages. |
+| `tools/fonts.py` | Polices hébergées sur le site (5 fichiers, 130 Ko) et préchargées. |
+| `tools/inject.py` | Minifie et injecte `src/js` et `src/css` dans chaque page. |
+| `tools/seo.py` | Canonique, Open Graph, Twitter, Schema.org (entreprise, articles, FAQ), sitemap. |
+| `tools/og_image.py` | Régénère l'image de partage 1200 × 630 depuis l'accueil (`npm run og`). |
+
+Après une modification :
+
+```bash
+npm run build      # ou : make build   (Node.js requis pour la minification)
+npm run test       # 43 tests dans un vrai navigateur
+```
+
+Puis envoyez sur GitHub : le workflow `.github/workflows/deploy.yml` teste et publie tout seul.
+
+> **Important.** Si vous régénérez les pages avec le générateur d'origine (`src/build.py`, `gen_pages.py`… dont une partie des sources n'est pas dans ce dépôt), utilisez `npm run build:pages` : il relance ensuite `tools/build.py` pour réappliquer toutes les optimisations.
+
+Variables utiles : `SITE_URL` (adresse utilisée dans les balises canoniques et le sitemap, par défaut `https://digilago.ma`).
 
 ---
 

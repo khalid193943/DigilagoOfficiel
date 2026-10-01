@@ -97,10 +97,15 @@ def main():
     for f in sorted(glob.glob(os.path.join(SITE, '*.html'))):
         name = os.path.basename(f)
         h = open(f, encoding='utf-8').read()
-        h = re.sub(re.escape(START) + '.*?' + re.escape(END), '', h, flags=re.S)
+        h = re.sub(r'\n?' + re.escape(START) + '.*?' + re.escape(END) + r'\n?', '\n', h, flags=re.S)
         b = block(name, h)
-        i = h.index('<link rel="preconnect"')
-        h = h[:i] + b + '\n' + h[i:]
+        # juste avant les polices (ou, à défaut, avant le premier <style>)
+        i = h.find('<!--dg:fonts-->')
+        if i < 0:
+            i = h.find('<link rel="preconnect"')
+        if i < 0:
+            i = h.index('<style>')
+        h = h[:i].rstrip('\n') + '\n' + b + '\n' + h[i:]
         open(f, 'w', encoding='utf-8').write(h)
         print(name.ljust(46), 'FAQ' if 'FAQPage' in b else '', 'Article' if 'Article' in b else '')
     # sitemap : pas de 404, URL de l'accueil propre

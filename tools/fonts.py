@@ -30,9 +30,17 @@ def get(url):
     return subprocess.run(['curl', '-sSfL', '--max-time', '30', '-A', UA, url], check=True, capture_output=True).stdout
 
 
+CACHE = os.path.join(ROOT, 'src', 'fonts.css')
+
+
 def build():
     os.makedirs(FONTS, exist_ok=True)
-    css = get(GF).decode()
+    # La feuille Google est gardée dans src/fonts.css : la construction marche hors ligne.
+    if os.path.exists(CACHE):
+        css = open(CACHE, encoding='utf-8').read()
+    else:
+        css = get(GF).decode()
+        open(CACHE, 'w', encoding='utf-8').write(css)
     faces, seen = [], {}
     for sub, body in re.findall(r'/\*\s*([\w-]+)\s*\*/\s*@font-face\s*\{(.*?)\}', css, re.S):
         if sub != 'latin':
