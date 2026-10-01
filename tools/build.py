@@ -10,13 +10,14 @@ y compris après avoir régénéré les pages avec l'ancien générateur.
   5. inject        JavaScript (src/js) et CSS (src/css) minifiés dans chaque page
   6. i18n_build    versions anglaise (site/en/) et arabe (site/ar/), sélecteur de langue
   7. seo           canonique, hreflang, Open Graph, Schema.org, sitemap (3 langues)
+  8. set_gestion_url  relie les formulaires à l'espace de gestion (src/gestion_url.txt)
 
 Usage : python3 tools/build.py      (ou : npm run build / make build)
 """
 import os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STEPS = ['simplify_map', 'design_html', 'dedupe_pages', 'fonts', 'inject', 'i18n_build', 'seo']
+STEPS = ['simplify_map', 'design_html', 'dedupe_pages', 'fonts', 'inject', 'i18n_build', 'seo', 'set_gestion_url']
 
 for s in STEPS:
     print('──', s)

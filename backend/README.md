@@ -96,6 +96,21 @@ Si les noms des variables Turso sont différents chez vous, `LIBSQL_URL` et `LIB
 1. Dans le dossier principal : `python tools/set_gestion_url.py https://gestion.digilago.ma`
 2. Envoyez sur GitHub : le site redéployé envoie chaque demande à WhatsApp **et** dans « Demandes du site ».
 
+Côté gestion, l'adresse du site est autorisée par défaut (`https://digilago.ma`, `https://www.digilago.ma`). Pour une autre adresse, ajoutez la variable `SITE_ORIGIN` (plusieurs adresses séparées par des virgules).
+
+## Sécurité
+
+- **Mot de passe** : changer de mot de passe demande l'actuel et ferme toutes les autres sessions. **Paramètres → Sécurité → Déconnecter tous les appareils** en cas de téléphone perdu.
+- **Connexion** : 8 essais par adresse et 40 au total par quart d'heure, comptés dans la base (efficace aussi sur Vercel).
+- **WhatsApp (mode API)** : renseignez la **clé secrète de l'app Meta** (Paramètres → Canaux) : chaque message reçu est alors vérifié, personne ne peut se faire passer pour un client.
+- **Demandes du site** : origine du site vérifiée, piège à robots, 6 demandes par quart d'heure et par adresse.
+- **Sauvegarde** : complète (toutes les tables) et sans aucun mot de passe ni jeton.
+- Après la mise à jour, reconnectez-vous une fois (les sessions sont désormais signées différemment).
+
+## Sur téléphone
+
+Ouvrez l'espace de gestion dans Safari (iPhone) ou Chrome (Android), puis **Partager → Sur l'écran d'accueil** : Digilago s'ouvre alors comme une application, en plein écran, avec la barre d'onglets en bas (Accueil, Demandes, Nouveau, Factures, Menu).
+
 ## Autres hébergements
 
 `Dockerfile`, `docker-compose.yml` et `render.yaml` restent disponibles pour un serveur classique : la base est alors un fichier (`DB_PATH`) sur un disque persistant.
@@ -107,5 +122,6 @@ Si les noms des variables Turso sont différents chez vous, `LIBSQL_URL` et `LIB
 ## Tests
 
 ```bash
-npm test   # installation, devis, acceptation en ligne, acompte, paiements, solde, demandes du site, projets, dépenses, rapports
+npm test   # 22 scénarios en 7 s : parcours complet (devis → acompte → paiements → solde), demandes, projets,
+           # comptabilité, et garde-fous (échéances dans l'ordre, double-clic, avoirs, centimes, sécurité)
 ```
