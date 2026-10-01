@@ -79,3 +79,10 @@ body:not(:has(#hero)) .blk.dk{background:linear-gradient(180deg,rgba(234,243,254
 #wzCount{white-space:nowrap}
 .cband h2,.sh h2,.phero h1,.st-hd h3{text-wrap:balance}
 p{text-wrap:pretty}
+
+/* Accueil, téléphone : cartes « expertises » à la hauteur de leur contenu
+   (plus de grand vide entre le titre et les services). */
+[data-mode="M"] #stack .sc{min-height:calc(480 * var(--u))!important}
+
+/* Carte d'exemple sur la carte de Casablanca : déplacée par « translate ». */
+.fcard{left:0!important;top:0!important;transition:translate .9s cubic-bezier(.65,0,.35,1),opacity .4s!important;will-change:translate}

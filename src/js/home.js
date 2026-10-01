@@ -285,15 +285,13 @@
           '<div class="fc-in">' +
           p.querySelector("template").innerHTML +
           "</div>";
-        fcard.style.left = p.style.left;
-        fcard.style.top = p.style.top;
+        moveCard(p.style.left, p.style.top);
         fcard.classList.toggle("below", parseFloat(p.style.top) < 62);
       } else {
         fcard.classList.add("none");
         fcard.innerHTML =
           '<div class="fc-in"><div class="fc-b"><b>Personne ici, pour l’instant.</b><small>Et si la prochaine entreprise sur cette carte, c’était la vôtre ?</small><div class="fc-f"><span class="fc-on"><i></i>Place libre</span><a class="fc-go" href="demarrer.html">Me rendre visible</a></div></div></div>';
-        fcard.style.left = "50%";
-        fcard.style.top = "40%";
+        moveCard("50%", "40%");
         fcard.classList.add("below");
       }
       fcard.classList.add("on");
@@ -303,11 +301,22 @@
     }, 200);
     mT = now || performance.now();
   }
+  // La carte glisse d'une épingle à l'autre avec « translate » (carte graphique) :
+  // ni recalcul de mise en page, ni décalage visuel compté dans le CLS.
+  var fcBox = { w: 1, h: 1 },
+    fcPos = ["50%", "40%"];
+  function moveCard(l, t) {
+    fcPos = [l, t];
+    fcard.style.translate =
+      ((parseFloat(l) / 100) * fcBox.w).toFixed(1) +
+      "px " +
+      ((parseFloat(t) / 100) * fcBox.h).toFixed(1) +
+      "px";
+  }
   function placeCard() {
-    if (mCur >= 0 && PINS[mCur]) {
-      fcard.style.left = PINS[mCur].style.left;
-      fcard.style.top = PINS[mCur].style.top;
-    }
+    var box = fcard.parentNode;
+    fcBox = { w: box.clientWidth || 1, h: box.clientHeight || 1 };
+    moveCard(fcPos[0], fcPos[1]);
   }
   function nextPin(now) {
     var vis = visiblePins();
@@ -865,7 +874,17 @@
   (function () {
     var pre = $("pre");
     if (!pre) return;
-    if (RM) {
+    // L'intro « 000 → 100 » : une fois par visite, et jamais sur un appareil lent
+    // ou en mode économie de données (le titre s'affiche alors immédiatement).
+    var seen = false;
+    try {
+      seen = sessionStorage.getItem("dg-intro") === "1";
+      sessionStorage.setItem("dg-intro", "1");
+    } catch (e) {}
+    var slow =
+      (navigator.connection && navigator.connection.saveData) ||
+      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+    if (RM || RMZ || seen || slow) {
       pre.remove();
       return;
     }
@@ -885,10 +904,10 @@
     });
     setTimeout(function () {
       ready = true;
-    }, 1600);
+    }, 700);
     function tick(now) {
       if (!pre.parentNode) return;
-      var k = clamp01((now - t0) / 850);
+      var k = clamp01((now - t0) / 520);
       if (!ready) k = Math.min(k, 0.86);
       var v = Math.round(ease(k) * 100);
       $("pcn").textContent = ("00" + v).slice(-3);
