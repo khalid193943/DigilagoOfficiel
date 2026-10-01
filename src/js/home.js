@@ -287,6 +287,14 @@
       var p = xy(e);
       return { x: p[0], y: p[1], r: +e.getAttribute("data-r"), t: e.textContent };
     });
+    // le nom d'El Jadida est porté par l'étiquette du studio (« Digilago · El Jadida »)
+    var HQL = "";
+    LAB.forEach(function (l) {
+      if (Math.abs(l.x - G.hq[0]) < 0.2 && Math.abs(l.y - G.hq[1]) < 0.2) {
+        l.hq = true;
+        HQL = l.t;
+      }
+    });
     var EV = [].map.call(
       document.querySelectorAll("#mdata template"),
       function (e) {
@@ -338,7 +346,11 @@
       MOB = false,
       cache = document.createElement("canvas"),
       cx2 = cache.getContext("2d"),
-      camKey = "";
+      camKey = "",
+      lastStatic = 0,
+      cacheRef = null,
+      cacheRefP = [0, 0],
+      cacheRefD = 0;
     var cam = { x: 0, y: 0, h: 0, d: 0, c: 1, s: 0, hy: 0 };
     var P = { x: 0, y: 0, z: 0, k: 0 };
     function proj(x, y, alt) {
@@ -368,13 +380,16 @@
     }
     function layout(w, h, m) {
       MOB = m;
-      DPR = Math.min(window.devicePixelRatio || 1, m ? 1.75 : 2);
+      DPR = Math.min(window.devicePixelRatio || 1, m ? 1.5 : 2);
       W = w;
       H = h;
       cv.width = cache.width = Math.round(w * DPR);
       cv.height = cache.height = Math.round(h * DPR);
       F = (m ? 1.05 : 0.62) * w;
       camKey = "";
+      cacheRef = null;
+      LBL = {};
+      HQW = 0;
     }
     // La caméra : une cible au sol (tx, ty), regardée sous un angle th, à une distance R.
     function setCam(tx, ty, R, th, hy) {
@@ -386,6 +401,52 @@
       cam.d = R;
       cam.hy = hy;
     }
+    // Les noms de lieux : dessinés une fois (texte et halo blanc) dans une petite image, puis réutilisés.
+    var LBL = {};
+    function label(l, s) {
+      var k = l.t + "|" + l.r + "|" + s,
+        im = LBL[k];
+      if (im) return im;
+      var big = l.r === 3,
+        sea = l.r === 0,
+        fs = (sea ? 15 * (MOB ? 0.8 : 1) : (big ? 22 : l.r === 2 ? 12.5 : 10.5) * (MOB ? 0.82 : 1)) * s,
+        font = sea || big
+          ? "italic 500 " + fs + "px 'Playfair Display', Georgia, serif"
+          : "600 " + fs + "px 'Instrument Sans', system-ui, sans-serif";
+      im = document.createElement("canvas");
+      var x = im.getContext("2d");
+      x.font = font;
+      var w = Math.ceil(x.measureText(l.t).width) + 12,
+        h = Math.ceil(fs * 1.5) + 8;
+      im.width = w * DPR;
+      im.height = h * DPR;
+      x = im.getContext("2d");
+      x.scale(DPR, DPR);
+      x.font = font;
+      x.textAlign = "center";
+      x.textBaseline = "middle";
+      if (sea) x.fillStyle = "rgba(255,255,255,.7)";
+      else {
+        x.lineWidth = 4;
+        x.lineJoin = "round";
+        x.strokeStyle = "rgba(255,255,255,.9)";
+        x.strokeText(l.t, w / 2, h / 2);
+        x.fillStyle = big ? "#17366F" : "rgba(52,84,140,.95)";
+      }
+      x.fillText(l.t, w / 2, h / 2);
+      im.cw = w;
+      im.ch = h;
+      im.dy = sea ? -h / 2 / s : big ? 14 - h / 2 / s : 10 - h / 2 / s;
+      return (LBL[k] = im);
+    }
+    var HQW = 0;
+    // une police arrivée après coup : on refait les étiquettes avec la bonne
+    if (document.fonts && document.fonts.addEventListener)
+      document.fonts.addEventListener("loadingdone", function () {
+        LBL = {};
+        HQW = 0;
+        camKey = "";
+      });
     function drawStatic(c) {
       c.setTransform(DPR, 0, 0, DPR, 0, 0);
       c.clearRect(0, 0, W, H);
@@ -419,17 +480,18 @@
       c.clip();
       // la grille de l'infrastructure digitale (tous les 4 unités), plus marquée au premier plan
       c.lineWidth = 1;
-      var x0 = Math.floor((cam.x - 200) / 4) * 4,
-        y0 = Math.floor((cam.y - cam.d * 3) / 4) * 4,
+      var GS = MOB ? 8 : 4,
+        x0 = Math.floor((cam.x - 200) / GS) * GS,
+        y0 = Math.floor((cam.y - cam.d * 3) / GS) * GS,
         y1 = cam.y + 10;
-      for (var gx = x0; gx < cam.x + 200; gx += 4) {
+      for (var gx = x0; gx < cam.x + 200; gx += GS) {
         c.beginPath();
         if (path(c, [gx, y0, gx, y1]) === 2) {
           c.strokeStyle = gx % 20 === 0 ? "rgba(31,87,199,.13)" : "rgba(31,87,199,.06)";
           c.stroke();
         }
       }
-      for (var gy = y0; gy < y1; gy += 4) {
+      for (var gy = y0; gy < y1; gy += GS) {
         if (!proj(cam.x, gy)) continue;
         c.beginPath();
         path(c, [cam.x - 220, gy, cam.x + 220, gy]);
@@ -452,7 +514,7 @@
         c.restore();
       });
       G.c.forEach(function (ci) {
-        if (ci[2] < 6 || !proj(ci[0], ci[1])) return;
+        if (ci[2] < (MOB ? 12 : 6) || !proj(ci[0], ci[1])) return;
         var rr = (2.2 + Math.sqrt(ci[2]) * 0.75) * P.k,
           rg = c.createRadialGradient(P.x, P.y, 0, P.x, P.y, rr);
         rg.addColorStop(0, "rgba(47,132,236," + 0.3 * fog(P.z) + ")");
@@ -487,32 +549,6 @@
         c.lineWidth = 1.2;
         c.strokeStyle = "rgba(31,87,199,.32)";
         c.stroke();
-      });
-      // les noms : grandes villes en serif italique, les autres en sans-serif, la mer en capitales espacées
-      c.textAlign = "center";
-      LAB.forEach(function (l) {
-        if (!proj(l.x, l.y)) return;
-        var a = fog(P.z);
-        if (a <= 0.02 || P.x < -80 || P.x > W + 80 || P.y < -20 || P.y > H + 20) return;
-        var s = Math.min(1.35, Math.max(0.7, P.k / (MOB ? 4.6 : 7)));
-        if (l.r === 0) {
-          c.font = "italic 500 " + 15 * s * (MOB ? 0.8 : 1) + "px 'Playfair Display', Georgia, serif";
-          c.fillStyle = "rgba(255,255,255," + 0.7 * a + ")";
-          c.fillText(l.t, P.x, P.y);
-          return;
-        }
-        var big = l.r === 3,
-          fs = (big ? 22 : l.r === 2 ? 12.5 : 10.5) * s * (MOB ? 0.82 : 1);
-        c.font = big
-          ? "italic 500 " + fs + "px 'Playfair Display', Georgia, serif"
-          : "600 " + fs + "px 'Instrument Sans', system-ui, sans-serif";
-        c.lineWidth = 4;
-        c.lineJoin = "round";
-        c.strokeStyle = "rgba(255,255,255," + 0.9 * a + ")";
-        c.fillStyle = big ? "rgba(23,54,111," + a + ")" : "rgba(52,84,140," + 0.95 * a + ")";
-        var yy = P.y + (big ? 20 : 14) * s;
-        c.strokeText(l.t, P.x, yy);
-        c.fillText(l.t, P.x, yy);
       });
       // les villes : un point net
       G.c.forEach(function (ci) {
@@ -566,13 +602,8 @@
         ty = 128 - pe * 82,
         R = (MOB ? 68 : 128) * (1 + DAWN2 * 0.9),
         th = 0.66 + DAWN2 * 0.35;
-      setCam(
-        tx + Math.sin(t / 8) * 1.2 * dr,
-        ty + Math.cos(t / 10) * 0.8 * dr,
-        R,
-        th,
-        b0 + (b1 - b0) * 0.5,
-      );
+      // caméra immobile au repos : le fond n'est redessiné que pendant le défilement
+      setCam(tx, ty, R, th, Math.round(b0 + (b1 - b0) * 0.5));
       var key = [
         cam.x.toFixed(2),
         cam.y.toFixed(2),
@@ -585,17 +616,48 @@
         skip = !skip;
         if (skip) return;
       }
+      // Le fond (terre, grille, routes, noms) est redessiné quand la caméra bouge, mais au plus toutes
+      // les 90 ms sur téléphone (40 ms sur ordinateur) : entre deux, l'image en cache est simplement
+      // décalée et agrandie pour suivre la caméra (l'œil ne voit pas la différence en mouvement).
+      var tx2 = cam.x,
+        ty2 = cam.y - cam.d * cam.c,
+        sx = 1,
+        ox = 0,
+        oy = 0;
       if (key !== camKey) {
-        camKey = key;
-        drawStatic(cx2);
+        if (now - lastStatic > (MOB ? 90 : 70) || !camKey) {
+          camKey = key;
+          lastStatic = now;
+          drawStatic(cx2);
+          cacheRef = [tx2, ty2];
+        } else if (cacheRef && proj(cacheRef[0], cacheRef[1])) {
+          // où se trouvent maintenant deux repères dessinés dans le cache ?
+          var a1x = P.x,
+            a1y = P.y;
+          if (proj(cacheRef[0], cacheRef[1] - 20)) {
+            var b1y = P.y,
+              d0 = cacheRefD;
+            sx = d0 ? Math.max(0.8, Math.min(1.25, (a1y - b1y) / d0)) : 1;
+            ox = a1x - cacheRefP[0] * sx;
+            oy = a1y - cacheRefP[1] * sx;
+          }
+        }
+      }
+      if (cacheRef && sx === 1 && ox === 0 && oy === 0 && key === camKey) {
+        // repères du cache, mesurés juste après son dessin
+        if (proj(cacheRef[0], cacheRef[1])) {
+          cacheRefP = [P.x, P.y];
+          if (proj(cacheRef[0], cacheRef[1] - 20)) cacheRefD = cacheRefP[1] - P.y;
+        }
       }
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, cv.width, cv.height);
-      ctx.drawImage(cache, 0, 0);
+      if (sx === 1 && ox === 0 && oy === 0) ctx.drawImage(cache, 0, 0);
+      else ctx.drawImage(cache, ox * DPR, oy * DPR, cv.width * sx, cv.height * sx);
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       // les entreprises : des points qui scintillent doucement
       var i, l, a, r;
-      for (i = 0; i < LT.length; i++) {
+      for (i = 0; i < LT.length; i += MOB ? 2 : 1) {
         l = LT[i];
         if (!proj(l.x, l.y)) continue;
         if (P.x < -10 || P.x > W + 10 || P.y < b0 - 10 || P.y > b1 + 10) continue;
@@ -606,6 +668,17 @@
         ctx.globalAlpha = a;
         ctx.drawImage(l.g ? SPG : SPB, P.x - r, P.y - r, r * 2, r * 2);
       }
+      ctx.globalAlpha = 1;
+      // les noms de lieux, au-dessus des lumières (petites images en cache)
+      LAB.forEach(function (l) {
+        if (l.hq || !proj(l.x, l.y)) return;
+        var a = fog(P.z);
+        if (a <= 0.02 || P.x < -80 || P.x > W + 80 || P.y < b0 - 30 || P.y > b1 + 20) return;
+        var s = Math.min(1.35, Math.max(0.7, P.k / (MOB ? 4.6 : 7))),
+          img = label(l, Math.round(s * 10) / 10);
+        ctx.globalAlpha = a;
+        ctx.drawImage(img, P.x - img.cw / 2, P.y + img.dy * s, img.cw, img.ch);
+      });
       ctx.globalAlpha = 1;
       // la lumière circule sur les autoroutes
       if (!RM)
@@ -672,17 +745,20 @@
         ctx.strokeStyle = "#fff";
         ctx.stroke();
         ctx.font = "600 " + 11 * pk + "px 'Instrument Sans', system-ui, sans-serif";
-        var tw = ctx.measureText("Digilago").width + 14 * pk;
+        var HQT = "Digilago" + (HQL ? " · " + HQL : "");
+        if (!HQW) HQW = ctx.measureText(HQT).width / pk;
+        var tw = HQW * pk + 14 * pk;
         ctx.fillStyle = "#0B1B3A";
         var bx = hx - tw - 12 * pk,
           by = hy2 - 9 * pk;
+        if (bx < 8) bx = hx + 12 * pk; // pas la place à gauche : l'étiquette passe à droite
         ctx.beginPath();
         if (ctx.roundRect) ctx.roundRect(bx, by, tw, 18 * pk, 9 * pk);
         else ctx.rect(bx, by, tw, 18 * pk);
         ctx.fill();
         ctx.fillStyle = "#fff";
         ctx.textAlign = "center";
-        ctx.fillText("Digilago", bx + tw / 2, by + 12.5 * pk);
+        ctx.fillText(HQT, bx + tw / 2, by + 12.5 * pk);
       }
       // une recherche, puis l'entreprise trouvée s'allume avec sa fiche
       // dès que la caméra monte dans les nuages, la recherche et la fiche s'effacent
