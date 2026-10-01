@@ -43,6 +43,14 @@ const DEFAULTS = {
   default_due_days: '15',
   default_conditions: "Le présent devis, signé ou accepté en ligne, vaut bon de commande.\nUn acompte est exigible à la commande ; les travaux démarrent à sa réception. Le solde est payable à la mise en ligne du site.\nLe nom de domaine est offert la première année ; l’hébergement de la première année est inclus sauf mention contraire.\nLes contenus (textes, photos, logo) fournis par le client restent sa propriété. Le site livré et ses sources sont cédés au client après paiement intégral.\nDeux séries de modifications sont incluses à chaque étape de validation.",
   quote_prefix: 'DG-D', invoice_prefix: 'DG-F', whatsapp: '212649953813', public_url: '',
+  signature: 'Khalid, Digilago', google_review_url: '', wa_verify_token: '',
+  fiscal_regime: '', tva_assujetti: '1', tva_periodicite: 'trimestrielle', tva_regime: 'encaissement', fiscal_year_start: '01',
+  accountant_name: '', accountant_email: '', accountant_phone: '', accountant_token: '',
+  acc_revenue: '71243', acc_revenue_export: '7125', acc_clients: '3421', acc_bank: '5141', acc_cash: '5161', acc_suppliers: '4411', acc_tva_out: '4455', acc_tva_in: '34552', acc_stamp: '4457',
+  wa1_label: 'WhatsApp Business', wa1_number: '212649953813', wa1_phone_id: '', wa1_token: '',
+  wa2_label: 'WhatsApp 2', wa2_number: '', wa2_phone_id: '', wa2_token: '',
+  mail1_label: 'contact@digilago.ma', mail1_address: 'contact@digilago.ma', mail1_smtp_host: '', mail1_smtp_port: '465', mail1_imap_host: '', mail1_imap_port: '993', mail1_user: '', mail1_pass: '', mail1_last_uid: '0',
+  mail2_label: 'E-mail 2', mail2_address: '', mail2_smtp_host: '', mail2_smtp_port: '465', mail2_imap_host: '', mail2_imap_port: '993', mail2_user: '', mail2_pass: '', mail2_last_uid: '0',
 };
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT);
@@ -57,6 +65,16 @@ CREATE TABLE IF NOT EXISTS invoice_items (id INTEGER PRIMARY KEY, invoice_id INT
 CREATE TABLE IF NOT EXISTS payments (id INTEGER PRIMARY KEY, invoice_id INTEGER REFERENCES invoices(id) ON DELETE CASCADE, date TEXT, amount REAL, method TEXT, reference TEXT, created_at TEXT DEFAULT (datetime('now')));
 CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY, quote_id INTEGER UNIQUE REFERENCES quotes(id), client_id INTEGER REFERENCES clients(id), title TEXT, status TEXT DEFAULT 'a_demarrer', due_date TEXT, site_url TEXT, steps TEXT, notes TEXT, info TEXT, token TEXT, created_at TEXT DEFAULT (datetime('now')), delivered_at TEXT);
 CREATE TABLE IF NOT EXISTS expenses (id INTEGER PRIMARY KEY, date TEXT, supplier TEXT, category TEXT, label TEXT, amount_ttc REAL DEFAULT 0, tva REAL DEFAULT 0, method TEXT, project_id INTEGER, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS orders (id INTEGER PRIMARY KEY, number TEXT UNIQUE, quote_id INTEGER UNIQUE REFERENCES quotes(id), client_id INTEGER REFERENCES clients(id), issue_date TEXT, total_ttc REAL DEFAULT 0, token TEXT UNIQUE, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS reminders (id INTEGER PRIMARY KEY, invoice_id INTEGER REFERENCES invoices(id) ON DELETE CASCADE, level INTEGER, channel TEXT, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, channel TEXT, direction TEXT, ckey TEXT, contact TEXT, name TEXT, client_id INTEGER, lead_id INTEGER, subject TEXT, body TEXT, status TEXT, template TEXT, ext_id TEXT, is_read INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS i_msg_ckey ON messages(ckey);
+CREATE TABLE IF NOT EXISTS templates (id INTEGER PRIMARY KEY, key TEXT UNIQUE, step TEXT, title TEXT, subject TEXT, fr TEXT, ar TEXT, sort INTEGER DEFAULT 0);
+CREATE TABLE IF NOT EXISTS tax_periods (id INTEGER PRIMARY KEY, kind TEXT, period TEXT, status TEXT DEFAULT 'a_preparer', amount REAL, reference TEXT, declared_at TEXT, paid_at TEXT, notes TEXT, UNIQUE(kind, period));
+CREATE TABLE IF NOT EXISTS locks (month TEXT PRIMARY KEY, locked_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS acc_notes (id INTEGER PRIMARY KEY, period TEXT, author TEXT, text TEXT, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS lead_notes (id INTEGER PRIMARY KEY, lead_id INTEGER REFERENCES leads(id) ON DELETE CASCADE, kind TEXT, text TEXT, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS activity (id INTEGER PRIMARY KEY, kind TEXT, ref_id INTEGER, text TEXT, created_at TEXT DEFAULT (datetime('now')));
 CREATE INDEX IF NOT EXISTS i_quotes_client ON quotes(client_id);
 CREATE INDEX IF NOT EXISTS i_inv_quote ON invoices(quote_id);
 CREATE INDEX IF NOT EXISTS i_pay_inv ON payments(invoice_id);
@@ -73,6 +91,15 @@ const CATALOGUE = [
   ['Application sur mesure', 'Réservations, espace client, tableau de bord et notifications, conçus pour votre activité.', 'forfait'],
   ['Traduction professionnelle', 'Traduction et adaptation de vos contenus en français, anglais et arabe, avec mise en page de droite à gauche pour l’arabe.', 'page'],
   ['Maintenance et support', 'Mises à jour, sécurité, modifications mineures et support prioritaire sur WhatsApp.', 'mois'],
+  ['Landing page', 'Page unique orientée conversion pour une offre ou une campagne : message clair, preuves, formulaire et WhatsApp.', 'forfait'],
+  ['Refonte et migration', 'Reprise d’un site existant : audit, nouveau design, reprise des contenus et redirections 301 pour conserver le référencement acquis.', 'forfait'],
+  ['Transfert du nom de domaine', 'Reprise du nom de domaine existant : transfert ou configuration DNS, sans coupure du site ni des e-mails.', 'forfait'],
+  ['Création de logo et charte', 'Logo, déclinaisons, palette de couleurs et typographies, livrés en fichiers prêts à l’emploi.', 'forfait'],
+  ['Photos professionnelles', 'Séance photo sur place ou sélection d’images libres de droits adaptées à votre activité.', 'forfait'],
+  ['Paiement en ligne', 'Intégration du paiement par carte (CMI ou autre passerelle) et des confirmations de commande.', 'forfait'],
+  ['Prise de rendez-vous en ligne', 'Réservation de créneaux, confirmations et rappels automatiques pour vos clients.', 'forfait'],
+  ['E-mails professionnels', 'Adresses e-mail à votre nom de domaine (contact@votresite.ma), configurées sur ordinateur et téléphone.', 'an'],
+  ['Rapport mensuel SEO', 'Suivi mensuel des positions Google, des visites et des appels, avec recommandations.', 'mois'],
 ];
 const STEPS = ['Brief et identité', 'Maquette validée', 'Développement', 'Textes SEO et GEO', 'Fiche Google', 'Mise en ligne'];
 
@@ -83,11 +110,22 @@ function init() {
   ready = (async () => {
     if (!REMOTE) await db.exec('PRAGMA journal_mode = WAL;');
     await db.exec(SCHEMA);
-    for (const [t, c, d] of [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT']]) {
+    for (const [t, c, d] of [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT'],
+      ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'],
+      ['invoices', 'sched_idx', 'INTEGER'], ['invoices', 'credit_of', 'INTEGER'], ['invoices', 'label', 'TEXT'],
+      ['payments', 'number', 'TEXT'], ['payments', 'token', 'TEXT'],
+      ['projects', 'tech', 'TEXT'], ['projects', 'launch', 'TEXT'], ['projects', 'situation', 'TEXT'], ['projects', 'kind', 'TEXT'], ['projects', 'sector', 'TEXT'],
+      ['clients', 'website', 'TEXT'], ['clients', 'sector', 'TEXT'], ['clients', 'source', 'TEXT'],
+      ['leads', 'stage', 'TEXT'], ['leads', 'lost_reason', 'TEXT'], ['leads', 'next_at', 'TEXT'], ['leads', 'notes', 'TEXT'], ['leads', 'city', 'TEXT'], ['leads', 'sector', 'TEXT'], ['leads', 'budget', 'TEXT'], ['leads', 'kind', 'TEXT'], ['leads', 'updated_at', 'TEXT'],
+      ['expenses', 'supplier_ice', 'TEXT'], ['expenses', 'supplier_if', 'TEXT'], ['expenses', 'invoice_ref', 'TEXT'], ['expenses', 'receipt_url', 'TEXT'], ['expenses', 'account', 'TEXT'], ['expenses', 'deductible', 'INTEGER'],
+      ['clients', 'if_num', 'TEXT'], ['clients', 'is_foreign', 'INTEGER'], ['payments', 'stamp', 'REAL']]) {
       const cols = (await db.prepare(`PRAGMA table_info(${t})`).all()).map((r) => r.name);
       if (!cols.includes(c)) await db.exec(`ALTER TABLE ${t} ADD COLUMN ${c} ${d}`);
     }
     for (const [k, v] of Object.entries(DEFAULTS)) await db.prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)').run(k, v);
+    const TPL = require('./lib/templates').DEFAULT;
+    for (const t of TPL) await db.prepare('INSERT OR IGNORE INTO templates (key, step, title, subject, fr, ar, sort) VALUES (?,?,?,?,?,?,?)').run(t.key, t.step, t.title, t.subject, t.fr, t.ar, t.sort);
+    await db.exec("UPDATE leads SET stage = CASE status WHEN 'devis' THEN 'proposition' WHEN 'traitee' THEN 'contacte' ELSE 'nouveau' END WHERE stage IS NULL");
     for (let i = 0; i < CATALOGUE.length; i++) {
       const [n, d, u] = CATALOGUE[i];
       if (!(await db.prepare('SELECT id FROM services WHERE name = ?').get(n))) await db.prepare('INSERT INTO services (name, description, unit, unit_price, sort) VALUES (?, ?, ?, 0, ?)').run(n, d, u, i);

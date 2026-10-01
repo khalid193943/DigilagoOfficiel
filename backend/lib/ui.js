@@ -12,16 +12,20 @@ const ICONS = {
   catalog: I('<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>'),
   settings: I('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1A1.7 1.7 0 009 19.4a1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1A1.7 1.7 0 004.6 9a1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1A1.7 1.7 0 009 4.6 1.7 1.7 0 0010 3.1V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1A1.7 1.7 0 0019.4 9a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z"/>'),
   plus: I('<path d="M12 5v14M5 12h14"/>'),
+  search: I('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>'),
+  chat: I('<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12.5h5"/>'),
+  ledger: I('<path d="M5 3h11l3 3v15H5z"/><path d="M9 8h6M9 12h6M9 16h3M16 3v3h3"/>'),
+  spark: I('<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'),
   project: I('<rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="13" rx="1.5"/>'),
   expense: I('<path d="M4 7h16v12H4z"/><path d="M4 7l2-3h12l2 3M12 11v5M9.5 13.5h5"/>'),
   report: I('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
   out: I('<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'),
 };
-const NAV = [['/', 'Tableau de bord', 'home'], ['/demandes', 'Demandes du site', 'lead'], ['/devis', 'Devis', 'quote'], ['/projets', 'Projets', 'project'], ['/factures', 'Factures', 'invoice'], ['/depenses', 'Dépenses', 'expense'], ['/rapports', 'Rapports', 'report'], ['/clients', 'Clients', 'client'], ['/prestations', 'Prestations', 'catalog'], ['/parametres', 'Paramètres', 'settings']];
+const NAV = [['/', 'Tableau de bord', 'home'], ['/assistant', 'Nouveau projet', 'spark'], ['/demandes', 'Demandes', 'lead'], ['/messagerie', 'Messagerie', 'chat'], ['/devis', 'Devis', 'quote'], ['/projets', 'Projets', 'project'], ['/factures', 'Factures', 'invoice'], ['/depenses', 'Dépenses', 'expense'], ['/comptabilite', 'Comptabilité', 'ledger'], ['/rapports', 'Rapports', 'report'], ['/clients', 'Clients', 'client'], ['/prestations', 'Prestations', 'catalog'], ['/parametres', 'Paramètres', 'settings']];
 
 const Q_STATUS = { brouillon: ['Brouillon', 'grey'], envoye: ['Envoyé', 'blue'], vu: ['Consulté', 'violet'], accepte: ['Accepté', 'green'], refuse: ['Refusé', 'red'], facture: ['Facturé', 'navy'], expire: ['Expiré', 'amber'] };
-const P_STATUS = { a_demarrer: ['À démarrer', 'grey'], en_cours: ['En cours', 'blue'], validation: ['En validation', 'violet'], livre: ['Livré', 'green'] };
-const I_STATUS = { impayee: ['À payer', 'amber'], partielle: ['Partiellement payée', 'blue'], payee: ['Payée', 'green'], retard: ['En retard', 'red'], annulee: ['Annulée', 'grey'] };
+const P_STATUS = { proposition: ['Proposition', 'amber'], a_demarrer: ['À démarrer', 'grey'], en_cours: ['En cours', 'blue'], validation: ['En validation', 'violet'], livre: ['Livré', 'green'] };
+const I_STATUS = { impayee: ['À payer', 'amber'], partielle: ['Partiellement payée', 'blue'], payee: ['Payée', 'green'], retard: ['En retard', 'red'], annulee: ['Annulée par avoir', 'grey'], avoir: ['Avoir', 'violet'] };
 const badge = (map, k) => { const [t, c] = map[k] || [k, 'grey']; return `<span class="bdg bdg-${c}">${esc(t)}</span>`; };
 
 function layout({ title, active = '', body, flash = '', actions = '' }) {
@@ -31,7 +35,7 @@ function layout({ title, active = '', body, flash = '', actions = '' }) {
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/app.css"></head><body class="admin">
 <aside class="side"><a class="brand" href="/"><span>${LOGO}</span><b>digilago</b><em>Gestion</em></a>
-<a class="new" href="/devis/nouveau">${ICONS.plus}Nouveau devis</a><nav>${nav}</nav>
+<a class="new" href="/assistant">${ICONS.spark}Nouveau projet</a><button type="button" class="kbar" data-cmdk>${ICONS.search || ""}<span>Rechercher</span><kbd>⌘K</kbd></button><nav>${nav}</nav>
 <form method="post" action="/deconnexion" class="out"><button type="submit">${ICONS.out}Déconnexion</button></form></aside>
 <main class="main"><header class="top"><h1>${esc(title)}</h1><div class="top-a">${actions}</div></header>${flash ? `<div class="flash">${esc(flash)}</div>` : ''}${body}</main>
 <script src="/static/app.js" defer></script></body></html>`;

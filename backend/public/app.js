@@ -15,6 +15,27 @@
   /* lignes cliquables */
   $$('tr[data-href]').forEach(function(tr){ tr.addEventListener('click', function(e){ if (!e.target.closest('a,button,form,input')) location.href = tr.dataset.href; }); });
 
+
+  /* ---------- Recherche globale ⌘K : un client, un projet, une facture en deux touches ---------- */
+  (function(){
+    if (!document.body.classList.contains('admin')) return;
+    var ACT = [['Nouveau projet (assistant)', '/assistant'], ['Nouveau devis', '/devis/nouveau'], ['Ajouter une dépense', '/depenses'], ['Ma journée', '/'], ['Projets', '/projets'], ['Factures en retard', '/factures?statut=retard'], ['Rapports', '/rapports']];
+    var box = document.createElement('div'); box.className = 'cmdk'; box.hidden = true;
+    box.innerHTML = '<div class="cmdk-in"><input placeholder="Rechercher un client, un projet, un devis, une facture… ou une action" aria-label="Recherche"><ul></ul><p><kbd>↑</kbd><kbd>↓</kbd> naviguer · <kbd>Entrée</kbd> ouvrir · <kbd>Échap</kbd> fermer</p></div>';
+    document.body.appendChild(box);
+    var inp = box.querySelector('input'), ul = box.querySelector('ul'), items = [], act = 0, timer = 0;
+    function draw(){ ul.innerHTML = items.map(function(it, i){ return '<li class="' + (i === act ? 'on' : '') + '" data-u="' + it.u + '"><em>' + it.t + '</em><b>' + it.n + '</b><small>' + (it.s || '') + '</small></li>'; }).join('') || '<li class="none">Aucun résultat</li>'; ul.querySelectorAll('li[data-u]').forEach(function(li){ li.addEventListener('click', function(){ location.href = li.dataset.u; }); }); }
+    function base(q){ var t = (q || '').toLowerCase(); return ACT.filter(function(a){ return !t || a[0].toLowerCase().indexOf(t) !== -1; }).map(function(a){ return { t: 'Action', n: a[0], u: a[1] }; }); }
+    function search(){ var q = inp.value.trim(); act = 0; items = base(q); draw(); clearTimeout(timer); if (q.length < 2) return; timer = setTimeout(function(){ fetch('/api/recherche?q=' + encodeURIComponent(q), { credentials: 'same-origin' }).then(function(r){ return r.json(); }).then(function(r){ items = r.concat(base(q)); act = 0; draw(); }).catch(function(){}); }, 140); }
+    function open(){ box.hidden = false; inp.value = ''; inp.focus(); search(); }
+    function close(){ box.hidden = true; }
+    inp.addEventListener('input', search);
+    inp.addEventListener('keydown', function(e){ if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); act = (act + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % Math.max(1, items.length); draw(); } else if (e.key === 'Enter' && items[act]) location.href = items[act].u; else if (e.key === 'Escape') close(); });
+    box.addEventListener('click', function(e){ if (e.target === box) close(); });
+    document.addEventListener('keydown', function(e){ if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); box.hidden ? open() : close(); } else if (e.key === 'n' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && box.hidden) location.href = '/assistant'; });
+    document.querySelectorAll('[data-cmdk]').forEach(function(b){ b.addEventListener('click', open); });
+  })();
+
   /* ---------- formulaire de devis ---------- */
   var form = $('#qform'); if (!form) return;
   var SV = []; try { SV = JSON.parse(form.dataset.services || '[]'); } catch (e) {}
@@ -31,7 +52,8 @@
     var sub = 0;
     $$('tr.it', body).forEach(function(tr){ var t = num($('.it-q', tr).value || 1) * num($('.it-p', tr).value); tr.querySelector('.it-t').textContent = money(t).replace('\u00a0DH', ''); sub += t; });
     var disc = sub * Math.min(100, num($('#disc').value)) / 100, ht = sub - disc, tva = ht * num($('#tva').value) / 100, ttc = ht + tva, dep = ttc * Math.min(100, num($('#dep').value)) / 100;
-    $('#sSub').textContent = money(sub); $('#sDisc').textContent = disc ? '−' + money(disc) : money(0); $('#sHt').textContent = money(ht); $('#sTva').textContent = money(tva); $('#sTtc').textContent = money(ttc); $('#sDep').textContent = money(dep); $('#sSol').textContent = money(ttc - dep);
+    $('#sSub').textContent = money(sub); $('#sDisc').textContent = disc ? '−' + money(disc) : money(0); $('#sHt').textContent = money(ht); $('#sTva').textContent = money(tva); $('#sTtc').textContent = money(ttc);
+    planPreview(ttc);
   }
   function fill(tr){
     var l = $('.it-l', tr), s = SV.filter(function(x){ return x.n === l.value; })[0]; if (!s) return;
@@ -58,6 +80,14 @@
     var empty = $$('tr.it', body).filter(function(tr){ return !$('.it-l', tr).value; })[0];
     if (empty) { $('.it-l', empty).value = b.dataset.add; fill(empty); } else addRow(b.dataset.add);
   }); });
-  ['#disc', '#dep', '#tva'].forEach(function(s){ $(s).addEventListener('input', calc); $(s).addEventListener('change', calc); });
+  /* échéancier : aperçu des montants de chaque tranche */
+  var PL = {}; try { PL = JSON.parse(($('#planPrev') || {}).dataset ? $('#planPrev').dataset.plans : '{}'); } catch (e) {}
+  function planRows(){ var k = $('#planKey') ? $('#planKey').value : '50-50'; if (k === 'custom') { return ($('[name=plan_custom]').value || '').split(/\n/).map(function(l){ var p = l.split(/[;|]/); return p[1] ? [p[0].trim(), num(p[1])] : null; }).filter(Boolean); } return PL[k] || []; }
+  function planPreview(ttc){ var box = $('#planPrev'); if (!box) return; var rows = planRows(), acc = 0, sum = rows.reduce(function(a, r){ return a + r[1]; }, 0);
+    box.innerHTML = '<span>Échéancier</span>' + rows.map(function(r, i){ var amt = i === rows.length - 1 ? ttc - acc : Math.round(ttc * r[1]) / 100; acc += amt; return '<div><em>' + (i + 1) + '. ' + r[0] + '</em><b>' + money(amt) + '</b></div>'; }).join('') + (Math.abs(sum - 100) > 0.5 ? '<p class="warn">Le total des tranches doit faire 100 % (actuellement ' + sum + ' %).</p>' : '');
+    var d = $('#dep'); if (d && rows.length) d.value = rows.length > 1 ? rows[0][1] : 100; }
+  if ($('#planKey')) $('#planKey').addEventListener('change', function(){ $('#planCustomW').hidden = $('#planKey').value !== 'custom'; calc(); });
+  if ($('[name=plan_custom]')) $('[name=plan_custom]').addEventListener('input', calc);
+  ['#disc', '#tva'].forEach(function(s){ $(s).addEventListener('input', calc); $(s).addEventListener('change', calc); });
   calc();
 })();
