@@ -28,7 +28,14 @@ const ICONS = {
 };
 /* Barre d'onglets du téléphone : l'essentiel au pouce, le reste dans « Menu ». */
 const TABS = [['/', 'Accueil', 'home'], ['/demandes', 'Demandes', 'lead'], ['/assistant', 'Nouveau', 'plus'], ['/factures', 'Factures', 'invoice']];
-const NAV = [['/', 'Tableau de bord', 'home'], ['/assistant', 'Nouveau projet', 'spark'], ['/demandes', 'Demandes', 'lead'], ['/messagerie', 'Messagerie', 'chat'], ['/devis', 'Devis', 'quote'], ['/projets', 'Projets', 'project'], ['/factures', 'Factures', 'invoice'], ['/depenses', 'Dépenses', 'expense'], ['/comptabilite', 'Comptabilité', 'ledger'], ['/rapports', 'Rapports', 'report'], ['/clients', 'Clients', 'client'], ['/prestations', 'Prestations', 'catalog'], ['/parametres', 'Paramètres', 'settings']];
+/* Navigation par groupes : plus courte à parcourir (« Nouveau projet » reste le grand bouton du haut) */
+const NAV_GROUPS = [
+  ['Au quotidien', [['/', 'Tableau de bord', 'home'], ['/demandes', 'Demandes', 'lead'], ['/messagerie', 'Messagerie', 'chat']]],
+  ['Ventes', [['/devis', 'Devis', 'quote'], ['/projets', 'Projets', 'project'], ['/factures', 'Factures', 'invoice'], ['/clients', 'Clients', 'client']]],
+  ['Gestion', [['/depenses', 'Dépenses', 'expense'], ['/comptabilite', 'Comptabilité', 'ledger'], ['/rapports', 'Rapports', 'report']]],
+  ['Réglages', [['/prestations', 'Prestations', 'catalog'], ['/parametres', 'Paramètres', 'settings']]],
+];
+const NAV = NAV_GROUPS.flatMap((g) => g[1]);
 
 const Q_STATUS = { brouillon: ['Brouillon', 'grey'], envoye: ['Envoyé', 'blue'], vu: ['Consulté', 'violet'], accepte: ['Accepté', 'green'], refuse: ['Refusé', 'red'], facture: ['Facturé', 'navy'], expire: ['Expiré', 'amber'] };
 const P_STATUS = { proposition: ['Proposition', 'amber'], a_demarrer: ['À démarrer', 'grey'], en_cours: ['En cours', 'blue'], validation: ['En validation', 'violet'], livre: ['Livré', 'green'] };
@@ -36,7 +43,7 @@ const I_STATUS = { impayee: ['À payer', 'amber'], partielle: ['Partiellement pa
 const badge = (map, k) => { const [t, c] = map[k] || [k, 'grey']; return `<span class="bdg bdg-${c}">${esc(t)}</span>`; };
 
 function layout({ title, active = '', body, flash = '', actions = '' }) {
-  const nav = NAV.map(([h, t, i]) => `<a href="${h}" class="${active === h ? 'on' : ''}">${ICONS[i]}<span>${t}</span></a>`).join('');
+  const nav = NAV_GROUPS.map(([g, items]) => `<span class="ng">${g}</span>` + items.map(([h, t, i]) => `<a href="${h}" class="${active === h ? 'on' : ''}"${active === h ? ' aria-current="page"' : ''}>${ICONS[i]}<span>${t}</span></a>`).join('')).join('');
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>${esc(title)} | Digilago Gestion</title>
 <meta name="theme-color" content="#0E214E"><link rel="manifest" href="/static/manifest.webmanifest"><link rel="apple-touch-icon" href="/static/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Digilago">
@@ -44,11 +51,43 @@ function layout({ title, active = '', body, flash = '', actions = '' }) {
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"></head><body class="admin">
 <aside class="side"><a class="brand" href="/"><span>${LOGO}</span><b>digilago</b><em>Gestion</em></a>
-<a class="new" href="/assistant">${ICONS.spark}Nouveau projet</a><button type="button" class="kbar" data-cmdk>${ICONS.search || ""}<span>Rechercher</span><kbd>⌘K</kbd></button><nav>${nav}</nav>
+<a class="new${active === '/assistant' ? ' on' : ''}" href="/assistant">${ICONS.spark}<span>Nouveau projet</span></a><button type="button" class="kbar" data-cmdk>${ICONS.search || ""}<span>Rechercher</span><kbd>⌘K</kbd></button><nav>${nav}</nav>
 <form method="post" action="/deconnexion" class="out"><button type="submit">${ICONS.out}Déconnexion</button></form></aside>
 <main class="main"><header class="top"><h1>${esc(title)}</h1><div class="top-a">${actions}</div></header>${flash ? `<div class="flash">${esc(flash)}</div>` : ''}${body}</main>
 <nav class="tabbar" aria-label="Navigation rapide">${TABS.map(([h, t, i]) => `<a href="${h}" class="${active === h ? 'on' : ''}${h === '/assistant' ? ' tb-new' : ''}">${ICONS[i]}<span>${t}</span></a>`).join('')}<button type="button" data-menu aria-expanded="false">${ICONS.menu}<span>Menu</span></button></nav>
 <script src="/static/app.js?v=${ver('app.js')}" defer></script></body></html>`;
 }
 
-module.exports = { layout, badge, Q_STATUS, I_STATUS, P_STATUS, ICONS, ver };
+/* Graphique SVG (sans bibliothèque) : échelle graduée, barres groupées, courbe, valeur au survol.
+   series : [{ name, values, color, kind: 'bar' | 'line', fmt }] ; labels : noms des colonnes. */
+function chart({ labels, series, height = 220, unit = 'DH' }) {
+  const W = 640, H = height, L = 46, R = 10, T = 14, B = 26, iw = W - L - R, ih = H - T - B;
+  const all = series.flatMap((s) => s.values.map((v) => Math.abs(Number(v) || 0)));
+  const raw = Math.max(1, ...all), p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p;
+  const top = (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p;
+  const y = (v) => T + ih - (Math.max(0, Number(v) || 0) / top) * ih;
+  const short = (v) => (v >= 1e6 ? (v / 1e6).toFixed(v % 1e6 ? 1 : 0) + ' M' : v >= 1e3 ? (v / 1e3).toFixed(v % 1e3 ? 1 : 0).replace('.0', '') + ' k' : String(v)).replace('.', ',');
+  const fmtV = (v) => Math.round(Number(v) || 0).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g, ' ') + ' ' + unit;
+  const n = labels.length, cw = iw / n, bars = series.filter((s) => s.kind !== 'line'), bw = Math.min(26, (cw * 0.62) / Math.max(1, bars.length));
+  let g = '';
+  for (let k = 0; k <= 4; k++) { const v = (top * k) / 4, yy = y(v).toFixed(1); g += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" class="ch-g${k ? '' : ' ch-0'}"/><text x="${L - 8}" y="${(+yy + 3.5).toFixed(1)}" class="ch-y">${short(v)}</text>`; }
+  let b = '';
+  labels.forEach((lab, i) => {
+    const cx = L + cw * i + cw / 2;
+    bars.forEach((s, j) => {
+      const v = Number(s.values[i]) || 0; if (v <= 0) return;
+      const x = cx - (bars.length * bw) / 2 + j * bw + 1, yy = y(v), h = T + ih - yy;
+      b += `<rect x="${x.toFixed(1)}" y="${yy.toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h.toFixed(1)}" rx="${Math.min(6, bw / 3).toFixed(1)}" fill="${s.color}" class="ch-b" style="--d:${i * 40}ms"><title>${esc(lab)} · ${esc(s.name)} : ${fmtV(v)}</title></rect>`;
+    });
+    b += `<text x="${cx.toFixed(1)}" y="${H - 8}" class="ch-x">${esc(lab)}</text>`;
+  });
+  for (const s of series.filter((x) => x.kind === 'line')) {
+    const pts = s.values.map((v, i) => [L + cw * i + cw / 2, y(v)]);
+    b += `<polyline points="${pts.map((q) => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ')}" fill="none" stroke="${s.color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" class="ch-l"/>`;
+    b += pts.map((q, i) => `<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="3.4" fill="#fff" stroke="${s.color}" stroke-width="2"><title>${esc(labels[i])} · ${esc(s.name)} : ${fmtV(s.values[i])}</title></circle>`).join('');
+  }
+  const legend = series.length > 1 ? `<div class="ch-lg">${series.map((s) => `<span><i style="background:${s.color === 'url(#chB)' ? 'linear-gradient(#5F9FF9,#1F57C7)' : s.color}"></i>${esc(s.name)}</span>`).join('')}</div>` : '';
+  return `<figure class="ch">${legend}<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(series.map((s) => s.name).join(', '))}" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="chB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5F9FF9"/><stop offset="1" stop-color="#1F57C7"/></linearGradient></defs>${g}${b}</svg></figure>`;
+}
+
+module.exports = { layout, badge, Q_STATUS, I_STATUS, P_STATUS, ICONS, ver, chart };

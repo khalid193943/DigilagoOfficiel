@@ -291,3 +291,46 @@ code{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 6px;borde
   table.tbl:not(.edit) td:empty{display:none}
   table.tbl.edit{display:block;overflow-x:auto}
 }
+
+/* ═══════════ Barre latérale : groupes, rien d'écrasé, rien de coupé ═══════════ */
+@media screen and (min-width:981px){
+  .side{overflow:hidden}
+  .side>*{flex-shrink:0}
+  .side nav{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(159,200,255,.25) transparent;margin:0 -6px;padding:0 6px 8px}
+  .side nav a{padding:7px 12px}
+  .side .out{margin-top:6px}
+}
+.side .new{min-height:42px;white-space:nowrap}
+.side .new.on{box-shadow:0 0 0 2px #5F9FF9,0 10px 24px -12px rgba(0,0,0,.5)!important}
+.side .ng{display:block;margin:12px 12px 4px;font:500 9.5px/1 "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:rgba(159,200,255,.55)}
+.side nav .ng:first-child{margin-top:4px}
+@media screen and (max-width:980px){
+  .side .ng{display:none}
+  body.menu-open .side .ng{display:block;grid-column:1/-1;margin:10px 4px 2px}
+}
+
+/* ═══════════ Graphiques (SVG) ═══════════ */
+.ch{margin:4px 0 0;position:relative}
+.ch svg{display:block;width:100%;height:auto;overflow:visible}
+.ch-g{stroke:rgba(14,33,78,.08);stroke-width:1}
+.ch-0{stroke:rgba(14,33,78,.22)}
+.ch-y{font:500 10px "JetBrains Mono",monospace;fill:#7A8AA6;text-anchor:end}
+.ch-x{font:500 11px "Instrument Sans",system-ui,sans-serif;fill:#5F6B80;text-anchor:middle}
+.ch-b{transform-box:fill-box;transform-origin:50% 100%;animation:chIn .9s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms);transition:filter .2s}
+.ch-b:hover{filter:brightness(1.12) drop-shadow(0 6px 10px rgba(31,87,199,.35))}
+.ch-l{stroke-dasharray:2000;stroke-dashoffset:2000;animation:chLn 1.4s .3s ease-out forwards}
+.ch circle{transition:r .2s}.ch circle:hover{r:5.5}
+@keyframes chIn{from{transform:scaleY(.02);opacity:.4}to{transform:none;opacity:1}}
+@keyframes chLn{to{stroke-dashoffset:0}}
+.ch-lg{display:flex;gap:14px;justify-content:flex-end;margin:-4px 0 6px;font-size:12px;color:#5F6B80}
+.ch-lg span{display:inline-flex;align-items:center;gap:6px}
+.ch-lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+@media (prefers-reduced-motion:reduce){.ch-b,.ch-l{animation:none;stroke-dasharray:none;stroke-dashoffset:0}}
+/* écrans peu hauts (ordinateur portable) : barre latérale plus compacte */
+@media screen and (min-width:981px) and (max-height:820px){
+  .side{padding-top:12px!important;padding-bottom:12px!important}
+  .brand{padding-bottom:8px}
+  .side .new{min-height:38px;margin-bottom:8px}
+  .side nav a{padding:5px 12px}
+  .side .ng{margin-top:9px}
+}
