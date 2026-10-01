@@ -103,43 +103,54 @@ const CATALOGUE = [
 ];
 const STEPS = ['Brief et identité', 'Maquette validée', 'Développement', 'Textes SEO et GEO', 'Fiche Google', 'Mise en ligne'];
 
-/* Initialisation unique (au premier appel) : tables, colonnes ajoutées, réglages, catalogue */
+/* Initialisation : rapide quand la base est à jour (1 requête), complète et groupée sinon (quelques requêtes) */
+const SCHEMA_VERSION = '2026-10-01.8';
+const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT'],
+  ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'],
+  ['invoices', 'sched_idx', 'INTEGER'], ['invoices', 'credit_of', 'INTEGER'], ['invoices', 'label', 'TEXT'],
+  ['payments', 'number', 'TEXT'], ['payments', 'token', 'TEXT'], ['payments', 'stamp', 'REAL'],
+  ['projects', 'tech', 'TEXT'], ['projects', 'launch', 'TEXT'], ['projects', 'situation', 'TEXT'], ['projects', 'kind', 'TEXT'], ['projects', 'sector', 'TEXT'],
+  ['clients', 'website', 'TEXT'], ['clients', 'sector', 'TEXT'], ['clients', 'source', 'TEXT'], ['clients', 'if_num', 'TEXT'], ['clients', 'is_foreign', 'INTEGER'],
+  ['leads', 'stage', 'TEXT'], ['leads', 'lost_reason', 'TEXT'], ['leads', 'next_at', 'TEXT'], ['leads', 'notes', 'TEXT'], ['leads', 'city', 'TEXT'], ['leads', 'sector', 'TEXT'], ['leads', 'budget', 'TEXT'], ['leads', 'kind', 'TEXT'], ['leads', 'updated_at', 'TEXT'],
+  ['expenses', 'supplier_ice', 'TEXT'], ['expenses', 'supplier_if', 'TEXT'], ['expenses', 'invoice_ref', 'TEXT'], ['expenses', 'receipt_url', 'TEXT'], ['expenses', 'account', 'TEXT'], ['expenses', 'deductible', 'INTEGER']];
 let ready = null;
 function init() {
   if (ready) return ready;
   ready = (async () => {
+    try { const v = (await db.prepare("SELECT value FROM settings WHERE key = '_schema'").get()); if (v && v.value === SCHEMA_VERSION) return; } catch (e) { /* première installation */ }
     if (!REMOTE) await db.exec('PRAGMA journal_mode = WAL;');
     await db.exec(SCHEMA);
-    for (const [t, c, d] of [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT'],
-      ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'],
-      ['invoices', 'sched_idx', 'INTEGER'], ['invoices', 'credit_of', 'INTEGER'], ['invoices', 'label', 'TEXT'],
-      ['payments', 'number', 'TEXT'], ['payments', 'token', 'TEXT'],
-      ['projects', 'tech', 'TEXT'], ['projects', 'launch', 'TEXT'], ['projects', 'situation', 'TEXT'], ['projects', 'kind', 'TEXT'], ['projects', 'sector', 'TEXT'],
-      ['clients', 'website', 'TEXT'], ['clients', 'sector', 'TEXT'], ['clients', 'source', 'TEXT'],
-      ['leads', 'stage', 'TEXT'], ['leads', 'lost_reason', 'TEXT'], ['leads', 'next_at', 'TEXT'], ['leads', 'notes', 'TEXT'], ['leads', 'city', 'TEXT'], ['leads', 'sector', 'TEXT'], ['leads', 'budget', 'TEXT'], ['leads', 'kind', 'TEXT'], ['leads', 'updated_at', 'TEXT'],
-      ['expenses', 'supplier_ice', 'TEXT'], ['expenses', 'supplier_if', 'TEXT'], ['expenses', 'invoice_ref', 'TEXT'], ['expenses', 'receipt_url', 'TEXT'], ['expenses', 'account', 'TEXT'], ['expenses', 'deductible', 'INTEGER'],
-      ['clients', 'if_num', 'TEXT'], ['clients', 'is_foreign', 'INTEGER'], ['payments', 'stamp', 'REAL']]) {
-      const cols = (await db.prepare(`PRAGMA table_info(${t})`).all()).map((r) => r.name);
-      if (!cols.includes(c)) await db.exec(`ALTER TABLE ${t} ADD COLUMN ${c} ${d}`);
-    }
-    for (const [k, v] of Object.entries(DEFAULTS)) await db.prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)').run(k, v);
-    const TPL = require('./lib/templates').DEFAULT;
-    for (const t of TPL) await db.prepare('INSERT OR IGNORE INTO templates (key, step, title, subject, fr, ar, sort) VALUES (?,?,?,?,?,?,?)').run(t.key, t.step, t.title, t.subject, t.fr, t.ar, t.sort);
-    await db.exec("UPDATE leads SET stage = CASE status WHEN 'devis' THEN 'proposition' WHEN 'traitee' THEN 'contacte' ELSE 'nouveau' END WHERE stage IS NULL");
-    for (let i = 0; i < CATALOGUE.length; i++) {
-      const [n, d, u] = CATALOGUE[i];
-      if (!(await db.prepare('SELECT id FROM services WHERE name = ?').get(n))) await db.prepare('INSERT INTO services (name, description, unit, unit_price, sort) VALUES (?, ?, ?, 0, ?)').run(n, d, u, i);
-    }
+    /* colonnes ajoutées au fil des versions : une lecture par table, puis tous les ajouts en une fois */
+    const tables = [...new Set(COLUMNS.map((c) => c[0]))], have = {};
+    const info = await client.batch(tables.map((t) => `PRAGMA table_info(${t})`), 'read');
+    tables.forEach((t, i) => { have[t] = new Set(info[i].rows.map((r) => r.name || r[1])); });
+    const alters = COLUMNS.filter(([t, c]) => !have[t].has(c)).map(([t, c, d]) => `ALTER TABLE ${t} ADD COLUMN ${c} ${d}`);
+    if (alters.length) await client.batch(alters, 'write');
+    /* réglages, catalogue et modèles par défaut : une seule écriture groupée */
+    const TPL = require('./lib/templates').DEFAULT, st = [];
+    for (const [k, v] of Object.entries(DEFAULTS)) st.push({ sql: 'INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)', args: [k, v] });
+    CATALOGUE.forEach(([n, d, u], i) => st.push({ sql: 'INSERT INTO services (name, description, unit, unit_price, sort) SELECT ?, ?, ?, 0, ? WHERE NOT EXISTS (SELECT 1 FROM services WHERE name = ?)', args: [n, d, u, i, n] }));
+    for (const t of TPL) st.push({ sql: 'INSERT OR IGNORE INTO templates (key, step, title, subject, fr, ar, sort) VALUES (?,?,?,?,?,?,?)', args: [t.key, t.step, t.title, t.subject, t.fr, t.ar, t.sort] });
+    st.push("UPDATE leads SET stage = CASE status WHEN 'devis' THEN 'proposition' WHEN 'traitee' THEN 'contacte' ELSE 'nouveau' END WHERE stage IS NULL");
+    st.push({ sql: "INSERT INTO settings (key, value) VALUES ('_schema', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", args: [SCHEMA_VERSION] });
+    await client.batch(st, 'write');
   })().catch((e) => { ready = null; throw e; });
   return ready;
 }
 
+/* réglages : gardés en mémoire quelques secondes, rechargés à chaque enregistrement */
+let SCACHE = null, SAT = 0;
 async function settings() {
+  if (SCACHE && Date.now() - SAT < 5000) return { ...SCACHE };
   const out = { ...DEFAULTS };
   for (const r of await db.prepare('SELECT key, value FROM settings').all()) out[r.key] = r.value;
-  return out;
+  SCACHE = out; SAT = Date.now(); return { ...out };
 }
-async function saveSettings(obj) { for (const k of Object.keys(DEFAULTS)) if (k in obj) await db.prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').run(k, String(obj[k] ?? '')); }
+async function saveSettings(obj) {
+  const st = Object.keys(DEFAULTS).filter((k) => k in obj).map((k) => ({ sql: 'INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value', args: [k, String(obj[k] ?? '')] }));
+  if (st.length) await client.batch(st, 'write');
+  SCACHE = null;
+}
 
 /* Numérotation continue par année, sans trou : DG-D-2026-0001 */
 async function nextNumber(scope, prefix, dateStr) {

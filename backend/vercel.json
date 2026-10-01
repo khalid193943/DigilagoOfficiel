@@ -1,6 +1,14 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api"
+    }
+  ],
   "functions": {
-    "api/index.js": { "includeFiles": "{public/**,lib/**,server.js,db.js}", "maxDuration": 15 }
+    "api/index.js": {
+      "includeFiles": "{public/**,lib/**,server.js,db.js}",
+      "maxDuration": 60
+    }
   }
 }

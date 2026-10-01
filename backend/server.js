@@ -84,7 +84,13 @@ const Q = {
 const paidOf = async (id) => round2((await Q.paid.get(id)).s);
 /* ajoute .paid à chaque facture d'une liste */
 const clientMap = async () => { const o = {}; for (const c of await db.prepare('SELECT * FROM clients').all()) o[c.id] = c; return o; };
-const withPaid = async (list) => { for (const i of list) i.paid = await paidOf(i.id); return list; };
+const withPaid = async (list) => {
+  if (!list.length) return list;
+  const ids = list.map((i) => Number(i.id)).filter(Boolean), m = {};
+  for (const r of await db.prepare(`SELECT invoice_id, COALESCE(SUM(amount),0) s FROM payments WHERE invoice_id IN (${ids.map(() => '?').join(',')}) GROUP BY invoice_id`).all(...ids)) m[r.invoice_id] = round2(r.s);
+  for (const i of list) i.paid = m[i.id] || 0;
+  return list;
+};
 function qStatus(q) { if ((q.status === 'envoye' || q.status === 'vu') && q.valid_until && q.valid_until < today()) return 'expire'; return q.status; }
 function iStatus(inv, paid = inv.paid || 0) {
   if (inv.kind === 'avoir') return 'avoir';
@@ -356,12 +362,13 @@ app.get('/', async (req, res) => {
   const qMonth = await db.prepare("SELECT COUNT(*) n, COALESCE(SUM(total_ttc),0) t FROM quotes WHERE substr(issue_date,1,7) = ?").get(m);
   const dec = await db.prepare("SELECT SUM(status IN ('accepte','facture')) w, SUM(status IN ('envoye','vu','accepte','refuse','facture')) d FROM quotes").get();
   const rate = dec.d ? Math.round(100 * dec.w / dec.d) : 0;
-  const invs = await db.prepare('SELECT * FROM invoices WHERE cancelled = 0').all();
+  const invs = await withPaid(await db.prepare('SELECT * FROM invoices WHERE cancelled = 0').all());
   let billedMonth = 0, due = 0, late = [];
-  for (const i of invs) { const p = await paidOf(i.id); if ((i.issue_date || '').startsWith(m)) billedMonth += i.total_ttc; const r = i.total_ttc - p; if (r > 0.009) { due += r; if (i.due_date < today()) late.push({ ...i, rest: r }); } }
+  for (const i of invs) { const p = i.paid; if ((i.issue_date || '').startsWith(m)) billedMonth += i.total_ttc; const r = i.total_ttc - p; if (r > 0.009) { due += r; if (i.due_date < today()) late.push({ ...i, rest: r }); } }
   const cashMonth = (await db.prepare("SELECT COALESCE(SUM(amount),0) s FROM payments WHERE substr(date,1,7) = ?").get(m)).s;
   const pipeline = await db.prepare("SELECT COALESCE(SUM(total_ttc),0) s, COUNT(*) n FROM quotes WHERE status IN ('envoye','vu')").get();
-  const months = []; for (let k = 5; k >= 0; k--) { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - k); const key = d.toISOString().slice(0, 7); months.push([key, (await db.prepare("SELECT COALESCE(SUM(amount),0) s FROM payments WHERE substr(date,1,7) = ?").get(key)).s]); }
+  const PM = {}; for (const r of await db.prepare("SELECT substr(date,1,7) m, COALESCE(SUM(amount),0) s FROM payments WHERE date >= date('now','-7 months') GROUP BY m").all()) PM[r.m] = r.s;
+  const months = []; for (let k = 5; k >= 0; k--) { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - k); const key = d.toISOString().slice(0, 7); months.push([key, PM[key] || 0]); }
   const maxM = Math.max(1, ...months.map((x) => x[1]));
   const follow = await db.prepare("SELECT q.*, c.name cname, c.company ccomp, c.phone cphone FROM quotes q LEFT JOIN clients c ON c.id = q.client_id WHERE q.status IN ('envoye','vu') AND (q.sent_at IS NULL OR q.sent_at <= datetime('now','-3 days')) ORDER BY q.issue_date LIMIT 6").all();
   const leads = await db.prepare("SELECT * FROM leads WHERE COALESCE(stage, 'nouveau') = 'nouveau' ORDER BY id DESC LIMIT 5").all();
@@ -404,15 +411,17 @@ app.get('/', async (req, res) => {
   for (const l of await db.prepare("SELECT * FROM leads WHERE next_at IS NOT NULL AND next_at <= ? AND COALESCE(stage, 'nouveau') NOT IN ('gagne','perdu') ORDER BY next_at LIMIT 6").all(today())) todo.push(['relance', `Rappeler ${l.company || l.name || ''}`, `${l.phone || ''}${l.next_at < today() ? ' · prévu le ' + dateFr(l.next_at) : ' · aujourd’hui'}`, `/demandes/${l.id}`, 'Appeler']);
   for (const q of follow.slice(0, 5)) todo.push(['relance', `Relancer le devis ${q.number}`, `${q.ccomp || q.cname || ''} · ${money(q.total_ttc)}`, `/devis/${q.id}`, 'Relancer']);
   const openQ = await db.prepare("SELECT q.*, c.company ccomp, c.name cname FROM quotes q LEFT JOIN clients c ON c.id = q.client_id WHERE q.status IN ('accepte','facture')").all();
+  const PRQ = {}; for (const pr of await db.prepare('SELECT * FROM projects WHERE quote_id IS NOT NULL').all()) PRQ[pr.quote_id] = pr;
+  const BLQ = {}; for (const x of await db.prepare("SELECT quote_id, sched_idx FROM invoices WHERE kind != 'avoir' AND cancelled = 0 AND quote_id IS NOT NULL").all()) (BLQ[x.quote_id] = BLQ[x.quote_id] || []).push(Number(x.sched_idx));
   for (const q of openQ) {
-    const pl = planOf(q), pr = await db.prepare('SELECT * FROM projects WHERE quote_id = ?').get(q.id), billed = (await db.prepare("SELECT sched_idx FROM invoices WHERE quote_id = ? AND kind != 'avoir' AND cancelled = 0").all(q.id)).map((x) => Number(x.sched_idx));
+    const pl = planOf(q), pr = PRQ[q.id], billed = BLQ[q.id] || [];
     const next = pl.findIndex((x, i) => !billed.includes(i)); if (next < 0) continue;
     const st = pr ? steps(pr) : [], maquette = st[1] && st[1].d, livre = pr && pr.status === 'livre';
     const due = next === 0 || (next === pl.length - 1 && livre) || (next > 0 && next < pl.length - 1 && maquette);
     if (due) todo.push(['facture', `Facturer : ${pl[next].l}`, `${q.ccomp || q.cname || ''} · ${q.number}`, `/devis/${q.id}`, 'Facturer']);
   }
   for (const i of late.slice(0, 5)) todo.push(['retard', `Facture en retard : ${i.number}`, `${money(i.rest)} à récupérer`, `/factures/${i.id}`, 'Relancer']);
-  const soonInv = []; for (const i of invs) { if (i.cancelled || i.kind === 'avoir') continue; const d = daysTo(i.due_date); if (d !== null && d >= 0 && d <= 3) { const p = await paidOf(i.id); if (i.total_ttc - p > 0.009) soonInv.push(i); } }
+  const soonInv = []; for (const i of invs) { if (i.cancelled || i.kind === 'avoir') continue; const d = daysTo(i.due_date); if (d !== null && d >= 0 && d <= 3) { if (i.total_ttc - i.paid > 0.009) soonInv.push(i); } }
   for (const i of soonInv.slice(0, 3)) todo.push(['echeance', `Échéance dans ${daysTo(i.due_date)} jour${daysTo(i.due_date) > 1 ? 's' : ''} : ${i.number}`, money(i.total_ttc), `/factures/${i.id}`, 'Rappel amical']);
   for (const p of await db.prepare("SELECT p.*, c.company ccomp, c.name cname FROM projects p LEFT JOIN clients c ON c.id = p.client_id").all()) {
     const t = ptech(p), dd = daysTo(t.domain_expiry), hh = daysTo(t.hosting_expiry), ss = daysTo(t.ssl_valid_to);
@@ -1089,11 +1098,11 @@ app.get('/comptabilite', async (req, res) => {
   const s = await settings(), y = Number(req.query.annee) || Number(today().slice(0, 4)), reg = CP.REGIMES[s.fiscal_regime] || {};
   const per = reg.ae ? 'trimestrielle' : s.tva_periodicite === 'mensuelle' ? 'mensuelle' : 'trimestrielle';
   const periods = reg.ae ? await Promise.all(CP.periodsOfYear(y, 'trimestrielle').map((p) => CP.computePeriod(db, s, p))) : await CP.yearTva(db, { ...s, tva_periodicite: per }, y);
-  const kind = reg.ae ? 'ae' : 'tva', stt = {}; for (const c of periods) stt[c.p] = await taxStatus(kind, c.p);
+  const kind = reg.ae ? 'ae' : 'tva', stt = {}, TS = {}; for (const r of await db.prepare('SELECT * FROM tax_periods WHERE kind = ?').all(kind)) TS[r.period] = r; for (const c of periods) stt[c.p] = TS[c.p] || { status: 'a_preparer' };
   const ae = await CP.aeWatch(db, s, y), ctl = await controls(s, y), tok = await accountantToken(), portal = `${baseUrl(req)}/comptable/${tok}`;
   const locks = new Set((await db.prepare('SELECT month FROM locks').all()).map((r) => r.month));
   const nextP = periods.find((c) => !['declare', 'paye'].includes(stt[c.p].status) && c.deadline >= today()) || periods.find((c) => !['declare', 'paye'].includes(stt[c.p].status));
-  const stampMonths = []; if (!reg.ae) for (let m = 1; m <= 12; m++) { const mm = `${y}-${String(m).padStart(2, '0')}`; const st = (await db.prepare('SELECT COALESCE(SUM(stamp),0) s FROM payments WHERE substr(date,1,7) = ?').get(mm)).s; if (st > 0) stampMonths.push([mm, st]); }
+  const stampMonths = reg.ae ? [] : (await db.prepare('SELECT substr(date,1,7) m, SUM(stamp) s FROM payments WHERE substr(date,1,4) = ? AND stamp > 0 GROUP BY m ORDER BY m').all(String(y))).map((r) => [r.m, r.s]);
   const profil = `<form method="post" action="/comptabilite/profil" class="card${s.fiscal_regime ? '' : ' focus'}" id="profil"><div class="card-h"><h2>Profil fiscal</h2><span>Il règle les calculs, les mentions des factures et les déclarations</span></div>
 <div class="row r4"><label>Régime<select name="fiscal_regime"><option value="">À définir…</option>${Object.entries(CP.REGIMES).map(([k, r]) => `<option value="${k}"${s.fiscal_regime === k ? ' selected' : ''}>${r.n}</option>`).join('')}</select></label><label>TVA<select name="tva_assujetti"><option value="1"${s.tva_assujetti === '1' ? ' selected' : ''}>Assujetti à la TVA</option><option value="0"${s.tva_assujetti !== '1' ? ' selected' : ''}>Non assujetti (TVA non applicable)</option></select></label><label>Déclaration de TVA<select name="tva_periodicite"><option value="trimestrielle"${s.tva_periodicite !== 'mensuelle' ? ' selected' : ''}>Trimestrielle (CA &lt; 1 000 000 DH)</option><option value="mensuelle"${s.tva_periodicite === 'mensuelle' ? ' selected' : ''}>Mensuelle (CA ≥ 1 000 000 DH)</option></select></label><label>Fait générateur<select name="tva_regime"><option value="encaissement"${s.tva_regime !== 'debit' ? ' selected' : ''}>Encaissement (droit commun)</option><option value="debit"${s.tva_regime === 'debit' ? ' selected' : ''}>Débit (sur option)</option></select></label></div>
 <div class="row r4"><label>Votre comptable<input name="accountant_name" value="${esc(s.accountant_name)}" placeholder="Nom ou cabinet"></label><label>Son e-mail<input name="accountant_email" type="email" value="${esc(s.accountant_email)}"></label><label>Son téléphone<input name="accountant_phone" value="${esc(s.accountant_phone)}"></label><label>Compte de ventes (CGNC)<input name="acc_revenue" value="${esc(s.acc_revenue)}"></label></div>
