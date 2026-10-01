@@ -9,11 +9,15 @@ const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'data', 'digilago.db
 /* La base Turso est trouvée quel que soit le préfixe choisi dans Vercel (TURSO_DATABASE_URL, STORAGE_URL…) */
 const ENV = process.env;
 const urlKey = ['TURSO_DATABASE_URL', 'LIBSQL_URL', 'DATABASE_URL'].find((k) => /^(libsql|https?|wss?):\/\//.test(ENV[k] || '')) || Object.keys(ENV).find((k) => /_URL$/.test(k) && /^libsql:\/\//.test(ENV[k] || ''));
-const REMOTE = urlKey ? ENV[urlKey] : '';
+/* sur Vercel, on parle à Turso en HTTPS (pas de connexion permanente qui peut rester bloquée) */
+const REMOTE = urlKey ? String(ENV[urlKey]).trim().replace(/^libsql:\/\//, 'https://').replace(/^wss?:\/\//, 'https://') : '';
+const ON_VERCEL = !!ENV.VERCEL;
 const prefix = urlKey ? urlKey.replace(/(_DATABASE)?_URL$/, '') : '';
 const TOKEN = ENV.TURSO_AUTH_TOKEN || ENV.LIBSQL_AUTH_TOKEN || (prefix && (ENV[prefix + '_AUTH_TOKEN'] || ENV[prefix + '_DATABASE_AUTH_TOKEN'] || ENV[prefix + '_TOKEN'])) || (Object.keys(ENV).find((k) => /AUTH_TOKEN$/.test(k) && /TURSO|LIBSQL|DATABASE|STORAGE/.test(k)) ? ENV[Object.keys(ENV).find((k) => /AUTH_TOKEN$/.test(k) && /TURSO|LIBSQL|DATABASE|STORAGE/.test(k))] : '');
-if (!REMOTE) fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-const client = createClient(REMOTE ? { url: REMOTE, authToken: TOKEN || undefined } : { url: 'file:' + DB_PATH });
+if (!REMOTE && !ON_VERCEL) fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+/* sur Vercel sans base configurée : base temporaire, et l'admin affiche un message clair au lieu de bloquer */
+const client = createClient(REMOTE ? { url: REMOTE, authToken: TOKEN || undefined } : { url: 'file:' + (ON_VERCEL ? '/tmp/digilago-temp.db' : DB_PATH) });
+const DIAG = { remote: !!REMOTE, host: REMOTE ? REMOTE.replace(/^https?:\/\//, '').split('/')[0] : '', urlVar: urlKey || '', token: !!TOKEN, vercel: ON_VERCEL, region: ENV.VERCEL_REGION || '' };
 
 const plain = (rs) => rs.rows.map((r) => { const o = {}; rs.columns.forEach((c, i) => { const v = r[i]; o[c] = typeof v === 'bigint' ? Number(v) : v; }); return o; });
 function api(ex) {
@@ -163,4 +167,4 @@ async function nextNumber(scope, prefix, dateStr) {
   });
 }
 
-module.exports = { db, init, settings, saveSettings, nextNumber, DB_PATH, STEPS, REMOTE };
+module.exports = { db, init, settings, saveSettings, nextNumber, DB_PATH, STEPS, REMOTE, DIAG };

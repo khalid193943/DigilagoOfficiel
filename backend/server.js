@@ -3,7 +3,7 @@
 const path = require('node:path');
 const crypto = require('node:crypto');
 const express = require('express');
-const { db, init, settings, saveSettings, nextNumber, STEPS } = require('./db');
+const { db, init, settings, saveSettings, nextNumber, STEPS, DIAG } = require('./db');
 const { esc, round2, num, money, pct, today, addDays, dateFr, token, totals } = require('./lib/fmt');
 const { renderDoc, KIND, LOGO } = require('./lib/doc');
 const { layout, badge, Q_STATUS, I_STATUS, P_STATUS, ICONS } = require('./lib/ui');
@@ -24,7 +24,22 @@ app.use('/static', express.static(path.join(__dirname, 'public'), { maxAge: '7d'
 /* La base est prête avant toute requête (tables, réglages, secret de session, mot de passe initial) */
 let SECRET = process.env.SESSION_SECRET || '';
 let PUBLIC_URL = '';
-app.use((req, res, next) => { boot().then(() => next(), next); });
+/* Diagnostic public, sans secret : /sante dit si la base est branchée et répond */
+app.get('/sante', async (req, res) => {
+  const t0 = Date.now(); let ping = null, err = '';
+  try { await Promise.race([db.prepare('SELECT 1 AS ok').get(), new Promise((_, r) => setTimeout(() => r(new Error('délai dépassé (8 s)')), 8000))]); ping = Date.now() - t0; } catch (e) { err = String(e.message || e).slice(0, 200); }
+  res.set('Cache-Control', 'no-store').json({ ok: !!ping && (DIAG.remote || !DIAG.vercel), base_configuree: DIAG.remote, hote: DIAG.host, variable: DIAG.urlVar, jeton: DIAG.token, vercel: DIAG.vercel, region_fonction: DIAG.region, reponse_base_ms: ping, erreur: err || undefined, node: process.version });
+});
+/* La base est prête avant toute requête ; si elle ne répond pas, un message clair au lieu d'une page 504 */
+const bootPage = (title, msg) => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title><link rel="stylesheet" href="/static/app.css"></head><body class="auth"><div class="auth-card"><span class="auth-logo">${LOGO}</span><h1>${title}</h1><p>${msg}</p><p><a href="/sante">Voir le diagnostic</a></p></div></body></html>`;
+app.use((req, res, next) => {
+  if (DIAG.vercel && !DIAG.remote) return res.status(503).send(bootPage('Base de données non branchée', 'Ajoutez votre base Turso dans Vercel (onglet Storage, puis Connect, ou les variables TURSO_DATABASE_URL et TURSO_AUTH_TOKEN), puis redéployez.'));
+  Promise.race([boot(), new Promise((_, r) => setTimeout(() => r(new Error('BOOT_TIMEOUT')), 20000))]).then(() => next(), (e) => {
+    console.error('Démarrage impossible :', e && e.message);
+    if (String(e && e.message) === 'BOOT_TIMEOUT') return res.status(503).send(bootPage('La base de données répond trop lentement', 'Vérifiez que la région des fonctions Vercel (Settings → Functions) est la même que celle de votre base Turso, puis rechargez la page dans quelques secondes.'));
+    res.status(503).send(bootPage('La base de données ne répond pas', 'Vérifiez l’adresse et le jeton de votre base Turso dans les variables de Vercel. Détail : ' + esc(String(e && e.message || e).slice(0, 200))));
+  });
+});
 
 /* ---------------- Authentification : un compte administrateur ---------------- */
 const getS = async (k) => ((await db.prepare('SELECT value FROM settings WHERE key = ?').get(k)) || {}).value;
