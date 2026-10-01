@@ -6,7 +6,7 @@ const express = require('express');
 const { db, init, settings, saveSettings, nextNumber, STEPS, DIAG } = require('./db');
 const { esc, round2, num, money, pct, today, addDays, dateFr, token, totals } = require('./lib/fmt');
 const { renderDoc, KIND, LOGO } = require('./lib/doc');
-const { layout, badge, Q_STATUS, I_STATUS, P_STATUS, ICONS } = require('./lib/ui');
+const { layout, badge, Q_STATUS, I_STATUS, P_STATUS, ICONS, ver } = require('./lib/ui');
 const { supervise, findCity } = require('./lib/maroc');
 const { PLANS, planFromBody, planOf, planKey } = require('./lib/plans');
 const assistant = require('./lib/assistant');
@@ -16,25 +16,35 @@ const app = express();
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
-app.use(express.json({ limit: '200kb' }));
+app.use(express.json({ limit: '200kb', verify: (req, res, buf) => { if (req.url.startsWith('/webhooks/')) req.rawBody = buf; } }));
 /* Les gestionnaires asynchrones transmettent leurs erreurs à Express */
-for (const m of ['get', 'post', 'options']) { const orig = app[m].bind(app); app[m] = (p, ...hs) => (hs.length ? orig(p, ...hs.map((h) => (typeof h === 'function' ? (req, res, next) => Promise.resolve(h(req, res, next)).catch(next) : h))) : orig(p)); }
+const wrapH = (h) => (typeof h === 'function' && h.length < 4 ? (req, res, next) => Promise.resolve(h(req, res, next)).catch(next) : h);
+for (const m of ['get', 'post', 'options']) { const orig = app[m].bind(app); app[m] = (p, ...hs) => (hs.length ? orig(p, ...hs.map(wrapH)) : orig(p)); }
+{ const origUse = app.use.bind(app); app.use = (...a) => origUse(...a.map(wrapH)); }
+/* /devis/abc, /factures/xyz… : page introuvable plutôt qu'une erreur 500 */
+app.param('id', (req, res, next, id) => (/^\d{1,12}$/.test(String(id)) ? next() : res.status(404).send('Page introuvable')));
 app.use(async (req, res, next) => { res.set({ 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin', 'X-Frame-Options': 'SAMEORIGIN' }); next(); });
 app.use('/static', express.static(path.join(__dirname, 'public'), { maxAge: '7d' }));
 /* La base est prête avant toute requête (tables, réglages, secret de session, mot de passe initial) */
 let SECRET = process.env.SESSION_SECRET || '';
+/* Délai maximal pour une promesse, avec un minuteur toujours nettoyé (sinon un minuteur restait
+   en attente 20 s à chaque requête, et le processus ne pouvait pas s'arrêter). */
+const withTimeout = (p, ms, msg) => { let t; return Promise.race([p, new Promise((_, r) => { t = setTimeout(() => r(new Error(msg)), ms); })]).finally(() => clearTimeout(t)); };
 let PUBLIC_URL = '';
 /* Diagnostic public, sans secret : /sante dit si la base est branchée et répond */
 app.get('/sante', async (req, res) => {
   const t0 = Date.now(); let ping = null, err = '';
-  try { await Promise.race([db.prepare('SELECT 1 AS ok').get(), new Promise((_, r) => setTimeout(() => r(new Error('délai dépassé (8 s)')), 8000))]); ping = Date.now() - t0; } catch (e) { err = String(e.message || e).slice(0, 200); }
+  try { await withTimeout(db.prepare('SELECT 1 AS ok').get(), 8000, 'délai dépassé (8 s)'); ping = Date.now() - t0; } catch (e) { err = String(e.message || e).slice(0, 200); }
+  const full = (HAS_PW || await getS('_pw').catch(() => '')) ? await isAuthed(req).catch(() => false) : true;
+  if (!full) return res.set('Cache-Control', 'no-store').json({ ok: !!ping && (DIAG.remote || !DIAG.vercel), reponse_base_ms: ping });
   res.set('Cache-Control', 'no-store').json({ ok: !!ping && (DIAG.remote || !DIAG.vercel), base_configuree: DIAG.remote, hote: DIAG.host, variable: DIAG.urlVar, jeton: DIAG.token, vercel: DIAG.vercel, region_fonction: DIAG.region, reponse_base_ms: ping, erreur: err || undefined, node: process.version });
 });
 /* La base est prête avant toute requête ; si elle ne répond pas, un message clair au lieu d'une page 504 */
-const bootPage = (title, msg) => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title><link rel="stylesheet" href="/static/app.css"></head><body class="auth"><div class="auth-card"><span class="auth-logo">${LOGO}</span><h1>${title}</h1><p>${msg}</p><p><a href="/sante">Voir le diagnostic</a></p></div></body></html>`;
+const bootPage = (title, msg) => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title><link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"></head><body class="auth"><div class="auth-card"><span class="auth-logo">${LOGO}</span><h1>${title}</h1><p>${msg}</p><p><a href="/sante">Voir le diagnostic</a></p></div></body></html>`;
 app.use((req, res, next) => {
   if (DIAG.vercel && !DIAG.remote) return res.status(503).send(bootPage('Base de données non branchée', 'Ajoutez votre base Turso dans Vercel (onglet Storage, puis Connect, ou les variables TURSO_DATABASE_URL et TURSO_AUTH_TOKEN), puis redéployez.'));
-  Promise.race([boot(), new Promise((_, r) => setTimeout(() => r(new Error('BOOT_TIMEOUT')), 20000))]).then(() => next(), (e) => {
+  if (bootDone) return next();
+  withTimeout(boot(), 20000, 'BOOT_TIMEOUT').then(() => next(), (e) => {
     console.error('Démarrage impossible :', e && e.message);
     if (String(e && e.message) === 'BOOT_TIMEOUT') return res.status(503).send(bootPage('La base de données répond trop lentement', 'Vérifiez que la région des fonctions Vercel (Settings → Functions) est la même que celle de votre base Turso, puis rechargez la page dans quelques secondes.'));
     res.status(503).send(bootPage('La base de données ne répond pas', 'Vérifiez l’adresse et le jeton de votre base Turso dans les variables de Vercel. Détail : ' + esc(String(e && e.message || e).slice(0, 200))));
@@ -46,7 +56,7 @@ const getS = async (k) => ((await db.prepare('SELECT value FROM settings WHERE k
 const setS = async (k, v) => db.prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').run(k, v);
 const hashPw = (pw, salt = crypto.randomBytes(16).toString('hex')) => salt + ':' + crypto.scryptSync(pw, salt, 32).toString('hex');
 const checkPw = (pw, stored) => { if (!stored) return false; const [salt, h] = stored.split(':'); const x = crypto.scryptSync(pw, salt, 32); return crypto.timingSafeEqual(x, Buffer.from(h, 'hex')); };
-let booted = null;
+let booted = null, bootDone = false;
 function boot() {
   if (booted) return booted;
   booted = (async () => {
@@ -54,31 +64,43 @@ function boot() {
     if (!SECRET) { if (!(await getS('_secret'))) await setS('_secret', crypto.randomBytes(32).toString('hex')); SECRET = await getS('_secret'); }
     PUBLIC_URL = (await getS('public_url')) || '';
     if (process.env.ADMIN_PASSWORD && !(await getS('_pw_env_applied'))) { await setS('_pw', hashPw(process.env.ADMIN_PASSWORD)); await setS('_pw_env_applied', '1'); }
+    bootDone = true;
   })().catch((e) => { booted = null; throw e; });
   return booted;
 }
 const sign = (v) => crypto.createHmac('sha256', SECRET).update(v).digest('base64url');
+const sameStr = (a, b) => { const x = Buffer.from(String(a)), y = Buffer.from(String(b)); return x.length === y.length && crypto.timingSafeEqual(x, y); };
+/* Version des sessions (relue avec les réglages, valable sur toutes les instances) */
+const sessVer = async () => (await settings())._sv || '0';
+const rotateSessions = async () => { await setS('_sv', crypto.randomBytes(8).toString('hex')); await saveSettings({}); };
 function readCookie(req, name) { const m = (req.headers.cookie || '').split(/;\s*/).find((c) => c.startsWith(name + '=')); return m ? decodeURIComponent(m.slice(name.length + 1)) : ''; }
-function isAuthed(req) { const c = readCookie(req, 'dg'); const [exp, sig] = c.split('.'); return exp && sig && sign(exp) === sig && Number(exp) > Date.now(); }
-function setSession(res) { const exp = String(Date.now() + 1000 * 60 * 60 * 24 * 14); res.setHeader('Set-Cookie', `dg=${exp}.${sign(exp)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${60 * 60 * 24 * 14}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`); }
-const tries = new Map();
+async function isAuthed(req) { const c = readCookie(req, 'dg'); const [exp, sig] = c.split('.'); return !!(exp && sig && Number(exp) > Date.now() && sameStr(sign(exp + '.' + await sessVer()), sig)); }
+async function setSession(res) { const exp = String(Date.now() + 1000 * 60 * 60 * 24 * 14); res.setHeader('Set-Cookie', `dg=${exp}.${sign(exp + '.' + await sessVer())}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${60 * 60 * 24 * 14}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`); }
 function authPage(title, inner) {
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} | Digilago Gestion</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="/static/app.css"></head><body class="auth"><form method="post" class="auth-card"><span class="auth-logo">${LOGO}</span><h1>${title}</h1>${inner}</form></body></html>`;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} | Digilago Gestion</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"></head><body class="auth"><form method="post" class="auth-card"><span class="auth-logo">${LOGO}</span><h1>${title}</h1>${inner}</form></body></html>`;
 }
 app.get('/installation', async (req, res) => { if (await getS('_pw')) return res.redirect('/connexion'); res.send(authPage('Bienvenue', '<p>Choisissez le mot de passe de votre espace de gestion.</p><label>Mot de passe<input type="password" name="pw" minlength="8" required autofocus></label><label>Confirmer<input type="password" name="pw2" minlength="8" required></label><button>Créer mon espace</button>')); });
 app.post('/installation', async (req, res) => {
   if (await getS('_pw')) return res.redirect('/connexion');
   const { pw = '', pw2 = '' } = req.body;
   if (pw.length < 8 || pw !== pw2) return res.send(authPage('Bienvenue', '<p class="err">Les mots de passe doivent être identiques et faire au moins 8 caractères.</p><label>Mot de passe<input type="password" name="pw" minlength="8" required></label><label>Confirmer<input type="password" name="pw2" minlength="8" required></label><button>Créer mon espace</button>'));
-  await setS('_pw', hashPw(pw)); setSession(res); res.redirect('/parametres?bienvenue=1');
+  await setS('_pw', hashPw(pw)); await setSession(res); res.redirect('/parametres?bienvenue=1');
 });
 app.get('/connexion', async (req, res) => { if (!await getS('_pw')) return res.redirect('/installation'); res.send(authPage('Connexion', '<label>Mot de passe<input type="password" name="pw" required autofocus></label><button>Se connecter</button>')); });
+/* Compteur d'événements par clé sur une fenêtre de temps (tentatives de connexion, demandes du site) */
+async function hit(k, windowMs, max, record = true) {
+  const now = Date.now();
+  if (Math.random() < 0.05) await db.prepare('DELETE FROM hits WHERE at < ?').run(now - 864e5);
+  const n = (await db.prepare('SELECT COUNT(*) n FROM hits WHERE k = ? AND at > ?').get(k, now - windowMs)).n;
+  if (record && n < max) await db.prepare('INSERT INTO hits (k, at) VALUES (?, ?)').run(k, now);
+  return n >= max;
+}
 app.post('/connexion', async (req, res) => {
-  const ip = req.ip, t = tries.get(ip) || { n: 0, at: Date.now() };
-  if (Date.now() - t.at > 15 * 60e3) { t.n = 0; t.at = Date.now(); }
-  if (t.n >= 8) return res.status(429).send(authPage('Connexion', '<p class="err">Trop de tentatives. Réessayez dans 15 minutes.</p>'));
-  if (checkPw(String(req.body.pw || ''), await getS('_pw'))) { tries.delete(ip); setSession(res); return res.redirect('/'); }
-  t.n++; tries.set(ip, t);
+  const ip = String(req.ip || '').slice(0, 64), W = 15 * 60e3;
+  /* 8 essais par adresse et 40 au total par quart d'heure : l'en-tête X-Forwarded-For ne suffit plus à contourner */
+  if (await hit('login:' + ip, W, 8, false) || await hit('login:*', W, 40, false)) return res.status(429).send(authPage('Connexion', '<p class="err">Trop de tentatives. Réessayez dans 15 minutes.</p>'));
+  if (checkPw(String(req.body.pw || ''), await getS('_pw'))) { await db.prepare("DELETE FROM hits WHERE k = ?").run('login:' + ip); await setSession(res); return res.redirect('/'); }
+  await hit('login:' + ip, W, 1e9); await hit('login:*', W, 1e9);
   res.status(401).send(authPage('Connexion', '<p class="err">Mot de passe incorrect.</p><label>Mot de passe<input type="password" name="pw" required autofocus></label><button>Se connecter</button>'));
 });
 app.post('/deconnexion', async (req, res) => { res.setHeader('Set-Cookie', 'dg=; Path=/; Max-Age=0'); res.redirect('/connexion'); });
@@ -200,11 +222,16 @@ async function ensureProject(qid) {
 }
 
 /* ---------------- Formulaire public du site : les demandes arrivent ici ---------------- */
-app.options('/api/leads', async (req, res) => { res.set({ 'Access-Control-Allow-Origin': process.env.SITE_ORIGIN || '*', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type' }).sendStatus(204); });
+/* SITE_ORIGIN : une ou plusieurs adresses du site, séparées par des virgules ; « * » pour tout accepter */
+const SITE_ORIGINS = String(process.env.SITE_ORIGIN || 'https://digilago.ma,https://www.digilago.ma,https://khalid193943.github.io').split(',').map((x) => x.trim()).filter(Boolean);
+const corsFor = (req) => { const o = req.get('origin') || ''; return SITE_ORIGINS.includes('*') ? '*' : SITE_ORIGINS.includes(o) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o) ? o : SITE_ORIGINS[0]; };
+app.options('/api/leads', async (req, res) => { res.set({ 'Access-Control-Allow-Origin': corsFor(req), Vary: 'Origin', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type' }).sendStatus(204); });
 app.post('/api/leads', async (req, res) => {
-  res.set('Access-Control-Allow-Origin', process.env.SITE_ORIGIN || '*');
+  res.set({ 'Access-Control-Allow-Origin': corsFor(req), Vary: 'Origin' });
   const b = req.body || {}, s = (v, n = 300) => String(v || '').slice(0, n).trim();
+  if (s(b.website) || s(b._hp)) return res.json({ ok: true });
   if (!s(b.name) && !s(b.phone) && !s(b.email)) return res.status(400).json({ ok: false });
+  if (await hit('lead:' + String(req.ip || '').slice(0, 64), 15 * 60e3, 6)) return res.status(429).json({ ok: false });
   const r = await db.prepare("INSERT INTO leads (name, company, phone, email, need, message, source, stage, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'nouveau', datetime('now'))").run(s(b.name, 120), s(b.company, 160), s(b.phone, 40), s(b.email, 160), s(b.need, 300), s(b.message, 3000), s(b.source, 80) || 'site');
   res.json({ ok: true, id: Number(r.lastInsertRowid) });
 });
@@ -212,11 +239,11 @@ app.post('/api/leads', async (req, res) => {
 /* ---------------- Lien client : consulter, télécharger, accepter ---------------- */
 async function publicPage(title, body) {
   const s = (await settings());
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)} | ${esc(s.company_name)}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet"><link rel="stylesheet" href="/static/app.css"></head><body class="pub">${body}<script src="/static/app.js" defer></script></body></html>`;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)} | ${esc(s.company_name)}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet"><link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"></head><body class="pub">${body}<script src="/static/app.js?v=${ver('app.js')}" defer></script></body></html>`;
 }
 app.get('/d/:token', async (req, res) => {
   const q = await Q.quoteByToken.get(req.params.token); if (!q) return res.status(404).send(await publicPage('Introuvable', '<div class="pub-msg"><h1>Ce lien n’est plus valide.</h1></div>'));
-  if (q.status === 'envoye' && !isAuthed(req)) await db.prepare("UPDATE quotes SET status = 'vu', viewed_at = datetime('now') WHERE id = ?").run(q.id);
+  if (q.status === 'envoye' && !(await isAuthed(req))) await db.prepare("UPDATE quotes SET status = 'vu', viewed_at = datetime('now') WHERE id = ?").run(q.id);
   const s = (await settings()), st = qStatus(q), cl = await Q.client.get(q.client_id) || {};
   const canAccept = ['envoye', 'vu', 'brouillon'].includes(st) && !q.accepted_at;
   const wa = `https://wa.me/${s.whatsapp}?text=${encodeURIComponent(`Bonjour ${s.company_name}, j’ai une question sur le devis ${q.number}.`)}`;
@@ -231,7 +258,7 @@ ${canAccept ? '<a class="btn" href="#accepter">Accepter le devis</a>' : q.accept
 app.post('/d/:token/accepter', async (req, res) => {
   const q = await Q.quoteByToken.get(req.params.token); if (!q) return res.sendStatus(404);
   const name = String(req.body.name || '').trim().slice(0, 120);
-  if (name && req.body.ok && !q.accepted_at && qStatus(q) !== 'expire') { await db.prepare("UPDATE quotes SET status = 'accepte', accepted_at = datetime('now'), accepted_name = ? WHERE id = ?").run(name, q.id); await ensureProject(q.id); await ensureOrder(q.id); await log('devis', q.id, `Devis ${q.number} accepté en ligne par ${name}`); await leadFromQuote(q.id, 'gagne'); }
+  if (name && req.body.ok && !q.accepted_at && ['brouillon', 'envoye', 'vu'].includes(q.status) && qStatus(q) !== 'expire') { await db.prepare("UPDATE quotes SET status = 'accepte', accepted_at = datetime('now'), accepted_name = ? WHERE id = ?").run(name, q.id); await ensureProject(q.id); await ensureOrder(q.id); await log('devis', q.id, `Devis ${q.number} accepté en ligne par ${name}`); await leadFromQuote(q.id, 'gagne'); }
   res.redirect(`/d/${q.token}?merci=1`);
 });
 app.get('/f/:token', async (req, res) => {
@@ -303,7 +330,11 @@ app.get('/webhooks/whatsapp', async (req, res) => {
   res.sendStatus(403);
 });
 app.post('/webhooks/whatsapp', async (req, res) => {
-  const s = await settings(), chs = MSG.channels(s);
+  const s = await settings(), chs = MSG.channels(s), secret = s.wa_app_secret || process.env.WA_APP_SECRET || '';
+  if (secret) {
+    const exp = 'sha256=' + crypto.createHmac('sha256', secret).update(req.rawBody || Buffer.from('')).digest('hex');
+    if (!sameStr(req.get('x-hub-signature-256') || '', exp)) return res.sendStatus(401);
+  }
   for (const m of MSG.parseWebhook(req.body || {})) {
     const ch = chs.find((c) => c.wa && c.phone_id && c.phone_id === m.phone_id) || chs[0];
     if (await db.prepare('SELECT 1 FROM messages WHERE ext_id = ?').get(m.id)) continue;
@@ -362,14 +393,19 @@ app.get('/brief/:token', async (req, res) => {
 app.post('/brief/:token', async (req, res) => {
   const p = await db.prepare('SELECT * FROM projects WHERE token = ?').get(req.params.token); if (!p) return res.sendStatus(404);
   const b = req.body, cl = await Q.client.get(p.client_id) || {}, cut = (v, n = 400) => String(v || '').trim().slice(0, n);
-  await db.prepare('UPDATE clients SET company = ?, city = ?, address = ?, phone = ?, whatsapp = ?, email = ?, ice = ? WHERE id = ?').run(cut(b.company, 160) || cl.company, cut(b.city, 80), cut(b.address, 240), cut(b.phone, 40), cut(b.whatsapp, 40), cut(b.email, 160), cut(b.ice, 40), p.client_id);
+  const invoiced = !!(await db.prepare('SELECT 1 FROM invoices WHERE client_id = ? LIMIT 1').get(p.client_id));
+  const keep = (k, n) => (invoiced && cl[k] ? cl[k] : (cut(b[k], n) || cl[k] || ''));
+  await db.prepare('UPDATE clients SET company = ?, city = ?, address = ?, phone = ?, whatsapp = ?, email = ?, ice = ? WHERE id = ?').run(keep('company', 160), keep('city', 80), keep('address', 240), keep('phone', 40), keep('whatsapp', 40), keep('email', 160), keep('ice', 40), p.client_id);
+  if (invoiced) for (const k of ['company', 'address', 'ice', 'email']) if (cut(b[k]) && cl[k] && cut(b[k]) !== cl[k]) await log('client', p.client_id, `Le client propose une nouvelle valeur (${k}) : ${cut(b[k], 200)}`);
   const inf = pinfo(p); for (const [k] of INFO_FIELDS) if (('i_' + k) in b) inf[k] = cut(b['i_' + k], 3000);
   await db.prepare('UPDATE projects SET info = ? WHERE id = ?').run(JSON.stringify(inf), p.id);
   res.redirect(`/brief/${p.token}?merci=1`);
 });
 
 /* ---------------- Tout le reste demande d'être connecté ---------------- */
-app.use(async (req, res, next) => { if (!await getS('_pw')) return res.redirect('/installation'); if (!isAuthed(req)) return res.redirect('/connexion'); next(); });
+/* Une fois le mot de passe créé, il existe pour toujours : inutile de relire la base à chaque page. */
+let HAS_PW = false;
+app.use(async (req, res, next) => { if (!HAS_PW) { HAS_PW = !!(await getS('_pw')); if (!HAS_PW) return res.redirect('/installation'); } if (!(await isAuthed(req))) return res.redirect('/connexion'); next(); });
 
 /* ---------------- Tableau de bord ---------------- */
 app.get('/', async (req, res) => {
@@ -540,9 +576,10 @@ async function resolveClient(body) {
 }
 async function saveQuote(body, id = null) {
   const items = readItems(body);
+  if (!items.length) throw new Error('Ajoutez au moins une prestation.');
+  if ((!body.client_id || body.client_id === 'new') && !String(body.nc_name || '').trim() && !String(body.nc_company || '').trim()) throw new Error('Choisissez un client ou créez-en un.');
   const clientId = await resolveClient(body);
   if (!clientId) throw new Error('Choisissez un client ou créez-en un.');
-  if (!items.length) throw new Error('Ajoutez au moins une prestation.');
   const s = (await settings()), issue = body.issue_date || today();
   const tva = num(body.tva_rate, num(s.default_tva)), disc = Math.min(100, Math.max(0, num(body.discount_pct))), dep = Math.min(100, Math.max(0, num(body.deposit_pct)));
   const t = totals(items, tva, disc), valid = addDays(issue, num(body.validity, num(s.default_validity)));
@@ -581,12 +618,15 @@ app.post('/devis/nouveau', async (req, res) => {
   try { const id = await saveQuote(req.body); if (req.body.then === 'envoyer') await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = datetime('now') WHERE id = ?").run(id); res.redirect(`/devis/${id}${req.body.then === 'envoyer' ? '?envoyer=1' : ''}`); }
   catch (e) { res.status(400).send(layout({ title: 'Nouveau devis', active: '/devis', body: await quoteForm({ q: req.body, items: readItems(req.body), errors: e.message }) })); }
 });
+const quoteLocked = (q) => ['accepte', 'facture'].includes(q.status) || !!q.accepted_at;
 app.get('/devis/:id/modifier', async (req, res) => {
   const q = await Q.quote.get(Number(req.params.id)); if (!q) return res.sendStatus(404);
+  if (quoteLocked(q)) return res.redirect(`/devis/${q.id}?err=` + encodeURIComponent('Ce devis est accepté : le client a validé ce contenu. Dupliquez-le pour proposer une nouvelle version.'));
   res.send(layout({ title: 'Modifier ' + q.number, active: '/devis', body: await quoteForm({ q, items: await Q.qItems.all(q.id) }) }));
 });
 app.post('/devis/:id/modifier', async (req, res) => {
-  const id = Number(req.params.id);
+  const id = Number(req.params.id), cur = await Q.quote.get(id); if (!cur) return res.sendStatus(404);
+  if (quoteLocked(cur)) return res.redirect(`/devis/${id}?err=` + encodeURIComponent('Ce devis est accepté : le client a validé ce contenu. Dupliquez-le pour proposer une nouvelle version.'));
   try { await saveQuote(req.body, id); if (req.body.then === 'envoyer') await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = datetime('now') WHERE id = ?").run(id); res.redirect(`/devis/${id}${req.body.then === 'envoyer' ? '?envoyer=1' : ''}`); }
   catch (e) { res.status(400).send(layout({ title: 'Modifier le devis', active: '/devis', body: await quoteForm({ q: { ...req.body, id }, items: readItems(req.body), errors: e.message }) })); }
 });
@@ -601,12 +641,13 @@ app.get('/devis/:id', async (req, res) => {
   const wa = cl.phone ? `https://wa.me/${digits(cl.phone)}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
   const mail = `mailto:${esc(cl.email || '')}?subject=${encodeURIComponent('Devis ' + q.number + ' - ' + s.company_name)}&body=${encodeURIComponent(msg)}`;
   const timeline = [['Créé', q.created_at], ['Envoyé', q.sent_at], ['Consulté par le client', q.viewed_at], ['Accepté' + (q.accepted_name ? ' par ' + q.accepted_name : ''), q.accepted_at]].filter((x) => x[1]).map(([t, d]) => `<li><i></i><b>${esc(t)}</b><span>${dateFr(d)}</span></li>`).join('');
+  const NEXT = PLAN.findIndex((x, k) => !invs.find((f) => Number(f.sched_idx) === k && f.kind !== 'avoir' && !f.cancelled));
   const side = `<div class="card"><div class="card-h"><h2>Statut</h2>${badge(Q_STATUS, st)}</div><ul class="tl">${timeline}</ul>
 <form method="post" action="/devis/${q.id}/statut" class="st-btns">${['envoye', 'accepte', 'refuse'].filter((k) => k !== q.status && q.status !== 'facture').map((k) => `<button class="btn ghost sm" name="status" value="${k}">${k === 'envoye' ? 'Marquer envoyé' : k === 'accepte' ? 'Marquer accepté' : 'Marquer refusé'}</button>`).join('')}</form></div>
 <div class="card"><div class="card-h"><h2>Envoyer au client</h2></div><div class="copy"><input readonly value="${esc(link)}" id="lnk"><button type="button" class="btn ghost sm" data-copy="#lnk">Copier</button></div>
 <div class="send"><a class="btn wa" href="${wa}" target="_blank" rel="noopener" data-mark="/devis/${q.id}/envoye">WhatsApp</a><a class="btn ghost" href="${mail}" data-mark="/devis/${q.id}/envoye">E-mail</a><a class="btn ghost" href="/d/${q.token}" target="_blank" rel="noopener">Voir comme le client</a></div></div>
 ${(() => { const pr = PRJ; return pr ? `<div class="card"><div class="card-h"><h2>Projet</h2>${badge(P_STATUS, pr.status)}</div><a href="/projets/${pr.id}">Suivre le projet</a></div>` : ''; })()}
-<div class="card"><div class="card-h"><h2>Échéancier et facturation</h2>${ORD ? `<a href="/bc/${ORD.token}" target="_blank" rel="noopener">Bon de commande ${esc(ORD.number)}</a>` : ''}</div><ul class="sched">${PLAN.map((x, i) => { const inv = invs.find((f) => Number(f.sched_idx) === i && f.kind !== 'avoir' && !f.cancelled); const amt = i === PLAN.length - 1 ? round2(q.total_ttc - PLAN.slice(0, -1).reduce((a, y) => a + round2(q.total_ttc * y.p / 100), 0)) : round2(q.total_ttc * x.p / 100); return `<li class="${inv ? (iStatus(inv) === 'payee' ? 'paid' : 'billed') : ''}"><span class="sc-i">${i + 1}</span><span class="sc-t"><b>${esc(x.l)}</b><small>${pct(x.p)} · ${money(amt)}</small></span>${inv ? `<a href="/factures/${inv.id}">${esc(inv.number)}</a>${badge(I_STATUS, iStatus(inv))}` : `<form method="post" action="/devis/${q.id}/facturer" class="inl"><input type="hidden" name="idx" value="${i}"><button class="btn sm${i === invs.filter((f) => f.kind !== 'avoir' && !f.cancelled).length ? '' : ' ghost'}">Facturer</button></form>`}</li>`; }).join('')}</ul>
+<div class="card"><div class="card-h"><h2>Échéancier et facturation</h2>${ORD ? `<a href="/bc/${ORD.token}" target="_blank" rel="noopener">Bon de commande ${esc(ORD.number)}</a>` : ''}</div><ul class="sched">${PLAN.map((x, i) => { const inv = invs.find((f) => Number(f.sched_idx) === i && f.kind !== 'avoir' && !f.cancelled); const amt = i === PLAN.length - 1 ? round2(q.total_ttc - PLAN.slice(0, -1).reduce((a, y) => a + round2(q.total_ttc * y.p / 100), 0)) : round2(q.total_ttc * x.p / 100); return `<li class="${inv ? (iStatus(inv) === 'payee' ? 'paid' : 'billed') : ''}"><span class="sc-i">${i + 1}</span><span class="sc-t"><b>${esc(x.l)}</b><small>${pct(x.p)} · ${money(amt)}</small></span>${inv ? `<a href="/factures/${inv.id}">${esc(inv.number)}</a>${badge(I_STATUS, iStatus(inv))}` : i !== NEXT ? `<small class="mut">Après l’échéance précédente</small>` : `<form method="post" action="/devis/${q.id}/facturer" class="inl"><input type="hidden" name="idx" value="${i}"><button class="btn sm${i === invs.filter((f) => f.kind !== 'avoir' && !f.cancelled).length ? '' : ' ghost'}">Facturer</button></form>`}</li>`; }).join('')}</ul>
 ${invs.filter((f) => f.kind === 'avoir' || f.cancelled).length ? `<p class="mut">Annulations : ${invs.filter((f) => f.kind === 'avoir').map((f) => `<a href="/factures/${f.id}">${esc(f.number)}</a>`).join(', ')}</p>` : ''}</div>`;
   const actions = `<a class="btn" href="/messagerie/ecrire?type=devis&id=${q.id}">Message</a>${q.status !== 'facture' ? `<a class="btn ghost" href="/devis/${q.id}/modifier">Modifier</a>` : ''}<form method="post" action="/devis/${q.id}/dupliquer" class="inl"><button class="btn ghost">Dupliquer</button></form><button type="button" class="btn ghost" data-print>PDF</button>`;
   const flash = req.query.err ? String(req.query.err) : req.query.assistant ? 'Tout est prêt : le client, le projet (en proposition) et ce devis. Vérifiez les prix, puis envoyez-le.' : req.query.envoyer ? 'Devis enregistré. Envoyez-le maintenant par WhatsApp ou par e-mail.' : '';
@@ -614,7 +655,8 @@ ${invs.filter((f) => f.kind === 'avoir' || f.cancelled).length ? `<p class="mut"
 });
 app.post('/devis/:id/envoye', async (req, res) => { await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = COALESCE(sent_at, datetime('now')) WHERE id = ? AND status = 'brouillon'").run(Number(req.params.id)); res.sendStatus(204); });
 app.post('/devis/:id/statut', async (req, res) => {
-  const id = Number(req.params.id), st = String(req.body.status);
+  const id = Number(req.params.id), st = String(req.body.status), cur = await Q.quote.get(id); if (!cur) return res.sendStatus(404);
+  if (['envoye', 'refuse'].includes(st) && quoteLocked(cur)) return res.redirect(`/devis/${id}?err=` + encodeURIComponent('Ce devis est déjà accepté.'));
   if (st === 'envoye') await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = COALESCE(sent_at, datetime('now')) WHERE id = ?").run(id);
   else if (st === 'accepte') { await db.prepare("UPDATE quotes SET status = 'accepte', accepted_at = COALESCE(accepted_at, datetime('now')), accepted_name = COALESCE(accepted_name, '') WHERE id = ?").run(id); await ensureProject(id); await ensureOrder(id); await log('devis', id, 'Devis marqué accepté'); await leadFromQuote(id, 'gagne'); }
   else if (st === 'refuse') { await db.prepare("UPDATE quotes SET status = 'refuse' WHERE id = ?").run(id); await leadFromQuote(id, 'perdu', 'Devis refusé'); }
@@ -622,17 +664,24 @@ app.post('/devis/:id/statut', async (req, res) => {
 });
 app.post('/devis/:id/dupliquer', async (req, res) => {
   const q = await Q.quote.get(Number(req.params.id)); if (!q) return res.sendStatus(404);
-  const id = await saveQuote({ client_id: q.client_id, title: q.title, issue_date: today(), validity: (await settings()).default_validity, tva_rate: q.tva_rate, discount_pct: q.discount_pct, deposit_pct: q.deposit_pct, delay: q.delay, notes: q.notes, conditions: q.conditions, items: await Q.qItems.all(q.id) });
+  const plan = planOf(q), pk = planKey(plan);
+  const id = await saveQuote({ client_id: q.client_id, title: q.title, issue_date: today(), validity: (await settings()).default_validity, tva_rate: q.tva_rate, discount_pct: q.discount_pct, deposit_pct: q.deposit_pct, delay: q.delay, notes: q.notes, conditions: q.conditions, items: await Q.qItems.all(q.id), plan_key: pk, plan_custom: pk === 'custom' ? plan.map((x) => x.l + ';' + x.p).join('\n') : '' });
   res.redirect(`/devis/${id}/modifier`);
 });
 /* Facture d'une échéance : acompte, situation, solde ou facture unique */
 async function createScheduleInvoice(q, idx) {
   if (await isLocked(today())) throw new Error(lockedMsg(today()));
   const plan = planOf(q), n = plan.length; idx = Math.max(0, Math.min(n - 1, idx));
-  const prev = (await Q.quoteInvoices.all(q.id)).filter((i) => i.kind !== 'avoir');
-  const same = prev.find((i) => Number(i.sched_idx) === idx); if (same) return same.id;
   const s = await settings(), items = await Q.qItems.all(q.id), issue = today();
   const kind = n === 1 ? 'totale' : idx === n - 1 ? 'solde' : idx === 0 ? 'acompte' : 'situation';
+  /* Tout se fait dans une seule transaction : le double-clic ne crée plus deux factures,
+     et le numéro n'est consommé que si la facture est bien enregistrée. */
+  const made = await db.tx(async (tx) => {
+  const prev = await tx.prepare("SELECT * FROM invoices WHERE quote_id = ? AND cancelled = 0 AND kind != 'avoir' ORDER BY id").all(q.id);
+  const same = prev.find((i) => Number(i.sched_idx) === idx); if (same) return { id: same.id, dup: true };
+  /* les échéances se facturent dans l'ordre (sinon le solde facturé en premier valait 100 % du devis) */
+  const billed = new Set(prev.map((i) => Number(i.sched_idx))), next = plan.findIndex((x, k) => !billed.has(k));
+  if (next !== -1 && idx !== next) throw new Error(`Facturez d’abord l’échéance « ${plan[next].l} ».`);
   let lines;
   if (kind === 'acompte' || kind === 'situation') lines = [{ label: `${plan[idx].l} : ${pct(plan[idx].p)} du devis ${q.number}`, description: q.title || '', qty: 1, unit: 'forfait', unit_price: round2(q.total_ht * plan[idx].p / 100) }];
   else {
@@ -641,16 +690,24 @@ async function createScheduleInvoice(q, idx) {
     if (num(q.discount_pct) > 0) lines.push({ label: `Remise ${pct(q.discount_pct)}`, description: '', qty: 1, unit: '', unit_price: -round2(sub - q.total_ht) });
     for (const a of prev) lines.push({ label: `Déjà facturé : ${a.number}${a.label ? ' (' + a.label + ')' : ''}`, description: '', qty: 1, unit: '', unit_price: -round2(a.total_ht) });
   }
-  const t = totals(lines, q.tva_rate, 0);
-  const number = await nextNumber('invoice', s.invoice_prefix, issue);
-  const id = Number((await db.prepare('INSERT INTO invoices (number, quote_id, client_id, kind, title, issue_date, due_date, tva_rate, total_ht, total_tva, total_ttc, notes, token, sched_idx, label) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(number, q.id, q.client_id, kind, q.title, issue, addDays(issue, num(s.default_due_days, 15)), q.tva_rate, t.ht, t.tva, t.ttc, '', token(), idx, plan[idx].l)).lastInsertRowid);
-  const ins = db.prepare('INSERT INTO invoice_items (invoice_id, position, label, description, qty, unit, unit_price) VALUES (?,?,?,?,?,?,?)');
+  let t = totals(lines, q.tva_rate, 0);
+  /* Montants au centime près : chaque échéance vaut exactement ce qu'annonce l'échéancier du devis,
+     et le solde est le reste exact (les arrondis ne dérivent plus d'un centime). */
+  const fit = (ht, ttc) => { if (Math.abs(ttc - t.ttc) <= 0.05 && Math.abs(ht - t.ht) <= 0.05) t = { ...t, ht, ttc, tva: round2(ttc - ht) }; };
+  if (kind === 'solde' || kind === 'totale') fit(round2(q.total_ht - prev.reduce((a, i) => a + i.total_ht, 0)), round2(q.total_ttc - prev.reduce((a, i) => a + i.total_ttc, 0)));
+  else fit(round2(q.total_ht * plan[idx].p / 100), round2(q.total_ttc * plan[idx].p / 100));
+  const number = await nextNumber('invoice', s.invoice_prefix, issue, tx);
+  const id = Number((await tx.prepare('INSERT INTO invoices (number, quote_id, client_id, kind, title, issue_date, due_date, tva_rate, total_ht, total_tva, total_ttc, notes, token, sched_idx, label) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(number, q.id, q.client_id, kind, q.title, issue, addDays(issue, num(s.default_due_days, 15)), q.tva_rate, t.ht, t.tva, t.ttc, '', token(), idx, plan[idx].l)).lastInsertRowid);
+  const ins = tx.prepare('INSERT INTO invoice_items (invoice_id, position, label, description, qty, unit, unit_price) VALUES (?,?,?,?,?,?,?)');
   for (let i = 0; i < lines.length; i++) { const l = lines[i]; await ins.run(id, i, l.label, l.description || '', l.qty, l.unit || '', l.unit_price); }
-  if (kind === 'solde' || kind === 'totale') await db.prepare("UPDATE quotes SET status = 'facture' WHERE id = ?").run(q.id);
-  else if (!['accepte', 'facture'].includes(q.status)) await db.prepare("UPDATE quotes SET status = 'accepte', accepted_at = COALESCE(accepted_at, datetime('now')) WHERE id = ?").run(q.id);
+  if (kind === 'solde' || kind === 'totale') await tx.prepare("UPDATE quotes SET status = 'facture' WHERE id = ?").run(q.id);
+  else if (!['accepte', 'facture'].includes(q.status)) await tx.prepare("UPDATE quotes SET status = 'accepte', accepted_at = COALESCE(accepted_at, datetime('now')) WHERE id = ?").run(q.id);
+  return { id, number };
+  });
+  if (made.dup) return made.id;
   await ensureProject(q.id); await ensureOrder(q.id);
-  await log('facture', id, `${KIND[kind]} ${number} émise (${plan[idx].l})`);
-  return id;
+  await log('facture', made.id, `${KIND[kind]} ${made.number} émise (${plan[idx].l})`);
+  return made.id;
 }
 async function createInvoice(q, kind) {
   const n = planOf(q).length;
@@ -696,35 +753,45 @@ app.post('/factures/:id/relance/:lv', async (req, res) => { const id = Number(re
 app.post('/factures/:id/avoir', async (req, res) => {
   const inv = await Q.invoice.get(Number(req.params.id)); if (!inv || inv.cancelled || inv.kind === 'avoir') return res.redirect('/factures/' + req.params.id);
   if (await isLocked(today())) return res.redirect('/factures/' + inv.id + '?err=' + encodeURIComponent(lockedMsg(today())));
-  const items = await Q.iItems.all(inv.id), number = await nextNumber('credit', 'DG-AV', today());
-  const id = Number((await db.prepare('INSERT INTO invoices (number, quote_id, client_id, kind, title, issue_date, due_date, tva_rate, total_ht, total_tva, total_ttc, notes, token, credit_of, label) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(number, inv.quote_id, inv.client_id, 'avoir', inv.title, today(), today(), inv.tva_rate, -inv.total_ht, -inv.total_tva, -inv.total_ttc, `Avoir sur la facture ${inv.number}`, token(), inv.id, 'Avoir ' + inv.number)).lastInsertRowid);
-  const ins = db.prepare('INSERT INTO invoice_items (invoice_id, position, label, description, qty, unit, unit_price) VALUES (?,?,?,?,?,?,?)');
-  for (let i = 0; i < items.length; i++) { const it = items[i]; await ins.run(id, i, it.label, it.description || '', it.qty, it.unit || '', -it.unit_price); }
-  await db.prepare('UPDATE invoices SET cancelled = 1 WHERE id = ?').run(inv.id);
-  if (inv.quote_id && ['solde', 'totale'].includes(inv.kind)) await db.prepare("UPDATE quotes SET status = 'accepte' WHERE id = ?").run(inv.quote_id);
-  await log('avoir', id, `Avoir ${number} émis sur la facture ${inv.number}`);
-  res.redirect('/factures/' + id);
+  const items = await Q.iItems.all(inv.id);
+  /* une seule transaction : deux clics ou deux onglets ne créent plus deux avoirs */
+  const made = await db.tx(async (tx) => {
+    const cur = await tx.prepare('SELECT cancelled FROM invoices WHERE id = ?').get(inv.id); if (!cur || cur.cancelled) return null;
+    const number = await nextNumber('credit', 'DG-AV', today(), tx);
+    const id = Number((await tx.prepare('INSERT INTO invoices (number, quote_id, client_id, kind, title, issue_date, due_date, tva_rate, total_ht, total_tva, total_ttc, notes, token, credit_of, label) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(number, inv.quote_id, inv.client_id, 'avoir', inv.title, today(), today(), inv.tva_rate, -inv.total_ht, -inv.total_tva, -inv.total_ttc, `Avoir sur la facture ${inv.number}`, token(), inv.id, 'Avoir ' + inv.number)).lastInsertRowid);
+    const ins = tx.prepare('INSERT INTO invoice_items (invoice_id, position, label, description, qty, unit, unit_price) VALUES (?,?,?,?,?,?,?)');
+    for (let i = 0; i < items.length; i++) { const it = items[i]; await ins.run(id, i, it.label, it.description || '', it.qty, it.unit || '', -it.unit_price); }
+    await tx.prepare('UPDATE invoices SET cancelled = 1 WHERE id = ?').run(inv.id);
+    if (inv.quote_id && ['solde', 'totale'].includes(inv.kind)) await tx.prepare("UPDATE quotes SET status = 'accepte' WHERE id = ?").run(inv.quote_id);
+    return { id, number };
+  });
+  if (!made) return res.redirect('/factures/' + inv.id);
+  await log('avoir', made.id, `Avoir ${made.number} émis sur la facture ${inv.number}`);
+  res.redirect('/factures/' + made.id);
 });
 app.post('/factures/:id/paiements', async (req, res) => {
   const inv = await Q.invoice.get(Number(req.params.id)); if (!inv) return res.sendStatus(404);
-  const amount = round2(num(req.body.amount));
-  if (await isLocked(req.body.date || today())) return res.redirect('/factures/' + inv.id + '?err=' + encodeURIComponent(lockedMsg(req.body.date || today())));
+  const amount = round2(num(req.body.amount)), date = /^\d{4}-\d{2}-\d{2}$/.test(String(req.body.date || '')) ? String(req.body.date) : today();
+  const back = (m) => res.redirect('/factures/' + inv.id + '?err=' + encodeURIComponent(m));
+  if (inv.cancelled || inv.kind === 'avoir') return back('Cette facture est annulée par un avoir : aucun paiement ne peut y être ajouté.');
+  if (await isLocked(date)) return back(lockedMsg(date));
+  const rest = round2(inv.total_ttc - await paidOf(inv.id));
+  if (amount > rest + 0.009) return back(`Le montant dépasse le reste à régler (${money(rest)}).`);
   if (amount > 0) {
-    const rn = await nextNumber('receipt', 'DG-R', req.body.date || today());
-    await db.prepare('INSERT INTO payments (invoice_id, date, amount, method, reference, number, token) VALUES (?,?,?,?,?,?,?)').run(inv.id, req.body.date || today(), amount, String(req.body.method || 'Virement'), String(req.body.reference || '').slice(0, 80), rn, token());
+    const rn = await db.tx(async (tx) => { const n = await nextNumber('receipt', 'DG-R', date, tx); await tx.prepare('INSERT INTO payments (invoice_id, date, amount, method, reference, number, token) VALUES (?,?,?,?,?,?,?)').run(inv.id, date, amount, String(req.body.method || 'Virement').slice(0, 40), String(req.body.reference || '').slice(0, 80), n, token()); return n; });
     const S0 = await settings(); if (/esp[eè]ce/i.test(req.body.method || '') && !(CP.REGIMES[S0.fiscal_regime] || {}).ae) await db.prepare('UPDATE payments SET stamp = ? WHERE number = ?').run(round2(amount * CP.STAMP_RATE / 100), rn);
     await log('paiement', inv.id, `Paiement de ${money(amount)} reçu sur ${inv.number} (reçu ${rn})`);
   }
   res.redirect('/factures/' + inv.id);
 });
 app.post('/paiements/:id/supprimer', async (req, res) => { const p = await db.prepare('SELECT * FROM payments WHERE id = ?').get(Number(req.params.id)); if (p && await isLocked(p.date)) return res.redirect('/factures/' + p.invoice_id + '?err=' + encodeURIComponent(lockedMsg(p.date))); if (p) await db.prepare('DELETE FROM payments WHERE id = ?').run(p.id); res.redirect(p ? '/factures/' + p.invoice_id : '/factures'); });
-app.post('/factures/:id/annuler', async (req, res) => { await db.prepare('UPDATE invoices SET cancelled = 1 WHERE id = ?').run(Number(req.params.id)); res.redirect('/factures/' + req.params.id); });
+app.post('/factures/:id/annuler', async (req, res) => res.redirect('/factures/' + Number(req.params.id) + '?err=' + encodeURIComponent('Une facture émise s’annule par un avoir (bouton « Créer un avoir »).')));
 
 /* ---------------- Clients ---------------- */
 app.get('/clients', async (req, res) => {
   const rows = await db.prepare(`SELECT c.*, (SELECT COUNT(*) FROM quotes q WHERE q.client_id = c.id) nq,
-    (SELECT COALESCE(SUM(total_ttc),0) FROM invoices i WHERE i.client_id = c.id AND i.cancelled = 0) billed,
-    (SELECT COALESCE(SUM(p.amount),0) FROM payments p JOIN invoices i ON i.id = p.invoice_id WHERE i.client_id = c.id AND i.cancelled = 0) paid
+    (SELECT COALESCE(SUM(total_ttc),0) FROM invoices i WHERE i.client_id = c.id AND i.cancelled = 0 AND i.kind != 'avoir') billed,
+    (SELECT COALESCE(SUM(p.amount),0) FROM payments p JOIN invoices i ON i.id = p.invoice_id WHERE i.client_id = c.id AND i.cancelled = 0 AND i.kind != 'avoir') paid
     FROM clients c ORDER BY COALESCE(c.company, c.name) COLLATE NOCASE`).all();
   const body = `<div class="card flush"><table class="tbl"><thead><tr><th>Client</th><th>Contact</th><th>Ville</th><th class="r">Devis</th><th class="r">Facturé</th><th class="r">Reste dû</th></tr></thead><tbody>${rows.map((c) => `<tr data-href="/clients/${c.id}"><td><a href="/clients/${c.id}"><b>${esc(c.company || c.name)}</b></a>${c.company ? `<small class="mut"> ${esc(c.name)}</small>` : ''}</td><td class="mut">${esc(c.phone || c.email || '')}</td><td>${esc(c.city || '')}</td><td class="r">${c.nq}</td><td class="r">${money(c.billed)}</td><td class="r">${money(Math.max(0, c.billed - c.paid))}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">Les clients se créent en même temps qu’un devis.</td></tr>'}</tbody></table></div>`;
   res.send(layout({ title: 'Clients', active: '/clients', body }));
@@ -734,7 +801,7 @@ app.get('/clients/:id', async (req, res) => {
   const qs = await db.prepare('SELECT * FROM quotes WHERE client_id = ? ORDER BY id DESC').all(c.id);
   const is = await withPaid(await db.prepare('SELECT * FROM invoices WHERE client_id = ? ORDER BY id DESC').all(c.id));
   const ps = await db.prepare('SELECT * FROM projects WHERE client_id = ? ORDER BY id DESC').all(c.id);
-  const billed = is.filter((i) => !i.cancelled).reduce((a, i) => a + i.total_ttc, 0), paid = is.filter((i) => !i.cancelled && i.kind !== 'avoir').reduce((a, i) => a + i.paid, 0);
+  const billed = is.filter((i) => !i.cancelled && i.kind !== 'avoir').reduce((a, i) => a + i.total_ttc, 0), paid = is.filter((i) => !i.cancelled && i.kind !== 'avoir').reduce((a, i) => a + i.paid, 0);
   const acts = await db.prepare(`SELECT * FROM activity WHERE (kind IN ('devis','commande') AND ref_id IN (SELECT id FROM quotes WHERE client_id = ?)) OR (kind IN ('facture','paiement','relance','avoir') AND ref_id IN (SELECT id FROM invoices WHERE client_id = ?)) OR (kind IN ('projet','controle') AND ref_id IN (SELECT id FROM projects WHERE client_id = ?)) ORDER BY id DESC LIMIT 20`).all(c.id, c.id, c.id);
   const f = (k, l, t = 'text') => `<label>${l}<input type="${t}" name="${k}" value="${esc(c[k] || '')}"></label>`;
   const addr = [c.address, c.city, 'Maroc'].filter(Boolean).join(', '), city = findCity(c.city);
@@ -853,19 +920,26 @@ app.get('/parametres', async (req, res) => {
 <section class="card"><div class="card-h"><h2>Canaux de communication</h2><span>Vos deux WhatsApp et vos deux e-mails, réunis dans la Messagerie</span></div>
 ${['wa1', 'wa2'].map((c) => `<div class="chan"><b>${c === 'wa1' ? 'WhatsApp 1' : 'WhatsApp 2'}</b><div class="row">${f(c + '_label', 'Nom affiché', 'WhatsApp Business')}${f(c + '_number', 'Numéro (format international)', '2126…')}</div><div class="row">${f(c + '_phone_id', 'Phone number ID (API Meta, facultatif)', 'Pour envoyer et recevoir automatiquement')}<label>Jeton d’accès (API Meta)<input type="password" name="${c}_token" placeholder="${s[c + '_token'] ? '••••••• enregistré' : 'Facultatif'}" autocomplete="off"></label></div></div>`).join('')}
 ${['mail1', 'mail2'].map((c) => `<div class="chan"><b>${c === 'mail1' ? 'E-mail 1' : 'E-mail 2'}</b><div class="row">${f(c + '_label', 'Nom affiché', 'contact@digilago.ma')}${f(c + '_address', 'Adresse e-mail', 'contact@digilago.ma')}</div><div class="row r4">${f(c + '_smtp_host', 'Serveur d’envoi (SMTP)', 'smtp.gmail.com')}${f(c + '_smtp_port', 'Port SMTP', '465')}${f(c + '_imap_host', 'Serveur de réception (IMAP)', 'imap.gmail.com')}${f(c + '_imap_port', 'Port IMAP', '993')}</div><div class="row">${f(c + '_user', 'Identifiant (souvent l’adresse)', '')}<label>Mot de passe (ou mot de passe d’application)<input type="password" name="${c}_pass" placeholder="${s[c + '_pass'] ? '••••••• enregistré' : ''}" autocomplete="new-password"></label></div></div>`).join('')}
-<div class="row">${f('signature', 'Signature des messages', 'Khalid, Digilago')}${f('google_review_url', 'Lien pour laisser un avis Google', 'https://g.page/r/…/review')}${f('wa_verify_token', 'Jeton de vérification du webhook WhatsApp', 'une phrase secrète')}</div>
+<div class="row">${f('signature', 'Signature des messages', 'Khalid, Digilago')}${f('google_review_url', 'Lien pour laisser un avis Google', 'https://g.page/r/…/review')}${f('wa_verify_token', 'Jeton de vérification du webhook WhatsApp', 'une phrase secrète')}${f('wa_app_secret', 'Clé secrète de l’app Meta (signature des messages reçus)', 'App secret, dans Meta for Developers → Paramètres → Général')}</div>
 <p class="hint">Sans l’API Meta, WhatsApp fonctionne en « mode lien » : le message prêt s’ouvre dans votre application, et il est gardé dans l’historique. Adresse du webhook à donner à Meta : <code>${esc(baseUrl(req))}/webhooks/whatsapp</code></p></section>
 <section class="card"><div class="card-h"><h2>Mentions légales</h2><span>Obligatoires sur les factures au Maroc</span></div><div class="row">${f('company_legal', 'Forme juridique et capital', 'SARL au capital de …')}${f('company_ice', 'ICE')}</div><div class="row">${f('company_if', 'Identifiant fiscal (IF)')}${f('company_rc', 'Registre du commerce (RC)')}</div><div class="row">${f('company_patente', 'Patente')}${f('company_cnss', 'CNSS')}</div></section>
 <section class="card"><div class="card-h"><h2>Banque</h2></div><div class="row">${f('bank_name', 'Banque')}${f('bank_rib', 'RIB (24 chiffres)')}</div><div class="row">${f('bank_swift', 'SWIFT (facultatif)')}</div></section>
 <section class="card"><div class="card-h"><h2>Valeurs par défaut</h2></div><div class="row r4">${f('default_tva', 'TVA (%)')}${f('default_deposit', 'Acompte (%)')}${f('default_validity', 'Validité des devis (jours)')}${f('default_due_days', 'Échéance des factures (jours)')}</div><div class="row">${f('default_delay', 'Délai affiché')}${f('quote_prefix', 'Préfixe des devis')}${f('invoice_prefix', 'Préfixe des factures')}</div><label>Conditions par défaut<textarea name="default_conditions" rows="4">${esc(s.default_conditions)}</textarea></label></section>
 <button class="btn">Enregistrer les paramètres</button></form>
-<form method="post" action="/parametres/mot-de-passe" class="card"><div class="card-h"><h2>Mot de passe</h2></div><div class="row"><label>Nouveau mot de passe<input type="password" name="pw" minlength="8" required></label><label>Confirmer<input type="password" name="pw2" minlength="8" required></label></div><button class="btn ghost">Changer le mot de passe</button></form>
+<form method="post" action="/parametres/mot-de-passe" class="card"><div class="card-h"><h2>Mot de passe</h2></div><div class="row"><label>Mot de passe actuel<input type="password" name="cur" required autocomplete="current-password"></label></div><div class="row"><label>Nouveau mot de passe<input type="password" name="pw" minlength="8" required autocomplete="new-password"></label><label>Confirmer<input type="password" name="pw2" minlength="8" required autocomplete="new-password"></label></div><button class="btn ghost">Changer le mot de passe</button></form>
+<form method="post" action="/parametres/deconnecter-tout" class="card" data-confirm="Fermer toutes les sessions ouvertes (ordinateur, téléphone…) ?"><div class="card-h"><h2>Sécurité</h2></div><p class="mut">Un téléphone perdu ou un ordinateur partagé ? Fermez toutes les sessions ouvertes, sur tous les appareils.</p><button class="btn ghost">Déconnecter tous les appareils</button></form>
 <div class="card"><div class="card-h"><h2>Sauvegarde et export</h2></div><div class="send"><a class="btn ghost" href="/sauvegarde">Télécharger la sauvegarde complète</a><a class="btn ghost" href="/export/factures.csv">Factures (CSV)</a><a class="btn ghost" href="/export/paiements.csv">Paiements (CSV)</a></div></div>`;
-  const flash = req.query.bienvenue ? 'Bienvenue ! Complétez vos informations : elles apparaîtront sur vos devis et factures.' : req.query.ok ? 'Paramètres enregistrés.' : req.query.pw ? 'Mot de passe changé.' : '';
+  const flash = req.query.bienvenue ? 'Bienvenue ! Complétez vos informations : elles apparaîtront sur vos devis et factures.' : req.query.ok ? 'Paramètres enregistrés.' : req.query.pwerr ? String(req.query.pwerr) : req.query.pw ? 'Mot de passe changé.' : '';
   res.send(layout({ title: 'Paramètres', active: '/parametres', body, flash }));
 });
 app.post('/parametres', async (req, res) => { for (const k of ['wa1_token', 'wa2_token', 'mail1_pass', 'mail2_pass']) if (!req.body[k]) delete req.body[k]; await saveSettings(req.body); PUBLIC_URL = String(req.body.public_url || ''); res.redirect('/parametres?ok=1'); });
-app.post('/parametres/mot-de-passe', async (req, res) => { const { pw = '', pw2 = '' } = req.body; if (pw.length >= 8 && pw === pw2) await setS('_pw', hashPw(pw)); res.redirect('/parametres?pw=1'); });
+app.post('/parametres/mot-de-passe', async (req, res) => {
+  const { cur = '', pw = '', pw2 = '' } = req.body;
+  if (!checkPw(String(cur), await getS('_pw'))) return res.redirect('/parametres?pwerr=' + encodeURIComponent('Mot de passe actuel incorrect.'));
+  if (String(pw).length < 8 || pw !== pw2) return res.redirect('/parametres?pwerr=' + encodeURIComponent('Le nouveau mot de passe doit faire 8 caractères au moins, deux fois le même.'));
+  await setS('_pw', hashPw(String(pw))); await rotateSessions(); await setSession(res); res.redirect('/parametres?pw=1');
+});
+app.post('/parametres/deconnecter-tout', async (req, res) => { await rotateSessions(); res.setHeader('Set-Cookie', 'dg=; Path=/; Max-Age=0'); res.redirect('/connexion'); });
 
 
 /* ---------------- Projets : du devis accepté à la mise en ligne ---------------- */
@@ -983,8 +1057,8 @@ app.get('/rapports', async (req, res) => {
   for (let i = 0; i < 12; i++) {
     const nm = MOIS[i];
     const k = `${y}-${String(i + 1).padStart(2, '0')}`;
-    const inv = await db.prepare("SELECT COALESCE(SUM(total_ht),0) ht, COALESCE(SUM(total_tva),0) tva FROM invoices WHERE cancelled = 0 AND substr(issue_date,1,7) = ?").get(k);
-    const cash = (await db.prepare("SELECT COALESCE(SUM(p.amount),0) s FROM payments p JOIN invoices i ON i.id = p.invoice_id WHERE i.cancelled = 0 AND substr(p.date,1,7) = ?").get(k)).s;
+    const inv = await db.prepare("SELECT COALESCE(SUM(total_ht),0) ht, COALESCE(SUM(total_tva),0) tva FROM invoices WHERE substr(issue_date,1,7) = ?").get(k);
+    const cash = (await db.prepare("SELECT COALESCE(SUM(p.amount),0) s FROM payments p WHERE substr(p.date,1,7) = ?").get(k)).s;
     const exp = await db.prepare("SELECT COALESCE(SUM(amount_ttc),0) t, COALESCE(SUM(tva),0) tva FROM expenses WHERE substr(date,1,7) = ?").get(k);
     rows.push({ nm, ht: inv.ht, tvaC: inv.tva, cash, exp: exp.t, tvaD: exp.tva });
   }
@@ -1018,6 +1092,7 @@ app.get('/messagerie', async (req, res) => {
 <input type="hidden" name="to" value="${esc(contact)}"><input type="hidden" name="ckey" value="${esc(sel)}"><input type="hidden" name="client_id" value="${esc(who.client_id || '')}"><input type="hidden" name="lead_id" value="${esc(who.lead_id || '')}">
 <div class="cmp-h"><select name="channel">${chs.filter((c) => c.on && (/@/.test(contact) ? !c.wa : c.wa)).map((c) => `<option value="${c.id}"${c.id === lastCh ? ' selected' : ''}>${esc(c.label)}${c.wa ? (c.api ? '' : ' (lien)') : c.smtp ? '' : ' (lien)'}</option>`).join('') || '<option value="">Aucun canal configuré</option>'}</select><select name="template" class="cmp-t"><option value="">Modèle de message…</option>${TPL.STEPS.map((st) => `<optgroup label="${st}">${tpls.filter((t) => t.step === st).map((t) => `<option value="${t.key}">${esc(t.title)}</option>`).join('')}</optgroup>`).join('')}</select><span class="lng"><label><input type="radio" name="lang" value="fr" checked><i>FR</i></label><label><input type="radio" name="lang" value="ar"><i>ع</i></label></span></div>
 ${/@/.test(contact) ? '<input name="subject" placeholder="Objet">' : ''}<textarea name="body" rows="4" placeholder="Votre message…" required></textarea><div class="cmp-f"><span class="mut">⌘ + Entrée pour envoyer</span><button class="btn">Envoyer</button></div></form>` : '';
+  if (req.query.ouvrir && !/^(https:\/\/(wa\.me|api\.whatsapp\.com)\/|mailto:)/i.test(String(req.query.ouvrir))) req.query.ouvrir = '';
   const flash = req.query.ouvrir ? `<div class="flash">Message prêt : <a href="${esc(req.query.ouvrir)}" target="_blank" rel="noopener" data-autoopen>ouvrez-le dans ${/^mailto/.test(req.query.ouvrir) ? 'votre messagerie' : 'WhatsApp'}</a>${req.query.err ? ' · ' + esc(req.query.err) : ''}</div>` : req.query.sync ? `<div class="flash">${esc(req.query.sync)}</div>` : '';
   const chips = chs.map((c) => `<a class="chc ch-${CH_COLOR[c.id]}${f === c.id ? ' on' : ''}" href="/messagerie${f === c.id ? '' : '?canal=' + c.id}"><b>${esc(c.label)}</b><small>${!c.on ? 'non configuré' : c.wa ? (c.api ? 'API connectée' : 'mode lien') : c.smtp && c.imap ? 'envoi et réception' : c.smtp ? 'envoi' : 'mode lien'}</small></a>`).join('');
   const body = `${flash}<div class="ch-row">${chips}<form method="post" action="/messagerie/actualiser" class="inl"><button class="btn ghost sm">Relever les e-mails</button></form><a class="btn ghost sm" href="/modeles">Modèles de messages</a></div>
@@ -1167,7 +1242,7 @@ app.post('/comptabilite/verrou', async (req, res) => {
   const m = String(req.body.month || ''); if (!/^\d{4}-\d{2}$/.test(m)) return res.redirect('/comptabilite');
   if (req.body.action === 'unlock') await db.prepare('DELETE FROM locks WHERE month = ?').run(m); else await db.prepare('INSERT OR IGNORE INTO locks (month) VALUES (?)').run(m);
   await log('compta', 0, `${req.body.action === 'unlock' ? 'Réouverture' : 'Clôture'} de ${fmtP(m)}`);
-  res.redirect(String(req.body.back || '/comptabilite').startsWith('/') ? String(req.body.back || '/comptabilite') : '/comptabilite');
+  const back = String(req.body.back || '/comptabilite'); res.redirect(/^\/(?![\/\\])/.test(back) ? back : '/comptabilite');
 });
 app.post('/comptabilite/note', async (req, res) => { const p = String(req.body.period || ''); await db.prepare('INSERT INTO acc_notes (period, author, text) VALUES (?,?,?)').run(p, 'moi', String(req.body.text || '').slice(0, 2000)); res.redirect(`/comptabilite/periode/${p}`); });
 /* exports comptables */
@@ -1184,12 +1259,12 @@ async function comptaCsv(p, kind) {
 app.get('/export/compta/:p/:kind.csv', async (req, res) => { const k = String(req.params.kind); if (!['ventes', 'encaissements', 'achats', 'ecritures'].includes(k)) return res.sendStatus(404); res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="digilago-${k}-${req.params.p}.csv"` }).send(await comptaCsv(String(req.params.p), k)); });
 
 /* ---------------- Exports et sauvegarde ---------------- */
-const csv = (rows) => '\ufeff' + rows.map((r) => r.map((v) => { const s = String(v ?? ''); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(';')).join('\r\n');
+const csv = (rows) => '\ufeff' + rows.map((r) => r.map((v) => { let s = String(v ?? ''); if (/^[=+\-@\t\r]/.test(s) && !/^-?\d[\d\s.,]*$/.test(s)) s = "'" + s; return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(';')).join('\r\n');
 const dec = (n) => String(round2(n)).replace('.', ',');
 app.get('/export/factures.csv', async (req, res) => {
-  const rows = await db.prepare('SELECT i.*, c.name cname, c.company ccomp, c.ice cice FROM invoices i LEFT JOIN clients c ON c.id = i.client_id ORDER BY i.number').all();
+  const rows = await withPaid(await db.prepare('SELECT i.*, c.name cname, c.company ccomp, c.ice cice FROM invoices i LEFT JOIN clients c ON c.id = i.client_id ORDER BY i.number').all());
   const out = [['Numéro', 'Type', 'Date', 'Échéance', 'Client', 'ICE client', 'Total HT', 'TVA', 'Total TTC', 'Réglé', 'Reste', 'Statut']];
-  for (const i of rows) { const p = await paidOf(i.id); out.push([i.number, KIND[i.kind], i.issue_date, i.due_date, i.ccomp || i.cname, i.cice, dec(i.total_ht), dec(i.total_tva), dec(i.total_ttc), dec(p), dec(Math.max(0, i.total_ttc - p)), I_STATUS[iStatus(i, p)][0]]); }
+  for (const i of rows) { const p = i.paid; out.push([i.number, KIND[i.kind], i.issue_date, i.due_date, i.ccomp || i.cname, i.cice, dec(i.total_ht), dec(i.total_tva), dec(i.total_ttc), dec(p), dec(Math.max(0, i.total_ttc - p)), I_STATUS[iStatus(i, p)][0]]); }
   res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': 'attachment; filename="factures.csv"' }).send(csv(out));
 });
 app.get('/export/paiements.csv', async (req, res) => {
@@ -1202,8 +1277,11 @@ app.get('/export/depenses.csv', async (req, res) => {
 });
 app.get('/sauvegarde', async (req, res) => {
   const out = { app: 'Digilago Gestion', date: new Date().toISOString(), tables: {} };
-  for (const t of ['settings', 'counters', 'clients', 'services', 'leads', 'quotes', 'quote_items', 'invoices', 'invoice_items', 'payments', 'projects', 'expenses']) out.tables[t] = await db.prepare(`SELECT * FROM ${t}`).all();
-  out.tables.settings = out.tables.settings.filter((r) => !r.key.startsWith('_'));
+  const T = ['settings', 'counters', 'clients', 'services', 'leads', 'lead_notes', 'quotes', 'quote_items', 'orders', 'invoices', 'invoice_items', 'payments', 'reminders', 'projects', 'expenses', 'messages', 'templates', 'tax_periods', 'locks', 'acc_notes', 'activity'];
+  const rows = await Promise.all(T.map((t) => db.prepare(`SELECT * FROM ${t}`).all()));
+  T.forEach((t, i) => { out.tables[t] = rows[i]; });
+  /* jamais de mot de passe ni de jeton dans un fichier de sauvegarde */
+  out.tables.settings = out.tables.settings.filter((r) => !r.key.startsWith('_') && !/(_pass|_token|_secret)$/.test(r.key));
   res.set({ 'Content-Type': 'application/json; charset=utf-8', 'Content-Disposition': `attachment; filename="digilago-sauvegarde-${today()}.json"` }).send(JSON.stringify(out, null, 1));
 });
 

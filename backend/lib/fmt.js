@@ -3,7 +3,17 @@ const crypto = require('node:crypto');
 
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
-const num = (v, d = 0) => { const n = parseFloat(String(v ?? '').replace(/\s/g, '').replace(',', '.')); return Number.isFinite(n) ? n : d; };
+/* Nombre saisi à la marocaine ou à l'anglaise : « 12 000 », « 12.000 », « 1.200,50 », « 1,200.50 », « 12,5 ».
+   (Avant : « 12.000 » devenait 12 et « 1.200,50 » devenait 1,2.) */
+const num = (v, d = 0) => {
+  let s = String(v ?? '').replace(/[\s\u00a0\u202f']/g, '');
+  if (!s) return d;
+  const c = s.lastIndexOf(','), p = s.lastIndexOf('.');
+  if (c > -1 && p > -1) s = c > p ? s.replace(/\./g, '').replace(',', '.') : s.replace(/,/g, '');
+  else if (c > -1) s = s.split(',').length > 2 ? s.replace(/,/g, '') : s.replace(',', '.');
+  else if (p > -1 && /^-?[1-9]\d{0,2}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+  const n = parseFloat(s); return Number.isFinite(n) ? n : d;
+};
 
 function money(n, cur = 'DH') {
   const v = round2(n), neg = v < 0, abs = Math.abs(v);
@@ -11,7 +21,10 @@ function money(n, cur = 'DH') {
   return (neg ? '−' : '') + i.replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + ',' + d + (cur ? '\u00a0' + cur : '');
 }
 const pct = (n) => String(round2(n)).replace('.', ',') + '\u00a0%';
-const today = () => new Date().toISOString().slice(0, 10);
+/* La date du jour à l'heure du Maroc (et non en heure universelle : entre minuit et 1 h,
+   une facture du 1er janvier recevait sinon l'année précédente). */
+const DAY = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Casablanca', year: 'numeric', month: '2-digit', day: '2-digit' });
+const today = () => DAY.format(new Date());
 const addDays = (d, n) => { const x = new Date(d + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() + Number(n || 0)); return x.toISOString().slice(0, 10); };
 const MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 function dateFr(d) { if (!d) return ''; const [y, m, j] = d.slice(0, 10).split('-'); return `${Number(j)} ${MOIS[Number(m) - 1]} ${y}`; }

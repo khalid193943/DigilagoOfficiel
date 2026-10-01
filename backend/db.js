@@ -47,7 +47,7 @@ const DEFAULTS = {
   default_due_days: '15',
   default_conditions: "Le présent devis, signé ou accepté en ligne, vaut bon de commande.\nUn acompte est exigible à la commande ; les travaux démarrent à sa réception. Le solde est payable à la mise en ligne du site.\nLe nom de domaine est offert la première année ; l’hébergement de la première année est inclus sauf mention contraire.\nLes contenus (textes, photos, logo) fournis par le client restent sa propriété. Le site livré et ses sources sont cédés au client après paiement intégral.\nDeux séries de modifications sont incluses à chaque étape de validation.",
   quote_prefix: 'DG-D', invoice_prefix: 'DG-F', whatsapp: '212649953813', public_url: '',
-  signature: 'Khalid, Digilago', google_review_url: '', wa_verify_token: '',
+  signature: 'Khalid, Digilago', google_review_url: '', wa_verify_token: '', wa_app_secret: '',
   fiscal_regime: '', tva_assujetti: '1', tva_periodicite: 'trimestrielle', tva_regime: 'encaissement', fiscal_year_start: '01',
   accountant_name: '', accountant_email: '', accountant_phone: '', accountant_token: '',
   acc_revenue: '71243', acc_revenue_export: '7125', acc_clients: '3421', acc_bank: '5141', acc_cash: '5161', acc_suppliers: '4411', acc_tva_out: '4455', acc_tva_in: '34552', acc_stamp: '4457',
@@ -79,6 +79,8 @@ CREATE TABLE IF NOT EXISTS locks (month TEXT PRIMARY KEY, locked_at TEXT DEFAULT
 CREATE TABLE IF NOT EXISTS acc_notes (id INTEGER PRIMARY KEY, period TEXT, author TEXT, text TEXT, created_at TEXT DEFAULT (datetime('now')));
 CREATE TABLE IF NOT EXISTS lead_notes (id INTEGER PRIMARY KEY, lead_id INTEGER REFERENCES leads(id) ON DELETE CASCADE, kind TEXT, text TEXT, created_at TEXT DEFAULT (datetime('now')));
 CREATE TABLE IF NOT EXISTS activity (id INTEGER PRIMARY KEY, kind TEXT, ref_id INTEGER, text TEXT, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS hits (k TEXT, at INTEGER);
+CREATE INDEX IF NOT EXISTS i_hits ON hits(k, at);
 CREATE INDEX IF NOT EXISTS i_quotes_client ON quotes(client_id);
 CREATE INDEX IF NOT EXISTS i_inv_quote ON invoices(quote_id);
 CREATE INDEX IF NOT EXISTS i_pay_inv ON payments(invoice_id);
@@ -108,7 +110,7 @@ const CATALOGUE = [
 const STEPS = ['Brief et identité', 'Maquette validée', 'Développement', 'Textes SEO et GEO', 'Fiche Google', 'Mise en ligne'];
 
 /* Initialisation : rapide quand la base est à jour (1 requête), complète et groupée sinon (quelques requêtes) */
-const SCHEMA_VERSION = '2026-10-01.8';
+const SCHEMA_VERSION = '2026-10-01.9';
 const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT'],
   ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'],
   ['invoices', 'sched_idx', 'INTEGER'], ['invoices', 'credit_of', 'INTEGER'], ['invoices', 'label', 'TEXT'],
@@ -117,6 +119,33 @@ const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['
   ['clients', 'website', 'TEXT'], ['clients', 'sector', 'TEXT'], ['clients', 'source', 'TEXT'], ['clients', 'if_num', 'TEXT'], ['clients', 'is_foreign', 'INTEGER'],
   ['leads', 'stage', 'TEXT'], ['leads', 'lost_reason', 'TEXT'], ['leads', 'next_at', 'TEXT'], ['leads', 'notes', 'TEXT'], ['leads', 'city', 'TEXT'], ['leads', 'sector', 'TEXT'], ['leads', 'budget', 'TEXT'], ['leads', 'kind', 'TEXT'], ['leads', 'updated_at', 'TEXT'],
   ['expenses', 'supplier_ice', 'TEXT'], ['expenses', 'supplier_if', 'TEXT'], ['expenses', 'invoice_ref', 'TEXT'], ['expenses', 'receipt_url', 'TEXT'], ['expenses', 'account', 'TEXT'], ['expenses', 'deductible', 'INTEGER']];
+/* Index : chaque recherche fréquente lit l'index au lieu de parcourir toute la table.
+   Créés après les ajouts de colonnes (certaines colonnes n'existent pas dans les anciennes bases). */
+const INDEXES = [
+  'CREATE INDEX IF NOT EXISTS i_qitems ON quote_items(quote_id, position)',
+  'CREATE INDEX IF NOT EXISTS i_iitems ON invoice_items(invoice_id, position)',
+  'CREATE INDEX IF NOT EXISTS i_inv_client ON invoices(client_id)',
+  'CREATE INDEX IF NOT EXISTS i_inv_issue ON invoices(issue_date)',
+  'CREATE INDEX IF NOT EXISTS i_inv_credit ON invoices(credit_of)',
+  'CREATE INDEX IF NOT EXISTS i_pay_date ON payments(date)',
+  'CREATE INDEX IF NOT EXISTS i_pay_token ON payments(token)',
+  'CREATE INDEX IF NOT EXISTS i_exp_date ON expenses(date)',
+  'CREATE INDEX IF NOT EXISTS i_proj_token ON projects(token)',
+  'CREATE INDEX IF NOT EXISTS i_proj_client ON projects(client_id)',
+  'CREATE INDEX IF NOT EXISTS i_proj_status ON projects(status)',
+  'CREATE INDEX IF NOT EXISTS i_msg_ext ON messages(ext_id)',
+  'CREATE INDEX IF NOT EXISTS i_msg_client ON messages(client_id)',
+  'CREATE INDEX IF NOT EXISTS i_msg_lead ON messages(lead_id)',
+  'CREATE INDEX IF NOT EXISTS i_msg_unread ON messages(is_read, direction)',
+  'CREATE INDEX IF NOT EXISTS i_leads_quote ON leads(quote_id)',
+  'CREATE INDEX IF NOT EXISTS i_leads_stage ON leads(stage)',
+  'CREATE INDEX IF NOT EXISTS i_leads_next ON leads(next_at)',
+  'CREATE INDEX IF NOT EXISTS i_quotes_status ON quotes(status)',
+  'CREATE INDEX IF NOT EXISTS i_rem_inv ON reminders(invoice_id)',
+  'CREATE INDEX IF NOT EXISTS i_lnotes ON lead_notes(lead_id)',
+  'CREATE INDEX IF NOT EXISTS i_accnotes ON acc_notes(period)',
+  'CREATE INDEX IF NOT EXISTS i_activity ON activity(kind, ref_id)',
+];
 let ready = null;
 function init() {
   if (ready) return ready;
@@ -130,6 +159,7 @@ function init() {
     tables.forEach((t, i) => { have[t] = new Set(info[i].rows.map((r) => r.name || r[1])); });
     const alters = COLUMNS.filter(([t, c]) => !have[t].has(c)).map(([t, c, d]) => `ALTER TABLE ${t} ADD COLUMN ${c} ${d}`);
     if (alters.length) await client.batch(alters, 'write');
+    await client.batch(INDEXES, 'write');
     /* réglages, catalogue et modèles par défaut : une seule écriture groupée */
     const TPL = require('./lib/templates').DEFAULT, st = [];
     for (const [k, v] of Object.entries(DEFAULTS)) st.push({ sql: 'INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)', args: [k, v] });
@@ -157,14 +187,16 @@ async function saveSettings(obj) {
 }
 
 /* Numérotation continue par année, sans trou : DG-D-2026-0001 */
-async function nextNumber(scope, prefix, dateStr) {
-  const year = Number((dateStr || new Date().toISOString()).slice(0, 4));
-  return db.tx(async (t) => {
+async function nextNumber(scope, prefix, dateStr, tx) {
+  const year = Number(String(dateStr || new Date().toISOString()).slice(0, 4)) || new Date().getFullYear();
+  const step = async (t) => {
     const row = await t.prepare('SELECT value FROM counters WHERE scope = ? AND year = ?').get(scope, year);
     const v = (row ? row.value : 0) + 1;
     await t.prepare('INSERT INTO counters (scope, year, value) VALUES (?, ?, ?) ON CONFLICT(scope, year) DO UPDATE SET value = excluded.value').run(scope, year, v);
     return `${prefix}-${year}-${String(v).padStart(4, '0')}`;
-  });
+  };
+  /* dans la transaction du document : le numéro n'est pris que si le document est bien créé (pas de trou) */
+  return tx ? step(tx) : db.tx(step);
 }
 
 module.exports = { db, init, settings, saveSettings, nextNumber, DB_PATH, STEPS, REMOTE, DIAG };

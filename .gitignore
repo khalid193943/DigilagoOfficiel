@@ -1,0 +1,11 @@
+# Dépendances (réinstallées par npm install)
+node_modules/
+# Bases de données locales : jamais dans le dépôt (données clients)
+backend/data/
+*.db
+*.db-shm
+*.db-wal
+# Divers
+.DS_Store
+.env
+.env.*

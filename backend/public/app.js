@@ -12,6 +12,12 @@
   $$('[data-mark]').forEach(function(a){ a.addEventListener('click', function(){ try { fetch(a.dataset.mark, { method: 'POST', credentials: 'same-origin' }); } catch (e) {} }); });
   /* confirmations */
   $$('form[data-confirm]').forEach(function(f){ f.addEventListener('submit', function(e){ if (!confirm(f.dataset.confirm)) e.preventDefault(); }); });
+  /* un formulaire envoyé une fois ne repart pas au double-clic (doubles factures, doubles paiements…) */
+  document.addEventListener('submit', function(e){
+    var f = e.target; if (e.defaultPrevented || f.method.toLowerCase() !== 'post') return;
+    if (f.dataset.sent) { e.preventDefault(); return; }
+    f.dataset.sent = '1'; setTimeout(function(){ delete f.dataset.sent; }, 5000);
+  });
   /* lignes cliquables */
   $$('tr[data-href]').forEach(function(tr){ tr.addEventListener('click', function(e){ if (!e.target.closest('a,button,form,input')) location.href = tr.dataset.href; }); });
 
@@ -24,7 +30,9 @@
     box.innerHTML = '<div class="cmdk-in"><input placeholder="Rechercher un client, un projet, un devis, une facture… ou une action" aria-label="Recherche"><ul></ul><p><kbd>↑</kbd><kbd>↓</kbd> naviguer · <kbd>Entrée</kbd> ouvrir · <kbd>Échap</kbd> fermer</p></div>';
     document.body.appendChild(box);
     var inp = box.querySelector('input'), ul = box.querySelector('ul'), items = [], act = 0, timer = 0;
-    function draw(){ ul.innerHTML = items.map(function(it, i){ return '<li class="' + (i === act ? 'on' : '') + '" data-u="' + it.u + '"><em>' + it.t + '</em><b>' + it.n + '</b><small>' + (it.s || '') + '</small></li>'; }).join('') || '<li class="none">Aucun résultat</li>'; ul.querySelectorAll('li[data-u]').forEach(function(li){ li.addEventListener('click', function(){ location.href = li.dataset.u; }); }); }
+    /* tout ce qui vient de la base est échappé : un nom de client ne peut jamais devenir du code */
+    var h = function(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+    function draw(){ ul.innerHTML = items.map(function(it, i){ return '<li class="' + (i === act ? 'on' : '') + '" data-u="' + h(/^\//.test(it.u) ? it.u : '/') + '"><em>' + h(it.t) + '</em><b>' + h(it.n) + '</b><small>' + h(it.s) + '</small></li>'; }).join('') || '<li class="none">Aucun résultat</li>'; ul.querySelectorAll('li[data-u]').forEach(function(li){ li.addEventListener('click', function(){ location.href = li.dataset.u; }); }); }
     function base(q){ var t = (q || '').toLowerCase(); return ACT.filter(function(a){ return !t || a[0].toLowerCase().indexOf(t) !== -1; }).map(function(a){ return { t: 'Action', n: a[0], u: a[1] }; }); }
     function search(){ var q = inp.value.trim(); act = 0; items = base(q); draw(); clearTimeout(timer); if (q.length < 2) return; timer = setTimeout(function(){ fetch('/api/recherche?q=' + encodeURIComponent(q), { credentials: 'same-origin' }).then(function(r){ return r.json(); }).then(function(r){ items = r.concat(base(q)); act = 0; draw(); }).catch(function(){}); }, 140); }
     function open(){ box.hidden = false; inp.value = ''; inp.focus(); search(); }
@@ -90,4 +98,23 @@
   if ($('[name=plan_custom]')) $('[name=plan_custom]').addEventListener('input', calc);
   ['#disc', '#tva'].forEach(function(s){ $(s).addEventListener('input', calc); $(s).addEventListener('change', calc); });
   calc();
+})();
+
+/* ---------- Téléphone : menu plein écran et tableaux en cartes ---------- */
+(function(){
+  'use strict';
+  var mb = document.querySelector('[data-menu]');
+  if (mb) mb.addEventListener('click', function(){
+    var on = document.body.classList.toggle('menu-open');
+    mb.setAttribute('aria-expanded', on ? 'true' : 'false');
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && document.body.classList.contains('menu-open')) mb.click(); });
+  /* chaque cellule reçoit l'intitulé de sa colonne : lisible en carte sur téléphone */
+  Array.prototype.forEach.call(document.querySelectorAll('table.tbl:not(.edit)'), function(t){
+    var heads = Array.prototype.map.call(t.querySelectorAll('thead th'), function(th){ return th.textContent.trim(); });
+    if (!heads.length) return;
+    Array.prototype.forEach.call(t.querySelectorAll('tbody tr'), function(tr){
+      Array.prototype.forEach.call(tr.children, function(td, i){ if (heads[i]) td.setAttribute('data-label', heads[i]); });
+    });
+  });
 })();

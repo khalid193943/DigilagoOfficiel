@@ -6,7 +6,8 @@ const fs = require('node:fs'), os = require('node:os'), path = require('node:pat
 process.env.DB_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'dg-')), 'test.db');
 const app = require('../server');
 let server, base, cookie = '';
-before(() => new Promise((r) => { server = app.listen(0, () => { base = 'http://127.0.0.1:' + server.address().port; r(); }); }));
+/* unref : le serveur de test ne retient pas le processus, qui s'arrête dès la fin des tests */
+before(() => new Promise((r) => { server = app.listen(0, () => { base = 'http://127.0.0.1:' + server.address().port; r(); }); server.unref(); }));
 after(() => server.close());
 const post = async (p, data, opts = {}) => fetch(base + p, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'application/x-www-form-urlencoded', cookie }, body: new URLSearchParams(data).toString(), ...opts });
 const get = async (p) => fetch(base + p, { redirect: 'manual', headers: { cookie } });
@@ -65,9 +66,12 @@ test('brief client et superviseur', async () => {
 });
 
 test('toutes les pages s’ouvrent sans erreur', async () => {
-  const pages = ['/', '/devis', '/devis/nouveau', '/devis/1', '/devis/1/modifier', '/factures', '/factures/1', '/factures/2', '/clients', '/clients/1', '/demandes', '/prestations', '/parametres', '/projets', '/projets/1', '/depenses', '/rapports', '/export/factures.csv', '/export/paiements.csv', '/export/depenses.csv', '/sauvegarde', '/devis/nouveau?demande=1'];
+  const pages = ['/', '/devis', '/devis/nouveau', '/devis/1', '/factures', '/factures/1', '/factures/2', '/clients', '/clients/1', '/demandes', '/prestations', '/parametres', '/projets', '/projets/1', '/depenses', '/rapports', '/export/factures.csv', '/export/paiements.csv', '/export/depenses.csv', '/sauvegarde', '/devis/nouveau?demande=1'];
   for (const p of pages) { const r = await get(p); assert.strictEqual(r.status, 200, p + ' → ' + r.status); }
+  /* un devis accepté ne se modifie plus : on le duplique, et la copie (brouillon) se modifie */
+  const lk = await get('/devis/1/modifier'); assert.strictEqual(lk.status, 302); assert.match(lk.headers.get('location'), /err=/);
   const r = await post('/devis/1/dupliquer', {}); assert.strictEqual(r.status, 302);
+  const ed = await get(r.headers.get('location')); assert.strictEqual(ed.status, 200);
   const save = JSON.parse(await (await get('/sauvegarde')).text()); assert.ok(save.tables.quotes.length >= 2);
 });
 
