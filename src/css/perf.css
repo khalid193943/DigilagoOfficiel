@@ -1,0 +1,49 @@
+/* ───────────── Fluidité : ajouts communs à toutes les pages ───────────── */
+
+/* Apparitions nettes : opacité + mouvement, sans flou (le flou coûtait cher
+   et laissait les titres « dans le brouillard » pendant plus d'une seconde). */
+@keyframes rise{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
+.in{animation-duration:.85s}
+.in2{animation-duration:.85s}
+
+/* Sections hors écran : leurs animations en boucle sont mises en pause. */
+.is-off,.is-off *,.is-off *::before,.is-off *::after{animation-play-state:paused!important}
+
+/* Grain : calque bien plus petit pour la carte graphique, immobile sur téléphone. */
+.grain{inset:-8%}
+@media (pointer:coarse),(prefers-reduced-motion:reduce){.grain{animation:none}}
+
+/* Nuages du fond : déplacés par « translate » (plus de décalage de mise en page). */
+.dayclouds .cl{will-change:transform,translate}
+
+/* L'animation « cue » animait « top » (mise en page à chaque image) : version GPU. */
+@keyframes cue{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,375%,0)}}
+
+/* Plus de débordement horizontal (nuages du rideau). */
+#veil{overflow-x:clip}
+html,body{overflow-x:clip}
+
+/* Calque d'assombrissement des cartes empilées (remplace filter: brightness). */
+.sc-dim{position:absolute;inset:0;border-radius:inherit;background:#040b1f;opacity:0;pointer-events:none;z-index:30;will-change:opacity}
+
+/* Barres de progression : mises à l'échelle au lieu d'être redimensionnées. */
+.sbar2 i{will-change:transform}
+.mt-b i{transform-origin:0 50%}
+
+/* Couches qui bougent en permanence : chacune sur son propre calque. */
+.mlayer,#mtTrack,.st-sl,#cur{will-change:transform}
+
+/* Vignettes en attente de chargement : un dégradé discret plutôt qu'un blanc vide. */
+.lp-view,.lpv,.xp-vw,.ans-img,.gd-img{background:linear-gradient(110deg,#e9f1fd 30%,#f6f9ff 50%,#e9f1fd 70%) 0 0/220% 100%}
+
+/* Carte du monde : fondu quand les tracés arrivent. */
+#vmap svg{transition:opacity .6s}
+#vmap:not(.ready) svg{opacity:.001}
+
+/* Ancres : elles ne se cachent plus sous la barre de navigation. */
+html{scroll-padding-top:calc(90 * var(--u, 1px))}
+
+/* Respect des réglages d'accessibilité « réduire les animations ». */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important;scroll-behavior:auto!important}
+}
