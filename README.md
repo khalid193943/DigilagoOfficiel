@@ -85,6 +85,8 @@ Le dossier `site/` est la version publiée. Les optimisations (vitesse, design, 
 | `tools/fonts.py` | Polices hébergées sur le site (5 fichiers, 130 Ko) et préchargées. |
 | `tools/inject.py` | Minifie et injecte `src/js` et `src/css` dans chaque page. |
 | `tools/seo.py` | Canonique, Open Graph, Twitter, Schema.org (entreprise, articles, FAQ), sitemap. |
+| `tools/i18n_build.py` | Génère les versions anglaise (`site/en/`) et arabe (`site/ar/`), et le sélecteur de langue. |
+| `tools/i18n_extract.py` | Relève les textes français à traduire dans `src/i18n/strings.json`. |
 | `tools/og_image.py` | Régénère l'image de partage 1200 × 630 depuis l'accueil (`npm run og`). |
 
 Après une modification :
@@ -97,6 +99,14 @@ npm run test       # 43 tests dans un vrai navigateur
 Puis envoyez sur GitHub : le workflow `.github/workflows/deploy.yml` teste et publie tout seul.
 
 > **Important.** Si vous régénérez les pages avec le générateur d'origine (`src/build.py`, `gen_pages.py`… dont une partie des sources n'est pas dans ce dépôt), utilisez `npm run build:pages` : il relance ensuite `tools/build.py` pour réappliquer toutes les optimisations.
+
+### Trois langues : français, anglais, arabe
+
+- Les pages françaises (`site/*.html`) sont la référence. Les versions anglaise (`site/en/`) et arabe (`site/ar/`) en sont générées : mêmes animations, même vitesse.
+- Traductions : `src/i18n/en.json` et `src/i18n/ar.json` (une entrée par texte, clé = empreinte du texte français dans `src/i18n/strings.json`). Messages des scripts (formulaires, WhatsApp…) : liste dans `src/i18n/js_fr.json`.
+- Après avoir modifié un texte français : `python3 tools/i18n_extract.py` indique les textes nouveaux à traduire ; ajoutez-les dans `en.json` et `ar.json`, puis `npm run build`. Un texte non traduit reste en français, rien ne casse.
+- Arabe : polices IBM Plex Sans Arabic et Noto Naskh Arabic (pour les accents en italique), lecture de droite à gauche, menus et pied de page en miroir.
+- Chaque page annonce ses équivalents (`hreflang`) et le plan du site (`sitemap.xml`) liste les 3 langues : Google montre à chacun la bonne version.
 
 Variables utiles : `SITE_URL` (adresse utilisée dans les balises canoniques et le sitemap, par défaut `https://digilago.ma`).
 

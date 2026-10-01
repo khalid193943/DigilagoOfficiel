@@ -55,19 +55,33 @@ def faq(h):
         for q, a in qa]}
 
 
-def block(name, h):
+LANGS = {'fr': ('', 'fr_MA'), 'en': ('/en', 'en_US'), 'ar': ('/ar', 'ar_MA')}
+ORG_DESC = {
+    'fr': ORG['description'],
+    'en': 'Web agency in El Jadida: websites, Google Business Profile, SEO and visibility in AI assistants '
+          'for Moroccan businesses, in Morocco and abroad.',
+    'ar': 'وكالة رقمية في الجديدة: مواقع إلكترونية، ملف Google التجاري، تحسين الظهور في محركات البحث '
+          'والظهور في أدوات الذكاء الاصطناعي للشركات المغربية، داخل المغرب وخارجه.',
+}
+
+
+def page_url(name, lang):
+    return URL + LANGS[lang][0] + ('/' if name == 'index.html' else '/' + name)
+
+
+def block(name, h, lang='fr'):
     title = text(re.search(r'<title>(.*?)</title>', h, re.S).group(1))
     desc = html.unescape(re.search(r'<meta name="description" content="([^"]*)"', h).group(1))
-    path = '/' if name == 'index.html' else '/' + name
-    url = URL + path
-    graph = [ORG] if name == 'index.html' else [{'@type': 'Organization', '@id': ORG['@id'], 'name': 'Digilago', 'url': URL + '/'}]
+    url = page_url(name, lang)
+    org = dict(ORG, description=ORG_DESC[lang])
+    graph = [org] if name == 'index.html' else [{'@type': 'Organization', '@id': ORG['@id'], 'name': 'Digilago', 'url': URL + '/'}]
     if name.startswith('guide-'):
         graph.append({'@type': 'Article', 'headline': title.split(' | ')[0], 'description': desc,
-                      'inLanguage': 'fr', 'mainEntityOfPage': url, 'image': URL + OG,
+                      'inLanguage': lang, 'mainEntityOfPage': url, 'image': URL + OG,
                       'author': {'@id': ORG['@id']}, 'publisher': {'@id': ORG['@id']}})
     elif name != '404.html':
         graph.append({'@type': 'WebPage', 'name': title, 'description': desc, 'url': url,
-                      'inLanguage': 'fr', 'isPartOf': {'@type': 'WebSite', 'name': 'Digilago', 'url': URL + '/'}})
+                      'inLanguage': lang, 'isPartOf': {'@type': 'WebSite', 'name': 'Digilago', 'url': URL + '/'}})
     f = faq(h)
     if f:
         graph.append(f)
@@ -75,6 +89,9 @@ def block(name, h):
     tags = []
     if name != '404.html':
         tags.append('<link rel="canonical" href="%s">' % url)
+        # chaque langue annonce ses équivalents : Google sert la bonne version à chacun
+        tags += ['<link rel="alternate" hreflang="%s" href="%s">' % (l, page_url(name, l)) for l in LANGS]
+        tags.append('<link rel="alternate" hreflang="x-default" href="%s">' % page_url(name, 'fr'))
     else:
         tags.append('<meta name="robots" content="noindex">')
     tags += [
@@ -93,12 +110,20 @@ def block(name, h):
     return START + ''.join(tags) + END
 
 
+def files():
+    for lang, (prefix, _) in LANGS.items():
+        d = os.path.join(SITE, prefix.strip('/'))
+        for f in sorted(glob.glob(os.path.join(d, '*.html'))):
+            yield lang, f
+
+
 def main():
-    for f in sorted(glob.glob(os.path.join(SITE, '*.html'))):
+    for lang, f in files():
         name = os.path.basename(f)
         h = open(f, encoding='utf-8').read()
         h = re.sub(r'\n?' + re.escape(START) + '.*?' + re.escape(END) + r'\n?', '\n', h, flags=re.S)
-        b = block(name, h)
+        h = re.sub(r'<meta property="og:locale" content="[^"]*">', '<meta property="og:locale" content="%s">' % LANGS[lang][1], h)
+        b = block(name, h, lang)
         # juste avant les polices (ou, à défaut, avant le premier <style>)
         i = h.find('<!--dg:fonts-->')
         if i < 0:
@@ -107,13 +132,22 @@ def main():
             i = h.index('<style>')
         h = h[:i].rstrip('\n') + '\n' + b + '\n' + h[i:]
         open(f, 'w', encoding='utf-8').write(h)
-        print(name.ljust(46), 'FAQ' if 'FAQPage' in b else '', 'Article' if 'Article' in b else '')
-    # sitemap : pas de 404, URL de l'accueil propre
-    sm = os.path.join(SITE, 'sitemap.xml')
-    s = open(sm, encoding='utf-8').read()
-    s = re.sub(r'<loc>https?://[^<]*/</loc>', '<loc>%s/</loc>' % URL, s)
-    s = re.sub(r'https?://digilago\.ma', URL, s)
-    open(sm, 'w', encoding='utf-8').write(s)
+    # sitemap : chaque page dans les 3 langues, avec ses équivalents (pas de 404)
+    import datetime
+    today = datetime.date.today().isoformat()
+    prio = {'index.html': '1.0', 'demarrer.html': '0.9', 'services.html': '0.9', 'realisations.html': '0.8',
+            'contact.html': '0.8', 'a-propos.html': '0.7', 'guides.html': '0.7'}
+    names = sorted(os.path.basename(f) for f in glob.glob(os.path.join(SITE, '*.html')) if not f.endswith('404.html'))
+    out = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
+    for n in names:
+        for lang in LANGS:
+            alts = ''.join('<xhtml:link rel="alternate" hreflang="%s" href="%s"/>' % (l, page_url(n, l)) for l in LANGS)
+            p = prio.get(n, '0.6' if n.startswith('guide-') else '0.3')
+            out.append('  <url><loc>%s</loc><lastmod>%s</lastmod><priority>%s</priority>%s</url>' % (page_url(n, lang), today, p, alts))
+    out.append('</urlset>')
+    open(os.path.join(SITE, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(out) + '\n')
+    print('sitemap :', len(names) * len(LANGS), 'adresses')
 
 
 if __name__ == '__main__':

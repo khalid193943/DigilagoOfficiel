@@ -153,3 +153,34 @@ def test_bon_moment(page, base_url):
     page.locator('#moment').scroll_into_view_if_needed(); page.wait_for_timeout(2500)
     assert 'go' in page.locator('#moment').get_attribute('class')
     assert page.locator('#moment .mom-go').get_attribute('href') == 'guide-bon-moment-maroc.html'
+
+# ─── Versions anglaise et arabe ───────────────────────────────────────
+LANG_PAGES = [(l, p) for l in ('en', 'ar') for p in PAGES]
+
+@pytest.mark.parametrize('lang,name', LANG_PAGES)
+def test_traduction_charge_sans_erreur(page, base_url, lang, name):
+    errors = watch(page)
+    resp = page.goto(f'{base_url}/{lang}/{name}')
+    assert resp.status == 200
+    page.wait_for_timeout(1200)
+    assert page.evaluate('document.documentElement.lang') == lang
+    assert page.locator('#foot').count() == 1, 'pied de page manquant'
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), 'débordement horizontal'
+    assert not errors, errors
+
+@pytest.mark.parametrize('lang,name', LANG_PAGES)
+def test_traduction_liens_et_images(lang, name):
+    d = os.path.join(SITE, lang)
+    html = open(os.path.join(d, name), encoding='utf-8').read()
+    missing = [h for h in set(re.findall(r'href="([^"#:?]+\.html)', html)) if not os.path.exists(os.path.normpath(os.path.join(d, h)))]
+    assert not missing, f'liens cassés : {missing}'
+    images = [s for s in set(re.findall(r'src="(\.\./assets/[^"]+)"', html)) if not os.path.exists(os.path.normpath(os.path.join(d, s)))]
+    assert not images, f'images manquantes : {images}'
+    assert not re.search(r'(?<![./\w])assets/', re.sub(r'https?://\S+', '', html)), 'chemin d’image non corrigé'
+
+def test_selecteur_de_langue(page, base_url):
+    page.goto(f'{base_url}/services.html')
+    assert page.locator('.f-lang a[hreflang="en"]').get_attribute('href') == 'en/services.html'
+    page.goto(f'{base_url}/ar/services.html')
+    assert page.locator('.f-lang a[hreflang="fr"]').get_attribute('href') == '../services.html'
+    assert page.locator('link[hreflang="en"]').get_attribute('href').endswith('/en/services.html')

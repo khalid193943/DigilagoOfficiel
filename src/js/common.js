@@ -21,7 +21,23 @@
       });
   }
 
-  // 2) Carte du monde : chargée seulement quand on s'en approche.
+  // 2) Menu des langues de la barre du haut : au toucher, il s'ouvre et se ferme.
+  var lsw = document.getElementById("lsw");
+  if (lsw) {
+    var lb = document.getElementById("lang");
+    lb.addEventListener("click", function (e) {
+      e.preventDefault();
+      lb.setAttribute("aria-expanded", lsw.classList.toggle("open") ? "true" : "false");
+    });
+    document.addEventListener("click", function (e) {
+      if (!lsw.contains(e.target)) {
+        lsw.classList.remove("open");
+        lb.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  // 3) Carte du monde : chargée seulement quand on s'en approche.
   var wd = document.getElementById("worldDefs");
   if (wd && wd.dataset.src) {
     var load = function () {
