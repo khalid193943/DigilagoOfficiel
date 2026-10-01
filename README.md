@@ -62,10 +62,15 @@ Le dossier `site/` est la version publiée. Les optimisations (vitesse, design, 
 | `tools/build.py` | Lance toutes les étapes ci-dessous dans l'ordre. |
 | `tools/simplify_map.py` | Carte du monde allégée (886 Ko → 231 Ko) et chargée à la demande. |
 | `tools/design_html.py` | Retouches de contenu de l'accueil (carte, quartiers, « Pourquoi un site ? »). |
+| `tools/hero_map.py` | Carte du haut de l'accueil : le Maroc vu du ciel (dessiné en perspective par `home.js`), recherches en direct, fiches. |
 | `tools/dedupe_pages.py` | Retire les blocs en double entre les pages. |
+| `tools/articles.py` | Articles SEO / GEO depuis `src/articles/*.json` (sommaire, tableaux, FAQ), page Guides, colonne Guides du pied de page. |
+| `tools/services_page.py` | Page Services : expertises reliées aux guides, clients, comparatif, garanties. |
+| `tools/titles.py` | Titres des pages (onglet, Google, grand titre), sauf l'accueil. |
+| `tools/gradients.py` | Dégradés ciel → nuit entre les sections, calculés en OKLab (`src/css/gradients.css`). |
 | `tools/fonts.py` | Polices hébergées sur le site (5 fichiers, 130 Ko) et préchargées. |
 | `tools/inject.py` | Minifie et injecte `src/js` et `src/css` dans chaque page. |
-| `tools/seo.py` | Canonique, Open Graph, Twitter, Schema.org (entreprise, articles, FAQ), sitemap. |
+| `tools/seo.py` | Canonique (www), Open Graph, Schema.org (entreprise et services, articles, fil d'Ariane, FAQ), sitemap, `robots.txt` ouvert aux robots IA, `llms.txt` pour ChatGPT / Claude / Perplexity. |
 | `tools/i18n_build.py` | Génère les versions anglaise (`site/en/`) et arabe (`site/ar/`), et le sélecteur de langue. |
 | `tools/i18n_extract.py` | Relève les textes français à traduire dans `src/i18n/strings.json`. |
 | `tools/og_image.py` | Régénère l'image de partage 1200 × 630 depuis l'accueil (`npm run og`). |
@@ -85,6 +90,7 @@ Puis envoyez sur GitHub : le workflow `.github/workflows/deploy.yml` teste et pu
 
 - Les pages françaises (`site/*.html`) sont la référence. Les versions anglaise (`site/en/`) et arabe (`site/ar/`) en sont générées : mêmes animations, même vitesse.
 - Traductions : `src/i18n/en.json` et `src/i18n/ar.json` (une entrée par texte, clé = empreinte du texte français dans `src/i18n/strings.json`). Messages des scripts (formulaires, WhatsApp…) : liste dans `src/i18n/js_fr.json`.
+- Pour ajouter un article : un fichier JSON dans `src/articles/` (même format que les autres), puis `npm run build`.
 - Après avoir modifié un texte français : `python3 tools/i18n_extract.py` indique les textes nouveaux à traduire ; ajoutez-les dans `en.json` et `ar.json`, puis `npm run build`. Un texte non traduit reste en français, rien ne casse.
 - Arabe : polices IBM Plex Sans Arabic et Noto Naskh Arabic (pour les accents en italique), lecture de droite à gauche, menus et pied de page en miroir.
 - Chaque page annonce ses équivalents (`hreflang`) et le plan du site (`sitemap.xml`) liste les 3 langues : Google montre à chacun la bonne version.

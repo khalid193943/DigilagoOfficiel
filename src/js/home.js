@@ -685,7 +685,9 @@
         ctx.fillText("Digilago", bx + tw / 2, by + 12.5 * pk);
       }
       // une recherche, puis l'entreprise trouvée s'allume avec sa fiche
-      if (now - evT > EVD) pick(now, band);
+      // dès que la caméra monte dans les nuages, la recherche et la fiche s'effacent
+      if (DAWN2 > 0.03) ev = null;
+      else if (now - evT > EVD) pick(now, band);
       var e = ev,
         el = now - evT;
       if (e && proj(e.x, e.y)) {
@@ -731,7 +733,8 @@
   function mapStep(now) {
     MAP.step(now, window.scrollY, PAN, DAWN);
   }
-  var headEl = $("head"),
+  var mliveEl = $("mlive"),
+    headEl = $("head"),
     navEl = $("nav"),
     veil = $("veil"),
     vbase = veil.querySelector(".vbase"),
@@ -756,6 +759,7 @@
     );
     S(navEl, "opacity", (1 - clamp01(p / 0.3)).toFixed(3));
     S(hcs, "opacity", (1 - clamp01(p / 0.35)).toFixed(3));
+    if (mliveEl) S(mliveEl, "opacity", (1 - clamp01(p / 0.2)).toFixed(3));
     S(
       hb,
       "transform",
@@ -1192,6 +1196,43 @@
     simUpd(true);
   });
   simUpd(false);
+  // Démonstration : quand la section arrive à l'écran, un nom s'écrit tout seul et les trois
+  // aperçus se construisent (seulement si le visiteur n'a encore rien tapé).
+  (function () {
+    var inp = $("sName"),
+      sec = $("sim"),
+      touched = false,
+      DEMO = "Atlas Dentaire";
+    if (!inp || !sec || !("IntersectionObserver" in window)) return;
+    ["focus", "keydown", "pointerdown"].forEach(function (ev) {
+      inp.addEventListener(ev, function () {
+        touched = true;
+      });
+    });
+    var o = new IntersectionObserver(
+      function (es) {
+        if (!es[0].isIntersecting) return;
+        o.disconnect();
+        if (touched || inp.value) return;
+        $("sMet").selectedIndex = 1;
+        $("sVil").selectedIndex = 1;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          inp.value = DEMO;
+          simUpd(true);
+          return;
+        }
+        var k = 0,
+          iv = setInterval(function () {
+            if (touched) return clearInterval(iv);
+            inp.value = DEMO.slice(0, ++k);
+            simUpd(k >= DEMO.length);
+            if (k >= DEMO.length) clearInterval(iv);
+          }, 90);
+      },
+      { threshold: 0.4 },
+    );
+    o.observe(sec);
+  })();
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(
       function (es) {

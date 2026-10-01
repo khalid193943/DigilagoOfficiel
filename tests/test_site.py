@@ -192,3 +192,45 @@ def test_selecteur_de_langue(page, base_url):
     page.goto(f'{base_url}/ar/services.html')
     assert page.locator('.f-lang a[hreflang="fr"]').get_attribute('href') == '../services.html'
     assert page.locator('link[hreflang="en"]').get_attribute('href').endswith('/en/services.html')
+
+# ─── SEO / GEO, carte du hero, arabe ───────────────────────────────────
+ARTICLES = ['creation-site-web-maroc.html', 'creer-boutique-en-ligne-maroc.html', 'shopify-maroc.html',
+            'application-mobile-maroc.html', 'agence-web-maroc.html', 'referencement-seo-maroc.html', 'faq.html']
+
+@pytest.mark.parametrize('name', ARTICLES)
+def test_article_seo(name):
+    html = open(os.path.join(SITE, name), encoding='utf-8').read()
+    title = re.search(r'<title>(.*?)</title>', html, re.S).group(1)
+    assert len(title) <= 70 and title.endswith('| Digilago')
+    assert re.search(r'<meta name="description" content="[^"]{60,160}"', html)
+    assert '<link rel="canonical" href="https://www.digilago.ma/%s">' % name in html
+    assert '"FAQPage"' in html, 'FAQ absente des données structurées'
+    if name != 'faq.html':
+        assert '"Article"' in html and '"BreadcrumbList"' in html
+    assert html.count('<details') >= 6
+
+def test_robots_llms_sitemap():
+    robots = open(os.path.join(SITE, 'robots.txt'), encoding='utf-8').read()
+    for bot in ('GPTBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended'):
+        assert 'User-agent: %s\nAllow: /' % bot in robots
+    assert 'Sitemap: https://www.digilago.ma/sitemap.xml' in robots
+    llms = open(os.path.join(SITE, 'llms.txt'), encoding='utf-8').read()
+    assert llms.startswith('# Digilago') and llms.count('### ') >= 50
+    sm = open(os.path.join(SITE, 'sitemap.xml'), encoding='utf-8').read()
+    assert 'https://www.digilago.ma/shopify-maroc.html' in sm and 'https://digilago.ma/' not in sm
+
+def test_carte_du_hero_dessinee(page, base_url):
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(3500)
+    # le canvas contient bien un dessin (des pixels non transparents)
+    drawn = page.evaluate("""(() => { const c = document.getElementById('mcv'); const x = c.getContext('2d');
+        const d = x.getImageData(0, 0, c.width, c.height).data; let n = 0;
+        for (let i = 3; i < d.length; i += 4000) if (d[i] > 0) n++; return n; })()""")
+    assert drawn > 50
+    page.wait_for_timeout(3000)
+    assert page.locator('#mcard.on, #mq.on').count() >= 1, 'aucune recherche en direct affichée'
+
+def test_arabe_numeros_dans_le_bon_sens():
+    html = open(os.path.join(SITE, 'ar', 'contact.html'), encoding='utf-8').read()
+    assert '<bdi dir="ltr">+212 6 49 95 38 13</bdi>' in html
+    assert '<bdi dir="ltr">contact@digilago.ma</bdi>' in html

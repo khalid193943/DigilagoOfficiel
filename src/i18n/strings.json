@@ -12463,6 +12463,22 @@
    "index.html"
   ]
  },
+ "5a053b516826": {
+  "fr": "Il tape « dentiste El Jadida » sur Google.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d112cdfa4988": {
+  "fr": "Votre site sort en premier : il vous appelle.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
  "86d8a3ef7b2f": {
   "fr": "google.com/search?q=dentiste+el+jadida",
   "kind": "text",
@@ -12698,6 +12714,22 @@
    "index.html"
   ]
  },
+ "f442eaeefd5e": {
+  "fr": "Votre fiche s’affiche sur la carte.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "80968558fb9b": {
+  "fr": "Avis, horaires, itinéraire : il vient chez vous.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
  "978c6cf78fba": {
   "fr": "google.com/maps",
   "kind": "text",
@@ -12781,6 +12813,22 @@
  },
  "11812b3d9689": {
   "fr": "Vos services, vos prix, vos photos, les avis de vos clients : votre site répond aux questions et donne confiance avant même le premier appel.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "c57f76dd8404": {
+  "fr": "Il découvre vos soins, vos photos, vos avis.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "03ce3f071802": {
+  "fr": "Il prend rendez-vous en un clic.",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -12894,6 +12942,22 @@
  },
  "13331f247b52": {
   "fr": "Le soir, le week-end, pendant les fêtes : votre site présente votre entreprise et reçoit les demandes, même quand vous êtes fermé.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "45b2259b0a26": {
+  "fr": "23:14 : une demande de devis arrive.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "ba18263b9060": {
+  "fr": "08:00 : vous ouvrez avec trois nouveaux clients.",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -21760,6 +21824,30 @@
  },
  "e9e14d1de400": {
   "fr": "Formulaire de contact",
+  "kind": "js",
+  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
+  "pages": [
+   "js"
+  ]
+ },
+ "563c333a3df3": {
+  "fr": "Atlas Dentaire",
+  "kind": "js",
+  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
+  "pages": [
+   "js"
+  ]
+ },
+ "46e6e8ecc05d": {
+  "fr": " à ",
+  "kind": "js",
+  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
+  "pages": [
+   "js"
+  ]
+ },
+ "eb71d9a5fad5": {
+  "fr": ". Découvrez nos services, nos horaires et contactez-nous en un clic.",
   "kind": "js",
   "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
   "pages": [

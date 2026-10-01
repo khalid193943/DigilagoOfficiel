@@ -186,9 +186,28 @@ def showcase(h):
     return h
 
 
+STEPS = [  # sur téléphone : ce qui se passe à l'écran, en deux temps (remplace le paragraphe)
+    ('Il tape « dentiste El Jadida » sur Google.', 'Votre site sort en premier : il vous appelle.'),
+    ('Votre fiche s’affiche sur la carte.', 'Avis, horaires, itinéraire : il vient chez vous.'),
+    ('Il découvre vos soins, vos photos, vos avis.', 'Il prend rendez-vous en un clic.'),
+    ('23:14 : une demande de devis arrive.', '08:00 : vous ouvrez avec trois nouveaux clients.'),
+]
+
+
+def slide_steps(h):
+    """Deux étapes numérotées sous le titre de chaque diapositive (affichées sur téléphone)."""
+    h = re.sub(r'<ol class="st-steps".*?</ol>', '', h, flags=re.S)
+    for k, (a, b) in enumerate(STEPS):
+        i = h.index('<article class="st-sl' if k == 0 else 'data-s="%d"' % k)
+        j = h.index('</p></div><div class="st-dev">', i) + len('</p>')
+        h = h[:j] + '<ol class="st-steps"><li><i>1</i>%s</li><li><i>2</i>%s</li></ol>' % (a, b) + h[j:]
+    return h
+
+
 def main():
     h = open(P, encoding='utf-8').read()
     h = slides(h)
+    h = slide_steps(h)
     h = showcase(h)
     h = no_preloader(h)
     h = vision(h)
