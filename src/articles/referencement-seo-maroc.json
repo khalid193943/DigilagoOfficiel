@@ -1,0 +1,350 @@
+{
+  "file": "referencement-seo-maroc.html",
+  "title": "Référencement SEO au Maroc : le guide complet | Digilago",
+  "description": "Référencement SEO au Maroc : SEO local, mots-clés en français, arabe et darija, technique, liens, Search Console et IA. La méthode pas à pas.",
+  "eyebrow": "Guide, 9 min de lecture",
+  "h1": [
+    "Référencement SEO au Maroc :",
+    "la méthode pour la première page."
+  ],
+  "lead": "Comment Google classe les sites, comment apparaître en première page au Maroc et comment être cité par ChatGPT : le référencement SEO expliqué simplement, étape par étape.",
+  "headline": "Référencement SEO au Maroc : le guide complet pour apparaître en première page de Google et être cité par les IA",
+  "keywords": [
+    "référencement SEO Maroc",
+    "référencement Maroc",
+    "SEO Maroc",
+    "référencement Google Maroc",
+    "agence SEO Maroc",
+    "référencement local Maroc",
+    "apparaître en première page Google",
+    "GEO ChatGPT Maroc"
+  ],
+  "sections": [
+    {
+      "h2": "Qu’est-ce que le référencement SEO, et pourquoi compte-t-il au Maroc ?",
+      "blocks": [
+        {
+          "p": "Le <strong>référencement SEO au Maroc</strong> consiste à rendre votre site assez clair, utile et fiable pour que Google le montre gratuitement aux personnes qui cherchent vos services, dans votre ville et dans leur langue. Contrairement à la publicité, chaque visite ne vous coûte rien : le travail fait aujourd’hui attire des clients pendant des années."
+        },
+        {
+          "p": "Quand un parent cherche « école privée El Jadida » ou un voyageur « riad Fès médina », il contacte le plus souvent l’une des premières entreprises affichées. Dans beaucoup de métiers et de villes, ces places sont <a href=\"guide-bon-moment-maroc.html\">encore à prendre</a>. Ce guide détaille la méthode résumée dans <a href=\"guide-google-chatgpt-maroc.html\">Être trouvé sur Google et recommandé par ChatGPT</a>."
+        }
+      ]
+    },
+    {
+      "h2": "Comment Google classe-t-il les sites ?",
+      "blocks": [
+        {
+          "p": "Google classe les pages selon trois grandes questions : la page répond-elle à la recherche, est-elle digne de confiance, et offre-t-elle une bonne expérience sur téléphone ? Aucun paiement ne fait monter un site dans les résultats naturels : seules les annonces, signalées comme sponsorisées, s’achètent."
+        },
+        {
+          "ul": [
+            "<strong>La pertinence</strong> : vos pages emploient les mots de vos clients et répondent précisément à leur question (« prix détartrage Rabat »).",
+            "<strong>La confiance</strong> : des contenus utiles et exacts, une entreprise identifiable (adresse, téléphone, équipe).",
+            "<strong>La popularité</strong> : d’autres sites sérieux parlent de vous et renvoient vers vous.",
+            "<strong>L’expérience</strong> : un site rapide, en HTTPS, lisible sur mobile, car Google indexe d’abord la version mobile.",
+            "<strong>Le contexte</strong> : la langue et la position de la personne. « Plombier » ne donne pas les mêmes résultats à Tanger et à Agadir."
+          ]
+        }
+      ]
+    },
+    {
+      "h2": "Comment fonctionne le référencement local au Maroc ?",
+      "blocks": [
+        {
+          "p": "Le référencement local repose surtout sur votre fiche Google Business Profile, qui vous fait apparaître sur Google Maps et dans le bloc de résultats affiché avec une carte. Google y classe les entreprises selon trois critères qu’il cite lui-même : la pertinence, la distance et la notoriété."
+        },
+        {
+          "ul": [
+            "<strong>Pertinence</strong> : une catégorie principale précise, des services décrits en français et en arabe.",
+            "<strong>Distance</strong> : vous ne la contrôlez pas, mais une adresse fausse vous pénalise.",
+            "<strong>Notoriété</strong> : le nombre d’avis, leur note, vos réponses, vos photos et la visibilité de votre site."
+          ]
+        },
+        {
+          "p": "La création de la fiche est détaillée dans <a href=\"guide-fiche-google-business-maroc.html\">notre guide de la fiche Google Business</a>. Côté SEO, visez la cohérence : même nom, même adresse et même téléphone partout, sur le site, la fiche, les réseaux et les annuaires. Deux cliniques, à Casablanca et à Rabat ? Une fiche et une page de site par établissement."
+        }
+      ]
+    },
+    {
+      "h2": "Quels mots-clés viser : français, arabe ou darija ?",
+      "blocks": [
+        {
+          "p": "Visez les mots que vos clients tapent réellement, dans toutes leurs langues : le français, l’arabe et souvent la darija. Une même demande peut s’écrire « dentiste Casablanca », « طبيب أسنان الدار البيضاء » ou « tbib snan casa »."
+        },
+        {
+          "ol": [
+            "Listez vos services et vos villes, et notez comment vos clients les formulent au téléphone ou sur WhatsApp.",
+            "Tapez ces débuts de phrase dans Google : les suggestions et le bloc « Autres questions posées » révèlent les vraies formulations.",
+            "Comparez-les dans l’outil de planification des mots-clés de Google Ads, puis dans Search Console.",
+            "Classez les mots-clés par intention : s’informer (« comment… »), comparer (« prix… ») ou agir (« rendez-vous », « livraison »).",
+            "Attribuez une page à chaque intention principale."
+          ]
+        },
+        {
+          "p": "La darija s’écrit souvent en lettres latines, parfois avec des chiffres (« 3 » pour ع, « 7 » pour ح), avec des orthographes variées : intégrez ces variantes naturellement dans la FAQ et la fiche Google, sans créer une page par variante. En arabe, une vraie rédaction vaut mieux qu’une traduction automatique."
+        }
+      ]
+    },
+    {
+      "h2": "Quels sont les fondamentaux du SEO technique ?",
+      "blocks": [
+        {
+          "p": "Le SEO technique garantit que Google peut trouver, lire et afficher rapidement chacune de vos pages : sans lui, les meilleurs textes restent invisibles."
+        },
+        {
+          "table": {
+            "head": [
+              "Point à vérifier",
+              "Objectif"
+            ],
+            "rows": [
+              [
+                "Mobile",
+                "Contenu principal affiché en moins de 2,5 secondes, textes lisibles, boutons faciles à toucher"
+              ],
+              [
+                "Sécurité",
+                "HTTPS actif sur toutes les pages"
+              ],
+              [
+                "Structure",
+                "Un seul titre H1, des sous-titres clairs, des adresses courtes comme /implant-dentaire-casablanca"
+              ],
+              [
+                "Indexation",
+                "Sitemap.xml envoyé, robots.txt correct, aucune balise noindex oubliée"
+              ],
+              [
+                "Données structurées",
+                "Balisage Schema.org de l’entreprise locale et de la FAQ"
+              ],
+              [
+                "Images",
+                "Formats WebP ou AVIF, textes alternatifs descriptifs"
+              ]
+            ]
+          }
+        },
+        {
+          "p": "Soignez aussi le maillage interne : chaque page importante reçoit des liens explicites des pages voisines. Côté domaine, un .ma signale que vous visez le Maroc, un .com convient aussi à l’international. Ces fondations se posent dès la <a href=\"creation-site-web-maroc.html\">création du site web</a>."
+        }
+      ]
+    },
+    {
+      "h2": "Quel contenu écrire pour apparaître en première page de Google ?",
+      "blocks": [
+        {
+          "p": "Pour apparaître en première page de Google, publiez la page la plus utile sur la question précise de votre client : une réponse claire dès les premières lignes, des détails concrets et des preuves. Google ne récompense pas la longueur, mais la meilleure réponse."
+        },
+        {
+          "ul": [
+            "<strong>Une page par service</strong> : « implant », « orthodontie », plutôt qu’une page « nos soins » qui cite tout en une ligne.",
+            "<strong>Une page par ville seulement si elle apporte du concret</strong> : adresse, équipe, réalisations locales. Des pages identiques où seul le nom de la ville change sont des pages satellites, contraires aux règles de Google.",
+            "<strong>Des réponses aux vraies questions</strong> : prix indicatifs, délais, déroulement, zones desservies.",
+            "<strong>Des preuves</strong> : vraies photos, avis, réalisations, noms des responsables.",
+            "<strong>Une balise title et une meta description travaillées</strong> : c’est la vitrine de votre résultat dans Google."
+          ]
+        },
+        {
+          "p": "Exemple : une école privée à El Jadida gagne davantage avec des pages « inscriptions », « cycle primaire » et « transport scolaire » qu’avec un long texte de présentation."
+        }
+      ]
+    },
+    {
+      "h2": "Comment obtenir des liens (backlinks) au Maroc ?",
+      "blocks": [
+        {
+          "p": "Les meilleurs liens viennent de sites marocains réels qui ont une raison de parler de vous. Un lien de qualité est une recommandation ; acheter des liens en masse enfreint les règles de Google et peut faire chuter votre site."
+        },
+        {
+          "ul": [
+            "Annuaires professionnels sérieux, fédérations de votre secteur, chambre de commerce (CCIS) de votre région.",
+            "Fournisseurs et partenaires qui présentent leurs revendeurs ou leurs clients.",
+            "Presse locale et régionale, à l’occasion d’une ouverture ou d’un événement.",
+            "Associations, clubs, écoles ou événements que vous soutenez."
+          ]
+        },
+        {
+          "p": "Quelques liens pertinents valent mieux que des centaines de liens venus de sites sans rapport."
+        }
+      ]
+    },
+    {
+      "h2": "Comment référencer un site en français, en arabe et en anglais ?",
+      "blocks": [
+        {
+          "p": "Pour un site multilingue, chaque langue doit avoir sa propre adresse et être reliée aux autres par des balises hreflang, qui indiquent à Google quelle version montrer à quel visiteur. Sans elles, la mauvaise langue peut s’afficher."
+        },
+        {
+          "ul": [
+            "Une adresse par langue, par exemple /fr/, /ar/ et /en/.",
+            "Des balises hreflang réciproques sur chaque page, plus une version par défaut (x-default).",
+            "Pour l’arabe, la langue et le sens de lecture de droite à gauche déclarés dans la page.",
+            "Des titres et descriptions rédigés pour chaque langue.",
+            "Aucune redirection automatique selon le pays : toutes les versions restent accessibles."
+          ]
+        }
+      ]
+    },
+    {
+      "h2": "Combien de temps faut-il pour être bien référencé sur Google ?",
+      "blocks": [
+        {
+          "p": "Comptez généralement trois à six mois de travail régulier pour progresser sur des recherches concurrentielles, et quelques semaines pour qu’une fiche Google bien remplie génère des appels. Les recherches très précises avancent souvent plus vite."
+        },
+        {
+          "p": "Le délai dépend de la concurrence locale (« avocat Casablanca » est en général plus disputé que « avocat El Jadida »), de l’état du site et surtout de la régularité du travail."
+        },
+        {
+          "note": "Personne ne peut garantir une première place sur Google, et Google le dit lui-même. Méfiez-vous d’une agence SEO au Maroc qui vous la promet : exigez une méthode, des étapes et des rapports (voir <a href=\"agence-web-maroc.html\">comment choisir une agence web</a>)."
+        }
+      ]
+    },
+    {
+      "h2": "Comment mesurer les résultats de votre référencement ?",
+      "blocks": [
+        {
+          "p": "Mesurez votre référencement avec Google Search Console, l’outil gratuit de Google : il montre les recherches qui affichent votre site, vos clics, votre position moyenne et les pages indexées. Suivez aussi vos contacts réels, car le but n’est pas le trafic, mais les clients."
+        },
+        {
+          "table": {
+            "head": [
+              "Outil",
+              "À regarder chaque mois"
+            ],
+            "rows": [
+              [
+                "Google Search Console",
+                "Requêtes qui progressent, clics, position moyenne, pages en erreur"
+              ],
+              [
+                "Google Analytics 4",
+                "Clics sur WhatsApp, appels, formulaires envoyés"
+              ],
+              [
+                "Fiche Google Business",
+                "Appels, demandes d’itinéraire, clics vers le site"
+              ],
+              [
+                "Assistants IA",
+                "Vos questions types posées à ChatGPT, Gemini et Perplexity"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h2": "Comment être cité par ChatGPT, Gemini et Perplexity ?",
+      "blocks": [
+        {
+          "p": "Pour être cité par ChatGPT, Gemini ou Perplexity, il faut d’abord être bien référencé, puis rendre vos informations faciles à extraire et confirmées ailleurs sur le web. C’est le GEO (Generative Engine Optimization) : il prolonge le SEO, il ne le remplace pas."
+        },
+        {
+          "p": "Beaucoup de ces assistants s’appuient sur des recherches web en temps réel : un site invisible dans les moteurs a peu de chances d’être cité. Concrètement :"
+        },
+        {
+          "ul": [
+            "Commencez chaque section par une phrase qui répond directement à la question.",
+            "Donnez des faits précis et à jour : services, prix indicatifs, délais, zones, horaires, langues.",
+            "Vérifiez que votre robots.txt ne bloque pas les robots des assistants, par exemple OAI-SearchBot pour ChatGPT ou PerplexityBot pour Perplexity.",
+            "Publiez un fichier llms.txt, convention récente qui résume votre activité pour les IA, et des données Schema.org.",
+            "Multipliez les mentions cohérentes : avis, annuaires, presse, partenaires. Les IA recoupent leurs sources."
+          ]
+        },
+        {
+          "p": "Testez chaque mois les questions de vos clients, comme « quelle école privée choisir à El Jadida ? », et notez qui est cité."
+        }
+      ]
+    },
+    {
+      "h2": "Quelles erreurs de référencement éviter ?",
+      "blocks": [
+        {
+          "p": "Les erreurs les plus coûteuses rendent un site invisible sans que personne ne s’en aperçoive ; viennent ensuite les raccourcis, tôt ou tard pénalisés."
+        },
+        {
+          "ul": [
+            "Refaire son site en changeant les adresses sans redirections 301 : les positions acquises sont perdues.",
+            "Laisser une balise noindex ou un robots.txt bloquant après la mise en ligne.",
+            "Répéter les mots-clés à outrance, ou en ajouter au nom de la fiche Google.",
+            "Acheter des liens ou de faux avis, interdits par Google.",
+            "Juger le SEO au bout de trois semaines, ou l’arrêter dès les premiers résultats."
+          ]
+        }
+      ]
+    },
+    {
+      "h2": "Check-list : votre référencement SEO au Maroc en 12 points",
+      "blocks": [
+        {
+          "p": "L’essentiel pour monter sur Google et dans les réponses des IA, en douze vérifications."
+        },
+        {
+          "ul": [
+            "Fiche Google Business vérifiée, catégorie précise, vraies photos, horaires à jour.",
+            "Nom, adresse et téléphone identiques partout.",
+            "Avis demandés à chaque client satisfait, et réponses à tous.",
+            "Une page par service, et par ville seulement avec un contenu propre.",
+            "Mots-clés en français, en arabe et en darija intégrés naturellement.",
+            "Une balise title et une description uniques par page, un seul H1.",
+            "Contenu principal affiché en moins de 2,5 secondes sur mobile, HTTPS actif.",
+            "Sitemap.xml envoyé dans Google Search Console.",
+            "Balises hreflang si le site est multilingue.",
+            "Données structurées Schema.org et fichier llms.txt.",
+            "Quelques liens de sites marocains sérieux et pertinents.",
+            "Suivi mensuel : Search Console, contacts reçus, citations par les IA."
+          ]
+        }
+      ]
+    },
+    {
+      "h2": "Comment Digilago peut vous aider ?",
+      "blocks": [
+        {
+          "p": "Digilago, agence web basée à El Jadida, accompagne les entreprises de tout le Maroc : audit et mots-clés, pages locales, contenus optimisés, fiche Google Business, visibilité dans les IA et suivi des positions. Nos sites sont livrés avec hreflang, données structurées, fichier llms.txt et Search Console."
+        },
+        {
+          "p": "Le référencement, la fiche Google et la visibilité dans les IA sont inclus dans chaque présence en ligne complète, avec un prix annoncé par écrit avant de commencer. Vous découvrez une première version de votre site en 72 heures, et si elle ne vous plaît pas, vous ne payez rien. Lancez-vous depuis <a href=\"demarrer.html\">Démarrer mon projet</a>, consultez nos <a href=\"services.html\">services</a> ou écrivez-nous sur WhatsApp au +212 6 49 95 38 13."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Combien de temps faut-il pour apparaître en première page de Google au Maroc ?",
+      "a": "Sur des recherches concurrentielles, comptez généralement trois à six mois de travail régulier. Une fiche Google Business bien remplie peut, elle, générer des appels en quelques semaines. Personne ne peut garantir une première place, mais une méthode sérieuse vous en rapproche mois après mois."
+    },
+    {
+      "q": "Quelle différence entre SEO et référencement local ?",
+      "a": "Le SEO vise les résultats classiques de Google. Le référencement local vise Google Maps et le bloc de résultats affiché avec une carte, et repose surtout sur la fiche Google Business, la proximité et les avis. Une entreprise qui reçoit des clients a besoin des deux."
+    },
+    {
+      "q": "Le référencement Google est-il payant ?",
+      "a": "Les résultats naturels de Google sont gratuits : personne ne peut payer Google pour y monter. Ce qui a un coût, c’est le travail nécessaire : technique, contenus, liens et suivi. Les annonces Google Ads, elles, sont payantes et signalées comme sponsorisées."
+    },
+    {
+      "q": "Faut-il un nom de domaine .ma pour être bien référencé au Maroc ?",
+      "a": "Ce n’est pas obligatoire, mais un .ma indique clairement à Google que vous ciblez le Maroc. Un .com fonctionne très bien aussi, surtout avec une clientèle internationale."
+    },
+    {
+      "q": "Faut-il un site en arabe pour le référencement au Maroc ?",
+      "a": "C’est fortement conseillé si une partie de vos clients cherche en arabe. Une vraie version arabe, avec ses propres adresses et des balises hreflang, peut se positionner sur des recherches que les concurrents présents seulement en français ne couvrent pas."
+    },
+    {
+      "q": "Comment choisir une agence SEO au Maroc ?",
+      "a": "Choisissez une agence qui explique sa méthode, montre des sites qu’elle positionne réellement et fournit des rapports réguliers fondés sur Search Console. Fuyez les promesses de première place garantie et les offres de liens en masse. Vérifiez aussi que le site, le nom de domaine et les contenus restent à votre nom."
+    },
+    {
+      "q": "Les avis Google aident-ils le référencement ?",
+      "a": "Oui, surtout pour le référencement local : le nombre d’avis, leur note et vos réponses comptent pour apparaître sur Google Maps. Demandez-les simplement à chaque client satisfait, et n’achetez jamais de faux avis."
+    }
+  ],
+  "related": [
+    "guide-google-chatgpt-maroc.html",
+    "guide-fiche-google-business-maroc.html",
+    "creation-site-web-maroc.html",
+    "application-mobile-maroc.html"
+  ]
+}

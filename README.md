@@ -89,7 +89,7 @@ Puis envoyez sur GitHub : le workflow `.github/workflows/deploy.yml` teste et pu
 - Arabe : polices IBM Plex Sans Arabic et Noto Naskh Arabic (pour les accents en italique), lecture de droite à gauche, menus et pied de page en miroir.
 - Chaque page annonce ses équivalents (`hreflang`) et le plan du site (`sitemap.xml`) liste les 3 langues : Google montre à chacun la bonne version.
 
-Variables utiles : `SITE_URL` (adresse utilisée dans les balises canoniques et le sitemap, par défaut `https://digilago.ma`).
+Variables utiles : `SITE_URL` (adresse utilisée dans les balises canoniques et le sitemap, par défaut `https://www.digilago.ma`, l'adresse finale : `digilago.ma` redirige vers `www`).
 
 ---
 
@@ -118,7 +118,7 @@ Pour un secteur entier, mettez une seule landing dans `src/landings/secteurs/`, 
 - Compléter les zones marquées « [À compléter] » des pages Mentions légales et Confidentialité.
 - Vérifier le téléphone et l'e-mail affichés partout.
 - Relire les fourchettes de prix du guide « Combien coûte un site web au Maroc en 2026 ? ».
-- Remplacer `https://digilago.ma` dans `SITE_URL` si le domaine est différent, puis reconstruire.
+- Remplacer `https://www.digilago.ma` dans `SITE_URL` si le domaine est différent, puis reconstruire.
 - Ajouter vos autres réalisations (captures dans `src/trust_imgs.json`).
 - Ajouter les exemples des autres domaines : images dans `src/landings/`, listes dans `build_showcase.py`, domaines dans `build_styles.py` (page « À quoi ressemblera votre site ? »), puis `python landings/build_showcase.py && python landings/build_styles.py` et `npm run build`.
 

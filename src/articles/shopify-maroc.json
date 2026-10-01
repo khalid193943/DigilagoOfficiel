@@ -1,0 +1,189 @@
+{
+  "file": "shopify-maroc.html",
+  "title": "Shopify Maroc : boutique, thème et paiement | Digilago",
+  "description": "Shopify Maroc : créer sa boutique, choisir ou personnaliser un thème, gérer le paiement à la livraison et le transport. Avantages, limites, alternatives.",
+  "eyebrow": "Guide, 9 min de lecture",
+  "h1": ["Shopify au Maroc :", "boutique, thème, paiement et livraison."],
+  "lead": "Shopify permet d’ouvrir une boutique en ligne sans gérer de serveur. Au Maroc, le paiement, la livraison et l’arabe demandent pourtant des choix précis : voici lesquels.",
+  "headline": "Shopify au Maroc : créer sa boutique, choisir un thème, gérer paiement et livraison",
+  "keywords": [
+    "Shopify Maroc",
+    "créer boutique Shopify Maroc",
+    "thème Shopify",
+    "thème Shopify personnalisé",
+    "expert Shopify Maroc",
+    "Shopify vs WooCommerce",
+    "paiement à la livraison Shopify"
+  ],
+  "sections": [
+    {
+      "h2": "Shopify est-il adapté au Maroc ?",
+      "blocks": [
+        {"p": "Oui. Shopify au Maroc permet de lancer une boutique en ligne rapidement, sans technique à gérer, à condition d’anticiper trois points : le paiement à la livraison s’active simplement, mais le paiement par carte marocaine demande une solution tierce à vérifier ; la livraison s’organise avec vos propres transporteurs ; et la qualité de l’arabe dépend du thème choisi."}
+      ]
+    },
+    {
+      "h2": "Qu’est-ce que Shopify, concrètement ?",
+      "blocks": [
+        {"p": "Shopify est une plateforme e-commerce hébergée : contre un abonnement mensuel, vous obtenez une boutique prête à l’emploi, avec catalogue, panier, commandes et stocks, sans serveur à gérer."},
+        {"ul": [
+          "<strong>Le thème</strong> définit l’apparence de la boutique : on le choisit, puis on le personnalise.",
+          "<strong>Les applications</strong> ajoutent des fonctions : formulaires de commande, avis, traduction, connexion aux transporteurs. Beaucoup sont payantes, au mois.",
+          "<strong>L’administration</strong>, sur ordinateur ou sur l’application mobile, permet de gérer produits, prix et commandes.",
+          "<strong>L’hébergement, la sécurité et les mises à jour</strong> sont assurés par Shopify."
+        ]},
+        {"p": "Les tarifs dépendent de la formule et évoluent : consultez la grille à jour sur le site officiel de Shopify. Pour situer le budget global d’une boutique en ligne, voir notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix</a>."}
+      ]
+    },
+    {
+      "h2": "Quels sont les avantages et les limites de Shopify pour un commerçant marocain ?",
+      "blocks": [
+        {"p": "Shopify fait gagner du temps au lancement et vous décharge de la technique, mais il crée des coûts mensuels et impose ses règles, notamment pour le paiement et la structure du site."},
+        {"table": {
+          "head": ["Sujet", "Atouts", "Points de vigilance au Maroc"],
+          "rows": [
+            ["Lancement", "Boutique fonctionnelle rapidement", "Un thème non retravaillé ressemble à beaucoup d’autres"],
+            ["Paiement", "Paiement à la livraison natif", "Carte marocaine : solution tierce à vérifier"],
+            ["Coûts", "Peu d’investissement technique au départ", "Abonnement, applications et frais éventuels, chaque mois"],
+            ["Technique", "Hébergement, sécurité et mises à jour inclus", "Personnalisation profonde encadrée par la plateforme"],
+            ["Langues", "Boutique multilingue possible", "Qualité de l’arabe (droite à gauche) selon le thème"],
+            ["Propriété", "Produits, clients et commandes exportables", "Changer de solution demande une migration"]
+          ]
+        }}
+      ]
+    },
+    {
+      "h2": "Comment créer une boutique Shopify au Maroc, étape par étape ?",
+      "blocks": [
+        {"p": "Créer une boutique Shopify au Maroc se fait en sept étapes, de l’ouverture du compte à la première commande test."},
+        {"ol": [
+          "Ouvrir le compte au nom de l’entreprise, avec une adresse e-mail professionnelle.",
+          "Choisir le thème, puis le personnaliser : logo, couleurs, typographies, page d’accueil, fiche produit.",
+          "Ajouter les produits : photos, descriptions, variantes (tailles, couleurs), prix, stocks.",
+          "Créer les zones et frais de livraison par ville ou par région.",
+          "Activer le paiement à la livraison, puis étudier les options de paiement par carte.",
+          "Publier les pages légales : CGV, retours, mentions légales, confidentialité conforme à la loi 09-08.",
+          "Connecter votre nom de domaine .ma ou .com, puis passer des commandes test sur téléphone."
+        ]},
+        {"note": "Le compte Shopify et le nom de domaine doivent être à votre nom. Votre prestataire peut travailler sur la boutique avec un accès collaborateur, sans en devenir propriétaire."}
+      ]
+    },
+    {
+      "h2": "Thème Shopify gratuit, payant ou personnalisé : lequel choisir ?",
+      "blocks": [
+        {"p": "Un thème Shopify gratuit suffit pour tester une idée, un thème payant apporte plus de sections et de finitions, et un thème Shopify personnalisé, créé ou retravaillé pour votre marque, est le seul moyen d’obtenir une boutique vraiment différente de celles de vos concurrents."},
+        {"table": {
+          "head": ["Critère", "Thème gratuit", "Thème payant", "Thème personnalisé"],
+          "rows": [
+            ["Coût", "Aucun pour le thème", "Achat unique, prix variable", "Sur devis, selon le travail"],
+            ["Design", "Propre, très répandu", "Plus riche, partagé avec d’autres boutiques", "Unique, à votre identité"],
+            ["Arabe (droite à gauche)", "À vérifier", "À vérifier", "Prévu dès la conception"],
+            ["Idéal pour", "Tester un marché", "Boutique établie, budget maîtrisé", "Marque qui veut se démarquer"]
+          ]
+        }},
+        {"p": "Souvent, le meilleur compromis consiste à partir d’un bon thème et à le personnaliser : sections sur mesure, fiche produit pensée pour le paiement à la livraison, bouton WhatsApp, typographie arabe soignée. Les thèmes Shopify sont écrits en Liquid : au-delà de l’éditeur visuel, les modifications profondes demandent un développeur."},
+        {"ul": [
+          "Testez la démo du thème sur téléphone, pas seulement sur ordinateur.",
+          "Vérifiez son affichage en arabe, de droite à gauche.",
+          "Mesurez sa vitesse avec PageSpeed Insights.",
+          "Regardez la date de sa dernière mise à jour et la qualité du support de l’éditeur."
+        ]}
+      ]
+    },
+    {
+      "h2": "Comment gérer le paiement sur Shopify au Maroc ?",
+      "blocks": [
+        {"p": "Sur Shopify, le paiement à la livraison s’active parmi les moyens de paiement manuels, sans développement ; le paiement par carte marocaine, lui, n’est pas une option standard et passe par une solution tierce à vérifier soigneusement."},
+        {"p": "<strong>Le paiement à la livraison.</strong> Le client valide sa commande sans payer, et vous la marquez comme payée une fois les fonds reçus du transporteur. Il est courant d’y ajouter une application de formulaire de commande simplifié (nom, téléphone, ville, adresse) directement sur la fiche produit, pour un achat plus rapide sur téléphone."},
+        {"p": "<strong>Le paiement par carte.</strong> La solution de paiement intégrée de Shopify n’est ouverte qu’aux entreprises de certains pays : vérifiez sur le site de Shopify si la vôtre y a accès. Pour les cartes marocaines, la piste habituelle reste le CMI, via votre banque, relié à Shopify par une passerelle ou une application tierce. Avant de vous engager, vérifiez avec votre banque et le prestataire la compatibilité, la sécurité et les frais, et demandez des références de boutiques qui l’utilisent."},
+        {"p": "<strong>Les frais.</strong> Selon la solution retenue, des frais de transaction Shopify peuvent s’ajouter aux commissions bancaires : faites le calcul complet avant de choisir."},
+        {"note": "Le plus sûr : lancez avec le paiement à la livraison, mesurez vos ventes, puis ajoutez la carte une fois la solution validée par votre banque et testée."}
+      ]
+    },
+    {
+      "h2": "Comment organiser la livraison d’une boutique Shopify au Maroc ?",
+      "blocks": [
+        {"p": "Shopify ne transporte pas vos colis : la livraison au Maroc s’organise avec une société de livraison, Amana ou vos propres livreurs, et Shopify sert à calculer les frais et à suivre les commandes."},
+        {"ol": [
+          "Créez vos zones (votre ville, grandes villes, reste du Maroc) avec un tarif et un délai pour chacune.",
+          "Confirmez chaque commande par téléphone ou WhatsApp avant l’expédition.",
+          "Transmettez-la au transporteur : saisie, export, ou application de connexion si votre transporteur en propose une.",
+          "Ajoutez le numéro de suivi dans Shopify pour que le client soit notifié.",
+          "Rapprochez régulièrement les sommes encaissées par le transporteur et les commandes livrées."
+        ]},
+        {"p": "Pour comparer les transporteurs et rédiger votre politique de retour, lisez notre guide pour <a href=\"creer-boutique-en-ligne-maroc.html\">créer une boutique en ligne au Maroc</a>."}
+      ]
+    },
+    {
+      "h2": "Peut-on avoir une boutique Shopify en arabe et en français ?",
+      "blocks": [
+        {"p": "Oui : Shopify permet de publier une boutique en plusieurs langues, chacune avec ses propres adresses, mais la qualité du résultat en arabe dépend du thème et de la traduction."},
+        {"ul": [
+          "Vérifiez que le thème gère la lecture de droite à gauche : menus, prix, panier et formulaires doivent s’inverser proprement.",
+          "Choisissez une typographie arabe lisible, accordée à votre police latine.",
+          "Faites relire les textes arabes par une personne, pas seulement par la traduction automatique.",
+          "Traduisez aussi les boutons, les messages d’erreur et les e-mails de confirmation."
+        ]}
+      ]
+    },
+    {
+      "h2": "Comment bien référencer une boutique Shopify sur Google ?",
+      "blocks": [
+        {"p": "Une boutique Shopify se référence bien si l’on soigne ce que la plateforme laisse modifier : titres, méta-descriptions, adresses, textes des produits et des collections, images et vitesse."},
+        {"ul": [
+          "Un titre et une méta-description uniques pour chaque produit et collection, avec les mots de vos clients (« djellaba homme en lin », « coffret huile d’argan »).",
+          "Des descriptions originales plutôt que celles des fournisseurs, et un texte alternatif sur chaque image.",
+          "Peu d’applications : chacune peut ajouter du code qui ralentit la boutique sur téléphone.",
+          "Le blog intégré pour répondre aux questions de vos clients (« comment choisir son caftan de mariage »).",
+          "Le plan du site, généré par Shopify, déclaré dans Google Search Console."
+        ]},
+        {"p": "Limite à connaître : Shopify impose la structure de ses adresses (/products/, /collections/) et laisse moins de liberté technique qu’un site sur-mesure. La méthode complète est dans notre guide du <a href=\"referencement-seo-maroc.html\">référencement SEO au Maroc</a>."}
+      ]
+    },
+    {
+      "h2": "Shopify vs WooCommerce vs sur-mesure : quand choisir autre chose ?",
+      "blocks": [
+        {"p": "Choisissez Shopify pour lancer vite sans gérer de technique, WooCommerce si votre site tourne déjà sous WordPress et que vous en assurez la maintenance, et le sur-mesure quand la boutique devient un actif central de votre marque."},
+        {"table": {
+          "head": ["Critère", "Shopify", "WooCommerce"],
+          "rows": [
+            ["Nature", "Plateforme hébergée, sur abonnement", "Extension gratuite de WordPress, hébergée par vous"],
+            ["Prise en main", "Très simple", "Plus technique"],
+            ["Maintenance", "Assurée par Shopify", "À votre charge : mises à jour, sécurité, sauvegardes"],
+            ["Paiement à la livraison", "Intégré", "Intégré"],
+            ["Carte marocaine", "Solution tierce à vérifier", "Extension à vérifier"],
+            ["Coûts récurrents", "Abonnement, applications", "Hébergement, extensions, maintenance"]
+          ]
+        }},
+        {"p": "Le sur-mesure devient le meilleur choix quand :"},
+        {"ul": [
+          "vous voulez un parcours d’achat pensé pour le Maroc : paiement à la livraison, CMI intégré directement, confirmation WhatsApp ;",
+          "vous préférez éviter qu’abonnement et applications s’additionnent chaque mois, année après année ;",
+          "votre marque exige un design unique et une version arabe irréprochable ;",
+          "vous avez besoin de fonctions spécifiques : vente aux professionnels, devis, connexion à votre logiciel de gestion ;",
+          "la vitesse et le référencement sont des priorités."
+        ]},
+        {"p": "Pour bien choisir votre prestataire, lisez <a href=\"agence-web-maroc.html\">comment choisir une agence web au Maroc</a>."}
+      ]
+    },
+    {
+      "h2": "Comment Digilago peut vous aider avec Shopify ?",
+      "blocks": [
+        {"p": "Digilago, agence web à El Jadida, accompagne les commerçants de tout le Maroc, sur Shopify comme en sur-mesure (voir nos <a href=\"services.html\">services</a>). Selon votre projet, nous mettons en place votre boutique Shopify (thème, produits, livraison, paiement à la livraison, langues), nous personnalisons un thème existant pour qu’il vous ressemble enfin, ou nous créons une boutique sur-mesure, codée à la main, quand Shopify atteint ses limites."},
+        {"p": "Le prix est écrit avant de commencer et vous découvrez une première version en 72 heures : si elle ne vous plaît pas, vous ne payez rien. <a href=\"demarrer.html\">Démarrez votre projet</a> ou écrivez-nous sur WhatsApp au +212 6 49 95 38 13, du lundi au samedi de 9 h à 19 h."}
+      ]
+    }
+  ],
+  "faq": [
+    {"q": "Shopify fonctionne-t-il au Maroc ?", "a": "Oui, un commerçant marocain peut créer une boutique Shopify et vendre à des clients dans tout le Maroc. Le paiement à la livraison s’active simplement, tandis que le paiement par carte marocaine demande une solution tierce à vérifier. La livraison s’organise avec vos propres transporteurs."},
+    {"q": "Combien coûte une boutique Shopify au Maroc ?", "a": "Il faut compter l’abonnement mensuel de Shopify selon la formule, le thème s’il est payant, les applications et d’éventuels frais de transaction, plus la mise en place, dont le prix dépend du travail. À titre indicatif, une boutique en ligne complète se situe au Maroc entre 15 000 et 60 000 MAD, toutes solutions confondues. Consultez la grille tarifaire à jour sur le site de Shopify."},
+    {"q": "Comment activer le paiement à la livraison sur Shopify ?", "a": "Dans les réglages de paiement de Shopify, le paiement à la livraison fait partie des moyens de paiement manuels et s’active sans développement. Vous marquez ensuite chaque commande comme payée une fois les fonds reçus du transporteur. Une application de formulaire simplifié peut accélérer la commande sur téléphone."},
+    {"q": "Peut-on accepter le CMI sur Shopify ?", "a": "Le CMI n’est pas un moyen de paiement standard de Shopify. Il faut passer par une passerelle ou une application tierce compatible, dont vous vérifierez la fiabilité, les frais et l’accord de votre banque avant de vous engager. Si le paiement par carte est central pour vous, une boutique sur-mesure permet une intégration directe."},
+    {"q": "Quel thème Shopify choisir pour une boutique marocaine ?", "a": "Choisissez un thème rapide sur téléphone, régulièrement mis à jour et compatible avec l’arabe de droite à gauche si vous visez une clientèle arabophone. Un thème gratuit suffit pour tester, un thème payant offre plus de sections, et un thème personnalisé vous distingue vraiment de vos concurrents."},
+    {"q": "Qu’est-ce qu’un thème Shopify personnalisé ?", "a": "C’est un thème créé ou retravaillé pour une marque précise : mise en page, sections, typographies, fiche produit et parcours d’achat. Il est développé en Liquid, le langage des thèmes Shopify, au-delà de ce que permet l’éditeur visuel. Le résultat est une boutique unique, au lieu d’un design partagé avec d’autres."},
+    {"q": "Shopify ou WooCommerce : lequel choisir au Maroc ?", "a": "Shopify est plus simple et vous décharge de l’hébergement et de la sécurité, contre un abonnement mensuel. WooCommerce est gratuit à installer et très flexible, mais demande un hébergement et une maintenance réguliers. Dans les deux cas, le paiement à la livraison est natif et la carte marocaine demande une solution à vérifier."},
+    {"q": "Faut-il un expert Shopify au Maroc pour lancer sa boutique ?", "a": "Pas forcément pour une petite boutique simple, montée avec un thème gratuit. Un expert Shopify devient utile pour personnaliser le thème, soigner la version arabe, configurer paiement et livraison pour le Maroc et éviter les applications qui ralentissent le site. Vérifiez qu’il ouvre le compte à votre nom et vous forme à l’administration."},
+    {"q": "Peut-on passer de Shopify à un site sur-mesure plus tard ?", "a": "Oui. Produits, clients et commandes s’exportent depuis Shopify et peuvent être repris dans une nouvelle boutique. Il faut surtout conserver les adresses des pages ou mettre en place des redirections, pour ne pas perdre votre référencement Google."}
+  ],
+  "related": ["creer-boutique-en-ligne-maroc.html", "guide-prix-site-web-maroc.html", "agence-web-maroc.html"]
+}

@@ -1,0 +1,185 @@
+{
+  "file": "creer-boutique-en-ligne-maroc.html",
+  "title": "Créer une boutique en ligne au Maroc : guide 2026 | Digilago",
+  "description": "Créer une boutique en ligne au Maroc : plateforme, paiement CMI ou à la livraison, transport, cadre légal, coûts et check-list pour vendre en ligne.",
+  "eyebrow": "Guide, 9 min de lecture",
+  "h1": ["Créer une boutique en ligne au Maroc :", "de l’idée à la première commande."],
+  "lead": "Plateforme, paiement par carte et à la livraison, transport, démarches légales, catalogue, WhatsApp et visibilité : tout ce qu’il faut savoir pour vendre en ligne au Maroc, dans l’ordre.",
+  "headline": "Créer une boutique en ligne au Maroc : étapes, plateforme, paiement, livraison, coûts et check-list",
+  "keywords": [
+    "créer une boutique en ligne au Maroc",
+    "boutique en ligne Maroc",
+    "site e-commerce Maroc",
+    "créer un store en ligne Maroc",
+    "vendre en ligne au Maroc",
+    "paiement en ligne Maroc",
+    "paiement à la livraison Maroc",
+    "paiement CMI"
+  ],
+  "sections": [
+    {
+      "h2": "Comment créer une boutique en ligne au Maroc ?",
+      "blocks": [
+        {"p": "Pour créer une boutique en ligne au Maroc, il vous faut une activité déclarée, une plateforme adaptée (sur-mesure, Shopify ou WooCommerce), les deux moyens de paiement que les clients attendent (la carte bancaire via le CMI et le paiement à la livraison), un transporteur fiable et un catalogue soigné. Ensuite, tout se joue sur la confiance : photos fidèles, réponses rapides sur WhatsApp et un site e-commerce que Google comprend. Si vous partez de zéro, notre guide de la <a href=\"creation-site-web-maroc.html\">création de site web au Maroc</a> pose les bases."}
+      ]
+    },
+    {
+      "h2": "Quelles sont les étapes pour lancer un store en ligne au Maroc ?",
+      "blocks": [
+        {"p": "Un store en ligne se lance en huit étapes, de la définition de l’offre à la première commande livrée."},
+        {"ol": [
+          "<strong>Définir l’offre</strong> : quels produits, pour quels clients, à quel prix, livrés où.",
+          "<strong>Déclarer l’activité</strong> : choisir un statut et obtenir les identifiants de l’entreprise.",
+          "<strong>Choisir la plateforme</strong> : sur-mesure, Shopify ou WooCommerce.",
+          "<strong>Réserver le nom de domaine</strong> : .ma pour l’ancrage marocain, .com pour l’international, toujours à votre nom.",
+          "<strong>Préparer le catalogue</strong> : photos, descriptions, prix, tailles, stocks.",
+          "<strong>Mettre en place paiement et livraison</strong> : paiement à la livraison dès le départ, carte via le CMI dès que votre banque l’a validée, contrat avec un transporteur.",
+          "<strong>Rédiger les pages légales</strong> : CGV, retours, mentions légales, confidentialité.",
+          "<strong>Tester, puis lancer</strong> : de vraies commandes de test sur téléphone avant d’ouvrir."
+        ]}
+      ]
+    },
+    {
+      "h2": "Sur-mesure, Shopify ou WooCommerce : quelle plateforme pour un site e-commerce au Maroc ?",
+      "blocks": [
+        {"p": "Il n’existe pas de meilleure plateforme dans l’absolu : Shopify convient à un lancement rapide, WooCommerce à ceux qui veulent rester sur WordPress, et le sur-mesure aux marques qui veulent une boutique rapide, unique et pensée pour les habitudes d’achat marocaines."},
+        {"table": {
+          "head": ["Critère", "Sur-mesure", "Shopify", "WooCommerce"],
+          "rows": [
+            ["Design", "Unique, à votre identité", "Thème du marché, personnalisable", "Thème du marché, personnalisable"],
+            ["Paiement à la livraison", "Parcours conçu autour de lui", "Intégré, souvent complété par une application", "Intégré"],
+            ["Paiement par carte (CMI)", "Intégration directe, après accord de la banque", "Pas standard : solution tierce à vérifier", "Par extension, à vérifier"],
+            ["Vitesse et SEO", "Maîtrisés de bout en bout", "Bonnes bases, adresses imposées", "Variables selon thème et extensions"],
+            ["Maintenance", "Assurée par le prestataire", "Assurée par Shopify", "À votre charge"],
+            ["Coûts récurrents", "Hébergement, maintenance", "Abonnement, applications", "Hébergement, extensions, maintenance"],
+            ["Idéal pour", "Marques qui veulent durer", "Tester un marché, lancer vite", "Site WordPress existant"]
+          ]
+        }},
+        {"p": "Thèmes, paiement, livraison : tout est détaillé dans notre guide <a href=\"shopify-maroc.html\">Shopify au Maroc</a>. Vous hésitez encore entre vitrine et boutique ? Voir <a href=\"guide-site-vitrine-boutique-application.html\">site vitrine, boutique ou application</a>."}
+      ]
+    },
+    {
+      "h2": "Comment fonctionne le paiement en ligne au Maroc ?",
+      "blocks": [
+        {"p": "Au Maroc, une boutique en ligne propose en général deux moyens de paiement : la carte bancaire, traitée par le CMI (Centre monétique interbancaire), et le paiement à la livraison, où le client règle le livreur en espèces."},
+        {"p": "<strong>La carte via le CMI.</strong> La démarche passe en principe par votre banque, qui étudie votre dossier et vous propose un contrat d’acceptation des paiements en ligne. Votre site est ensuite relié à une page de paiement sécurisée : vous ne conservez jamais les données bancaires du client. Demandez dès le départ les conditions et commissions de votre contrat."},
+        {"p": "<strong>Le paiement à la livraison.</strong> C’est le réflexe de nombreux acheteurs marocains face à une boutique qu’ils découvrent. Le livreur encaisse, puis le transporteur vous reverse les sommes selon votre contrat."},
+        {"p": "<strong>Comment les combiner ?</strong> Proposez les deux côte à côte : le paiement à la livraison déclenche la première commande, la carte réduit les colis refusés et accélère votre trésorerie. Confirmez chaque commande par téléphone ou WhatsApp avant l’expédition, et suivez de près les sommes que le transporteur doit vous reverser."}
+      ]
+    },
+    {
+      "h2": "Comment organiser la livraison et les retours ?",
+      "blocks": [
+        {"p": "La livraison se confie le plus souvent à une société spécialisée dans le e-commerce, à Amana, le service de messagerie de Barid Al-Maghrib, ou à vos propres livreurs en ville. Avant de signer, comparez :"},
+        {"ul": [
+          "la couverture : grandes villes seulement, ou aussi petites villes et zones rurales ;",
+          "les délais et le suivi du colis ;",
+          "le paiement à la livraison : fréquence de reversement et frais ;",
+          "le traitement des retours et des colis refusés."
+        ]},
+        {"p": "Affichez les frais et délais par ville avant la validation du panier : une surprise au moment de payer fait fuir le client. Pour les retours, une politique simple et visible suffit : délai, état exigé, qui paie le retour, remboursement ou échange."}
+      ]
+    },
+    {
+      "h2": "Quelles démarches légales pour vendre en ligne au Maroc ?",
+      "blocks": [
+        {"p": "Pour vendre en ligne au Maroc, il faut une activité déclarée, des identifiants comme l’ICE, des conditions générales de vente claires et une gestion des données clients conforme à la loi 09-08."},
+        {"ul": [
+          "<strong>Le statut</strong> : auto-entrepreneur pour démarrer seul, si votre activité y est éligible, ou société (SARL, SARL à associé unique).",
+          "<strong>L’ICE</strong> (identifiant commun de l’entreprise) : il figure sur vos factures et vous sera demandé dans de nombreuses démarches, notamment par votre banque.",
+          "<strong>Les données personnelles</strong> : la loi 09-08 encadre la collecte des noms, téléphones et adresses. Elle suppose une politique de confidentialité et, en principe, la déclaration de vos traitements auprès de la CNDP.",
+          "<strong>Les CGV</strong> : prix, livraison, paiement, retours. La loi 31-08 sur la protection du consommateur encadre aussi la vente à distance, notamment l’information du client et son droit de rétractation.",
+          "<strong>Les produits réglementés</strong> : cosmétiques ou produits alimentaires peuvent exiger des autorisations particulières."
+        ]},
+        {"note": "Ces informations sont générales et dépendent de votre situation : faites-les valider par un comptable ou un juriste avant le lancement."}
+      ]
+    },
+    {
+      "h2": "Comment réussir son catalogue et ses photos produits ?",
+      "blocks": [
+        {"p": "Un bon catalogue répond aux questions du client avant qu’il ne les pose : aspect, matière, taille, prix livré."},
+        {"ul": [
+          "Des photos nettes en lumière naturelle, puis en situation : un caftan porté vend mieux qu’un caftan sur cintre.",
+          "Un titre précis, « Caftan en velours vert émeraude, broderie sfifa », plutôt que « Caftan modèle 12 ».",
+          "Une description originale, pas celle du fournisseur : elle aide le client comme Google.",
+          "Guide des tailles, composition et délai de livraison sur chaque fiche, et des stocks à jour.",
+          "Des images légères (WebP ou AVIF) pour un chargement rapide sur téléphone."
+        ]}
+      ]
+    },
+    {
+      "h2": "Faut-il prendre les commandes sur WhatsApp ?",
+      "blocks": [
+        {"p": "Oui, en complément de la boutique, pas à sa place. Au Maroc, de nombreux clients veulent poser une question avant d’acheter : un bouton WhatsApp bien placé lève les derniers doutes."},
+        {"ul": [
+          "Un bouton « Commander sur WhatsApp » sur chaque fiche, qui pré-remplit le produit, la taille et le prix.",
+          "Une confirmation de chaque commande à la livraison par WhatsApp, avec récapitulatif et adresse.",
+          "Chaque commande WhatsApp saisie dans la boutique, pour des stocks justes."
+        ]}
+      ]
+    },
+    {
+      "h2": "Comment faire connaître une boutique en ligne au Maroc ?",
+      "blocks": [
+        {"p": "Une boutique en ligne se fait connaître par trois canaux complémentaires : les réseaux sociaux pour créer l’envie, Google pour capter ceux qui cherchent déjà, et les avis clients pour la confiance."},
+        {"ul": [
+          "<strong>Le référencement SEO</strong> : une page par catégorie (« caftans de mariage », « takchita »), les mots de vos clients dans les titres, un site rapide sur téléphone. Voir notre guide du <a href=\"referencement-seo-maroc.html\">référencement SEO au Maroc</a>.",
+          "<strong>L’arabe</strong> : beaucoup de clients cherchent en arabe ou en darija ; une version arabe soignée élargit votre clientèle.",
+          "<strong>La fiche Google Business</strong> : avec un showroom ou un point de retrait, elle vous place sur Google Maps (voir le <a href=\"guide-fiche-google-business-maroc.html\">guide de la fiche Google</a>).",
+          "<strong>Instagram, Facebook et TikTok</strong> : des produits portés, utilisés, déballés, et des publicités ciblées par ville.",
+          "<strong>Les assistants IA</strong> : données structurées et réponses claires aident ChatGPT ou Gemini à citer votre boutique (<a href=\"guide-google-chatgpt-maroc.html\">être trouvé sur Google et dans ChatGPT</a>).",
+          "<strong>Les avis</strong> : demandez-les après chaque livraison réussie."
+        ]}
+      ]
+    },
+    {
+      "h2": "Combien coûte une boutique en ligne au Maroc ?",
+      "blocks": [
+        {"p": "Sur le marché marocain, une boutique en ligne avec catalogue, paiement CMI ou à la livraison et gestion des commandes coûte environ <strong>15 000 à 60 000 MAD</strong>, selon le catalogue, les fonctionnalités et le niveau de personnalisation. Ces montants sont indicatifs et varient selon les prestataires. S’y ajoutent :"},
+        {"ul": [
+          "le nom de domaine (.ma ou .com), l’hébergement et la maintenance, chaque année ;",
+          "sur Shopify, l’abonnement, le thème s’il est payant et les applications ;",
+          "les commissions bancaires et les frais de livraison, selon vos contrats ;",
+          "le marketing : photos, contenus, publicité."
+        ]},
+        {"p": "Le détail figure dans notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix d’un site web au Maroc</a>. Exigez un devis écrit, et que le nom de domaine, le code et les contenus soient à votre nom."}
+      ]
+    },
+    {
+      "h2": "Check-list : votre boutique en ligne est-elle prête à être lancée ?",
+      "blocks": [
+        {"p": "Votre boutique est prête si vous pouvez cocher chacun de ces points :"},
+        {"ul": [
+          "Le nom de domaine est à votre nom et le site s’affiche en HTTPS.",
+          "Chaque produit a des photos nettes, un prix, une description et un stock à jour.",
+          "Le paiement à la livraison fonctionne et le paiement par carte a été testé de bout en bout.",
+          "Les frais et délais de livraison s’affichent avant la validation.",
+          "CGV, politique de retour, mentions légales et confidentialité sont en ligne.",
+          "Le client reçoit une confirmation de commande par e-mail ou WhatsApp.",
+          "Le site est rapide sur un téléphone d’entrée de gamme, et l’arabe s’affiche de droite à gauche.",
+          "Google Search Console et un outil de mesure d’audience sont installés.",
+          "Plusieurs commandes test ont été expédiées, et l’une d’elles retournée."
+        ]}
+      ]
+    },
+    {
+      "h2": "Comment Digilago peut vous aider à créer votre boutique en ligne ?",
+      "blocks": [
+        {"p": "Digilago, agence web basée à El Jadida, crée des boutiques en ligne pour les commerces, les artisans et les marques de tout le Maroc : en sur-mesure, codées à la main, ou sur Shopify quand c’est le choix le plus pertinent. Paiement à la livraison et par carte, suivi des commandes, WhatsApp, trois langues : voir nos <a href=\"services.html\">services</a> et nos <a href=\"realisations.html\">idées de sites</a>."},
+        {"p": "Le prix est annoncé par écrit avant de commencer, et vous découvrez une première version en 72 heures : si elle ne vous plaît pas, vous ne payez rien. <a href=\"demarrer.html\">Décrivez votre projet en deux minutes</a> ou écrivez-nous sur WhatsApp au +212 6 49 95 38 13."}
+      ]
+    }
+  ],
+  "faq": [
+    {"q": "Combien coûte la création d’une boutique en ligne au Maroc ?", "a": "Sur le marché marocain, une boutique en ligne avec catalogue, paiement CMI ou à la livraison et gestion des commandes coûte environ 15 000 à 60 000 MAD, à titre indicatif, selon le nombre de produits et les fonctionnalités. Il faut y ajouter chaque année le nom de domaine, l’hébergement et la maintenance."},
+    {"q": "Peut-on vendre en ligne au Maroc sans paiement par carte ?", "a": "Oui. Une boutique en ligne marocaine peut démarrer avec le seul paiement à la livraison, que les clients connaissent bien. Le paiement par carte via le CMI peut être ajouté ensuite, une fois le contrat signé avec votre banque."},
+    {"q": "Comment accepter le paiement par carte sur un site e-commerce au Maroc ?", "a": "Le paiement par carte passe en général par le CMI (Centre monétique interbancaire). La démarche commence auprès de votre banque, qui vous propose un contrat d’acceptation des paiements en ligne. Votre site est ensuite relié à la page de paiement sécurisée, puis testé avant l’ouverture."},
+    {"q": "Faut-il une société pour ouvrir une boutique en ligne au Maroc ?", "a": "Il faut au minimum une activité déclarée : le statut d’auto-entrepreneur permet de démarrer seul si votre activité y est éligible, une société convient à une activité plus importante. Une activité déclarée vous donne notamment un ICE, nécessaire pour facturer. Faites valider votre choix par un comptable."},
+    {"q": "Shopify ou site sur-mesure : que choisir pour une boutique au Maroc ?", "a": "Shopify convient pour lancer vite et tester un marché, contre un abonnement mensuel et des applications payantes. Le sur-mesure convient aux marques qui veulent un design unique, une boutique très rapide et un parcours pensé pour le paiement à la livraison et le CMI."},
+    {"q": "Quel transporteur choisir pour livrer ses commandes au Maroc ?", "a": "Comparez les sociétés de livraison spécialisées dans le e-commerce et Amana, le service de messagerie de Barid Al-Maghrib, sur la couverture, les délais, le suivi et la gestion du paiement à la livraison. Vérifiez surtout à quelle fréquence les sommes encaissées vous sont reversées."},
+    {"q": "Comment limiter les commandes refusées en paiement à la livraison ?", "a": "Confirmez chaque commande par téléphone ou WhatsApp avant l’expédition, affichez clairement les frais et les délais, et livrez vite. Des photos fidèles et un guide des tailles évitent aussi les déceptions à l’ouverture du colis."},
+    {"q": "La loi 09-08 s’applique-t-elle à une boutique en ligne ?", "a": "Oui : les noms, téléphones et adresses collectés par une boutique en ligne sont des données personnelles au sens de la loi 09-08. La boutique doit publier une politique de confidentialité claire et, en principe, déclarer ses traitements auprès de la CNDP. Un juriste peut vous confirmer les démarches adaptées à votre cas."},
+    {"q": "Combien de temps faut-il pour lancer une boutique en ligne au Maroc ?", "a": "Le délai dépend surtout de la préparation du catalogue et de l’activation du paiement par carte, qui demande des échanges avec la banque ; le paiement à la livraison peut fonctionner dès le premier jour. Chez Digilago, vous découvrez une première version en 72 heures, puis la mise en ligne suit vos validations."}
+  ],
+  "related": ["shopify-maroc.html", "guide-prix-site-web-maroc.html", "referencement-seo-maroc.html"]
+}

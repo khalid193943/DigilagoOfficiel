@@ -1,0 +1,170 @@
+{
+  "file": "agence-web-maroc.html",
+  "title": "Agence web au Maroc : comment bien la choisir | Digilago",
+  "description": "Agence web au Maroc : ce qu’elle fait, les questions à poser, les signaux d’alerte et le contenu d’un bon devis. Le guide pour choisir sans vous tromper.",
+  "eyebrow": "Guide, 9 min de lecture",
+  "h1": ["Choisir une agence web au Maroc :", "les bonnes questions avant de signer."],
+  "lead": "Agence, freelance ou site fait soi-même ? Ce que fait vraiment une agence web au Maroc, les questions à poser, les signaux d’alerte, le contenu d’un bon devis et la propriété de votre site.",
+  "headline": "Choisir une agence web au Maroc : questions à poser, signaux d’alerte, devis et propriété du site (guide 2026)",
+  "keywords": [
+    "agence web Maroc",
+    "agence digitale Maroc",
+    "meilleure agence web Maroc",
+    "agence de développement web",
+    "agence web Casablanca",
+    "agence web Rabat",
+    "agence web Marrakech",
+    "agence web El Jadida",
+    "devis site web Maroc",
+    "création site web Maroc"
+  ],
+  "sections": [
+    {
+      "h2": "Que fait une agence web au Maroc, concrètement ?",
+      "blocks": [
+        {"p": "Une agence web au Maroc conçoit, développe, met en ligne et fait vivre votre site internet : design, code, textes, référencement, hébergement et maintenance, avec une seule équipe et un seul interlocuteur. Choisir une agence, c’est donc choisir un partenaire pour plusieurs années, pas seulement un fournisseur."},
+        {"p": "Agence web, agence digitale, agence de développement web : au Maroc, les prestataires se présentent sous des noms différents selon leur spécialité :"},
+        {"ul": [
+          "<strong>Agence web</strong> : sites vitrines, sites sur mesure et boutiques en ligne.",
+          "<strong>Agence digitale</strong> : un périmètre plus large, qui ajoute souvent les réseaux sociaux, la publicité en ligne et l’identité de marque.",
+          "<strong>Agence de développement web</strong> : centrée sur la technique, pour les applications web et mobiles, les plateformes et les logiciels métier.",
+          "<strong>Agence SEO</strong> : spécialisée dans le référencement sur Google, parfois sans créer de sites."
+        ]},
+        {"p": "Pour une PME, l’idéal est une agence qui réunit le site, la fiche Google, le référencement et le suivi : vous évitez de coordonner trois prestataires qui se renvoient la balle. Pour comprendre les étapes d’un projet, lisez notre guide de la <a href=\"creation-site-web-maroc.html\">création de site web au Maroc</a>."}
+      ]
+    },
+    {
+      "h2": "Agence web, freelance ou site fait soi-même : quelle différence ?",
+      "blocks": [
+        {"p": "L’agence apporte une équipe complète et de la continuité, le freelance un contact direct et souvent un budget plus léger, le site fait soi-même une solution de départ si vous avez du temps. Plus votre site doit vous apporter de clients, plus l’accompagnement compte."},
+        {"table": {
+          "head": ["Critère", "Agence web", "Freelance", "Fait soi-même"],
+          "rows": [
+            ["Qui fait le travail", "Une équipe : design, développement, contenus, SEO", "Une personne, parfois aidée de sous-traitants", "Vous, avec un constructeur de sites"],
+            ["Compétences", "Larges, de la stratégie à la maintenance", "Variables, souvent fortes sur un domaine", "Limitées à votre temps et à vos connaissances"],
+            ["Budget", "Plus élevé au départ, généralement tout compris", "Souvent plus bas, selon le profil", "Abonnement de la plateforme, plus votre temps"],
+            ["Suivi après lancement", "Maintenance et support prévus par écrit", "Selon la disponibilité de la personne", "À votre charge"],
+            ["Risque principal", "Payer des options inutiles", "Indisponibilité ou départ du freelance", "Site générique, lent ou mal référencé"],
+            ["Idéal pour", "Entreprises qui veulent des résultats durables", "Projets simples et bien définis", "Tester une idée avec un tout petit budget"]
+          ]
+        }},
+        {"note": "Un bon freelance vaut mieux qu’une mauvaise agence. Quel que soit votre choix, les questions ci-dessous s’appliquent de la même façon. Pour une boutique, une plateforme comme Shopify peut aussi être un bon départ : voir <a href=\"shopify-maroc.html\">Shopify au Maroc</a>."}
+      ]
+    },
+    {
+      "h2": "Comment reconnaître la meilleure agence web au Maroc pour votre projet ?",
+      "blocks": [
+        {"p": "Il n’existe pas de « meilleure agence web au Maroc » dans l’absolu : la meilleure est celle qui comprend votre métier, montre des résultats vérifiables, annonce un prix clair par écrit et reste joignable après le lancement. Cinq critères permettent de la reconnaître."},
+        {"ol": [
+          "<strong>Des réalisations vérifiables.</strong> Des sites en ligne, que vous pouvez ouvrir sur votre téléphone, idéalement dans votre secteur.",
+          "<strong>Des sites rapides et bien référencés.</strong> Tapez le métier et la ville d’un de ses clients sur Google : son site apparaît-il ?",
+          "<strong>De l’écoute.</strong> Une bonne agence vous interroge sur vos clients et vos objectifs avant de parler technique.",
+          "<strong>De la transparence.</strong> Un devis écrit et détaillé, sans frais cachés, et des réponses nettes sur la propriété du site.",
+          "<strong>De la disponibilité.</strong> Un interlocuteur identifié, joignable sur WhatsApp ou par téléphone, qui répond vite."
+        ]},
+        {"p": "Les classements « top 10 des agences » trouvés en ligne sont parfois publicitaires : fiez-vous plutôt aux sites réalisés et aux avis Google de l’agence."}
+      ]
+    },
+    {
+      "h2": "Quelles questions poser à une agence web avant de signer ?",
+      "blocks": [
+        {"p": "Posez des questions précises sur le prix, les délais, la propriété, le référencement et le suivi : une agence sérieuse y répond simplement, et par écrit. Voici les dix questions à garder sous la main."},
+        {"ol": [
+          "Le site sera-t-il conçu sur mesure ou à partir d’un thème ?",
+          "Qu’est-ce qui est inclus dans le prix, et qu’est-ce qui ne l’est pas ?",
+          "Puis-je voir une première version avant de payer la totalité ?",
+          "Combien de séries de retouches sont prévues ?",
+          "Le nom de domaine, l’hébergement et le code seront-ils à mon nom ?",
+          "Qui rédige les textes en français, en arabe et en anglais ?",
+          "Que faites-vous concrètement pour le référencement et la fiche Google ?",
+          "Quels sont les coûts annuels après la mise en ligne ?",
+          "Qui me répond en cas de problème, par quel canal et sous quel délai ?",
+          "Pourrai-je modifier mes contenus moi-même, et serai-je formé ?"
+        ]}
+      ]
+    },
+    {
+      "h2": "Quels sont les signaux d’alerte quand on choisit une agence web ?",
+      "blocks": [
+        {"p": "Méfiez-vous d’une agence qui promet sans écrire, qui garde vos accès ou qui garantit la première place sur Google : ce sont les trois signaux d’alerte les plus courants. D’autres sont tout aussi parlants."},
+        {"ul": [
+          "<strong>« Première place garantie sur Google. »</strong> Personne ne peut la garantir : Google décide seul de son classement. Voir notre guide du <a href=\"referencement-seo-maroc.html\">référencement SEO au Maroc</a>.",
+          "<strong>Pas de devis écrit</strong>, ou un devis d’une ligne du type « site web : X MAD ».",
+          "<strong>Un nom de domaine enregistré au nom de l’agence</strong>, ou un refus de vous transmettre les accès.",
+          "<strong>Un portfolio invérifiable</strong> : des captures d’écran, mais aucun site en ligne à visiter.",
+          "<strong>Des sites lents sur téléphone</strong> parmi les réalisations présentées.",
+          "<strong>Un prix anormalement bas</strong> sans explication : thème générique, textes absents, aucun suivi.",
+          "<strong>Aucun mot sur la maintenance</strong> ni sur les coûts annuels.",
+          "<strong>Une agence injoignable</strong> avant même la signature : ce sera pire après."
+        ]}
+      ]
+    },
+    {
+      "h2": "Que doit contenir un bon devis de création de site web ?",
+      "blocks": [
+        {"p": "Un bon devis décrit précisément ce que vous recevez, à quel prix, dans quels délais et à quelles conditions, pour qu’aucune mauvaise surprise ne soit possible ensuite. S’il tient en une ligne, demandez le détail."},
+        {"ul": [
+          "<strong>Le périmètre</strong> : nombre de pages, langues, fonctionnalités (formulaire, WhatsApp, réservation, paiement CMI ou à la livraison).",
+          "<strong>Les contenus</strong> : qui rédige les textes, qui fournit les photos, qui s’occupe des traductions.",
+          "<strong>Le référencement</strong> : ce qui est fait au lancement (titres, données structurées, Search Console, fiche Google).",
+          "<strong>Le planning</strong> : date de la première version, nombre de retouches, date de mise en ligne.",
+          "<strong>Les coûts récurrents</strong> : nom de domaine, hébergement et maintenance, chaque année.",
+          "<strong>La propriété</strong> : domaine, code, contenus et accès à votre nom.",
+          "<strong>Le paiement</strong> : échéancier, montants HT ou TTC, facture en bonne et due forme.",
+          "<strong>La formation et le support</strong> après la mise en ligne."
+        ]},
+        {"p": "Pour situer un devis, gardez en tête les fourchettes indicatives observées au Maroc : environ 3 000 à 8 000 MAD pour un site vitrine à partir d’un thème, 8 000 à 25 000 MAD pour un site vitrine sur-mesure et multilingue, 15 000 à 60 000 MAD pour une boutique en ligne. Le détail est dans notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix d’un site web au Maroc</a>."}
+      ]
+    },
+    {
+      "h2": "À qui appartiennent le site, le nom de domaine et le code ?",
+      "blocks": [
+        {"p": "Ils doivent vous appartenir : le nom de domaine est enregistré à votre nom, et les contenus comme le code vous sont cédés, noir sur blanc dans le devis ou le contrat. C’est votre protection si vous changez un jour de prestataire."},
+        {"ul": [
+          "<strong>Nom de domaine</strong> : vous en êtes le titulaire, avec vos propres accès chez le bureau d’enregistrement.",
+          "<strong>Code et fichiers</strong> : vous pouvez en obtenir une copie à tout moment.",
+          "<strong>Contenus</strong> : les textes et photos produits pour vous vous reviennent ; vérifiez les droits des images utilisées.",
+          "<strong>Comptes Google</strong> : fiche Google Business, Search Console et Analytics sont créés à votre nom, l’agence y est simplement invitée."
+        ]},
+        {"note": "Exemple : une école privée à El Jadida qui change d’agence doit pouvoir récupérer son domaine et son site sans négociation ni frais surprise. Si ce n’est pas possible, le contrat était mal rédigé."}
+      ]
+    },
+    {
+      "h2": "Faut-il une agence web à Casablanca, Rabat ou Marrakech pour être bien servi ?",
+      "blocks": [
+        {"p": "Non : une agence peut parfaitement accompagner une entreprise d’une autre ville, car l’essentiel du travail se fait à distance. Ce qui compte, ce n’est pas la distance, mais la réactivité, la clarté des échanges et la connaissance de votre marché local."},
+        {"p": "Chercher une « agence web Casablanca », une « agence web Rabat » ou une « agence web Marrakech » est un réflexe naturel, mais regarder tout le Maroc élargit votre choix. Une agence web à El Jadida peut créer le site d’un dentiste à Casablanca, d’un riad à Fès ou d’une boutique de caftans à Marrakech aussi bien qu’une agence voisine, si elle s’intéresse à leur clientèle et aux mots que celle-ci tape sur Google. Un projet à distance bien mené se déroule ainsi :"},
+        {"ol": [
+          "Un premier échange court, par téléphone, en visio ou sur WhatsApp.",
+          "L’envoi de vos informations : logo, photos, textes, horaires, services.",
+          "Un lien vers une première version, à ouvrir sur votre téléphone.",
+          "Vos retours, par message écrit ou vocal, puis les ajustements.",
+          "La mise en ligne, la fiche Google et une courte formation en visio.",
+          "Un suivi régulier, avec un rendez-vous sur place quand c’est utile."
+        ]}
+      ]
+    },
+    {
+      "h2": "Comment Digilago peut vous aider",
+      "blocks": [
+        {"p": "Digilago est une agence web basée à El Jadida qui accompagne des entreprises dans tout le Maroc, ainsi que des clients à l’étranger, à distance et sur place quand c’est utile. Nous réunissons le site sur mesure en trois langues, la fiche Google, le référencement et la visibilité dans les IA, avec un seul interlocuteur. Le prix est annoncé par écrit avant de commencer, la première version arrive en 72 heures et, si elle ne vous plaît pas, vous ne payez rien ; trois séries de retouches sont incluses. Parcourez nos <a href=\"services.html\">services</a> et nos <a href=\"realisations.html\">idées de sites par métier</a>, ou <a href=\"demarrer.html\">démarrez votre projet</a> : nous répondons du lundi au samedi, de 9 h à 19 h, sur WhatsApp au +212 6 49 95 38 13. D’autres questions ? Consultez notre <a href=\"faq.html\">FAQ</a>."}
+      ]
+    }
+  ],
+  "faq": [
+    {"q": "Combien coûte une agence web au Maroc ?", "a": "Le prix dépend du projet plus que de l’agence : à titre indicatif, comptez environ 3 000 à 8 000 MAD pour un site vitrine à partir d’un thème, 8 000 à 25 000 MAD pour un site vitrine sur-mesure et multilingue, et 15 000 à 60 000 MAD pour une boutique en ligne. Ces fourchettes varient selon les prestataires. Exigez un devis écrit qui détaille aussi les coûts annuels."},
+    {"q": "Quelle est la meilleure agence web au Maroc ?", "a": "Il n’y a pas de meilleure agence dans l’absolu, seulement la mieux adaptée à votre projet. Vérifiez ses réalisations en ligne, la vitesse de ses sites sur téléphone, leur présence sur Google et les avis de ses clients. Une agence sérieuse annonce son prix par écrit et enregistre le nom de domaine à votre nom."},
+    {"q": "Agence web ou freelance : que choisir ?", "a": "Un freelance convient bien à un projet simple et bien défini, souvent avec un budget plus léger. Une agence apporte une équipe complète (design, développement, contenus, référencement) et une continuité si une personne s’absente. Plus le site doit vous apporter de clients dans la durée, plus l’agence se justifie."},
+    {"q": "Faut-il choisir une agence web dans sa ville ?", "a": "Ce n’est pas nécessaire : une agence peut accompagner une entreprise de Casablanca, Rabat, Marrakech ou Tanger entièrement à distance, par téléphone, visio et WhatsApp. L’important est sa réactivité et sa compréhension de votre marché local. Une rencontre sur place reste possible quand elle est utile."},
+    {"q": "Le nom de domaine doit-il être à mon nom ?", "a": "Oui, toujours. Qu’il soit en .ma ou en .com, le nom de domaine doit être enregistré avec vous comme titulaire, et vous devez disposer de vos propres accès. Sinon, vous risquez de perdre votre adresse le jour où vous changez de prestataire."},
+    {"q": "Faut-il payer la totalité du site avant de commencer ?", "a": "C’est déconseillé. Une pratique courante consiste à verser un acompte au démarrage, puis le solde à la livraison, après validation. Certaines agences, comme Digilago, présentent même une première version avant tout engagement."},
+    {"q": "Que doit contenir un devis de site web ?", "a": "Un devis sérieux précise le nombre de pages et de langues, les fonctionnalités, qui fournit les textes et les photos, ce qui est fait pour le référencement, le planning, les coûts annuels et la propriété du site. Il indique aussi les modalités de paiement et si les montants sont HT ou TTC. Un devis d’une seule ligne ne permet pas de comparer les offres."},
+    {"q": "Une agence peut-elle garantir la première place sur Google ?", "a": "Non. Personne ne contrôle le classement de Google, et une agence qui garantit la première place doit éveiller votre méfiance. Une méthode sérieuse (site rapide, contenus utiles, fiche Google complète, avis) vous en rapproche progressivement ; sur des recherches concurrentielles, comptez généralement trois à six mois de travail régulier."},
+    {"q": "Comment changer d’agence web sans perdre son site ?", "a": "Récupérez d’abord vos accès : nom de domaine, hébergement, code, fiche Google, Search Console et Analytics. Faites une sauvegarde complète du site et de ses contenus avant toute migration. Si votre contrat prévoit que tout est à votre nom, le changement se fait sans difficulté."}
+  ],
+  "related": [
+    "creation-site-web-maroc.html",
+    "guide-prix-site-web-maroc.html",
+    "referencement-seo-maroc.html"
+  ]
+}

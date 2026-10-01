@@ -1,0 +1,346 @@
+{
+  "file": "faq.html",
+  "title": "FAQ site web, e-commerce, Shopify et SEO au Maroc | Digilago",
+  "description": "Prix d’un site web, délais, boutique en ligne, Shopify, application, SEO, ChatGPT : 60 réponses claires avant de vous lancer au Maroc.",
+  "eyebrow": "Questions fréquentes, 60 réponses",
+  "h1": [
+    "Site web, e-commerce, SEO et IA au Maroc :",
+    "toutes les réponses, sans jargon."
+  ],
+  "lead": "Prix, délais, boutique en ligne, Shopify, application mobile, référencement Google et visibilité dans ChatGPT : les réponses directes aux questions que se posent les entreprises marocaines avant de créer leur site web ou de choisir une agence.",
+  "headline": "Questions fréquentes : site web, boutique en ligne, application, SEO et IA au Maroc",
+  "keywords": [
+    "questions fréquentes site web Maroc",
+    "création site web Maroc",
+    "création site internet Maroc",
+    "prix site web Maroc",
+    "site e-commerce Maroc",
+    "boutique en ligne Maroc",
+    "Shopify Maroc",
+    "application mobile Maroc",
+    "référencement SEO Maroc",
+    "agence web Maroc",
+    "apparaître dans ChatGPT",
+    "GEO Maroc",
+    "nom de domaine .ma"
+  ],
+  "sections": [
+    {
+      "h2": "Que faut-il savoir avant de créer un site web au Maroc ?",
+      "blocks": [
+        {
+          "p": "Avant de créer un site web au Maroc, cinq décisions comptent : le type d’outil (site vitrine, boutique en ligne ou application), le budget annoncé par écrit, la propriété de votre nom de domaine et de vos contenus, la visibilité sur Google et dans les assistants IA, et le suivi après la mise en ligne. Cette page rassemble les réponses courtes aux questions les plus posées sur chacun de ces sujets ; chaque réponse renvoie au guide détaillé quand vous voulez aller plus loin."
+        },
+        {
+          "ul": [
+            "<strong>Prix</strong> : d’environ 3 000 MAD pour un site vitrine fait à partir d’un thème à plus de 50 000 MAD pour une plateforme sur-mesure (fourchettes indicatives du <a href=\"guide-prix-site-web-maroc.html\">guide des prix au Maroc</a>).",
+            "<strong>Point de départ</strong> : pour la plupart des entreprises, un site vitrine bien référencé et une fiche Google soignée.",
+            "<strong>Vente en ligne</strong> : paiement par carte via le CMI et paiement à la livraison, à combiner selon votre clientèle.",
+            "<strong>Visibilité</strong> : Google, Google Maps et les assistants comme ChatGPT, Gemini ou Perplexity se travaillent ensemble."
+          ]
+        },
+        {
+          "note": "Votre question n’est pas dans la liste ? Posez-la sur WhatsApp au +212 6 49 95 38 13 ou à contact@digilago.ma : Digilago répond le jour même, du lundi au samedi, de 9 h à 19 h."
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "name": "Créer un site web",
+      "faq": [
+        {
+          "q": "Comment créer un site internet au Maroc ?",
+          "a": "Pour créer un site internet au Maroc, fixez d’abord son objectif (être trouvé, recevoir des demandes ou vendre), puis choisissez la méthode : outil à faire soi-même, thème adapté ou site sur-mesure réalisé par une agence web. Viennent ensuite le nom de domaine (.ma ou .com), les textes et les photos, la mise en ligne sécurisée en HTTPS et la création de votre fiche Google. Toutes les étapes sont détaillées dans notre <a href=\"creation-site-web-maroc.html\">guide de la création de site web au Maroc</a>."
+        },
+        {
+          "q": "Pourquoi mon entreprise a-t-elle besoin d’un site web ?",
+          "a": "Parce qu’avant d’appeler ou de se déplacer, vos clients tapent votre métier et votre ville sur Google : si vous n’apparaissez pas, c’est un concurrent qu’ils contactent. Un site web présente vos services, rassure avec de vraies photos et des avis, et reçoit des demandes le soir comme le week-end. Même quand vos clients viennent par le bouche-à-oreille, ils vérifient presque toujours en ligne avant d’appeler (lire <a href=\"guide-bon-moment-maroc.html\">pourquoi c’est le bon moment de se lancer</a>)."
+        },
+        {
+          "q": "Quelle est la différence entre un site vitrine, une boutique en ligne et une application ?",
+          "a": "Un site vitrine présente votre entreprise et vous apporte des contacts, une boutique en ligne vend vos produits à distance (catalogue, panier, paiement, livraison), et une application mobile fidélise des clients qui reviennent chaque semaine. La plupart des entreprises marocaines commencent par un site vitrine bien référencé et une fiche Google, puis ajoutent une boutique ou une réservation sans tout refaire. Notre comparatif <a href=\"guide-site-vitrine-boutique-application.html\">site vitrine, boutique ou application</a> vous aide à choisir."
+        },
+        {
+          "q": "Site sur-mesure ou thème : que choisir pour son entreprise ?",
+          "a": "Pour une entreprise qui veut être trouvée et durer, un site sur-mesure est généralement le meilleur investissement ; un thème peut suffire pour tester une idée avec un petit budget. Un thème coûte moins cher et se lance vite, mais il est souvent plus lent, peu différenciant et plus difficile à bien référencer. Un site sur-mesure est dessiné pour votre marque et structuré dès le départ pour Google et les assistants IA : il demande un budget plus élevé, mais il attire des clients pendant des années."
+        },
+        {
+          "q": "WordPress est-il une bonne solution pour un site au Maroc ?",
+          "a": "WordPress peut convenir à un site vitrine ou à un blog, à condition d’être bien installé et régulièrement entretenu. Son point faible est la maintenance : le thème et les extensions doivent être mis à jour souvent, sinon le site ralentit et devient vulnérable aux piratages. Avant de choisir WordPress, demandez à votre prestataire qui assurera ces mises à jour, et à quel coût chaque année."
+        },
+        {
+          "q": "Peut-on créer son site soi-même avec Wix, WordPress ou Shopify ?",
+          "a": "Oui, ces outils permettent de créer un site sans coder, et c’est une option raisonnable pour démarrer avec un très petit budget. Le temps nécessaire est en revanche souvent sous-estimé : textes, photos, version arabe, vitesse sur téléphone et référencement restent entièrement à votre charge. Si votre site doit devenir une vraie source de clients, passer par une agence web vous fait gagner du temps et vous évite de tout refaire plus tard."
+        },
+        {
+          "q": "Mon site doit-il être en français, en arabe et en anglais ?",
+          "a": "Au Maroc, un site en français et en arabe parle à la plupart de vos clients, et l’anglais devient utile pour le tourisme, l’export ou une clientèle internationale. Chaque langue doit être vraiment rédigée, et non traduite automatiquement, avec un affichage soigné de l’arabe de droite à gauche. Chaque version doit aussi être signalée à Google (balises hreflang) pour apparaître dans les recherches faites dans sa langue."
+        }
+      ]
+    },
+    {
+      "name": "Prix et délais",
+      "faq": [
+        {
+          "q": "Combien coûte un site internet au Maroc ?",
+          "a": "Au Maroc, le prix d’un site internet va d’environ 3 000 MAD pour un site vitrine simple fait à partir d’un thème à plus de 50 000 MAD pour une plateforme sur-mesure, et la plupart des PME se situent entre les deux. Ces fourchettes sont indicatives et varient selon les prestataires : demandez toujours un devis écrit et détaillé. Le détail par type de site figure dans notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix d’un site web au Maroc</a>."
+        },
+        {
+          "q": "Quel est le prix d’un site vitrine au Maroc ?",
+          "a": "Un site vitrine coûte environ 3 000 à 8 000 MAD lorsqu’il est réalisé à partir d’un thème, et environ 8 000 à 25 000 MAD lorsqu’il est sur-mesure, multilingue et optimisé pour le référencement. L’écart s’explique surtout par le nombre de pages et de langues, la qualité des textes et le travail réalisé pour Google. Ces montants sont indicatifs : seul un devis écrit vous donne le prix réel de votre projet."
+        },
+        {
+          "q": "Combien coûte un site avec prise de rendez-vous ou réservation en ligne ?",
+          "a": "Au Maroc, un site avec réservation ou prise de rendez-vous en ligne coûte environ 12 000 à 35 000 MAD, selon la complexité de l’agenda, des rappels et du paiement. C’est la formule typique d’un cabinet médical, d’un institut de beauté, d’un riad ou d’une salle de sport. Ces montants sont indicatifs et doivent être confirmés par un devis écrit."
+        },
+        {
+          "q": "Pourquoi les prix des sites web varient-ils autant d’une agence à l’autre ?",
+          "a": "Les prix varient surtout selon cinq éléments : le design (thème acheté ou création pour votre marque), le nombre de langues, les fonctionnalités (réservation, paiement, espace client, WhatsApp), le travail de référencement et les contenus (textes, photos, fiche Google). Deux devis au même montant peuvent donc couvrir des prestations très différentes. Comparez toujours ce qui est inclus, et pas seulement le prix final."
+        },
+        {
+          "q": "Quels frais prévoir chaque année après la création d’un site ?",
+          "a": "Chaque année, prévoyez le renouvellement du nom de domaine (.ma ou .com), l’hébergement et la maintenance : mises à jour, sécurité et sauvegardes. Gardez aussi un budget pour les évolutions, comme de nouvelles pages, de nouvelles offres ou une nouvelle langue. Un bon devis détaille ces coûts récurrents dès le départ, pour éviter toute surprise."
+        },
+        {
+          "q": "Combien de temps faut-il pour créer un site web au Maroc ?",
+          "a": "Selon les prestataires, la création d’un site vitrine prend de quelques jours à plusieurs semaines, et une boutique en ligne ou une application demande nettement plus. Le délai dépend surtout de la rapidité à réunir les textes, les photos et les validations. Chez Digilago, une première version de votre site est prête en 72 heures, puis trois séries de retouches sont incluses avant la mise en ligne."
+        }
+      ]
+    },
+    {
+      "name": "Boutique en ligne et e-commerce",
+      "faq": [
+        {
+          "q": "Comment créer un site e-commerce au Maroc ?",
+          "a": "Pour créer un site e-commerce au Maroc, préparez d’abord votre catalogue (photos, prix, stocks), puis choisissez entre une plateforme comme Shopify et une boutique sur-mesure. Mettez ensuite en place le paiement (carte bancaire via le CMI et paiement à la livraison), organisez la livraison avec un transporteur ou Amana, et publiez vos conditions générales de vente. Le pas à pas complet est dans notre guide pour <a href=\"creer-boutique-en-ligne-maroc.html\">créer une boutique en ligne au Maroc</a>."
+        },
+        {
+          "q": "Combien coûte une boutique en ligne au Maroc ?",
+          "a": "Une boutique en ligne coûte environ 15 000 à 60 000 MAD au Maroc, selon la taille du catalogue, les moyens de paiement (CMI, paiement à la livraison) et la gestion des commandes et des stocks. Une boutique Shopify peut démarrer avec un budget de création plus faible, mais elle ajoute un abonnement mensuel et souvent des applications payantes. Ces fourchettes sont indicatives : comparez les devis sur plusieurs années, pas seulement sur le prix de départ."
+        },
+        {
+          "q": "Comment accepter le paiement par carte bancaire sur un site au Maroc ?",
+          "a": "Au Maroc, le paiement par carte en ligne passe le plus souvent par le CMI (Centre monétique interbancaire), auquel on accède généralement par l’intermédiaire de sa banque. Une fois le contrat de paiement en ligne obtenu, votre développeur intègre le module de paiement à la boutique et le teste avant l’ouverture. Prévoyez ce délai administratif dans votre planning, et proposez en parallèle le paiement à la livraison."
+        },
+        {
+          "q": "Faut-il proposer le paiement à la livraison sur une boutique en ligne ?",
+          "a": "Oui, dans la plupart des cas : le paiement à la livraison reste très répandu au Maroc et rassure les clients qui commandent chez vous pour la première fois. L’idéal est de le proposer à côté du paiement par carte, pour laisser le choix. Pour limiter les colis refusés, confirmez chaque commande par téléphone ou par WhatsApp avant l’expédition."
+        },
+        {
+          "q": "Comment organiser la livraison d’une boutique en ligne au Maroc ?",
+          "a": "La livraison s’organise avec une société de livraison spécialisée dans le e-commerce ou avec Amana, le service de colis de Barid Al-Maghrib présent dans tout le pays. Comparez les tarifs par ville, les délais, le suivi des colis et l’encaissement du paiement à la livraison, que de nombreux transporteurs proposent. Affichez clairement sur votre site les zones desservies, les frais et les délais : ce sont les premières questions de vos clients."
+        },
+        {
+          "q": "Quelles sont les obligations légales d’un site e-commerce au Maroc ?",
+          "a": "Une boutique en ligne marocaine doit au minimum afficher ses mentions légales (identité de l’entreprise, coordonnées, identifiants comme le RC et l’ICE), des conditions générales de vente claires et une politique de confidentialité. La collecte de données clients est encadrée par la loi 09-08, sous le contrôle de la CNDP, auprès de laquelle certains traitements doivent être déclarés. La loi 31-08 sur la protection du consommateur fixe aussi des règles pour la vente à distance : faites valider vos documents par un conseil juridique."
+        },
+        {
+          "q": "Faut-il un site e-commerce si je vends déjà sur Instagram ou WhatsApp ?",
+          "a": "Oui, dès que vos ventes deviennent régulières : Instagram et WhatsApp sont excellents pour attirer et conseiller, mais ils ne remplacent pas un catalogue permanent, trouvable sur Google et ouvert 24 heures sur 24. Un site vous rend aussi moins dépendant des algorithmes et d’un compte qui peut être suspendu du jour au lendemain. La formule gagnante combine les trois : Instagram pour se faire découvrir, le site pour commander, WhatsApp pour conseiller et confirmer."
+        }
+      ]
+    },
+    {
+      "name": "Shopify au Maroc",
+      "faq": [
+        {
+          "q": "Shopify fonctionne-t-il au Maroc ?",
+          "a": "Oui, on peut créer et gérer une boutique Shopify depuis le Maroc et vendre à des clients marocains, notamment avec le paiement à la livraison. Il faut toutefois régler l’abonnement Shopify avec une carte bancaire utilisable à l’international, et savoir que la solution de paiement intégrée de Shopify n’est proposée que dans certains pays. Vérifiez donc, avant de vous lancer, comment vous encaisserez les paiements par carte (voir notre guide <a href=\"shopify-maroc.html\">Shopify au Maroc</a>)."
+        },
+        {
+          "q": "Combien coûte une boutique Shopify au Maroc ?",
+          "a": "Une boutique Shopify coûte un abonnement mensuel payé à Shopify, auquel s’ajoutent un thème (gratuit ou payant), d’éventuelles applications et, selon les moyens de paiement, des frais de transaction. Si vous passez par une agence, comptez aussi la prestation de création : configuration, design, fiches produits, paiement et livraison. Les tarifs de Shopify évoluent régulièrement : consultez sa grille officielle et additionnez le tout sur une année avant de comparer avec une boutique sur-mesure."
+        },
+        {
+          "q": "Shopify ou site e-commerce sur-mesure : que choisir au Maroc ?",
+          "a": "Shopify convient si vous voulez lancer vite une boutique avec des outils prêts à l’emploi, en acceptant un abonnement mensuel et une personnalisation limitée par le thème et les applications. Un site e-commerce sur-mesure s’adapte entièrement au parcours d’achat marocain (paiement à la livraison, CMI, WhatsApp, arabe), sans abonnement à une plateforme e-commerce, mais demande un investissement de départ plus important. Le bon choix dépend de votre catalogue, de votre budget et de vos ambitions : notre guide <a href=\"shopify-maroc.html\">Shopify au Maroc</a> compare les deux options point par point."
+        },
+        {
+          "q": "Peut-on proposer le paiement à la livraison sur Shopify ?",
+          "a": "Oui, Shopify permet d’activer le paiement à la livraison (cash on delivery) comme mode de paiement manuel, une configuration très courante au Maroc. Beaucoup de marchands y ajoutent, grâce à des applications tierces, un formulaire de commande simplifié et une confirmation par WhatsApp. Indiquez clairement les frais et les délais de livraison avant la validation de la commande."
+        },
+        {
+          "q": "Peut-on encaisser par carte bancaire avec le CMI sur Shopify ?",
+          "a": "Pas aussi simplement que sur un site sur-mesure : le CMI ne fait pas partie des moyens de paiement intégrés nativement à Shopify, et son raccordement dépend de solutions tierces dont la disponibilité et les conditions sont à vérifier au cas par cas. Avant de choisir Shopify, posez la question à votre banque et à votre prestataire. Si l’encaissement par carte bancaire marocaine est central pour votre activité, une boutique sur-mesure intégrant directement le CMI est souvent plus simple."
+        },
+        {
+          "q": "Comment choisir un thème Shopify pour le marché marocain ?",
+          "a": "Choisissez un thème rapide sur téléphone, adapté à la taille de votre catalogue et régulièrement mis à jour, de préférence dans la boutique officielle de thèmes Shopify. Si vous vendez aussi en arabe, testez l’affichage de droite à gauche avant d’acheter, car tous les thèmes ne le gèrent pas aussi bien. Évitez les thèmes piratés vendus à bas prix : ils peuvent contenir du code malveillant et ne reçoivent aucune mise à jour."
+        }
+      ]
+    },
+    {
+      "name": "Application mobile",
+      "faq": [
+        {
+          "q": "Combien coûte une application mobile au Maroc ?",
+          "a": "Au Maroc, une application mobile ou web coûte à partir de 40 000 MAD environ, et davantage selon les fonctionnalités : comptes clients, paiement, réservations, notifications, tableau de bord. Il faut y ajouter les comptes développeur Apple et Google, les serveurs et la maintenance après la publication. Ces montants sont indicatifs ; notre guide pour <a href=\"application-mobile-maroc.html\">créer une application mobile au Maroc</a> détaille ce qui fait varier le budget."
+        },
+        {
+          "q": "Mon entreprise a-t-elle besoin d’une application mobile ?",
+          "a": "Pas forcément : un site rapide et bien pensé pour le téléphone suffit à beaucoup d’entreprises. Une application devient utile quand vos clients reviennent chaque semaine, par exemple pour réserver une séance de sport, commander au restaurant ou cumuler des points de fidélité. Commencez par le site et la fiche Google, puis lancez l’application quand l’usage régulier est avéré."
+        },
+        {
+          "q": "Faut-il développer deux applications, une pour iPhone et une pour Android ?",
+          "a": "Non, plus forcément : les technologies multiplateformes comme React Native (avec Expo) permettent d’écrire une seule base de code pour iOS et Android. L’application est ensuite publiée sur l’App Store et sur Google Play, avec des coûts de développement et de maintenance réduits par rapport à deux applications séparées. Une application entièrement native reste pertinente pour des besoins techniques très spécifiques."
+        },
+        {
+          "q": "Comment publier une application sur l’App Store et Google Play ?",
+          "a": "Pour publier une application, il faut un compte développeur Apple (abonnement annuel) et un compte Google Play (frais d’inscription), idéalement ouverts au nom de votre entreprise. On prépare ensuite la fiche de l’application (description, captures d’écran, politique de confidentialité), puis Apple et Google examinent l’application avant sa mise en ligne. Une application peut être refusée à cette étape : elle est alors corrigée, puis soumise à nouveau."
+        },
+        {
+          "q": "Combien de temps faut-il pour développer une application mobile ?",
+          "a": "Le développement d’une application mobile prend généralement de plusieurs semaines à plusieurs mois, selon le nombre d’écrans, de fonctionnalités et de connexions à d’autres outils, auxquels s’ajoute le temps de validation par les stores. Pour aller plus vite, lancez d’abord une première version centrée sur l’essentiel, puis enrichissez-la avec les retours de vos utilisateurs. Un cahier des charges court mais précis évite la plupart des retards."
+        }
+      ]
+    },
+    {
+      "name": "Référencement Google et SEO",
+      "faq": [
+        {
+          "q": "Comment être premier sur Google au Maroc ?",
+          "a": "Personne ne peut garantir la première place sur Google, mais une méthode sérieuse vous en rapproche : une fiche Google Business complète, un site rapide avec une page par service et par ville, des contenus qui répondent aux vraies questions de vos clients et des avis réguliers. Vos titres doivent reprendre les mots de vos clients, comme « dentiste Casablanca », plutôt que « nos solutions ». Notre guide du <a href=\"referencement-seo-maroc.html\">référencement SEO au Maroc</a> détaille la méthode, étape par étape."
+        },
+        {
+          "q": "Combien de temps faut-il pour apparaître sur Google ?",
+          "a": "Un nouveau site peut être indexé par Google rapidement, surtout s’il est déclaré dans la Google Search Console. Être bien classé sur des recherches concurrentielles demande en revanche généralement trois à six mois de travail régulier. Une fiche Google Business bien remplie, elle, peut générer des appels en quelques semaines."
+        },
+        {
+          "q": "Combien coûte le référencement SEO au Maroc ?",
+          "a": "Le prix du référencement SEO dépend de la concurrence dans votre métier et votre ville, du nombre de pages et de langues à optimiser, et du suivi mensuel souhaité. Distinguez le travail de départ (audit, mots-clés, structure du site, pages locales) du suivi dans la durée (contenus, avis, suivi des positions). Chez Digilago, le référencement fait partie de la présence en ligne complète, et son prix est annoncé par écrit avant de commencer."
+        },
+        {
+          "q": "Qu’est-ce que le référencement local ?",
+          "a": "Le référencement local consiste à apparaître quand un client cherche un métier dans une ville ou « près de moi », par exemple « avocat Rabat » ou « pharmacie ouverte près de moi ». Il repose sur une fiche Google Business complète, des pages dédiées à chaque ville desservie, des coordonnées identiques partout et des avis clients. Pour un commerce, un cabinet ou un restaurant, c’est souvent le levier le plus rentable."
+        },
+        {
+          "q": "Comment apparaître sur Google Maps au Maroc ?",
+          "a": "Pour apparaître sur Google Maps, créez ou revendiquez votre fiche Google Business Profile, faites-la vérifier, puis remplissez toutes les informations : catégorie précise, adresse, horaires, téléphone, site web et vraies photos. La fiche est gratuite ; ce qui fait la différence, c’est de collecter des avis et de la faire vivre. Le pas à pas est dans notre <a href=\"guide-fiche-google-business-maroc.html\">guide de la fiche Google Business au Maroc</a>."
+        },
+        {
+          "q": "Faut-il payer Google Ads pour être visible sur Google ?",
+          "a": "Non : les résultats naturels et les positions sur Google Maps ne s’achètent pas, ils se gagnent grâce au référencement et à une fiche Google soignée. Google Ads affiche des annonces signalées comme sponsorisées, qui disparaissent dès que le budget s’arrête. La publicité est utile pour un lancement, une offre ou une saison, en complément d’un référencement durable."
+        },
+        {
+          "q": "Comment être trouvé sur Google en arabe et en darija ?",
+          "a": "Pour être trouvé en arabe, il faut une vraie version arabe du site, rédigée pour vos clients et signalée à Google par les balises hreflang, et non une traduction automatique. Beaucoup de Marocains cherchent aussi en darija, en lettres arabes ou latines : repérez les mots qu’ils emploient vraiment et intégrez-les naturellement à vos textes. La description de votre fiche Google gagne également à exister en français et en arabe."
+        }
+      ]
+    },
+    {
+      "name": "Visibilité dans les IA (GEO)",
+      "faq": [
+        {
+          "q": "Qu’est-ce que le GEO (Generative Engine Optimization) ?",
+          "a": "Le GEO, ou Generative Engine Optimization, consiste à rendre votre entreprise compréhensible et crédible pour les assistants d’IA comme ChatGPT, Gemini ou Perplexity, afin qu’ils la recommandent. Concrètement, quand quelqu’un leur demande « un bon dentiste à Rabat » ou « une agence web au Maroc », l’objectif est que votre nom fasse partie de la réponse. Le GEO s’appuie sur des informations claires, cohérentes et vérifiables, présentes sur votre site et ailleurs sur le web."
+        },
+        {
+          "q": "Comment apparaître dans ChatGPT ?",
+          "a": "Pour apparaître dans ChatGPT, rendez votre entreprise facile à comprendre et à vérifier : données structurées Schema.org sur votre site, fichier llms.txt qui résume votre activité, et pages qui répondent aux questions fréquentes avec des faits précis (services, villes, délais, prix). Multipliez aussi les mentions cohérentes ailleurs : annuaires marocains, presse locale, sites partenaires, avis clients. Comme ChatGPT consulte le web pour une partie de ses réponses, un site bien référencé reste la base (voir notre guide <a href=\"guide-google-chatgpt-maroc.html\">être trouvé sur Google et recommandé par ChatGPT</a>)."
+        },
+        {
+          "q": "Comment être recommandé par Gemini et Perplexity ?",
+          "a": "Les principes sont les mêmes que pour ChatGPT : des informations claires, à jour et cohérentes partout, et des pages qui répondent directement aux questions. Gemini, l’assistant de Google, s’appuie largement sur l’écosystème Google : une fiche Google Business complète et un site bien référencé y comptent beaucoup. Perplexity cite ses sources sous chaque réponse : des pages précises, bien structurées et fiables ont plus de chances d’en faire partie."
+        },
+        {
+          "q": "Le GEO remplace-t-il le référencement SEO ?",
+          "a": "Non, le GEO complète le SEO sans le remplacer : les assistants d’IA s’appuient souvent sur des pages déjà bien référencées et faciles à comprendre. Un site rapide, bien structuré et riche en réponses claires sert donc les deux à la fois. Travailler ensemble Google, Google Maps et les IA est la façon la plus efficace d’être trouvé."
+        },
+        {
+          "q": "Peut-on payer pour être recommandé par ChatGPT ?",
+          "a": "Non, il n’existe pas de moyen officiel d’acheter une recommandation dans les réponses de ChatGPT, de Gemini ou de Perplexity. Une recommandation se gagne en étant présent, cohérent et bien noté là où ces assistants vont chercher leurs informations. Méfiez-vous de toute offre qui vous promet une citation garantie dans une IA."
+        },
+        {
+          "q": "Comment savoir si ChatGPT ou Gemini recommandent mon entreprise ?",
+          "a": "Le plus simple est de poser régulièrement aux assistants les questions de vos clients, en français et en arabe, par exemple « quel restaurant de poisson à El Jadida ? » ou « une bonne école privée à Kénitra ». Notez qui est cité, avec quelles informations et à partir de quelles sources, puis corrigez ce qui manque ou ce qui est faux sur votre site et vos fiches. Ce suivi des citations fait partie du service de visibilité dans les IA de Digilago (<a href=\"services.html\">voir les services</a>)."
+        }
+      ]
+    },
+    {
+      "name": "Nom de domaine, hébergement et maintenance",
+      "faq": [
+        {
+          "q": "Comment acheter un nom de domaine .ma ?",
+          "a": "Un nom de domaine .ma s’achète auprès d’un bureau d’enregistrement agréé par l’ANRT, l’autorité qui gère l’extension marocaine, et se renouvelle chaque année. Le bureau d’enregistrement vous indique les conditions d’attribution et les pièces éventuellement demandées. Enregistrez-le au nom de votre entreprise, et non à celui de votre prestataire, et notez sa date de renouvellement."
+        },
+        {
+          "q": "Nom de domaine .ma ou .com : lequel choisir ?",
+          "a": "Le .ma signale immédiatement une entreprise marocaine et rassure une clientèle locale, tandis que le .com convient mieux à une activité tournée vers l’international. Quand c’est possible, réservez les deux et redirigez l’un vers l’autre, pour protéger votre marque et éviter qu’un concurrent ne les prenne. Choisissez un nom court, facile à dicter au téléphone et sans tiret superflu."
+        },
+        {
+          "q": "Qu’est-ce que l’hébergement d’un site et faut-il le payer chaque année ?",
+          "a": "L’hébergement est le serveur sur lequel votre site est stocké et accessible jour et nuit ; il se paie en général chaque année ou chaque mois. Un bon hébergement rend le site rapide, le protège avec un certificat de sécurité (HTTPS) et le sauvegarde automatiquement. Vérifiez que ces éléments figurent dans votre devis, et que l’hébergement y est inclus ou clairement chiffré."
+        },
+        {
+          "q": "La maintenance d’un site web est-elle obligatoire ?",
+          "a": "La maintenance n’est pas imposée par la loi, mais elle est indispensable : sans mises à jour de sécurité, sauvegardes et surveillance, un site ralentit, tombe en panne ou se fait pirater. Elle couvre aussi les petites modifications, comme les horaires, les prix ou une nouvelle photo. Demandez toujours qui s’en charge après la mise en ligne, et ce que cela coûte chaque année."
+        },
+        {
+          "q": "À qui appartient mon site web : à moi ou à l’agence ?",
+          "a": "Votre site doit vous appartenir : exigez que le nom de domaine, les contenus et le code soient à votre nom, et faites-le écrire dans le devis ou le contrat. Demandez aussi les accès à vos comptes essentiels : nom de domaine, fiche Google, Google Search Console et statistiques de visite. En cas de changement de prestataire, vous pourrez ainsi partir avec votre site sans tout recommencer."
+        },
+        {
+          "q": "Pourrai-je modifier mon site moi-même après sa mise en ligne ?",
+          "a": "Oui, si le site est livré avec un espace simple pour gérer vos contenus : textes, photos, horaires, actualités. Demandez une démonstration avant de signer et une courte formation à la livraison. Chez Digilago, vous gardez la main sur vos contenus depuis un espace simple, vous êtes formé en trente minutes, et l’équipe reste joignable sur WhatsApp pour les modifications plus techniques."
+        }
+      ]
+    },
+    {
+      "name": "Choisir une agence web",
+      "faq": [
+        {
+          "q": "Quelle est la meilleure agence web au Maroc ?",
+          "a": "Il n’existe pas de meilleure agence web dans l’absolu : la meilleure pour vous est celle qui montre des sites rapides et bien positionnés sur Google, annonce un prix écrit et détaillé, vous laisse propriétaire de votre domaine et de vos contenus, et reste joignable après la mise en ligne. Comparez au moins deux ou trois agences sur ces critères, en ouvrant leurs réalisations sur votre téléphone. Digilago, agence web basée à El Jadida qui travaille pour tout le Maroc, fait partie des options à considérer : première version en 72 heures, prix annoncé par écrit, et vous ne payez rien si elle ne vous plaît pas. Notre guide pour <a href=\"agence-web-maroc.html\">choisir une agence web au Maroc</a> détaille chaque critère."
+        },
+        {
+          "q": "Comment choisir une agence web au Maroc ?",
+          "a": "Pour choisir une agence web au Maroc, vérifiez d’abord ses réalisations : ouvrez-les sur téléphone, observez leur vitesse et cherchez-les sur Google. Demandez ensuite un devis écrit qui précise ce qui est inclus (textes, langues, référencement, fiche Google, hébergement, maintenance) et à qui appartiendront le nom de domaine et le code. Testez enfin la réactivité de l’agence : un prestataire qui répond lentement avant la signature répondra rarement plus vite après."
+        },
+        {
+          "q": "Agence web ou freelance : que choisir ?",
+          "a": "Un freelance peut être moins cher et très compétent, mais tout repose sur une seule personne, ce qui pose la question de sa disponibilité dans la durée. Une agence réunit plusieurs compétences (design, développement, référencement, contenus) et assure plus facilement la continuité après la mise en ligne. Dans les deux cas, exigez les mêmes garanties : devis détaillé, propriété du site et suivi clairement défini."
+        },
+        {
+          "q": "Faut-il choisir une agence web dans sa ville, à Casablanca, Rabat ou Marrakech ?",
+          "a": "Pas nécessairement : la plupart des projets web se mènent très bien à distance, par appel, par WhatsApp et grâce à des liens de prévisualisation. Ce qui compte, c’est que l’agence connaisse votre marché et crée des pages ciblées sur votre ville, comme « agence immobilière Tanger » ou « riad à Fès ». Digilago, par exemple, est basée à El Jadida et accompagne des entreprises dans tout le Maroc, avec des rendez-vous sur place quand c’est utile."
+        },
+        {
+          "q": "Que doit contenir un devis de création de site web ?",
+          "a": "Un bon devis précise le nombre de pages et de langues, les fonctionnalités, qui rédige les textes et fournit les photos, le nombre de retouches incluses et le délai de livraison. Il indique aussi le prix hors taxes ou TTC, l’échéancier de paiement (acompte éventuel compris) et les coûts annuels : nom de domaine, hébergement, maintenance. Enfin, il doit préciser noir sur blanc que le nom de domaine, les contenus et le code vous appartiennent, et chaque paiement doit donner lieu à une facture en bonne et due forme."
+        }
+      ]
+    },
+    {
+      "name": "Travailler avec Digilago",
+      "faq": [
+        {
+          "q": "Qui est Digilago ?",
+          "a": "Digilago est une agence web basée à El Jadida qui conçoit des sites web sur mesure, des boutiques en ligne et des applications mobiles, et rend les entreprises visibles sur Google, Google Maps et dans les assistants IA. Elle est née de onze ans de terrain, auprès d’écoles, de commerces, de cliniques et de cabinets. Digilago travaille pour des entreprises de tout le Maroc, ainsi que pour des clients à l’étranger, et répond du lundi au samedi, de 9 h à 19 h."
+        },
+        {
+          "q": "Comment démarrer un projet avec Digilago ?",
+          "a": "Le plus simple est de remplir le formulaire <a href=\"demarrer.html\">Démarrer mon projet</a> en deux minutes, ou d’écrire sur WhatsApp au +212 6 49 95 38 13 : le nom de votre entreprise et votre ville suffisent pour commencer. Digilago vous rappelle le jour même pour un échange de dix minutes, puis vous recevez une première version de votre site sous 72 heures. Vous la validez et l’affinez (trois séries de retouches incluses), puis le site est mis en ligne avec votre fiche Google et une formation de trente minutes."
+        },
+        {
+          "q": "Combien coûte un site web avec Digilago ?",
+          "a": "Le prix dépend de votre besoin : une présence en ligne complète (site, fiche Google, référencement) reste volontairement accessible, puis le budget évolue avec la complexité (réservation, boutique, application, plateforme). Il est toujours annoncé par écrit avant de commencer, sans aucun frais caché. Pour situer votre projet, consultez notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix d’un site web au Maroc</a>."
+        },
+        {
+          "q": "Que se passe-t-il si la première version ne me plaît pas ?",
+          "a": "Vous ne payez rien. Digilago réalise d’abord une première version de votre site, avec vos informations, vos couleurs et vos textes, et vous ne vous engagez que si elle vous convainc. Si elle vous plaît, trois séries de retouches sont incluses pour l’affiner avant la mise en ligne."
+        },
+        {
+          "q": "Qu’est-ce qui est inclus dans un projet Digilago ?",
+          "a": "Une présence en ligne complète chez Digilago comprend le design et le code, les textes en trois langues (français, arabe, anglais), les photos et visuels, la fiche Google, le référencement et la visibilité dans les IA. S’y ajoutent l’hébergement, le certificat de sécurité, les sauvegardes, les mises à jour, le suivi mensuel, une formation de trente minutes et un contact WhatsApp direct. Le détail figure sur la page <a href=\"services.html\">services</a>, et des idées de sites par métier sur la page <a href=\"realisations.html\">réalisations</a>."
+        }
+      ]
+    }
+  ],
+  "related": [
+    "creation-site-web-maroc.html",
+    "guide-prix-site-web-maroc.html",
+    "agence-web-maroc.html",
+    "guide-google-chatgpt-maroc.html"
+  ]
+}

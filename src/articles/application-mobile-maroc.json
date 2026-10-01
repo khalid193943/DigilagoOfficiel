@@ -1,0 +1,321 @@
+{
+  "file": "application-mobile-maroc.html",
+  "title": "Création d’application mobile au Maroc : le guide | Digilago",
+  "description": "Créer une application mobile au Maroc : Android, iOS ou PWA, étapes, prix indicatifs, arabe, paiement, back-office et erreurs à éviter.",
+  "eyebrow": "Guide, 9 min de lecture",
+  "h1": [
+    "Créer une application mobile au Maroc :",
+    "de l’idée aux stores, sans faux pas."
+  ],
+  "lead": "Application Android et iOS, application web ou simple site : comment savoir ce dont vous avez vraiment besoin, combien prévoir et comment mener la création d’une application mobile au Maroc jusqu’à sa publication.",
+  "headline": "Créer une application mobile au Maroc : le guide complet (Android, iOS, PWA, étapes, prix, arabe, paiement)",
+  "keywords": [
+    "création application mobile Maroc",
+    "développement application Maroc",
+    "application Android iOS Maroc",
+    "application web Maroc",
+    "agence développement application Maroc",
+    "prix application mobile Maroc",
+    "PWA Maroc"
+  ],
+  "sections": [
+    {
+      "h2": "Faut-il vraiment une application mobile pour votre entreprise ?",
+      "blocks": [
+        {
+          "p": "Une application mobile se justifie quand vos clients reviennent souvent et ont besoin d’un service dans leur poche : réserver, commander, suivre, être prévenus. Pour être trouvé sur Google et rassurer un nouveau client, un site web rapide reste le premier outil. La <strong>création d’une application mobile au Maroc</strong> est donc un investissement à réserver aux usages réguliers."
+        },
+        {
+          "p": "Les signaux qui montrent qu’une application est utile :"
+        },
+        {
+          "ul": [
+            "<strong>Usage fréquent</strong> : une salle de sport à Casablanca dont les adhérents réservent leurs cours chaque semaine.",
+            "<strong>Notifications utiles</strong> : une école privée à El Jadida qui prévient les parents d’une absence ou d’un devoir.",
+            "<strong>Espace client</strong> : historique, fidélité, factures, comme pour un restaurant de Marrakech aux commandes répétées.",
+            "<strong>Fonctions du téléphone</strong> : scanner un code, se géolocaliser, prendre une photo.",
+            "<strong>Usage interne</strong> : une application pour vos livreurs, commerciaux ou techniciens."
+          ]
+        },
+        {
+          "p": "À l’inverse, personne ne télécharge l’application d’une entreprise qu’il ne connaît pas encore. Un riad à Fès ou un cabinet dentaire sont presque toujours mieux servis par la <a href=\"creation-site-web-maroc.html\">création d’un site web</a> bien référencé, et un commerce par une <a href=\"creer-boutique-en-ligne-maroc.html\">boutique en ligne</a>. L’application vient ensuite, quand la clientèle fidèle est là."
+        },
+        {
+          "note": "Vous hésitez encore ? Lisez d’abord <a href=\"guide-site-vitrine-boutique-application.html\">Site, boutique ou application : lequel choisir ?</a>"
+        }
+      ]
+    },
+    {
+      "h2": "Quelle différence entre site web, application web (PWA) et application mobile ?",
+      "blocks": [
+        {
+          "p": "Un site web se consulte dans le navigateur et se trouve sur Google ; une application web, ou PWA (Progressive Web App), est un site qui se comporte comme une application et peut s’installer sur l’écran d’accueil ; une application mobile se télécharge sur l’App Store ou Google Play et exploite pleinement le téléphone."
+        },
+        {
+          "table": {
+            "head": [
+              "Critère",
+              "Site web",
+              "Application web (PWA)",
+              "Application mobile Android et iOS"
+            ],
+            "rows": [
+              [
+                "Visible sur Google",
+                "Oui, c’est sa force",
+                "Oui, si elle est bien construite",
+                "Pas directement : on la trouve dans les stores"
+              ],
+              [
+                "Installation",
+                "Aucune",
+                "Facultative, depuis le navigateur",
+                "Depuis l’App Store ou Google Play"
+              ],
+              [
+                "Notifications",
+                "Non",
+                "Possibles, avec des limites sur iPhone",
+                "Oui, complètes"
+              ],
+              [
+                "Accès au téléphone",
+                "Limité",
+                "Partiel",
+                "Complet (caméra, GPS, hors connexion)"
+              ],
+              [
+                "Budget indicatif au Maroc",
+                "Environ 3 000 à 25 000 MAD pour un site vitrine",
+                "À partir de 40 000 MAD",
+                "À partir de 40 000 MAD"
+              ]
+            ]
+          }
+        },
+        {
+          "p": "Ces montants indicatifs reprennent notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix au Maroc</a> et varient selon les fonctionnalités. Les trois outils peuvent partager le même back-office et les mêmes données."
+        }
+      ]
+    },
+    {
+      "h2": "Android, iOS ou les deux : quelle technologie choisir ?",
+      "blocks": [
+        {
+          "p": "Pour la plupart des entreprises marocaines, le bon choix est une application multiplateforme : une base de code commune, publiée à la fois sur Android et sur iPhone. Android est très répandu au Maroc, mais une partie de votre clientèle utilise un iPhone : se priver de l’un des deux, c’est perdre des clients."
+        },
+        {
+          "ul": [
+            "<strong>Multiplateforme</strong> (par exemple React Native avec Expo) : un développement commun, un budget et une maintenance maîtrisés. C’est l’approche qui convient à la grande majorité des projets.",
+            "<strong>Natif</strong> (Kotlin pour Android, Swift pour iOS) : deux applications distinctes, pour des besoins très spécifiques. Plus coûteux à construire et à maintenir.",
+            "<strong>PWA</strong> : une application web installable sans passer par les stores, idéale pour tester une idée ou pour un outil interne."
+          ]
+        }
+      ]
+    },
+    {
+      "h2": "Comment se déroule la création d’une application mobile au Maroc ?",
+      "blocks": [
+        {
+          "p": "La création d’une application mobile se déroule en six étapes : cadrage, maquettes, développement, tests, publication sur les stores, puis suivi. Sauter l’une d’elles coûte presque toujours plus cher ensuite."
+        },
+        {
+          "ol": [
+            "<strong>Le cadrage</strong> : qui sont les utilisateurs, quel problème l’application résout, quelles fonctions sont indispensables dans la première version. On en tire une liste écrite des écrans.",
+            "<strong>Les maquettes</strong> : chaque écran est dessiné, en français et en arabe, puis assemblé en prototype cliquable que vous testez sur votre téléphone.",
+            "<strong>Le développement</strong> : l’application, le serveur qui stocke les données et le back-office. Des versions intermédiaires vous sont montrées régulièrement.",
+            "<strong>Les tests</strong> : sur de vrais téléphones Android et iPhone, d’entrée de gamme comme récents, en 4G faible, en arabe et en français, paiements et notifications compris.",
+            "<strong>La publication</strong> : fiches App Store et Google Play (description, captures, politique de confidentialité), examen par Apple et Google, corrections éventuelles, mise en ligne.",
+            "<strong>Le suivi</strong> : mesure des usages, corrections rapides, évolutions selon les retours de vos clients."
+          ]
+        },
+        {
+          "note": "Ouvrez les comptes développeur Apple et Google Play au nom de votre entreprise, pas du prestataire. Le compte Apple est payant chaque année, Google Play demande des frais d’inscription uniques, et Apple exige notamment un numéro D-U-N-S pour une société : anticipez ces démarches."
+        }
+      ]
+    },
+    {
+      "h2": "Combien coûte une application mobile au Maroc, et en combien de temps ?",
+      "blocks": [
+        {
+          "p": "Au Maroc, une application web ou mobile démarre à partir d’environ 40 000 MAD, à titre indicatif, et le budget augmente avec le nombre d’écrans et de fonctionnalités. Une première version ciblée se construit bien plus vite qu’une plateforme complète : prix et délai dépendent surtout de ces éléments."
+        },
+        {
+          "ul": [
+            "Le nombre d’écrans et de parcours : inscription, réservation, commande, profil.",
+            "Les comptes et les rôles : client, livreur, administrateur.",
+            "Le paiement en ligne, les notifications, la géolocalisation.",
+            "Le back-office et les tableaux de bord.",
+            "Les langues, en particulier l’arabe.",
+            "Les connexions à vos outils : caisse, logiciel de gestion, WhatsApp, agenda."
+          ]
+        },
+        {
+          "p": "Ajoutez les coûts récurrents : comptes développeur, hébergement du serveur, maintenance et évolutions. Exigez un planning écrit, étape par étape, avec une première version testable le plus tôt possible, et méfiez-vous d’un devis qui ne détaille ni les écrans, ni le back-office, ni la maintenance."
+        }
+      ]
+    },
+    {
+      "h2": "Comment bien gérer l’arabe et la lecture de droite à gauche ?",
+      "blocks": [
+        {
+          "p": "Une application en arabe ne se résume pas à traduire les textes : toute l’interface doit s’afficher de droite à gauche (RTL, pour right-to-left). C’est ce qui distingue une application pensée pour le Maroc d’une application simplement traduite."
+        },
+        {
+          "ul": [
+            "Menus, flèches de retour et listes orientés dans le bon sens.",
+            "Une police arabe lisible sur petit écran.",
+            "Des textes rédigés par une personne qui maîtrise l’arabe, jamais une traduction automatique.",
+            "Des contenus mixtes propres : un nom de marque en lettres latines ou un numéro de téléphone dans une phrase en arabe.",
+            "Le choix de la langue au premier lancement, modifiable à tout moment."
+          ]
+        },
+        {
+          "p": "Selon votre clientèle, la darija peut trouver sa place dans les notifications ou sur WhatsApp, et l’anglais se justifie pour le tourisme."
+        }
+      ]
+    },
+    {
+      "h2": "Quels moyens de paiement intégrer dans une application au Maroc ?",
+      "blocks": [
+        {
+          "p": "Dans une application marocaine, on combine en général le paiement par carte via le CMI et le paiement à la livraison, très répandu. Le bon dosage dépend de ce que vous vendez et de la confiance de vos clients dans le paiement en ligne."
+        },
+        {
+          "ul": [
+            "<strong>Carte bancaire via le CMI</strong> : commandes, réservations et acomptes réglés sur une page de paiement sécurisée.",
+            "<strong>Paiement à la livraison</strong> : avec une confirmation par téléphone ou WhatsApp pour limiter les commandes non honorées.",
+            "<strong>Paiement sur place</strong> : l’application réserve la table ou le cours, le client règle au comptoir."
+          ]
+        },
+        {
+          "p": "Attention aux règles des stores : pour des biens physiques ou des services réels, vous pouvez utiliser votre propre solution de paiement. Pour des contenus numériques vendus dans l’application, comme un abonnement à des cours en vidéo, Apple et Google imposent en règle générale leur système de paiement intégré, avec une commission. Vérifiez ce point dès le cadrage."
+        }
+      ]
+    },
+    {
+      "h2": "Pourquoi le back-office compte-t-il autant que l’application ?",
+      "blocks": [
+        {
+          "p": "Le back-office est l’interface qui vous permet de gérer votre application sans développeur : sans lui, chaque changement de prix ou de menu vous coûte une intervention. C’est souvent l’outil que votre équipe utilise le plus au quotidien."
+        },
+        {
+          "ul": [
+            "Modifier produits, menus, cours, horaires, prix et photos.",
+            "Suivre commandes, réservations et paiements.",
+            "Gérer les utilisateurs et les droits de votre équipe.",
+            "Envoyer des notifications ciblées, comme l’offre du vendredi.",
+            "Consulter des statistiques simples : inscriptions, commandes, clients actifs."
+          ]
+        },
+        {
+          "p": "Bien conçu, il alimente aussi votre site web : vous saisissez une information une fois, elle apparaît partout."
+        }
+      ]
+    },
+    {
+      "h2": "Quelles règles respecter : stores, données personnelles et loi 09-08 ?",
+      "blocks": [
+        {
+          "p": "Une application qui collecte des données personnelles au Maroc doit respecter la loi 09-08, sous le contrôle de la CNDP, ainsi que les règles de publication d’Apple et de Google. Mieux vaut l’intégrer dès le cadrage que le découvrir au moment de publier."
+        },
+        {
+          "ul": [
+            "Une politique de confidentialité claire, en français et en arabe.",
+            "Les formalités auprès de la CNDP adaptées aux données traitées.",
+            "Seulement les autorisations utiles : localisation, contacts ou photos si l’application en a vraiment besoin.",
+            "Un moyen de supprimer son compte, que les stores exigent quand l’application permet d’en créer un.",
+            "Des données hébergées de manière sécurisée et sauvegardées."
+          ]
+        }
+      ]
+    },
+    {
+      "h2": "Que prévoir après la publication : maintenance et évolutions ?",
+      "blocks": [
+        {
+          "p": "Une application se maintient dans le temps : Apple et Google publient chaque année de nouvelles versions de leurs systèmes, et une application qui n’est plus mise à jour finit par mal fonctionner, voire par devenir indisponible pour les nouveaux utilisateurs. Prévoyez dès le départ un budget pour la compatibilité, la sécurité, les sauvegardes et les évolutions demandées par vos clients."
+        }
+      ]
+    },
+    {
+      "h2": "Quelles erreurs éviter quand on crée une application mobile ?",
+      "blocks": [
+        {
+          "p": "L’erreur la plus coûteuse est de construire une application dont personne ne se sert : trop de fonctions, pas assez d’usage. Les autres sont plus discrètes, mais tout aussi fréquentes."
+        },
+        {
+          "ul": [
+            "Créer une application alors qu’un site rapide suffirait.",
+            "Vouloir tout dans la première version au lieu de lancer l’essentiel.",
+            "Oublier le back-office et dépendre du prestataire pour chaque modification.",
+            "Laisser les comptes des stores ou le code au nom du prestataire.",
+            "Traduire l’arabe automatiquement et négliger la lecture de droite à gauche.",
+            "Ne tester que sur un iPhone récent en Wi-Fi.",
+            "Lancer sans plan pour la faire connaître : site <a href=\"referencement-seo-maroc.html\">bien référencé</a>, fiche Google, réseaux sociaux, WhatsApp, affichage en boutique.",
+            "Ne prévoir aucun budget de maintenance."
+          ]
+        }
+      ]
+    },
+    {
+      "h2": "Comment choisir une agence de développement d’application au Maroc ?",
+      "blocks": [
+        {
+          "p": "Choisissez une agence de développement d’application au Maroc qui vous laisse installer des applications qu’elle a publiées, annonce son prix par écrit et vous laisse propriétaire du code, des comptes et des données. Demandez aussi si le back-office et la maintenance sont inclus, et comment l’arabe est géré. Nos critères détaillés sont dans le guide <a href=\"agence-web-maroc.html\">choisir une agence web au Maroc</a>."
+        }
+      ]
+    },
+    {
+      "h2": "Comment Digilago peut vous aider ?",
+      "blocks": [
+        {
+          "p": "Digilago, agence web basée à El Jadida, conçoit des applications iOS et Android de l’idée à la publication sur les stores, pour des entreprises de tout le Maroc : réservations, fidélité, commandes, notifications, espace client. Nous commençons par ce qui vous rapporte le plus vite, puis nous faisons évoluer l’outil avec votre activité."
+        },
+        {
+          "p": "Le prix est annoncé par écrit avant de commencer, en français, en arabe ou en anglais. Décrivez votre idée sur la page <a href=\"demarrer.html\">Démarrer mon projet</a>, découvrez nos <a href=\"services.html\">services</a> ou écrivez-nous sur WhatsApp au +212 6 49 95 38 13, du lundi au samedi de 9 h à 19 h."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Combien coûte une application mobile au Maroc ?",
+      "a": "À titre indicatif, une application web ou mobile démarre à partir d’environ 40 000 MAD au Maroc. Le prix dépend du nombre d’écrans, des comptes utilisateurs, du paiement en ligne, du back-office et des langues. Demandez un devis écrit qui détaille aussi la maintenance."
+    },
+    {
+      "q": "Faut-il une application si l’on a déjà un site web ?",
+      "a": "Pas forcément. Un site rapide et bien pensé pour le téléphone suffit à beaucoup d’entreprises marocaines. L’application devient utile quand vos clients l’utilisent chaque semaine pour réserver, commander ou recevoir des notifications."
+    },
+    {
+      "q": "Qu’est-ce qu’une PWA ?",
+      "a": "Une PWA (Progressive Web App) est un site web qui se comporte comme une application : elle s’installe sur l’écran d’accueil et fonctionne en partie sans connexion. Elle évite les stores, mais reste plus limitée sur iPhone, notamment pour les notifications."
+    },
+    {
+      "q": "Comment publier une application sur l’App Store et Google Play ?",
+      "a": "Il faut un compte développeur Apple et un compte Google Play au nom de votre entreprise, puis une fiche par store avec description, captures d’écran et politique de confidentialité. Apple et Google examinent ensuite l’application et peuvent demander des corrections avant la mise en ligne."
+    },
+    {
+      "q": "Peut-on proposer le paiement à la livraison dans une application au Maroc ?",
+      "a": "Oui. Pour des produits physiques ou des services réels, une application peut proposer le paiement à la livraison, sur place ou par carte via le CMI. Une confirmation par téléphone ou WhatsApp limite les commandes non honorées."
+    },
+    {
+      "q": "Une application mobile peut-elle être en arabe ?",
+      "a": "Oui, et elle doit l’être si vos clients lisent l’arabe. Toute l’interface s’affiche alors de droite à gauche, avec une police lisible et des textes rédigés, pas traduits automatiquement. Le français et l’anglais peuvent coexister dans la même application."
+    },
+    {
+      "q": "Qui est propriétaire d’une application développée par une agence ?",
+      "a": "Ce devrait être vous : le code, les comptes App Store et Google Play, le nom de domaine et les données doivent être au nom de votre entreprise. Faites-le inscrire dans le contrat avant de commencer."
+    },
+    {
+      "q": "Une application mobile aide-t-elle à être trouvé sur Google ?",
+      "a": "Pas directement : une application se trouve surtout dans les stores, alors que Google référence les sites web. Pour attirer de nouveaux clients, il faut un site bien référencé et une fiche Google Business soignée ; l’application sert ensuite à les fidéliser."
+    }
+  ],
+  "related": [
+    "guide-site-vitrine-boutique-application.html",
+    "guide-prix-site-web-maroc.html",
+    "creer-boutique-en-ligne-maroc.html",
+    "referencement-seo-maroc.html"
+  ]
+}

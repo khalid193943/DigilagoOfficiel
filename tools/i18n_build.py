@@ -200,6 +200,7 @@ AR_CSS = (
     '.fbtn,.cta,.mom-cta,.ans-c,.wz-nav,.st4,.incl,.eng,.vals,.obj,.share,.chan,.svs,.flt,.gd-row,.st-tabs){direction:rtl}'
     'html[lang="ar"] :is(.arw svg,.cta svg,.more svg,.ans-go svg,.faq-link svg){transform:scaleX(-1)}'
     'html[lang="ar"] body{line-height:1.6}'
+    'html[lang="ar"] input[type=tel],html[lang="ar"] input[type=email]{direction:ltr;text-align:right}'
     'html[lang="ar"] :is(h1,h2,h3,h4){line-height:1.3!important}'
 )
 
@@ -249,8 +250,23 @@ def ar_fonts(prefix):
 
 def lsw_css(h):
     h = re.sub(r'/\*dg:lsw\*/.*?/\*dg:lsw-end\*/', '', h, flags=re.S)
-    i = h.index('/*dg:end*/')
+    # après le bloc de inject.py (et non dedans) : relancer inject seul ne l'efface pas
+    i = h.index('/*dg:end*/') + len('/*dg:end*/')
     return h[:i] + '/*dg:lsw*/' + LSW_CSS + '/*dg:lsw-end*/' + h[i:]
+
+
+LTR = re.compile(r'\+212[\d \u00a0]*\d|[\w.+-]+@[\w-]+(?:\.[\w-]+)+|\b(?:www\.)?[a-z0-9-]+\.(?:ma|com)\b(?:/[\w./-]*)?'
+                 r'|(?<![\w.])\.(?:ma|com)\b')
+
+
+def ltr_runs(t):
+    """En arabe, un numéro « +212 6 49 95 38 13 », un e-mail ou un domaine s'afficheraient à l'envers
+    (l'ordre des groupes est inversé de droite à gauche) : on les isole en gauche-à-droite."""
+    parts = re.split(r'(<script\b.*?</script>|<style\b.*?</style>|<title>.*?</title>|<[^>]+>)', t, flags=re.S)
+    for i in range(0, len(parts), 2):
+        if parts[i].strip():
+            parts[i] = LTR.sub(lambda m: '<bdi dir="ltr">%s</bdi>' % m.group(0), parts[i])
+    return ''.join(parts)
 
 
 def main():
@@ -270,6 +286,8 @@ def main():
         for lang in ('en', 'ar'):
             TR = TRS[lang]
             t = translate_html(fr, TR, lang)
+            # « <strong>Prix</strong> : » : l'espace avant les deux-points est français ; pas en anglais ni en arabe
+            t = re.sub(r'(</(?:strong|b|a|em|i|span)>)[ \u00a0]+(?=[:;?!،؛؟])', r'\1', t)
             t = switchers(t, page, lang)
             t = re.sub(r'(<html\b[^>]*?\blang=)"fr"', r'\1"%s"' % lang, t, count=1)
             t = re.sub(r'(?<![./\w])assets/', '../assets/', t)
@@ -277,6 +295,7 @@ def main():
             tag = '<script data-dg="app">' + bundles[(lang, kind)].replace('</script', '<\\/script') + '</script>'
             t = re.sub(r'<script data-dg="app">.*?</script>', lambda m: tag, t, count=1, flags=re.S)
             if lang == 'ar':
+                t = ltr_runs(t)
                 t = re.sub(r'<!--dg:ar-->.*?<!--/dg:ar-->', '', t, flags=re.S)
                 t = t.replace('<!--dg:fonts-->', ar_fonts('../') + '<!--dg:fonts-->', 1)
             open(os.path.join(SITE, lang, page), 'w', encoding='utf-8').write(t)

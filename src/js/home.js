@@ -211,7 +211,7 @@
     st.style.top = ST + "px";
     var Wd = document.documentElement.clientWidth,
       MH = mode === "M" ? 560 * u : Wd / 1.8,
-      MW = mode === "M" ? MH * 1.8 : Wd;
+      MW = Wd;
     var GT = (mode === "M" ? 10 : -30) * u;
     css(hb, {
       top: GT + "px",
@@ -229,7 +229,7 @@
     VH = H;
     T = H * 0.7;
     HOLD = H * 0.75;
-    placeCard();
+    MAP.layout(MW, MH, mode === "M");
     hero.style.height = HH + "px";
     hero.style.top = H - HH + "px";
     $("intro").style.height = HH + HOLD + T + "px";
@@ -261,128 +261,477 @@
     lastSY = -1;
     req();
   }
-  var PINS = Array.prototype.slice.call(
-      document.querySelectorAll("#mpins .mpin2"),
-    ),
-    fcard = $("fcard"),
-    mCur = -1,
-    mT = 0,
-    mHold = 0,
-    mStarted = false;
-  function visiblePins() {
-    return PINS.filter(function (p) {
-      return !p.classList.contains("off");
-    });
-  }
-  function showPin(p, now) {
-    PINS.forEach(function (x) {
-      x.classList.toggle("act", x === p);
-    });
-    fcard.classList.add("swap");
-    setTimeout(function () {
-      if (p) {
-        fcard.classList.remove("none");
-        fcard.innerHTML =
-          '<div class="fc-in">' +
-          p.querySelector("template").innerHTML +
-          "</div>";
-        moveCard(p.style.left, p.style.top);
-        fcard.classList.toggle("below", parseFloat(p.style.top) < 62);
-      } else {
-        fcard.classList.add("none");
-        fcard.innerHTML =
-          '<div class="fc-in"><div class="fc-b"><b>Personne ici, pour l’instant.</b><small>Et si la prochaine entreprise sur cette carte, c’était la vôtre ?</small><div class="fc-f"><span class="fc-on"><i></i>Place libre</span><a class="fc-go" href="demarrer.html">Me rendre visible</a></div></div></div>';
-        moveCard("50%", "40%");
-        fcard.classList.add("below");
-      }
-      fcard.classList.add("on");
-      requestAnimationFrame(function () {
-        fcard.classList.remove("swap");
-      });
-    }, 200);
-    mT = now || performance.now();
-  }
-  // La carte glisse d'une épingle à l'autre avec « translate » (carte graphique) :
-  // ni recalcul de mise en page, ni décalage visuel compté dans le CLS.
-  var fcBox = { w: 1, h: 1 },
-    fcPos = ["50%", "40%"];
-  function moveCard(l, t) {
-    fcPos = [l, t];
-    fcard.style.translate =
-      ((parseFloat(l) / 100) * fcBox.w).toFixed(1) +
-      "px " +
-      ((parseFloat(t) / 100) * fcBox.h).toFixed(1) +
-      "px";
-  }
-  function placeCard() {
-    var box = fcard.parentNode;
-    fcBox = { w: box.clientWidth || 1, h: box.clientHeight || 1 };
-    moveCard(fcPos[0], fcPos[1]);
-  }
-  function nextPin(now) {
-    var vis = visiblePins();
-    if (!vis.length) {
-      mCur = -1;
-      showPin(null, now);
-      return;
+  // ——— Carte du haut : le Maroc vu du ciel, qui s'allume ———
+  // Dessinée en perspective dans un canvas : le pays, la grille de « l'infrastructure digitale »,
+  // les autoroutes où circule la lumière et des centaines de points lumineux (chacun une entreprise
+  // que ses clients trouvent en ligne). Toutes les 3,6 s, une vraie recherche fait s'allumer une
+  // entreprise et sa petite fiche. Au défilement, on survole le pays vers le nord ; à la fin du hero,
+  // la caméra monte dans les nuages. Les parties fixes (terre, grille, routes, noms) sont dessinées
+  // une fois dans un calque mis en cache, redessiné seulement quand la caméra bouge.
+  var MAP = (function () {
+    var cv = $("mcv"),
+      ctx = cv && cv.getContext("2d"),
+      geoEl = $("mgeo");
+    var none = { step: function () {}, layout: function () {} };
+    if (!ctx || !geoEl) return none;
+    var G = JSON.parse(geoEl.textContent),
+      mq = $("mq"),
+      mqt = mq.querySelector("span"),
+      mcard = $("mcard"),
+      RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function xy(e) {
+      var p = e.getAttribute("data-xy").split(",");
+      return [+p[0], +p[1]];
     }
-    var i = vis.indexOf(PINS[mCur]);
-    var p = vis[(i + 1) % vis.length];
-    mCur = PINS.indexOf(p);
-    showPin(p, now);
-  }
-  PINS.forEach(function (p, i) {
-    p.addEventListener("mouseenter", function () {
-      if (p.classList.contains("off")) return;
-      mCur = i;
-      showPin(p);
-      mHold = performance.now() + 5000;
+    var LAB = [].map.call(document.querySelectorAll("#mdata i"), function (e) {
+      var p = xy(e);
+      return { x: p[0], y: p[1], r: +e.getAttribute("data-r"), t: e.textContent };
     });
-    p.addEventListener("click", function () {
-      mCur = i;
-      showPin(p);
-      mHold = performance.now() + 7000;
-    });
-  });
-  var MF = document.querySelectorAll("#hcs .mf");
-  MF.forEach(function (b) {
-    b.addEventListener("click", function () {
-      MF.forEach(function (x) {
-        x.classList.toggle("on", x === b);
-        x.setAttribute("aria-pressed", x === b ? "true" : "false");
-      });
-      var m = b.dataset.f;
-      PINS.forEach(function (p) {
-        p.classList.toggle("off", m !== "all" && p.dataset.cat !== m);
-      });
-      mCur = -1;
-      nextPin();
-      mHold = performance.now() + 4500;
-    });
-  });
-  function mapStep(now) {
-    if (!mStarted && now > 1700) {
-      mStarted = true;
-      mCur = 0;
-      showPin(PINS[0], now);
-    }
-    if (mStarted && now - mT > 3800 && now > mHold) nextPin(now);
-    var t = now / 1000;
-    var pe = PAN * PAN * (3 - 2 * PAN);
-    S(
-      mlayer,
-      "transform",
-      "translate3d(" +
-        (Math.sin(t / 9) * 14 * u + (0.5 - pe) * 70 * u).toFixed(1) +
-        "px," +
-        (Math.cos(t / 11) * 9 * u - pe * 40 * u).toFixed(1) +
-        "px,0) scale(" +
-        (1.03 + Math.sin(t / 13) * 0.015).toFixed(4) +
-        ")",
+    var EV = [].map.call(
+      document.querySelectorAll("#mdata template"),
+      function (e) {
+        var p = xy(e);
+        return { x: p[0], y: p[1], el: e, q: e.content.querySelector("em").textContent };
+      },
     );
+    // Lumières : réparties autour des villes, toujours au même endroit (pseudo-aléatoire stable).
+    var seed = 11;
+    function rnd() {
+      seed = (seed * 16807) % 2147483647;
+      return seed / 2147483647;
+    }
+    var LT = [];
+    G.c.forEach(function (c) {
+      var s = 0.5 + Math.sqrt(c[2]) * 0.38;
+      for (var i = 0; i < c[2]; i++) {
+        var a = rnd() * 6.2832,
+          d = Math.sqrt(-2 * Math.log(rnd() + 1e-6)) * s * 0.6;
+        LT.push({
+          x: c[0] + Math.cos(a) * d,
+          y: c[1] + Math.sin(a) * d,
+          ph: rnd() * 6.2832,
+          sp: 0.5 + rnd() * 1.5,
+          g: rnd() < 0.18,
+        });
+      }
+    });
+    // Petits sprites de lumière (dessinés une fois) : bleu et or
+    function sprite(c1, c2) {
+      var s = document.createElement("canvas"),
+        x = s.getContext("2d");
+      s.width = s.height = 64;
+      var g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, "#fff");
+      g.addColorStop(0.16, c1);
+      g.addColorStop(0.42, c2);
+      g.addColorStop(1, "rgba(31,87,199,0)");
+      x.fillStyle = g;
+      x.fillRect(0, 0, 64, 64);
+      return s;
+    }
+    var SPB = sprite("rgba(31,100,230,1)", "rgba(47,132,236,.32)"),
+      SPG = sprite("rgba(255,200,80,1)", "rgba(242,178,51,.3)");
+    var W = 1,
+      H = 1,
+      DPR = 1,
+      F = 1,
+      MOB = false,
+      cache = document.createElement("canvas"),
+      cx2 = cache.getContext("2d"),
+      camKey = "";
+    var cam = { x: 0, y: 0, h: 0, d: 0, c: 1, s: 0, hy: 0 };
+    var P = { x: 0, y: 0, z: 0, k: 0 };
+    function proj(x, y, alt) {
+      var X = x - cam.x,
+        D = cam.y - y,
+        Hh = cam.h - (alt || 0),
+        zc = D * cam.c + Hh * cam.s,
+        yc = Hh * cam.c - D * cam.s;
+      P.z = zc;
+      if (zc < 1) return false;
+      P.k = F / zc;
+      P.x = W / 2 + X * P.k;
+      P.y = cam.hy + yc * P.k;
+      return true;
+    }
+    function fog(z) {
+      return Math.max(0, Math.min(1, 1.55 - z / (cam.d * 1.05)));
+    }
+    function path(c, pts) {
+      var ok = 0;
+      for (var i = 0; i < pts.length; i += 2) {
+        if (!proj(pts[i], pts[i + 1])) continue;
+        if (ok++) c.lineTo(P.x, P.y);
+        else c.moveTo(P.x, P.y);
+      }
+      return ok;
+    }
+    function layout(w, h, m) {
+      MOB = m;
+      DPR = Math.min(window.devicePixelRatio || 1, m ? 1.75 : 2);
+      W = w;
+      H = h;
+      cv.width = cache.width = Math.round(w * DPR);
+      cv.height = cache.height = Math.round(h * DPR);
+      F = (m ? 1.05 : 0.62) * w;
+      camKey = "";
+    }
+    // La caméra : une cible au sol (tx, ty), regardée sous un angle th, à une distance R.
+    function setCam(tx, ty, R, th, hy) {
+      cam.c = Math.cos(th);
+      cam.s = Math.sin(th);
+      cam.x = tx;
+      cam.y = ty + R * cam.c;
+      cam.h = R * cam.s;
+      cam.d = R;
+      cam.hy = hy;
+    }
+    function drawStatic(c) {
+      c.setTransform(DPR, 0, 0, DPR, 0, 0);
+      c.clearRect(0, 0, W, H);
+      // la mer : un bleu un peu plus profond que le ciel, qui se fond vers le haut
+      var g = c.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, "rgba(16,70,170,0)");
+      g.addColorStop(0.35, "rgba(16,70,170,.14)");
+      g.addColorStop(1, "rgba(12,58,150,.3)");
+      c.fillStyle = g;
+      c.fillRect(0, 0, W, H);
+      // les pays voisins (Espagne, Algérie) : en retrait
+      c.fillStyle = "rgba(235,243,255,.5)";
+      G.a.forEach(function (pts) {
+        c.beginPath();
+        if (path(c, pts) > 2) {
+          c.closePath();
+          c.fill();
+        }
+      });
+      // le Maroc
+      c.beginPath();
+      path(c, G.o);
+      c.closePath();
+      var lg = c.createLinearGradient(0, 0, 0, H);
+      lg.addColorStop(0, "rgba(226,237,253,.78)");
+      lg.addColorStop(0.5, "rgba(240,246,255,.97)");
+      lg.addColorStop(1, "#F7FAFF");
+      c.fillStyle = lg;
+      c.fill();
+      c.save();
+      c.clip();
+      // la grille de l'infrastructure digitale (tous les 4 unités), plus marquée au premier plan
+      c.lineWidth = 1;
+      var x0 = Math.floor((cam.x - 200) / 4) * 4,
+        y0 = Math.floor((cam.y - cam.d * 3) / 4) * 4,
+        y1 = cam.y + 10;
+      for (var gx = x0; gx < cam.x + 200; gx += 4) {
+        c.beginPath();
+        if (path(c, [gx, y0, gx, y1]) === 2) {
+          c.strokeStyle = gx % 20 === 0 ? "rgba(31,87,199,.13)" : "rgba(31,87,199,.06)";
+          c.stroke();
+        }
+      }
+      for (var gy = y0; gy < y1; gy += 4) {
+        if (!proj(cam.x, gy)) continue;
+        c.beginPath();
+        path(c, [cam.x - 220, gy, cam.x + 220, gy]);
+        c.strokeStyle = gy % 20 === 0 ? "rgba(31,87,199,.13)" : "rgba(31,87,199,.06)";
+        c.stroke();
+      }
+      // le relief (Rif, Moyen et Haut Atlas) : des ombres douces ; puis le halo bleu des villes
+      [[445, 58, 34, 1], [432, 138, 30, 0.9], [330, 228, 60, 1.1], [395, 190, 36, 0.8]].forEach(function (m) {
+        if (!proj(m[0], m[1])) return;
+        var rr = m[2] * P.k,
+          rg = c.createRadialGradient(P.x, P.y, 0, P.x, P.y, rr);
+        rg.addColorStop(0, "rgba(64,105,180," + 0.14 * m[3] * fog(P.z) + ")");
+        rg.addColorStop(1, "rgba(64,105,180,0)");
+        c.fillStyle = rg;
+        c.save();
+        c.translate(P.x, P.y);
+        c.scale(1, cam.s * 0.9 + 0.1);
+        c.translate(-P.x, -P.y);
+        c.fillRect(P.x - rr, P.y - rr, rr * 2, rr * 2);
+        c.restore();
+      });
+      G.c.forEach(function (ci) {
+        if (ci[2] < 6 || !proj(ci[0], ci[1])) return;
+        var rr = (2.2 + Math.sqrt(ci[2]) * 0.75) * P.k,
+          rg = c.createRadialGradient(P.x, P.y, 0, P.x, P.y, rr);
+        rg.addColorStop(0, "rgba(47,132,236," + 0.3 * fog(P.z) + ")");
+        rg.addColorStop(1, "rgba(47,132,236,0)");
+        c.fillStyle = rg;
+        c.save();
+        c.translate(P.x, P.y);
+        c.scale(1, cam.s * 0.9 + 0.1);
+        c.translate(-P.x, -P.y);
+        c.fillRect(P.x - rr, P.y - rr, rr * 2, rr * 2);
+        c.restore();
+      });
+      c.restore();
+      // la côte et la frontière : un trait fin
+      c.beginPath();
+      path(c, G.o);
+      c.closePath();
+      c.lineWidth = 1.4;
+      c.strokeStyle = "rgba(255,255,255,.95)";
+      c.stroke();
+      c.lineWidth = 0.8;
+      c.strokeStyle = "rgba(31,87,199,.35)";
+      c.stroke();
+      // les autoroutes
+      c.lineCap = "round";
+      G.r.forEach(function (pts) {
+        c.beginPath();
+        path(c, pts);
+        c.lineWidth = 3;
+        c.strokeStyle = "rgba(255,255,255,.7)";
+        c.stroke();
+        c.lineWidth = 1.2;
+        c.strokeStyle = "rgba(31,87,199,.32)";
+        c.stroke();
+      });
+      // les noms : grandes villes en serif italique, les autres en sans-serif, la mer en capitales espacées
+      c.textAlign = "center";
+      LAB.forEach(function (l) {
+        if (!proj(l.x, l.y)) return;
+        var a = fog(P.z);
+        if (a <= 0.02 || P.x < -80 || P.x > W + 80 || P.y < -20 || P.y > H + 20) return;
+        var s = Math.min(1.35, Math.max(0.7, P.k / (MOB ? 4.6 : 7)));
+        if (l.r === 0) {
+          c.font = "italic 500 " + 15 * s * (MOB ? 0.8 : 1) + "px 'Playfair Display', Georgia, serif";
+          c.fillStyle = "rgba(255,255,255," + 0.7 * a + ")";
+          c.fillText(l.t, P.x, P.y);
+          return;
+        }
+        var big = l.r === 3,
+          fs = (big ? 22 : l.r === 2 ? 12.5 : 10.5) * s * (MOB ? 0.82 : 1);
+        c.font = big
+          ? "italic 500 " + fs + "px 'Playfair Display', Georgia, serif"
+          : "600 " + fs + "px 'Instrument Sans', system-ui, sans-serif";
+        c.lineWidth = 4;
+        c.lineJoin = "round";
+        c.strokeStyle = "rgba(255,255,255," + 0.9 * a + ")";
+        c.fillStyle = big ? "rgba(23,54,111," + a + ")" : "rgba(52,84,140," + 0.95 * a + ")";
+        var yy = P.y + (big ? 20 : 14) * s;
+        c.strokeText(l.t, P.x, yy);
+        c.fillText(l.t, P.x, yy);
+      });
+      // les villes : un point net
+      G.c.forEach(function (ci) {
+        if (!proj(ci[0], ci[1])) return;
+        var a = fog(P.z);
+        if (a <= 0.02) return;
+        var r = ci[2] > 25 ? 3 : ci[2] > 8 ? 2.2 : 1.5;
+        c.beginPath();
+        c.arc(P.x, P.y, r * Math.min(1.3, P.k / 7), 0, 6.2832);
+        c.fillStyle = "rgba(31,87,199," + a + ")";
+        c.fill();
+        c.lineWidth = 1.2;
+        c.strokeStyle = "rgba(255,255,255," + a + ")";
+        c.stroke();
+      });
+    }
+    // Recherches en direct
+    var evI = -1,
+      evT = -1e9,
+      ev = null,
+      EVD = 3600;
+    function pick(now, band) {
+      for (var n = 0; n < EV.length; n++) {
+        var e = EV[(evI + 1 + n) % EV.length];
+        if (!proj(e.x, e.y)) continue;
+        if (P.x > W * 0.12 && P.x < W * 0.88 && P.y > band[0] + 110 * u && P.y < band[1] - 30 * u) {
+          evI = EV.indexOf(e);
+          ev = e;
+          evT = now;
+          mcard.innerHTML = e.el.innerHTML;
+          mcard.classList.toggle("cl", e.el.hasAttribute("data-cl"));
+          mqt.textContent = RM ? e.q : "";
+          return;
+        }
+      }
+      ev = null;
+      evT = now;
+    }
+    var last = 0,
+      skip = false;
+    function step(now, sy, PAN2, DAWN2) {
+      // la bande du canvas réellement visible (le hero remonte, puis reste en place)
+      var top = ST + Math.max(VH - HH, -sy),
+        b0 = Math.max(H * 0.1, -top),
+        b1 = Math.min(H, VH - top),
+        band = [b0, b1];
+      var pe = PAN2 * PAN2 * (3 - 2 * PAN2),
+        t = now / 1000,
+        dr = RM ? 0 : 1;
+      var tx = MOB ? 336 + pe * 78 : 356 + pe * 50,
+        ty = 128 - pe * 82,
+        R = (MOB ? 68 : 128) * (1 + DAWN2 * 0.9),
+        th = 0.66 + DAWN2 * 0.35;
+      setCam(
+        tx + Math.sin(t / 8) * 1.2 * dr,
+        ty + Math.cos(t / 10) * 0.8 * dr,
+        R,
+        th,
+        b0 + (b1 - b0) * 0.5,
+      );
+      var key = [
+        cam.x.toFixed(2),
+        cam.y.toFixed(2),
+        cam.h.toFixed(2),
+        cam.hy.toFixed(1),
+        W,
+      ].join();
+      // sur téléphone : 30 images par seconde suffisent pour les lumières
+      if (MOB && key === camKey) {
+        skip = !skip;
+        if (skip) return;
+      }
+      if (key !== camKey) {
+        camKey = key;
+        drawStatic(cx2);
+      }
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.drawImage(cache, 0, 0);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      // les entreprises : des points qui scintillent doucement
+      var i, l, a, r;
+      for (i = 0; i < LT.length; i++) {
+        l = LT[i];
+        if (!proj(l.x, l.y)) continue;
+        if (P.x < -10 || P.x > W + 10 || P.y < b0 - 10 || P.y > b1 + 10) continue;
+        a = fog(P.z);
+        if (a <= 0.03) continue;
+        a *= RM ? 0.85 : 0.55 + 0.45 * Math.sin(t * l.sp + l.ph);
+        r = Math.max(3.6, Math.min(13, P.k * 1.35));
+        ctx.globalAlpha = a;
+        ctx.drawImage(l.g ? SPG : SPB, P.x - r, P.y - r, r * 2, r * 2);
+      }
+      ctx.globalAlpha = 1;
+      // la lumière circule sur les autoroutes
+      if (!RM)
+        G.r.forEach(function (pts, k) {
+          var n = pts.length / 2 - 1;
+          for (var j = 0; j < 2; j++) {
+            var f = ((t * 0.045 + k * 0.37 + j * 0.5) % 1) * n,
+              q = Math.floor(f) * 2,
+              w = f % 1;
+            if (!proj(pts[q] + (pts[q + 2] - pts[q]) * w, pts[q + 1] + (pts[q + 3] - pts[q + 1]) * w)) continue;
+            if (P.y < b0 || P.y > b1) continue;
+            r = Math.max(3, Math.min(8, P.k * 0.9));
+            ctx.globalAlpha = fog(P.z);
+            ctx.drawImage(SPB, P.x - r, P.y - r, r * 2, r * 2);
+          }
+        });
+      ctx.globalAlpha = 1;
+      // le studio, à El Jadida : des arcs vers tout le Maroc
+      var hq = G.hq;
+      G.arcs.forEach(function (d, k) {
+        var dx = d[0] - hq[0],
+          dy = d[1] - hq[1],
+          len = Math.sqrt(dx * dx + dy * dy),
+          hgt = len * 0.22,
+          prog = RM ? 1 : ((t * 0.32 + k * 0.29) % 1.6) / 1.2;
+        ctx.beginPath();
+        var on = 0;
+        for (var s = 0; s <= 24; s++) {
+          var u2 = s / 24;
+          if (!proj(hq[0] + dx * u2, hq[1] + dy * u2, Math.sin(Math.PI * u2) * hgt)) continue;
+          if (on++) ctx.lineTo(P.x, P.y);
+          else ctx.moveTo(P.x, P.y);
+        }
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(31,87,199,.22)";
+        ctx.stroke();
+        if (prog > 0 && prog < 1) {
+          var u3 = Math.min(1, prog);
+          if (proj(hq[0] + dx * u3, hq[1] + dy * u3, Math.sin(Math.PI * u3) * hgt)) {
+            r = Math.max(3, Math.min(7, P.k * 0.8));
+            ctx.globalAlpha = Math.sin(Math.PI * u3) * fog(P.z);
+            ctx.drawImage(SPG, P.x - r, P.y - r, r * 2, r * 2);
+            ctx.globalAlpha = 1;
+          }
+        }
+      });
+      if (proj(hq[0], hq[1])) {
+        var hx = P.x,
+          hy2 = P.y,
+          pk = Math.min(1.3, P.k / (MOB ? 4.6 : 7));
+        for (var rr = 0; rr < 2; rr++) {
+          var ph = RM ? 0.4 : (t * 0.6 + rr * 0.5) % 1;
+          ctx.beginPath();
+          ctx.arc(hx, hy2, (6 + ph * 26) * pk, 0, 6.2832);
+          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = "rgba(31,87,199," + 0.5 * (1 - ph) + ")";
+          ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.arc(hx, hy2, 5 * pk, 0, 6.2832);
+        ctx.fillStyle = "#1F57C7";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#fff";
+        ctx.stroke();
+        ctx.font = "600 " + 11 * pk + "px 'Instrument Sans', system-ui, sans-serif";
+        var tw = ctx.measureText("Digilago").width + 14 * pk;
+        ctx.fillStyle = "#0B1B3A";
+        var bx = hx - tw - 12 * pk,
+          by = hy2 - 9 * pk;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(bx, by, tw, 18 * pk, 9 * pk);
+        else ctx.rect(bx, by, tw, 18 * pk);
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.textAlign = "center";
+        ctx.fillText("Digilago", bx + tw / 2, by + 12.5 * pk);
+      }
+      // une recherche, puis l'entreprise trouvée s'allume avec sa fiche
+      if (now - evT > EVD) pick(now, band);
+      var e = ev,
+        el = now - evT;
+      if (e && proj(e.x, e.y)) {
+        var px = P.x,
+          py = P.y;
+        if (el > 900) {
+          var rp = Math.min(1, (el - 900) / 900);
+          for (var k2 = 0; k2 < 2; k2++) {
+            var q2 = Math.min(1, rp * 1.4 - k2 * 0.3);
+            if (q2 <= 0) continue;
+            ctx.beginPath();
+            ctx.arc(px, py, 4 + q2 * 24, 0, 6.2832);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "rgba(242,178,51," + (1 - q2) * 0.9 + ")";
+            ctx.stroke();
+          }
+          ctx.drawImage(SPG, px - 10, py - 10, 20, 20);
+          var bm = ctx.createLinearGradient(0, py - 54, 0, py);
+          bm.addColorStop(0, "rgba(255,211,106,0)");
+          bm.addColorStop(1, "rgba(255,211,106,.85)");
+          ctx.fillStyle = bm;
+          ctx.fillRect(px - 1.5, py - 54, 3, 54);
+        }
+        if (!RM) {
+          var nq = Math.max(0, Math.min(e.q.length, Math.round((el - 150) / 38)));
+          if (mqt.textContent.length !== nq) mqt.textContent = e.q.slice(0, nq);
+        }
+        var cw = mcard.offsetWidth || 0,
+          fx = Math.max(12 - (px - cw / 2), Math.min(0, W - 12 - (px + cw / 2)));
+        S(mq, "transform", "translate3d(" + px.toFixed(1) + "px," + py.toFixed(1) + "px,0)");
+        S(mcard, "transform", "translate3d(" + (px + fx).toFixed(1) + "px," + py.toFixed(1) + "px,0)");
+        if (mcard._ax !== fx) mcard.style.setProperty("--ax", (-(mcard._ax = fx)).toFixed(1) + "px");
+        mq.classList.toggle("on", el > 60 && el < 1250);
+        mcard.classList.toggle("on", el > 1050 && el < EVD - 250);
+      } else {
+        mq.classList.remove("on");
+        mcard.classList.remove("on");
+      }
+    }
+    return { step: step, layout: layout };
+  })();
+  var DAWN = 0;
+  function mapStep(now) {
+    MAP.step(now, window.scrollY, PAN, DAWN);
   }
-  var mlayer = $("mlayer"),
-    headEl = $("head"),
+  var headEl = $("head"),
     navEl = $("nav"),
     veil = $("veil"),
     vbase = veil.querySelector(".vbase"),
@@ -396,7 +745,8 @@
       p = clamp01((sy - s0) / T),
       v = (sy - s0) / (VH * 1.35),
       W = CW;
-    PAN = clamp01((sy - (HH - VH)) / HOLD);
+    PAN = clamp01(sy / (Math.max(0, HH - VH) + HOLD));
+    DAWN = p;
     var h = 1 - clamp01(p / 0.5);
     S(headEl, "opacity", h.toFixed(3));
     S(
@@ -1336,6 +1686,16 @@
     );
     io.observe(m);
   })();
+  /* mur des réalisations : un seul bouton met les trois rangées en pause */
+  document.querySelectorAll(".sw-play").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var p = b.getAttribute("aria-pressed") !== "true",
+        w = b.closest(".sw-wall");
+      b.setAttribute("aria-pressed", p ? "true" : "false");
+      b.setAttribute("aria-label", p ? "Relancer le défilement" : "Mettre en pause le défilement");
+      if (w) w.classList.toggle("paused", p);
+    });
+  });
   LATE.push(function () {
     var r = document.getElementById("lgRow");
     if (!r) return;

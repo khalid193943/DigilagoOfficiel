@@ -1,0 +1,200 @@
+{
+  "file": "creation-site-web-maroc.html",
+  "title": "Création de site web au Maroc : le guide complet | Digilago",
+  "description": "Création de site web au Maroc : types de sites, étapes, prix indicatifs, délais, domaine .ma, FR/AR/EN et SEO. Tout pour lancer un site qui rapporte.",
+  "eyebrow": "Guide, 10 min de lecture",
+  "h1": ["Création de site web au Maroc :", "de l’idée au lancement, pas à pas."],
+  "lead": "Types de sites, étapes, prix, délais, nom de domaine, langues et référencement : tout ce qu’il faut savoir avant la création de votre site web au Maroc.",
+  "headline": "Création de site web au Maroc : le guide complet pour lancer un site internet qui attire des clients (2026)",
+  "keywords": [
+    "création site web Maroc",
+    "création site internet Maroc",
+    "site web Maroc",
+    "développement web Maroc",
+    "site vitrine",
+    "site vitrine Maroc",
+    "prix site web Maroc",
+    "nom de domaine .ma",
+    "site multilingue arabe français anglais",
+    "agence web Maroc"
+  ],
+  "sections": [
+    {
+      "h2": "Création de site web au Maroc : de quoi votre entreprise a-t-elle vraiment besoin ?",
+      "blocks": [
+        {"p": "Pour réussir la création de son site web au Maroc, une entreprise a d’abord besoin d’un site clair, rapide sur téléphone, en français et en arabe, qui permet de la contacter en un geste, de préférence sur WhatsApp. Boutique, réservation ou application viennent ensuite, selon votre activité."},
+        {"p": "Avant d’appeler, vos clients tapent votre métier et votre ville sur Google, ou interrogent ChatGPT. Votre site doit leur répondre vite :"},
+        {"ul": [
+          "<strong>Qui êtes-vous et que proposez-vous ?</strong> Une page claire par service.",
+          "<strong>Pourquoi vous ?</strong> De vraies photos, des avis, des réalisations.",
+          "<strong>Où et quand ?</strong> Adresse, carte, horaires, zones desservies.",
+          "<strong>Comment vous joindre ?</strong> WhatsApp, numéro cliquable, formulaire ou rendez-vous."
+        ]},
+        {"p": "Un dentiste à Casablanca veut remplir son agenda ; une boutique de caftans à Marrakech veut montrer ses modèles et prendre des commandes. Le point de départ n’est donc pas la technique, mais votre objectif. Encore un doute ? Lisez <a href=\"guide-bon-moment-maroc.html\">pourquoi c’est le bon moment de se lancer</a>."}
+      ]
+    },
+    {
+      "h2": "Quel type de site web choisir : vitrine, réservation, boutique ou application ?",
+      "blocks": [
+        {"p": "Le bon type de site dépend de ce que vos clients doivent pouvoir faire : se renseigner (site vitrine), réserver (site avec rendez-vous), acheter à distance (boutique en ligne) ou revenir chaque semaine (application). La plupart des entreprises marocaines commencent par un site vitrine bien référencé."},
+        {"table": {
+          "head": ["Type de site", "À quoi il sert", "Idéal pour"],
+          "rows": [
+            ["Site vitrine", "Présenter, rassurer, générer des appels et des messages", "Cabinets, écoles, artisans, restaurants"],
+            ["Site avec réservation", "Prendre des rendez-vous en ligne, jour et nuit", "Cliniques, instituts de beauté, salles de sport, riads"],
+            ["Boutique en ligne", "Vendre à distance, avec paiement par carte via le CMI ou à la livraison", "Commerces, marques, artisans qui expédient"],
+            ["Application web ou mobile", "Fidéliser, gérer des commandes répétées, offrir un espace client", "Réseaux, clubs, plateformes"]
+          ]
+        }},
+        {"p": "Un site bien construit peut ensuite évoluer sans tout refaire. Pour trancher, voyez notre comparatif <a href=\"guide-site-vitrine-boutique-application.html\">site vitrine, boutique ou application</a> et nos guides pour <a href=\"creer-boutique-en-ligne-maroc.html\">créer une boutique en ligne au Maroc</a> ou <a href=\"application-mobile-maroc.html\">une application mobile</a>."}
+      ]
+    },
+    {
+      "h2": "Comment se déroule la création d’un site internet au Maroc, de l’idée au lancement ?",
+      "blocks": [
+        {"p": "La création d’un site internet suit sept étapes, du cadrage au suivi. Que vous confiiez votre projet de développement web au Maroc à une agence ou à un indépendant, vous n’intervenez vraiment qu’à trois moments : expliquer votre besoin, fournir vos informations et valider."},
+        {"ol": [
+          "<strong>Cadrage.</strong> Objectif (appels, rendez-vous, ventes), clients, services, villes et langues.",
+          "<strong>Contenus.</strong> Textes, photos, logo, horaires. C’est l’étape qui retarde le plus de projets : préparez-la tôt.",
+          "<strong>Design.</strong> Une première version à votre image, pensée d’abord pour le téléphone.",
+          "<strong>Développement.</strong> Pages, formulaires, bouton WhatsApp, réservation ou boutique, versions linguistiques.",
+          "<strong>Tests.</strong> Vitesse, affichage sur plusieurs téléphones, formulaires, arabe de droite à gauche.",
+          "<strong>Mise en ligne.</strong> Nom de domaine, hébergement, HTTPS, Google Search Console et fiche Google.",
+          "<strong>Suivi.</strong> Mesure des contacts, mises à jour, nouvelles pages."
+        ]},
+        {"note": "Conseil : rassemblez dès le départ au moins dix vraies photos (façade, équipe, locaux, réalisations). Elles rassurent bien plus qu’une banque d’images et serviront aussi pour votre fiche Google."}
+      ]
+    },
+    {
+      "h2": "Combien coûte la création d’un site web au Maroc ?",
+      "blocks": [
+        {"p": "Au Maroc, la création d’un site web coûte, à titre indicatif, d’environ 3 000 MAD pour un site vitrine simple réalisé à partir d’un thème à plus de 50 000 MAD pour une plateforme sur-mesure. La plupart des PME se situent entre les deux."},
+        {"table": {
+          "head": ["Projet", "Fourchette indicative"],
+          "rows": [
+            ["Site vitrine à partir d’un thème", "Environ 3 000 à 8 000 MAD"],
+            ["Site vitrine sur-mesure, multilingue et optimisé SEO", "Environ 8 000 à 25 000 MAD"],
+            ["Site avec réservation ou prise de rendez-vous", "Environ 12 000 à 35 000 MAD"],
+            ["Boutique en ligne (paiement CMI ou à la livraison)", "Environ 15 000 à 60 000 MAD"],
+            ["Application web ou mobile, logiciel métier", "À partir de 40 000 MAD"]
+          ]
+        }},
+        {"p": "Ces montants varient selon les prestataires. Le prix dépend surtout du design (thème ou création), du nombre de langues, des fonctionnalités et des contenus inclus. Prévoyez aussi les coûts annuels : nom de domaine, hébergement et maintenance. Détails dans notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix d’un site web au Maroc</a>."}
+      ]
+    },
+    {
+      "h2": "Combien de temps faut-il pour créer un site web ?",
+      "blocks": [
+        {"p": "Le délai dépend avant tout de la rapidité des échanges : un site vitrine peut être prêt en quelques jours à quelques semaines, une boutique ou un site avec réservation demande davantage, une application se compte plutôt en mois."},
+        {"p": "Ce qui allonge un projet, ce sont surtout les contenus qui tardent et les validations qui traînent. Pour aller vite : un seul décideur, des contenus prêts et un périmètre clair. Chez Digilago, vous recevez une première version en 72 heures, à partir du nom de votre entreprise et de votre ville."}
+      ]
+    },
+    {
+      "h2": "Nom de domaine .ma ou .com : lequel choisir, et quel hébergement ?",
+      "blocks": [
+        {"p": "Pour une entreprise qui vise d’abord des clients marocains, le .ma est un excellent choix : il signale immédiatement son ancrage local. Le .com convient mieux à une clientèle internationale. L’idéal est souvent de réserver les deux."},
+        {"ul": [
+          "<strong>Un nom court</strong>, facile à dicter : votre enseigne, suivie si besoin de votre ville.",
+          "<strong>Le .ma</strong>, extension nationale administrée par l’ANRT, s’enregistre auprès d’un bureau d’enregistrement agréé, qui vérifie les conditions en vigueur.",
+          "<strong>Un domaine à votre nom</strong>, jamais à celui du prestataire, renouvelé chaque année.",
+          "<strong>Un hébergement</strong> rapide, sécurisé (HTTPS), sauvegardé automatiquement et surveillé."
+        ]}
+      ]
+    },
+    {
+      "h2": "Faut-il un site en français, en arabe et en anglais ?",
+      "blocks": [
+        {"p": "Oui, dans la plupart des cas : au Maroc, vos clients cherchent en français, en arabe et parfois en darija, et l’anglais s’impose dès que vous visez les touristes ou une clientèle internationale. Un site multilingue FR/AR/EN multiplie les recherches sur lesquelles vous apparaissez."},
+        {"ul": [
+          "<strong>Chaque langue est rédigée</strong>, pas traduite automatiquement : vos clients le sentent, et Google aussi.",
+          "<strong>L’arabe se lit de droite à gauche</strong> : toute la mise en page doit s’inverser proprement.",
+          "<strong>Chaque version a sa propre adresse</strong>, signalée à Google par les balises hreflang.",
+          "<strong>Les mots-clés changent d’une langue à l’autre</strong> : un riad à Fès n’est pas cherché avec les mêmes mots par un voyageur anglophone et par une famille marocaine."
+        ]}
+      ]
+    },
+    {
+      "h2": "Pourquoi un site rapide et pensé pour le mobile fait-il la différence ?",
+      "blocks": [
+        {"p": "Parce que la plupart des recherches au Maroc se font sur téléphone : un site conçu d’abord pour le mobile et qui s’affiche vite garde ses visiteurs, alors qu’un site lent les envoie chez un concurrent. Google évalue d’ailleurs les sites à partir de leur version mobile."},
+        {"ul": [
+          "Un contenu principal affiché en moins de 2,5 secondes, le seuil jugé bon par les Core Web Vitals de Google.",
+          "Des images légères (WebP, AVIF), chargées seulement quand on en a besoin.",
+          "Des boutons adaptés au pouce, des formulaires courts et un bouton WhatsApp toujours visible."
+        ]},
+        {"note": "Testez vous-même : ouvrez les sites réalisés par un prestataire sur votre téléphone, en 4G, hors Wi-Fi. Ce que vous ressentez, vos clients le ressentiront aussi."}
+      ]
+    },
+    {
+      "h2": "Comment rendre son site web visible au Maroc sur Google et dans les IA, dès le premier jour ?",
+      "blocks": [
+        {"p": "En intégrant le référencement dès la conception, et non après : une page par service, des titres qui reprennent les mots de vos clients, des données structurées et une fiche Google complète. Sans cela, personne ne voit votre site."},
+        {"ul": [
+          "<strong>Une page par service</strong>, et par ville si vous en couvrez plusieurs : « implant dentaire Casablanca » plutôt que « Nos prestations ».",
+          "<strong>Un titre et une description uniques</strong> pour chaque page, dans chaque langue.",
+          "<strong>Des données structurées Schema.org</strong> : qui vous êtes, où, pour qui, à quelles heures.",
+          "<strong>Une fiche Google Business</strong> reliée au site : voir notre <a href=\"guide-fiche-google-business-maroc.html\">guide de la fiche Google</a>.",
+          "<strong>Des réponses claires aux questions fréquentes</strong> et un fichier llms.txt, pour être compris et cité par ChatGPT, Gemini ou Perplexity."
+        ]},
+        {"p": "Sur des recherches concurrentielles, comptez généralement trois à six mois de travail régulier. Pour aller plus loin, lisez notre guide du <a href=\"referencement-seo-maroc.html\">référencement SEO au Maroc</a> et <a href=\"guide-google-chatgpt-maroc.html\">comment apparaître sur Google et dans ChatGPT</a>."}
+      ]
+    },
+    {
+      "h2": "Que comprend la maintenance d’un site web après le lancement ?",
+      "blocks": [
+        {"p": "La maintenance couvre l’hébergement, le renouvellement du nom de domaine, le certificat de sécurité, les sauvegardes, les mises à jour et les petites modifications : horaires du Ramadan, nouveaux services, nouvelles photos. Sans elle, un site vieillit vite et devient vulnérable. Avant de signer, demandez ce qu’elle couvre, son coût annuel et qui vous répond en cas de problème."}
+      ]
+    },
+    {
+      "h2": "Quelles erreurs éviter quand on crée son site internet ?",
+      "blocks": [
+        {"p": "L’erreur la plus coûteuse est de choisir un site uniquement sur son prix : un site bon marché mais lent, introuvable sur Google ou impossible à modifier finit souvent par être refait. Autres pièges fréquents :"},
+        {"ul": [
+          "Un nom de domaine ou des accès au nom du prestataire.",
+          "Des textes copiés ou traduits automatiquement.",
+          "Un site superbe sur ordinateur, mais pénible sur téléphone.",
+          "Aucun bouton WhatsApp ni numéro cliquable.",
+          "Oublier les mentions légales et la politique de confidentialité : dès qu’un formulaire collecte des données personnelles, la loi 09-08 s’applique, et des démarches auprès de la CNDP peuvent être nécessaires.",
+          "Lancer le site puis l’oublier, sans fiche Google ni mises à jour."
+        ]}
+      ]
+    },
+    {
+      "h2": "La check-list avant de lancer votre site web",
+      "blocks": [
+        {"p": "Avant la mise en ligne, vérifiez ces points : s’ils sont tous cochés, votre site est prêt à travailler pour vous."},
+        {"ul": [
+          "Nom de domaine .ma ou .com à votre nom, avec vos accès, et HTTPS actif partout.",
+          "Affichage rapide sur téléphone, testé sur plusieurs appareils.",
+          "Bouton WhatsApp, numéro cliquable et formulaire testés.",
+          "Versions française, arabe et, si besoin, anglaise relues par un humain.",
+          "Site déclaré dans Google Search Console, avec un sitemap.",
+          "Fiche Google Business à jour, avec le lien vers le site.",
+          "Mentions légales et politique de confidentialité en ligne.",
+          "Mesure d’audience installée, maintenance et sauvegardes prévues."
+        ]}
+      ]
+    },
+    {
+      "h2": "Comment Digilago peut vous aider",
+      "blocks": [
+        {"p": "Digilago, agence web basée à El Jadida, accompagne les entreprises dans tout le Maroc : sites sur mesure en français, en arabe et en anglais, fiche Google, référencement et visibilité dans les IA. Le prix est annoncé par écrit avant de commencer, la première version arrive en 72 heures et, si elle ne vous plaît pas, vous ne payez rien. Découvrez nos <a href=\"services.html\">services</a>, nos <a href=\"realisations.html\">idées de sites par métier</a>, ou <a href=\"demarrer.html\">démarrez votre projet</a>. Vous comparez des prestataires ? Lisez <a href=\"agence-web-maroc.html\">comment choisir une agence web au Maroc</a> et notre <a href=\"faq.html\">FAQ</a>."}
+      ]
+    }
+  ],
+  "faq": [
+    {"q": "Combien coûte la création d’un site web au Maroc ?", "a": "À titre indicatif, un site vitrine à partir d’un thème coûte environ 3 000 à 8 000 MAD au Maroc, un site vitrine sur-mesure et multilingue environ 8 000 à 25 000 MAD, et une boutique en ligne environ 15 000 à 60 000 MAD. Ces fourchettes varient selon les prestataires : demandez toujours un devis écrit et détaillé."},
+    {"q": "Combien de temps faut-il pour créer un site internet au Maroc ?", "a": "Un site vitrine peut être prêt en quelques jours à quelques semaines ; une boutique en ligne ou une application demandent davantage. Le délai dépend surtout de la rapidité à fournir textes, photos et validations. Chez Digilago, une première version du site est livrée en 72 heures."},
+    {"q": "Qu’est-ce qu’un site vitrine ?", "a": "Un site vitrine présente une entreprise, ses services, ses horaires et ses coordonnées, sans vente en ligne. Son rôle est de rassurer et de transformer une visite en appel, en message WhatsApp ou en rendez-vous. C’est le point de départ le plus courant pour une PME marocaine."},
+    {"q": "Faut-il choisir un nom de domaine .ma ou .com ?", "a": "Le .ma est idéal pour une entreprise qui s’adresse d’abord à des clients marocains, car il affiche clairement son ancrage local. Le .com convient mieux à une activité tournée vers l’international. Beaucoup d’entreprises réservent les deux, enregistrés à leur nom, et redirigent l’un vers l’autre."},
+    {"q": "Mon site doit-il être en arabe et en français ?", "a": "Au Maroc, c’est fortement recommandé, car les clients cherchent dans les deux langues, et parfois en darija. Chaque version doit être rédigée, pas traduite automatiquement, avec un arabe correctement affiché de droite à gauche. L’anglais devient utile dès que vous visez les touristes ou une clientèle étrangère."},
+    {"q": "Un site web suffit-il pour être trouvé sur Google ?", "a": "Non, le site doit être construit pour le référencement : une page par service, des titres qui reprennent les recherches des clients, une bonne vitesse sur mobile et des données structurées, le tout relié à une fiche Google Business complète. Sur des recherches concurrentielles, le référencement demande généralement trois à six mois de travail régulier."},
+    {"q": "Qui est propriétaire du site une fois créé ?", "a": "C’est vous qui devez l’être : nom de domaine et fiche Google à votre nom, contenus et code cédés par écrit. Vérifiez-le dans le devis ou le contrat avant de signer, pour pouvoir changer un jour de prestataire sans rien perdre."},
+    {"q": "Quelles obligations légales pour un site web au Maroc ?", "a": "Un site professionnel affiche des mentions légales qui identifient l’entreprise, et une politique de confidentialité s’il collecte des données (formulaire, réservation, commande). Au Maroc, ces données sont protégées par la loi 09-08, sous le contrôle de la CNDP, auprès de laquelle des démarches peuvent être nécessaires. En cas de doute, faites confirmer les formalités par un juriste."}
+  ],
+  "related": [
+    "guide-prix-site-web-maroc.html",
+    "agence-web-maroc.html",
+    "referencement-seo-maroc.html"
+  ]
+}

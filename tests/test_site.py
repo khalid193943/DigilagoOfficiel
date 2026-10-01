@@ -101,13 +101,21 @@ def test_menu_plein_ecran_telephone(page, base_url, name):
 def test_modeles_se_parcourent_au_survol(page, base_url):
     page.set_viewport_size({'width': 1440, 'height': 900})
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(2000)
-    page.locator('#showcase').scroll_into_view_if_needed(); page.wait_for_timeout(1500)
-    cards = page.locator('#showcase .scat[data-cat="medical"] .lp')
-    assert cards.count() >= 14
-    box = cards.nth(0).bounding_box()
+    page.evaluate("document.querySelector('#showcase .sw-wall').scrollIntoView({block: 'center'})"); page.wait_for_timeout(1500)
+    cards = page.locator('#showcase .sw-wall .lp')
+    assert cards.count() >= 26, 'tous les types de sites, mélangés sur trois rangées'
+    page.click('#showcase .sw-play'); page.wait_for_timeout(300)   # pause : la carte reste sous la souris
+    assert 'paused' in page.locator('#showcase .sw-wall').get_attribute('class')
+    i = page.evaluate("""[...document.querySelectorAll('#showcase .sw-wall .lp')].findIndex(c => {
+        const r = c.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2,
+          img = c.querySelector('img'), v = c.querySelector('.lp-view');
+        return img && img.getBoundingClientRect().height > 2 * v.clientHeight &&
+          x > 250 && x < innerWidth - 250 && y > 150 && y < innerHeight - 150 })""")
+    assert i >= 0
+    box = cards.nth(i).bounding_box()
     page.mouse.move(box['x'] + box['width'] / 2, box['y'] + box['height'] / 2)
     page.wait_for_timeout(600)
-    dy = page.evaluate("parseFloat(getComputedStyle(document.querySelector('#showcase .lp')).getPropertyValue('--dy'))")
+    dy = page.evaluate("i => parseFloat(getComputedStyle(document.querySelectorAll('#showcase .sw-wall .lp')[i]).getPropertyValue('--dy'))", i)
     assert dy > 500, 'la page devrait pouvoir défiler dans son cadre'
 
 def test_explorateur_des_metiers(page, base_url):

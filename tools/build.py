@@ -5,7 +5,12 @@ y compris après avoir régénéré les pages avec l'ancien générateur.
 
   1. simplify_map  carte du monde allégée et chargée à la demande
   2. design_html   retouches de contenu de l'accueil
+     hero_map      carte du nord du Maroc et entreprises en ligne (haut de l'accueil)
   3. dedupe_pages  plus aucun bloc en double entre les pages
+     articles      articles SEO / GEO (src/articles/*.json), page Guides, colonne Guides du pied de page
+     services_page page Services : expertises, clients, comparatif, garanties
+     gradients     dégradés ciel → nuit entre les sections (src/css/gradients.css)
+     titles        titres des pages (onglet, Google et grand titre), sauf l'accueil
   4. fonts         polices hébergées sur le site
   5. inject        JavaScript (src/js) et CSS (src/css) minifiés dans chaque page
   6. i18n_build    versions anglaise (site/en/) et arabe (site/ar/), sélecteur de langue
@@ -17,7 +22,7 @@ Usage : python3 tools/build.py      (ou : npm run build / make build)
 import os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STEPS = ['simplify_map', 'design_html', 'dedupe_pages', 'fonts', 'inject', 'i18n_build', 'seo', 'set_gestion_url']
+STEPS = ['simplify_map', 'design_html', 'hero_map', 'dedupe_pages', 'articles', 'services_page', 'titles', 'gradients', 'fonts', 'inject', 'i18n_build', 'seo', 'set_gestion_url']
 
 for s in STEPS:
     print('──', s)
