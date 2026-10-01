@@ -25,7 +25,7 @@ def main():
     for f in pages:
         h = open(f, encoding='utf-8').read()
         h2 = re.sub(r'(<html\b[^>]*?)\sdata-api="[^"]*"', r'\1', h, count=1)
-        h2 = h2.replace('<html ', '<html data-api="%s" ' % url, 1) if url else h2
+        h2 = re.sub(r'<html\b([^>]*)>', lambda m: '<html%s data-api="%s">' % (m.group(1), url), h2, count=1) if url else h2
         if h2 != h:
             open(f, 'w', encoding='utf-8').write(h2)
     print('gestion :', url or '(non reliée)', '—', len(pages), 'pages')

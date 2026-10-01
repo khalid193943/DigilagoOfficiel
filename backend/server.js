@@ -223,8 +223,10 @@ async function ensureProject(qid) {
 
 /* ---------------- Formulaire public du site : les demandes arrivent ici ---------------- */
 /* SITE_ORIGIN : une ou plusieurs adresses du site, séparées par des virgules ; « * » pour tout accepter */
-const SITE_ORIGINS = String(process.env.SITE_ORIGIN || 'https://digilago.ma,https://www.digilago.ma,https://khalid193943.github.io').split(',').map((x) => x.trim()).filter(Boolean);
-const corsFor = (req) => { const o = req.get('origin') || ''; return SITE_ORIGINS.includes('*') ? '*' : SITE_ORIGINS.includes(o) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o) ? o : SITE_ORIGINS[0]; };
+/* chaque adresse est acceptée avec et sans « www » (le site est servi sur www.digilago.ma) */
+const SITE_ORIGINS = [...new Set(String(process.env.SITE_ORIGIN || 'https://digilago.ma,https://khalid193943.github.io').split(',').map((x) => x.trim().replace(/\/$/, '')).filter(Boolean)
+  .flatMap((o) => (o === '*' ? [o] : [o, o.replace(/^(https?:\/\/)www\./, '$1'), o.replace(/^(https?:\/\/)(?!www\.)/, '$1www.')])))];
+const corsFor = (req) => { const o = req.get('origin') || ''; return SITE_ORIGINS.includes('*') ? '*' : SITE_ORIGINS.includes(o) ? o : SITE_ORIGINS[0]; };
 app.options('/api/leads', async (req, res) => { res.set({ 'Access-Control-Allow-Origin': corsFor(req), Vary: 'Origin', 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type' }).sendStatus(204); });
 app.post('/api/leads', async (req, res) => {
   res.set({ 'Access-Control-Allow-Origin': corsFor(req), Vary: 'Origin' });

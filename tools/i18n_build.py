@@ -271,7 +271,7 @@ def main():
             TR = TRS[lang]
             t = translate_html(fr, TR, lang)
             t = switchers(t, page, lang)
-            t = t.replace('<html lang="fr"', '<html lang="%s"' % lang, 1)
+            t = re.sub(r'(<html\b[^>]*?\blang=)"fr"', r'\1"%s"' % lang, t, count=1)
             t = re.sub(r'(?<![./\w])assets/', '../assets/', t)
             kind = 'home' if page == 'index.html' else 'pages'
             tag = '<script data-dg="app">' + bundles[(lang, kind)].replace('</script', '<\\/script') + '</script>'

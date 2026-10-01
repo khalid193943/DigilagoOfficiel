@@ -13,3 +13,9 @@ def base_url():
     t = threading.Thread(target=srv.serve_forever, daemon=True); t.start()
     yield f'http://127.0.0.1:{PORT}'
     srv.shutdown()
+
+@pytest.fixture(autouse=True)
+def _pas_de_vraies_demandes(page):
+    """Les formulaires testés ne doivent jamais créer de demande dans l'espace de gestion réel."""
+    page.route('**/api/leads', lambda route: route.fulfill(status=200, content_type='application/json', body='{"ok":true,"test":true}'))
+    yield
