@@ -3,7 +3,7 @@
   src/js/common.js  → au début du script de chaque page
   src/js/home.js    → script de l'accueil (index.html)
   src/js/pages.js   → script de toutes les autres pages
-  src/css/perf.css  → ajouté à la fin du <style> de chaque page
+  src/css/perf.css + src/css/design.css → ajoutés à la fin du <style> de chaque page
 
 Le JavaScript est minifié avec terser (npx), le CSS avec un minifieur simple.
 Le script est idempotent : on peut le relancer autant de fois que l'on veut.
@@ -43,7 +43,7 @@ def main():
     common = read('js/common.js')
     js = {'home': terser(common + '\n' + read('js/home.js')),
           'pages': terser(common + '\n' + read('js/pages.js'))}
-    css = '/*dg:perf*/' + mincss(read('css/perf.css')) + '/*dg:end*/'
+    css = '/*dg:perf*/' + mincss(read('css/perf.css') + read('css/design.css')) + '/*dg:end*/'
     for f in sorted(glob.glob(os.path.join(SITE, '*.html'))):
         name = os.path.basename(f)
         h = open(f, encoding='utf-8').read()

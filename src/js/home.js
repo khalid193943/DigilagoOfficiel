@@ -443,7 +443,7 @@
     wi = $("wi"),
     wiStage = $("wiStage"),
     h2 = $("why-title");
-  var WI_H = 1.35,
+  var WI_H = 1.2,
     I0 = null;
   var story = $("story"),
     sCur = -1;
@@ -709,7 +709,7 @@
     }),
     cardTops = null,
     fnavEl0 = $("fnav"),
-    vsvg = $("vmap").querySelector("svg");
+    vsvg = $("vstage") || $("vmap").querySelector("svg");
   function readCards(sy) {
     var B = POS.stack;
     cardTops = null;
@@ -718,7 +718,10 @@
       return c.getBoundingClientRect().top;
     });
   }
+  // Zoom de départ de la carte du monde : plus fort sur téléphone.
+  var ZS = 1.28;
   function moreStep(sy) {
+    ZS = mode === "M" ? 1.45 : 1.28;
     var H = VH;
     fnavEl0.classList.toggle("on", sy > introH - H * 0.1);
     var mt = POS.mani.top - sy;
@@ -748,11 +751,9 @@
         S(
           vsvg,
           "transform",
-          "scale(" +
-            (1.28 - 0.28 * ease(pv)).toFixed(4) +
-            ") translate3d(0," +
-            ((1 - ease(pv)) * 3).toFixed(2) +
-            "%,0)",
+          "translate3d(-50%,-50%,0) scale(" +
+            (ZS - (ZS - 1) * ease(pv)).toFixed(4) +
+            ")",
         );
       vas.forEach(function (a, i) {
         var p = ease(clamp01((pv - 0.08 - i * 0.025) / 0.28));
