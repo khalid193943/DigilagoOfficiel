@@ -49,9 +49,12 @@ function expenseTva(e) {
 /* le calcul d'une période */
 async function computePeriod(db, s, p) {
   const [a, b] = periodRange(p), reg = REGIMES[s.fiscal_regime] || {}, enc = s.tva_regime !== 'debit';
-  const sales = await db.prepare("SELECT i.*, c.name cname, c.company ccomp, c.ice cice, c.if_num cif, c.is_foreign cforeign FROM invoices i LEFT JOIN clients c ON c.id = i.client_id WHERE i.issue_date BETWEEN ? AND ? ORDER BY i.number").all(a, b);
-  const pays = await db.prepare("SELECT p.*, i.number inum, i.total_ttc ittc, i.total_tva itva, i.total_ht iht, i.client_id, c.name cname, c.company ccomp FROM payments p JOIN invoices i ON i.id = p.invoice_id LEFT JOIN clients c ON c.id = i.client_id WHERE p.date BETWEEN ? AND ? ORDER BY p.date, p.id").all(a, b);
-  const exps = await db.prepare('SELECT * FROM expenses WHERE date BETWEEN ? AND ? ORDER BY date, id').all(a, b);
+  /* les trois lectures de la période partent ensemble */
+  const [sales, pays, exps] = await Promise.all([
+    db.prepare("SELECT i.*, c.name cname, c.company ccomp, c.ice cice, c.if_num cif, c.is_foreign cforeign FROM invoices i LEFT JOIN clients c ON c.id = i.client_id WHERE i.issue_date BETWEEN ? AND ? ORDER BY i.number").all(a, b),
+    db.prepare("SELECT p.*, i.number inum, i.total_ttc ittc, i.total_tva itva, i.total_ht iht, i.client_id, c.name cname, c.company ccomp FROM payments p JOIN invoices i ON i.id = p.invoice_id LEFT JOIN clients c ON c.id = i.client_id WHERE p.date BETWEEN ? AND ? ORDER BY p.date, p.id").all(a, b),
+    db.prepare('SELECT * FROM expenses WHERE date BETWEEN ? AND ? ORDER BY date, id').all(a, b),
+  ]);
   for (const x of pays) { const r = x.ittc ? x.amount / x.ittc : 0; x.tva = round2(num(x.itva) * r); x.ht = round2(x.amount - x.tva); x.cash = /esp[eè]ce/i.test(x.method || ''); x.stamp = x.cash && !reg.ae ? round2(x.amount * STAMP_RATE / 100) : 0; }
   for (const e of exps) { const t = expenseTva(e); e.tva_ded = t.ded; e.tva_why = t.why; e.ht = round2(num(e.amount_ttc) - num(e.tva)); e.acc = e.account || catOf(e.category)[1]; }
   const T = {
@@ -67,16 +70,25 @@ async function computePeriod(db, s, p) {
   return { p, a, b, sales, pays, exps, T, deadline: deadline(p), name: PNAME(p) };
 }
 /* la TVA d'une période tient compte du crédit reporté depuis le début de l'année */
-async function yearTva(db, s, y) {
+/* TVA de l'année : les périodes se calculent en parallèle, puis le crédit de TVA est reporté
+   de période en période — et d'une année sur l'autre (avant : il repartait de zéro au 1er janvier). */
+async function yearTva(db, s, y, carry) {
   const per = s.tva_periodicite === 'mensuelle' ? 'mensuelle' : 'trimestrielle';
-  let credit = 0; const out = [];
-  for (const p of periodsOfYear(y, per)) {
-    const c = await computePeriod(db, s, p);
+  let credit = carry === undefined ? await creditInto(db, s, Number(y)) : carry;
+  const out = await Promise.all(periodsOfYear(y, per).map((p) => computePeriod(db, s, p)));
+  for (const c of out) {
     const net = round2(c.T.tva_net - credit);
     c.T.credit_in = credit; c.T.tva_due = net > 0 ? net : 0; credit = net < 0 ? -net : 0; c.T.credit_out = credit;
-    out.push(c);
   }
   return out;
+}
+/* crédit de TVA restant à la fin des années précédentes (depuis la première année d'activité, 5 ans au plus) */
+async function creditInto(db, s, y) {
+  const r = await db.prepare("SELECT MIN(d) d FROM (SELECT MIN(issue_date) d FROM invoices UNION ALL SELECT MIN(date) FROM expenses UNION ALL SELECT MIN(date) FROM payments)").get();
+  const first = Math.max(y - 5, Number(String((r && r.d) || y).slice(0, 4)) || y);
+  let credit = 0;
+  for (let k = first; k < y; k++) { const ps = await yearTva(db, s, k, credit); credit = ps.length ? ps[ps.length - 1].T.credit_out : credit; }
+  return credit;
 }
 /* auto-entrepreneur : plafond annuel et règle des 80 000 DH par client (sur l'encaissé) */
 async function aeWatch(db, s, y) {

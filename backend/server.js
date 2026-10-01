@@ -409,41 +409,69 @@ app.use(async (req, res, next) => { if (!HAS_PW) { HAS_PW = !!(await getS('_pw')
 
 /* ---------------- Tableau de bord ---------------- */
 app.get('/', async (req, res) => {
-  const m = today().slice(0, 7), s = (await settings());
-  const qMonth = await db.prepare("SELECT COUNT(*) n, COALESCE(SUM(total_ttc),0) t FROM quotes WHERE substr(issue_date,1,7) = ?").get(m);
-  const dec = await db.prepare("SELECT SUM(status IN ('accepte','facture')) w, SUM(status IN ('envoye','vu','accepte','refuse','facture')) d FROM quotes").get();
+  const m = today().slice(0, 7);
+  const PREV_M = (() => { const d = new Date(m + '-01T12:00:00Z'); d.setUTCMonth(d.getUTCMonth() - 1); return d.toISOString().slice(0, 7); })();
+  /* Toutes les lectures indépendantes partent en même temps : sur Turso, chaque requête est un aller-retour
+     réseau ; en parallèle, le tableau de bord attend la plus lente au lieu de la somme des ~25. */
+  const P = {
+    invsPaid: db.prepare('SELECT * FROM invoices WHERE cancelled = 0').all().then(withPaid),
+    q0: db.prepare("SELECT COUNT(*) n, COALESCE(SUM(total_ttc),0) t FROM quotes WHERE substr(issue_date,1,7) = ?").get(m),
+    q1: db.prepare("SELECT SUM(status IN ('accepte','facture')) w, SUM(status IN ('envoye','vu','accepte','refuse','facture')) d FROM quotes").get(),
+    q2: db.prepare("SELECT COALESCE(SUM(amount),0) s FROM payments WHERE substr(date,1,7) = ?").get(m),
+    q3: db.prepare("SELECT COALESCE(SUM(total_ttc),0) s, COUNT(*) n FROM quotes WHERE status IN ('envoye','vu')").get(),
+    q4: db.prepare("SELECT substr(date,1,7) m, COALESCE(SUM(amount),0) s FROM payments WHERE date >= date('now','-7 months') GROUP BY m").all(),
+    q5: db.prepare("SELECT q.*, c.name cname, c.company ccomp, c.phone cphone FROM quotes q LEFT JOIN clients c ON c.id = q.client_id WHERE q.status IN ('envoye','vu') AND (q.sent_at IS NULL OR q.sent_at <= datetime('now','-3 days')) ORDER BY q.issue_date LIMIT 6").all(),
+    q6: db.prepare("SELECT * FROM leads WHERE COALESCE(stage, 'nouveau') = 'nouveau' ORDER BY id DESC LIMIT 5").all(),
+    q7: db.prepare("SELECT p.*, c.name cname, c.company ccomp FROM projects p LEFT JOIN clients c ON c.id = p.client_id WHERE p.status != 'livre' ORDER BY COALESCE(p.due_date, p.created_at) LIMIT 6").all(),
+    q8: db.prepare("SELECT COALESCE(SUM(amount_ttc),0) s FROM expenses WHERE substr(date,1,7) = ?").get(m),
+    q9: db.prepare("SELECT c.* FROM clients c WHERE EXISTS (SELECT 1 FROM quotes q WHERE q.client_id = c.id AND q.status IN ('accepte','facture')) OR EXISTS (SELECT 1 FROM projects p WHERE p.client_id = c.id)").all(),
+    q10: db.prepare("SELECT COALESCE(SUM(amount),0) s FROM payments WHERE substr(date,1,7) = ?").get(PREV_M),
+    q11: db.prepare("SELECT * FROM projects WHERE status != 'livre'").all(),
+    q12: db.prepare("SELECT p.*, c.name cname, c.company ccomp, c.city ccity FROM projects p LEFT JOIN clients c ON c.id = p.client_id WHERE p.site_url IS NOT NULL AND p.site_url != '' ORDER BY COALESCE(p.delivered_at, p.created_at) DESC LIMIT 8").all(),
+    q13: db.prepare("SELECT * FROM leads WHERE next_at IS NOT NULL AND next_at <= ? AND COALESCE(stage, 'nouveau') NOT IN ('gagne','perdu') ORDER BY next_at LIMIT 6").all(today()),
+    q14: db.prepare("SELECT q.*, c.company ccomp, c.name cname FROM quotes q LEFT JOIN clients c ON c.id = q.client_id WHERE q.status IN ('accepte','facture')").all(),
+    q15: db.prepare('SELECT * FROM projects WHERE quote_id IS NOT NULL').all(),
+    q16: db.prepare("SELECT quote_id, sched_idx FROM invoices WHERE kind != 'avoir' AND cancelled = 0 AND quote_id IS NOT NULL").all(),
+    q17: db.prepare("SELECT p.*, c.company ccomp, c.name cname FROM projects p LEFT JOIN clients c ON c.id = p.client_id").all(),
+    q18: db.prepare('SELECT COUNT(DISTINCT ckey) n FROM messages WHERE is_read = 0').get(),
+    clm: clientMap()
+  };
+  for (const k in P) P[k].catch(() => {});
+  const s = (await settings());
+  const qMonth = await P.q0;
+  const dec = await P.q1;
   const rate = dec.d ? Math.round(100 * dec.w / dec.d) : 0;
-  const invs = await withPaid(await db.prepare('SELECT * FROM invoices WHERE cancelled = 0').all());
+  const invs = await P.invsPaid;
   let billedMonth = 0, due = 0, late = [];
   for (const i of invs) { const p = i.paid; if ((i.issue_date || '').startsWith(m)) billedMonth += i.total_ttc; const r = i.total_ttc - p; if (r > 0.009) { due += r; if (i.due_date < today()) late.push({ ...i, rest: r }); } }
-  const cashMonth = (await db.prepare("SELECT COALESCE(SUM(amount),0) s FROM payments WHERE substr(date,1,7) = ?").get(m)).s;
-  const pipeline = await db.prepare("SELECT COALESCE(SUM(total_ttc),0) s, COUNT(*) n FROM quotes WHERE status IN ('envoye','vu')").get();
-  const PM = {}; for (const r of await db.prepare("SELECT substr(date,1,7) m, COALESCE(SUM(amount),0) s FROM payments WHERE date >= date('now','-7 months') GROUP BY m").all()) PM[r.m] = r.s;
+  const cashMonth = (await P.q2).s;
+  const pipeline = await P.q3;
+  const PM = {}; for (const r of await P.q4) PM[r.m] = r.s;
   const months = []; for (let k = 5; k >= 0; k--) { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - k); const key = d.toISOString().slice(0, 7); months.push([key, PM[key] || 0]); }
   const maxM = Math.max(1, ...months.map((x) => x[1]));
-  const follow = await db.prepare("SELECT q.*, c.name cname, c.company ccomp, c.phone cphone FROM quotes q LEFT JOIN clients c ON c.id = q.client_id WHERE q.status IN ('envoye','vu') AND (q.sent_at IS NULL OR q.sent_at <= datetime('now','-3 days')) ORDER BY q.issue_date LIMIT 6").all();
-  const leads = await db.prepare("SELECT * FROM leads WHERE COALESCE(stage, 'nouveau') = 'nouveau' ORDER BY id DESC LIMIT 5").all();
-  const projs = await db.prepare("SELECT p.*, c.name cname, c.company ccomp FROM projects p LEFT JOIN clients c ON c.id = p.client_id WHERE p.status != 'livre' ORDER BY COALESCE(p.due_date, p.created_at) LIMIT 6").all();
-  const expMonth = (await db.prepare("SELECT COALESCE(SUM(amount_ttc),0) s FROM expenses WHERE substr(date,1,7) = ?").get(m)).s;
+  const follow = await P.q5;
+  const leads = await P.q6;
+  const projs = await P.q7;
+  const expMonth = (await P.q8).s;
   const kpi = (l, v, sub, cls = '') => `<div class="kpi ${cls}"><span>${l}</span><b>${v}</b><small>${sub}</small></div>`;
   const MOIS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
   /* ---- Superviseur : la carte, l'objectif, la lecture intelligente ---- */
-  const allClients = await db.prepare("SELECT c.* FROM clients c WHERE EXISTS (SELECT 1 FROM quotes q WHERE q.client_id = c.id AND q.status IN ('accepte','facture')) OR EXISTS (SELECT 1 FROM projects p WHERE p.client_id = c.id)").all();
+  const allClients = await P.q9;
   const sv = supervise(allClients);
   const prevM = (() => { const d = new Date(m + '-01T12:00:00Z'); d.setUTCMonth(d.getUTCMonth() - 1); return d.toISOString().slice(0, 7); })();
-  const cashPrev = (await db.prepare("SELECT COALESCE(SUM(amount),0) s FROM payments WHERE substr(date,1,7) = ?").get(prevM)).s;
+  const cashPrev = (await P.q10).s;
   const rateOf = async (a, b) => { const r = await db.prepare(`SELECT SUM(status IN ('accepte','facture')) w, SUM(status IN ('envoye','vu','accepte','refuse','facture')) d FROM quotes WHERE issue_date > date('now', ?) AND issue_date <= date('now', ?)`).get(a, b); return r.d ? Math.round(100 * r.w / r.d) : null; };
-  const r30 = await rateOf('-30 days', '+0 days'), r60 = await rateOf('-60 days', '-30 days');
-  const allProj = await db.prepare("SELECT * FROM projects WHERE status != 'livre'").all();
+  const [r30, r60] = await Promise.all([rateOf('-30 days', '+0 days'), rateOf('-60 days', '-30 days')]);
+  const allProj = await P.q11;
   const lateP = allProj.filter((p) => p.due_date && p.due_date < today());
-  const CLM = await clientMap();
+  const CLM = await P.clm;
   const incomplete = allProj.map((p) => ({ p, c: completeness(p, CLM[p.client_id]) })).filter((x) => x.c.pct < 100);
   const missCount = {}; incomplete.forEach((x) => x.c.missing.forEach((k) => { missCount[k] = (missCount[k] || 0) + 1; }));
   const topMiss = Object.entries(missCount).sort((a, b) => b[1] - a[1])[0];
   const ORDER = ['CS', 'RSK', 'MS', 'FM', 'TTA', 'SM', 'OR', 'BMK', 'DT', 'GON', 'LSH', 'DOD'];
   const nextRegion = ORDER.map((k) => sv.regions.find((r) => r.k === k)).find((r) => r && !r.lit);
   const bestCity = Object.entries(sv.byCity).sort((a, b) => b[1].length - a[1].length)[0];
-  const live = await db.prepare("SELECT p.*, c.name cname, c.company ccomp, c.city ccity FROM projects p LEFT JOIN clients c ON c.id = p.client_id WHERE p.site_url IS NOT NULL AND p.site_url != '' ORDER BY COALESCE(p.delivered_at, p.created_at) DESC LIMIT 8").all();
+  const live = await P.q12;
   const ins = [];
   if (cashPrev || cashMonth) ins.push(cashMonth >= cashPrev ? ['up', `Encaissements en hausse : ${money(cashMonth)} ce mois${cashPrev ? `, soit ${Math.round(100 * (cashMonth - cashPrev) / Math.max(1, cashPrev))} % de plus que le mois dernier` : ''}.`] : ['down', `Encaissements en baisse : ${money(cashMonth)} ce mois contre ${money(cashPrev)} le mois dernier.`]);
   if (r30 !== null) ins.push([r60 !== null && r30 < r60 ? 'down' : 'up', `Taux d’acceptation des devis sur 30 jours : ${r30} %${r60 !== null ? ` (${r30 >= r60 ? '+' : ''}${r30 - r60} points)` : ''}.`]);
@@ -458,12 +486,12 @@ app.get('/', async (req, res) => {
   const siteUrl = 'https://' + String(s.company_site || 'digilago.ma').replace(/^https?:\/\//, '');
   /* ---- Ma journée : ce qu'il faut faire aujourd'hui, prêt en un clic ---- */
   const todo = [];
-  for (const l of await db.prepare("SELECT * FROM leads WHERE COALESCE(stage, 'nouveau') = 'nouveau' ORDER BY id DESC LIMIT 5").all()) todo.push(['lead', `Nouvelle demande : ${l.company || l.name || 'sans nom'}`, [srcOf(l), l.need || l.phone || ''].filter(Boolean).join(' · ').slice(0, 80), `/demandes/${l.id}`, 'Traiter']);
-  for (const l of await db.prepare("SELECT * FROM leads WHERE next_at IS NOT NULL AND next_at <= ? AND COALESCE(stage, 'nouveau') NOT IN ('gagne','perdu') ORDER BY next_at LIMIT 6").all(today())) todo.push(['relance', `Rappeler ${l.company || l.name || ''}`, `${l.phone || ''}${l.next_at < today() ? ' · prévu le ' + dateFr(l.next_at) : ' · aujourd’hui'}`, `/demandes/${l.id}`, 'Appeler']);
+  for (const l of await P.q6) todo.push(['lead', `Nouvelle demande : ${l.company || l.name || 'sans nom'}`, [srcOf(l), l.need || l.phone || ''].filter(Boolean).join(' · ').slice(0, 80), `/demandes/${l.id}`, 'Traiter']);
+  for (const l of await P.q13) todo.push(['relance', `Rappeler ${l.company || l.name || ''}`, `${l.phone || ''}${l.next_at < today() ? ' · prévu le ' + dateFr(l.next_at) : ' · aujourd’hui'}`, `/demandes/${l.id}`, 'Appeler']);
   for (const q of follow.slice(0, 5)) todo.push(['relance', `Relancer le devis ${q.number}`, `${q.ccomp || q.cname || ''} · ${money(q.total_ttc)}`, `/devis/${q.id}`, 'Relancer']);
-  const openQ = await db.prepare("SELECT q.*, c.company ccomp, c.name cname FROM quotes q LEFT JOIN clients c ON c.id = q.client_id WHERE q.status IN ('accepte','facture')").all();
-  const PRQ = {}; for (const pr of await db.prepare('SELECT * FROM projects WHERE quote_id IS NOT NULL').all()) PRQ[pr.quote_id] = pr;
-  const BLQ = {}; for (const x of await db.prepare("SELECT quote_id, sched_idx FROM invoices WHERE kind != 'avoir' AND cancelled = 0 AND quote_id IS NOT NULL").all()) (BLQ[x.quote_id] = BLQ[x.quote_id] || []).push(Number(x.sched_idx));
+  const openQ = await P.q14;
+  const PRQ = {}; for (const pr of await P.q15) PRQ[pr.quote_id] = pr;
+  const BLQ = {}; for (const x of await P.q16) (BLQ[x.quote_id] = BLQ[x.quote_id] || []).push(Number(x.sched_idx));
   for (const q of openQ) {
     const pl = planOf(q), pr = PRQ[q.id], billed = BLQ[q.id] || [];
     const next = pl.findIndex((x, i) => !billed.includes(i)); if (next < 0) continue;
@@ -474,14 +502,14 @@ app.get('/', async (req, res) => {
   for (const i of late.slice(0, 5)) todo.push(['retard', `Facture en retard : ${i.number}`, `${money(i.rest)} à récupérer`, `/factures/${i.id}`, 'Relancer']);
   const soonInv = []; for (const i of invs) { if (i.cancelled || i.kind === 'avoir') continue; const d = daysTo(i.due_date); if (d !== null && d >= 0 && d <= 3) { if (i.total_ttc - i.paid > 0.009) soonInv.push(i); } }
   for (const i of soonInv.slice(0, 3)) todo.push(['echeance', `Échéance dans ${daysTo(i.due_date)} jour${daysTo(i.due_date) > 1 ? 's' : ''} : ${i.number}`, money(i.total_ttc), `/factures/${i.id}`, 'Rappel amical']);
-  for (const p of await db.prepare("SELECT p.*, c.company ccomp, c.name cname FROM projects p LEFT JOIN clients c ON c.id = p.client_id").all()) {
+  for (const p of await P.q17) {
     const t = ptech(p), dd = daysTo(t.domain_expiry), hh = daysTo(t.hosting_expiry), ss = daysTo(t.ssl_valid_to);
     if (dd !== null && dd <= 30) todo.push(['renouv', `Renouveler le domaine ${t.domain || ''}`, `${p.ccomp || p.cname || ''} · ${dd < 0 ? 'expiré' : 'dans ' + dd + ' jours'}`, `/projets/${p.id}`, 'Voir']);
     if (hh !== null && hh <= 30) todo.push(['renouv', 'Renouveler l’hébergement', `${p.ccomp || p.cname || ''} · ${hh < 0 ? 'expiré' : 'dans ' + hh + ' jours'}`, `/projets/${p.id}`, 'Voir']);
     if (ss !== null && ss <= 15) todo.push(['renouv', 'Certificat SSL à vérifier', `${p.ccomp || p.cname || ''} · ${ss < 0 ? 'expiré' : 'expire dans ' + ss + ' jours'}`, `/projets/${p.id}`, 'Voir']);
     if (p.status !== 'livre' && p.status !== 'proposition' && p.due_date && p.due_date < today()) todo.push(['retard', `Projet en retard : ${p.title}`, `livraison prévue le ${dateFr(p.due_date)}`, `/projets/${p.id}`, 'Ouvrir']);
   }
-  const unreadN = (await db.prepare('SELECT COUNT(DISTINCT ckey) n FROM messages WHERE is_read = 0').get()).n; if (unreadN) todo.unshift(['lead', `${unreadN} conversation${unreadN > 1 ? 's' : ''} non lue${unreadN > 1 ? 's' : ''}`, 'WhatsApp et e-mails', '/messagerie', 'Lire']);
+  const unreadN = (await P.q18).n; if (unreadN) todo.unshift(['lead', `${unreadN} conversation${unreadN > 1 ? 's' : ''} non lue${unreadN > 1 ? 's' : ''}`, 'WhatsApp et e-mails', '/messagerie', 'Lire']);
   { const reg = CP.REGIMES[s.fiscal_regime] || {}; if (s.fiscal_regime && (reg.ae || s.tva_assujetti === '1')) { const per = reg.ae ? 'trimestrielle' : s.tva_periodicite === 'mensuelle' ? 'mensuelle' : 'trimestrielle', y0 = Number(today().slice(0, 4)); for (const pp of [...CP.periodsOfYear(y0 - 1, per).slice(-1), ...CP.periodsOfYear(y0, per)]) { const dl = CP.deadline(pp), dd = daysTo(dl); if (dd !== null && dd >= -30 && dd <= 15) { const stx = await taxStatus(reg.ae ? 'ae' : 'tva', pp); if (!['declare', 'paye'].includes(stx.status)) todo.push(['echeance', `${reg.ae ? 'Déclaration auto-entrepreneur' : 'Déclaration de TVA'} · ${fmtP(pp)}`, dd < 0 ? `en retard depuis le ${dateFr(dl)}` : `avant le ${dateFr(dl)}`, `/comptabilite/periode/${pp}`, 'Préparer']); } } } }
   const TI = { lead: '✦', relance: '↻', facture: '€', retard: '!', echeance: '◷', renouv: '⟳' };
   const dayCard = `<section class="day"><div class="day-h"><div><span class="sup-k"><i></i>Ma journée</span><h2>${todo.length ? `${todo.length} action${todo.length > 1 ? 's' : ''} pour avancer aujourd’hui` : 'Rien d’urgent. Belle journée !'}</h2></div><a class="btn" href="/assistant">+ Nouveau projet</a></div>${todo.length ? `<ul class="day-l">${todo.slice(0, 12).map(([k, t, sub, u, a]) => `<li class="d-${k}"><i>${TI[k]}</i><span><b>${esc(t)}</b><small>${esc(sub)}</small></span><a class="btn sm${k === 'retard' ? '' : ' ghost'}" href="${u}">${a}</a></li>`).join('')}</ul>` : ''}</section>`;
@@ -1053,15 +1081,14 @@ app.post('/depenses/:id/supprimer', async (req, res) => { const e = await db.pre
 app.get('/rapports', async (req, res) => {
   const y = String(Number(req.query.annee) || Number(today().slice(0, 4)));
   const MOIS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-  const rows = [];
-  for (let i = 0; i < 12; i++) {
-    const nm = MOIS[i];
-    const k = `${y}-${String(i + 1).padStart(2, '0')}`;
-    const inv = await db.prepare("SELECT COALESCE(SUM(total_ht),0) ht, COALESCE(SUM(total_tva),0) tva FROM invoices WHERE substr(issue_date,1,7) = ?").get(k);
-    const cash = (await db.prepare("SELECT COALESCE(SUM(p.amount),0) s FROM payments p WHERE substr(p.date,1,7) = ?").get(k)).s;
-    const exp = await db.prepare("SELECT COALESCE(SUM(amount_ttc),0) t, COALESCE(SUM(tva),0) tva FROM expenses WHERE substr(date,1,7) = ?").get(k);
-    rows.push({ nm, ht: inv.ht, tvaC: inv.tva, cash, exp: exp.t, tvaD: exp.tva });
-  }
+  /* 3 requêtes groupées par mois (avant : 36 requêtes l'une après l'autre) */
+  const from = `${y}-01-01`, to = `${Number(y) + 1}-01-01`, by = (rs) => Object.fromEntries(rs.map((r) => [r.k, r]));
+  const [IV, PY, EX] = (await Promise.all([
+    db.prepare("SELECT substr(issue_date,1,7) k, COALESCE(SUM(total_ht),0) ht, COALESCE(SUM(total_tva),0) tva FROM invoices WHERE issue_date >= ? AND issue_date < ? GROUP BY k").all(from, to),
+    db.prepare("SELECT substr(date,1,7) k, COALESCE(SUM(amount),0) s FROM payments WHERE date >= ? AND date < ? GROUP BY k").all(from, to),
+    db.prepare("SELECT substr(date,1,7) k, COALESCE(SUM(amount_ttc),0) t, COALESCE(SUM(tva),0) tva FROM expenses WHERE date >= ? AND date < ? GROUP BY k").all(from, to),
+  ])).map(by);
+  const rows = MOIS.map((nm, i) => { const k = `${y}-${String(i + 1).padStart(2, '0')}`, inv = IV[k] || {}, exp = EX[k] || {}; return { nm, ht: inv.ht || 0, tvaC: inv.tva || 0, cash: (PY[k] || {}).s || 0, exp: exp.t || 0, tvaD: exp.tva || 0 }; });
   const T = rows.reduce((a, r) => { for (const k of ['ht', 'tvaC', 'cash', 'exp', 'tvaD']) a[k] += r[k]; return a; }, { ht: 0, tvaC: 0, cash: 0, exp: 0, tvaD: 0 });
   const mx = Math.max(1, ...rows.map((r) => Math.max(r.cash, r.exp)));
   const body = `<div class="tools"><nav class="tabs">${[Number(y) - 1, Number(y), Number(y) + 1].map((a) => `<a href="/rapports?annee=${a}" class="${String(a) === y ? 'on' : ''}">${a}</a>`).join('')}</nav></div>
@@ -1189,7 +1216,7 @@ app.get('/comptabilite', async (req, res) => {
   const per = reg.ae ? 'trimestrielle' : s.tva_periodicite === 'mensuelle' ? 'mensuelle' : 'trimestrielle';
   const periods = reg.ae ? await Promise.all(CP.periodsOfYear(y, 'trimestrielle').map((p) => CP.computePeriod(db, s, p))) : await CP.yearTva(db, { ...s, tva_periodicite: per }, y);
   const kind = reg.ae ? 'ae' : 'tva', stt = {}, TS = {}; for (const r of await db.prepare('SELECT * FROM tax_periods WHERE kind = ?').all(kind)) TS[r.period] = r; for (const c of periods) stt[c.p] = TS[c.p] || { status: 'a_preparer' };
-  const ae = await CP.aeWatch(db, s, y), ctl = await controls(s, y), tok = await accountantToken(), portal = `${baseUrl(req)}/comptable/${tok}`;
+  const [ae, ctl, tok] = await Promise.all([CP.aeWatch(db, s, y), controls(s, y), accountantToken()]), portal = `${baseUrl(req)}/comptable/${tok}`;
   const locks = new Set((await db.prepare('SELECT month FROM locks').all()).map((r) => r.month));
   const nextP = periods.find((c) => !['declare', 'paye'].includes(stt[c.p].status) && c.deadline >= today()) || periods.find((c) => !['declare', 'paye'].includes(stt[c.p].status));
   const stampMonths = reg.ae ? [] : (await db.prepare('SELECT substr(date,1,7) m, SUM(stamp) s FROM payments WHERE substr(date,1,4) = ? AND stamp > 0 GROUP BY m ORDER BY m').all(String(y))).map((r) => [r.m, r.s]);
