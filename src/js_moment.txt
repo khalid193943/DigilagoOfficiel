@@ -1,0 +1,7 @@
+  /* ---------- C'est le bon moment : votre entreprise passe première ---------- */
+  (function(){
+    var m = document.getElementById('moment'); if (!m) return;
+    if (!('IntersectionObserver' in window)) { m.classList.add('go'); return; }
+    var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if (en.isIntersecting) { m.classList.add('go'); io.disconnect(); } }); }, { threshold: 0.35 });
+    io.observe(m);
+  })();

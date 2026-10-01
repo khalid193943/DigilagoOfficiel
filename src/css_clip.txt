@@ -1,0 +1,7 @@
+/* ================= Rien n'est coupé : titres et logo en entier ================= */
+.grad,.phero h1 .grad,.foot h2 .g,.hero .head h1 .ln + .ln{padding:.04em .16em .2em .06em!important;margin:-.04em -.16em -.2em -.06em!important;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.sh h2 .l,.phero h1 .l,.slide h3 .l,.ch h3 .l{padding:.08em .2em .22em!important;margin:-.08em -.2em -.22em!important}
+.head h1 .ln{padding-bottom:.08em}
+.foot{padding-bottom:calc(30 * var(--u))!important}
+.foot .giant{padding:.06em 0 .16em!important;line-height:1.08!important;margin-top:calc(30 * var(--u))!important}
+.foot .giant .word{padding:.12em 0 .26em!important;-webkit-mask-image:linear-gradient(180deg,#000 45%,rgba(0,0,0,.3) 88%,rgba(0,0,0,.2) 100%)!important;mask-image:linear-gradient(180deg,#000 45%,rgba(0,0,0,.3) 88%,rgba(0,0,0,.2) 100%)!important}

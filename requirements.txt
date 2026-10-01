@@ -1,0 +1,11 @@
+# Construction du site
+pillow>=10
+tinycss2>=1.2
+rcssmin>=1.1
+rjsmin>=1.2
+# Carte de Casablanca (seulement pour la redessiner)
+shapely>=2.0
+cairosvg>=2.7
+# Tests
+pytest>=8
+pytest-playwright>=0.5

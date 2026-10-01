@@ -1,0 +1,10 @@
+services:
+  gestion:
+    build: .
+    restart: unless-stopped
+    ports: ["3000:3000"]
+    environment:
+      - SITE_ORIGIN=https://digilago.ma
+      - NODE_ENV=production
+    volumes:
+      - ./data:/data

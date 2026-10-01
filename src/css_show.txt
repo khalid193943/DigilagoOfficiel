@@ -1,0 +1,54 @@
+/* ================= Nos modèles : des pages entières qui défilent ================= */
+.show{position:relative;z-index:5;overflow:hidden}
+.scat{margin-top:calc(64 * var(--u))}
+.sc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:calc(20 * var(--u));width:calc(1340 * var(--u));max-width:calc(100% - 48px);margin:0 auto calc(22 * var(--u))}
+.sc-t{display:flex;align-items:baseline;gap:calc(16 * var(--u))}
+.sc-n{font-family:"JetBrains Mono",monospace;font-size:calc(12 * var(--u));color:#1F57C7;letter-spacing:.1em}
+.sc-t h3{margin:0;font-family:Sora,sans-serif;font-weight:500;font-size:calc(30 * var(--u));letter-spacing:-.035em;color:#0E214E}
+.sc-t h3 em{font-family:"Playfair Display",Georgia,serif;font-weight:500;color:#1F57C7}
+.sc-meta{display:flex;align-items:center;gap:calc(12 * var(--u));font-family:"JetBrains Mono",monospace;font-size:calc(11 * var(--u));letter-spacing:.1em;text-transform:uppercase;color:#3A4E72;white-space:nowrap}
+.sc-play{width:calc(38 * var(--u));height:calc(38 * var(--u));border:0;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px rgba(31,87,199,.2);color:#0E214E;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sc-play svg{width:calc(13 * var(--u))}
+.sc-play .i-play,.sc-play[aria-pressed="true"] .i-pause{display:none}
+.sc-play[aria-pressed="true"] .i-play{display:block}
+.sc-wrap{position:relative;overflow:hidden;padding:calc(10 * var(--u)) 0 calc(24 * var(--u));-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%)}
+.sc-row{display:flex;gap:calc(24 * var(--u));width:max-content;animation:scMarq var(--dur,60s) linear infinite;will-change:transform}
+.sc-wrap:hover .sc-row,.sc-wrap.hold .sc-row,.sc-wrap.paused .sc-row{animation-play-state:paused}
+@keyframes scMarq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.lp{flex:none;width:calc(360 * var(--u));margin:0;outline:none;cursor:ns-resize}
+.lp-win{position:relative;border-radius:calc(16 * var(--u));overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.8),0 calc(34 * var(--u)) calc(64 * var(--u)) calc(-30 * var(--u)) rgba(20,50,110,.5);transition:transform .6s cubic-bezier(.16,1,.3,1),box-shadow .5s}
+.lp:hover .lp-win,.lp.on .lp-win,.lp:focus-visible .lp-win{transform:translateY(-6px);box-shadow:0 0 0 2px #5F9FF9,0 calc(44 * var(--u)) calc(80 * var(--u)) calc(-30 * var(--u)) rgba(20,50,110,.6)}
+.lp-bar{display:flex;align-items:center;gap:5px;height:calc(30 * var(--u));padding:0 calc(12 * var(--u));background:#EEF2F8}
+.lp-bar > i{width:8px;height:8px;border-radius:50%;background:#D3DAE6}
+.lp-bar > i:nth-child(1){background:#FF6159}.lp-bar > i:nth-child(2){background:#FFBD2E}.lp-bar > i:nth-child(3){background:#28C941}
+.lp-bar span{margin-left:calc(10 * var(--u));display:flex;align-items:center;gap:calc(5 * var(--u));height:calc(19 * var(--u));padding:0 calc(10 * var(--u));border-radius:999px;background:#fff;font-size:calc(10.5 * var(--u));color:#5F6B80;white-space:nowrap;overflow:hidden}
+.lp-bar span svg{width:calc(8 * var(--u));flex:none}
+.lp-view{position:relative;height:calc(440 * var(--u));overflow:hidden;background:#F3F6FB}
+.lp-view img{display:block;width:100%;height:auto;transform:translateY(0);transition:transform var(--t,6s) cubic-bezier(.45,0,.25,1);will-change:transform}
+.lp:hover .lp-view img,.lp.on .lp-view img,.lp:focus-visible .lp-view img{transform:translateY(calc(var(--dy,0px) * -1))}
+.lp-hint{position:absolute;right:calc(12 * var(--u));bottom:calc(12 * var(--u));display:flex;align-items:center;gap:calc(6 * var(--u));padding:calc(6 * var(--u)) calc(10 * var(--u));border-radius:999px;background:rgba(14,33,78,.78);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font-size:calc(11 * var(--u));transition:opacity .4s,transform .4s}
+.lp-hint svg{width:calc(13 * var(--u))}
+.lp-hint em{font-style:normal}
+.lp:hover .lp-hint,.lp.on .lp-hint{opacity:0;transform:translateY(8px)}
+.lp figcaption{display:flex;align-items:baseline;flex-wrap:wrap;gap:calc(4 * var(--u)) calc(10 * var(--u));padding:calc(14 * var(--u)) calc(4 * var(--u)) 0}
+.lp figcaption b{font-family:Sora,sans-serif;font-weight:500;font-size:calc(16 * var(--u));letter-spacing:-.02em;color:#0E214E}
+.lp figcaption small{font-size:calc(12.5 * var(--u));color:#3A4E72}
+.lp figcaption i{margin-left:auto;font-style:normal;font-family:"JetBrains Mono",monospace;font-size:calc(9.5 * var(--u));letter-spacing:.12em;text-transform:uppercase;padding:calc(3 * var(--u)) calc(8 * var(--u));border-radius:999px;background:rgba(31,87,199,.1);color:#1F57C7}
+.sc-soon{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:calc(8 * var(--u));width:calc(1100 * var(--u));max-width:calc(100% - 48px);margin:calc(46 * var(--u)) auto 0}
+.sc-soon b{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:calc(10.5 * var(--u));letter-spacing:.14em;text-transform:uppercase;color:#1F57C7;margin-right:calc(6 * var(--u))}
+.sc-soon span{padding:calc(7 * var(--u)) calc(13 * var(--u));border-radius:999px;background:rgba(255,255,255,.4);box-shadow:inset 0 0 0 1px rgba(31,87,199,.14);font-size:calc(12.5 * var(--u));color:#24375C}
+[data-mode="M"] .sc-head{flex-direction:column;align-items:flex-start;max-width:calc(100% - 24px)}
+[data-mode="M"] .sc-t{flex-direction:column;gap:calc(4 * var(--u))}
+[data-mode="M"] .sc-t h3{font-size:calc(21 * var(--u))}
+[data-mode="M"] .lp{width:calc(100vw - 88px)}
+[data-mode="M"] .lp-view{height:calc(100vh - 330px);max-height:calc(520 * var(--u));min-height:calc(340 * var(--u))}
+[data-mode="M"] .sc-row{gap:calc(14 * var(--u))}
+@media (prefers-reduced-motion: reduce){.sc-row{animation:none}.lp-view img{transition:none}}
+
+/* vidéo de démonstration : une fenêtre plus large, la page défile toute seule */
+.lp.wide{width:calc(586 * var(--u))}
+.lpv .lp-view video{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;background:#0E214E}
+.lp-hint.vid{background:rgba(31,87,199,.85)}
+.lpv .lp-hint{opacity:1!important;transform:none!important}
+.lpv:hover .lp-hint,.lpv.on .lp-hint{opacity:0!important}
+[data-mode="M"] .lp.wide{width:calc(100vw - 88px)}

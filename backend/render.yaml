@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: digilago-gestion
+    runtime: node
+    rootDir: backend
+    plan: starter
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /var/data/digilago.db
+      - key: SITE_ORIGIN
+        value: https://digilago.ma
+    disk:
+      name: donnees
+      mountPath: /var/data
+      sizeGB: 1

@@ -1,0 +1,16 @@
+{
+  "name": "digilago-gestion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Digilago Gestion : devis, acomptes, factures et paiements.",
+  "main": "server.js",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "dev": "node --watch --disable-warning=ExperimentalWarning server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/gestion.test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

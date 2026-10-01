@@ -1,0 +1,46 @@
+/* ================= Grands chiffres, grandes icônes, sans lignes de séparation ================= */
+/* Méthode : de grands chiffres */
+.st4{gap:calc(28 * var(--u))!important}
+.st4::before{display:none!important}
+.st4 > div{padding:calc(30 * var(--u)) calc(28 * var(--u)) calc(32 * var(--u));border-radius:calc(26 * var(--u));background:#fff;box-shadow:0 0 0 1px rgba(7,32,33,.06),0 calc(30 * var(--u)) calc(60 * var(--u)) calc(-40 * var(--u)) rgba(7,32,33,.3)}
+.st4 b{width:auto!important;height:auto!important;display:block!important;border-radius:0!important;background:linear-gradient(180deg,#1FA34A,rgba(100,246,98,.35))!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;box-shadow:none!important;font-family:Sora,sans-serif!important;font-weight:600!important;font-size:calc(104 * var(--u))!important;line-height:.9!important;letter-spacing:-.07em!important}
+.st4 .rv.in b{background:linear-gradient(180deg,#1FA34A,rgba(100,246,98,.35))!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+.st4 h5{font-size:calc(25 * var(--u))!important;margin-top:calc(20 * var(--u))!important}
+.st4 p{font-size:calc(16 * var(--u))!important}
+/* Valeurs : grands numéros en contour */
+.val span{font-family:Sora,sans-serif!important;font-weight:600;font-size:calc(64 * var(--u))!important;line-height:1;letter-spacing:-.06em;color:transparent!important;-webkit-text-stroke:1.5px #1FA34A}
+.val{grid-template-columns:calc(120 * var(--u)) calc(340 * var(--u)) 1fr!important;align-items:center!important;border:0!important;padding:calc(26 * var(--u)) 0!important}
+.val:last-child{border:0!important}
+.val::after{display:none!important}
+/* Listes numérotées : des chiffres lisibles */
+.share ol li{font-size:calc(19 * var(--u))!important;gap:calc(18 * var(--u))!important}
+.share ol li::before{font-family:Sora,sans-serif!important;font-weight:600;font-size:calc(34 * var(--u))!important;letter-spacing:-.05em;color:#1FA34A!important;min-width:calc(52 * var(--u))}
+.nextc li{grid-template-columns:calc(62 * var(--u)) 1fr!important;align-items:center}
+.nextc li::before{width:calc(54 * var(--u))!important;height:calc(54 * var(--u))!important;font-family:Sora,sans-serif!important;font-weight:600;font-size:calc(20 * var(--u))!important;background:#64F662!important;color:#04140F!important}
+.nextc b{font-size:calc(18.5 * var(--u))!important}
+.sp-f li{border:0!important;font-size:calc(22 * var(--u))!important;gap:calc(20 * var(--u))!important;padding:calc(16 * var(--u)) 0!important}
+.sp-f li span{font-family:Sora,sans-serif!important;font-weight:600;font-size:calc(38 * var(--u))!important;letter-spacing:-.06em;color:#1FA34A!important;min-width:calc(56 * var(--u))}
+.caps li{gap:calc(14 * var(--u))!important;font-size:calc(16 * var(--u))!important;padding:calc(22 * var(--u))!important}
+.caps li span{font-family:Sora,sans-serif!important;font-weight:600;font-size:calc(40 * var(--u))!important;line-height:1;letter-spacing:-.06em;color:#64F662!important}
+.anchors a span{font-size:calc(13 * var(--u))!important}
+.pil-n{font-size:calc(14 * var(--u))!important}
+/* Petites icônes agrandies */
+.incl div{font-size:calc(16.5 * var(--u))!important;gap:calc(16 * var(--u))!important;padding:calc(22 * var(--u))!important}
+.incl div::before{width:calc(36 * var(--u))!important;height:calc(36 * var(--u))!important}
+.dr-b::before{width:calc(36 * var(--u))!important;height:calc(36 * var(--u))!important}
+.mc .st i,.bx-go{transform-origin:center}
+.eng b{font-size:calc(56 * var(--u))!important}
+/* Plus de lignes de séparation */
+.sband{border:0!important}
+.case dl div{border:0!important;padding:calc(12 * var(--u)) 0!important}
+.dr{border:0!important}
+.dr:not(.dh){background:rgba(255,255,255,.03);border-radius:calc(18 * var(--u));padding:calc(22 * var(--u)) calc(24 * var(--u))!important;margin-bottom:calc(10 * var(--u))}
+.f-grid,.f-bot{border:0!important}
+.hours{border:0!important}
+.chap{border:0!important}
+[data-mode="M"] .st4 b{font-size:calc(72 * var(--u))!important}
+[data-mode="M"] .val{grid-template-columns:1fr!important}
+[data-mode="M"] .val span{font-size:calc(44 * var(--u))!important}
+[data-mode="M"] .sp-f li{font-size:calc(16 * var(--u))!important}
+[data-mode="M"] .sp-f li span{font-size:calc(26 * var(--u))!important}
+[data-mode="M"] .caps li span{font-size:calc(30 * var(--u))!important}

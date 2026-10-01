@@ -1,0 +1,35 @@
+/* ================= Essayez : toute la largeur, toute la hauteur ================= */
+#sim{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:calc(110 * var(--u)) calc(32 * var(--u)) calc(70 * var(--u))!important;box-sizing:border-box}
+#sim .sh h2{font-size:calc(58 * var(--u))!important}
+#sim .sh p{max-width:calc(620 * var(--u))}
+#sim .simc{width:100%!important;max-width:none!important;flex:1;min-height:calc(620 * var(--u));margin:calc(36 * var(--u)) 0 0!important;display:flex;flex-direction:column;padding:calc(34 * var(--u)) calc(36 * var(--u)) calc(26 * var(--u))!important;border-radius:calc(26 * var(--u))!important;background:linear-gradient(160deg,#16307A 0%,#0E214E 60%,#0B1A3E 100%)!important;box-shadow:0 0 0 1px rgba(159,200,255,.18),0 calc(60 * var(--u)) calc(120 * var(--u)) calc(-50 * var(--u)) rgba(8,20,60,.75)!important}
+#sim .simc::before{background:radial-gradient(ellipse 50% 40% at 50% 0,rgba(95,159,249,.22),transparent 70%),linear-gradient(rgba(159,200,255,.05) 1px,transparent 1px) 0 0/100% calc(48 * var(--u)),linear-gradient(90deg,rgba(159,200,255,.05) 1px,transparent 1px) 0 0/calc(48 * var(--u)) 100%!important}
+#sim .sim-in{grid-template-columns:1.6fr 1fr 1fr!important;gap:calc(18 * var(--u))!important}
+#sim .fld label{color:#9FC8FF!important;font-size:calc(11 * var(--u))!important}
+#sim .fld input,#sim .fld select{height:calc(66 * var(--u))!important;font-size:calc(21 * var(--u))!important;font-family:Sora,sans-serif;font-weight:500;letter-spacing:-.02em;border-radius:calc(16 * var(--u))!important;background-color:rgba(255,255,255,.06)!important;box-shadow:inset 0 0 0 1px rgba(159,200,255,.25)!important;padding:0 calc(22 * var(--u))!important}
+#sim .fld input:focus,#sim .fld select:focus{box-shadow:inset 0 0 0 2px #5F9FF9!important}
+#sim .vis-bar{margin-top:calc(20 * var(--u))!important;padding:calc(16 * var(--u)) calc(20 * var(--u))!important;background:rgba(255,255,255,.05)!important;box-shadow:inset 0 0 0 1px rgba(159,200,255,.14)!important}
+#sim .sim-out{flex:1;grid-template-columns:1.25fr 1fr 1fr!important;gap:calc(20 * var(--u))!important;margin-top:calc(22 * var(--u))!important;align-items:stretch}
+#sim .so{min-height:calc(330 * var(--u))!important;padding:calc(28 * var(--u)) calc(28 * var(--u))!important;gap:calc(14 * var(--u))!important;border-radius:calc(20 * var(--u))!important;background:#fff!important;justify-content:flex-start}
+#sim .so .sk2{font-size:calc(11 * var(--u))!important}
+#sim .so .sk2 i{background:#2F84EC!important}
+#sim .g-url b{font-size:calc(15 * var(--u))}
+#sim .g-title{font-size:calc(26 * var(--u))!important;line-height:1.2!important}
+#sim .g-desc{font-size:calc(15.5 * var(--u))!important}
+#sim .g-links span{font-size:calc(13 * var(--u))}
+#sim .m-map{height:calc(170 * var(--u))!important;flex:1;min-height:calc(150 * var(--u))}
+#sim .m-name{font-size:calc(22 * var(--u))!important}
+#sim .m-meta,#sim .m-open{font-size:calc(14 * var(--u))}
+#sim .ai-q{font-size:calc(15.5 * var(--u))!important;padding:calc(12 * var(--u)) calc(16 * var(--u))!important}
+#sim .ai-a{font-size:calc(16 * var(--u))!important;line-height:1.6!important}
+#sim .ai-a i{width:calc(32 * var(--u))!important;height:calc(32 * var(--u))!important;background:conic-gradient(from 90deg,#1F57C7,#5F9FF9,#9FC8FF,#1F57C7)!important}
+#sim .so .off-msg{font-size:calc(22 * var(--u))!important}
+#sim .meter b{font-size:calc(24 * var(--u))!important}
+#sim .sim-note{color:#8FA6CC!important;margin-top:calc(16 * var(--u))!important}
+[data-mode="M"] #sim{padding:calc(80 * var(--u)) calc(12 * var(--u)) calc(40 * var(--u))!important}
+[data-mode="M"] #sim .sh h2{font-size:calc(32 * var(--u))!important}
+[data-mode="M"] #sim .simc{padding:calc(16 * var(--u))!important;min-height:0}
+[data-mode="M"] #sim .sim-in,[data-mode="M"] #sim .sim-out{grid-template-columns:1fr!important}
+[data-mode="M"] #sim .fld input,[data-mode="M"] #sim .fld select{height:calc(52 * var(--u))!important;font-size:calc(17 * var(--u))!important}
+[data-mode="M"] #sim .so{min-height:0!important;padding:calc(18 * var(--u))!important}
+[data-mode="M"] #sim .g-title{font-size:calc(19 * var(--u))!important}

@@ -1,0 +1,8 @@
+
+/* ================= Des nuages dans tout le ciel des sections claires ================= */
+.dayclouds{position:absolute;inset:0;overflow:hidden;transition:opacity .6s}
+.dayclouds .cl{top:0;will-change:transform,top}
+.dayclouds .cl .sh{opacity:.55}
+.dayclouds .cl .wh{opacity:.95}
+[data-mode="M"] .dayclouds{--cs:.5}
+[data-mode="M"] .dayclouds .mh{display:none}
