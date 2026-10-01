@@ -63,3 +63,10 @@ test('brief client et superviseur', async () => {
   const dash = await (await get('/')).text();
   assert.match(dash, /allumer tout le Maroc/); assert.match(dash, /Casablanca · 1/); assert.match(dash, /Régions allumées/);
 });
+
+test('toutes les pages s’ouvrent sans erreur', async () => {
+  const pages = ['/', '/devis', '/devis/nouveau', '/devis/1', '/devis/1/modifier', '/factures', '/factures/1', '/factures/2', '/clients', '/clients/1', '/demandes', '/prestations', '/parametres', '/projets', '/projets/1', '/depenses', '/rapports', '/export/factures.csv', '/export/paiements.csv', '/export/depenses.csv', '/sauvegarde', '/devis/nouveau?demande=1'];
+  for (const p of pages) { const r = await get(p); assert.strictEqual(r.status, 200, p + ' → ' + r.status); }
+  const r = await post('/devis/1/dupliquer', {}); assert.strictEqual(r.status, 302);
+  const save = JSON.parse(await (await get('/sauvegarde')).text()); assert.ok(save.tables.quotes.length >= 2);
+});

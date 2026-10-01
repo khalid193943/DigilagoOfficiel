@@ -1,59 +1,38 @@
 'use strict';
-/* Base de données : SQLite intégré à Node (aucune dépendance native). */
+/* Base de données libSQL (compatible SQLite).
+   En local : un fichier (DB_PATH). En ligne sur Vercel : Turso (TURSO_DATABASE_URL + TURSO_AUTH_TOKEN). */
 const fs = require('node:fs');
 const path = require('node:path');
-const { DatabaseSync } = require('node:sqlite');
+const { createClient } = require('@libsql/client');
 
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'data', 'digilago.db');
-fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-const db = new DatabaseSync(DB_PATH);
-db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
+/* La base Turso est trouvée quel que soit le préfixe choisi dans Vercel (TURSO_DATABASE_URL, STORAGE_URL…) */
+const ENV = process.env;
+const urlKey = ['TURSO_DATABASE_URL', 'LIBSQL_URL', 'DATABASE_URL'].find((k) => /^(libsql|https?|wss?):\/\//.test(ENV[k] || '')) || Object.keys(ENV).find((k) => /_URL$/.test(k) && /^libsql:\/\//.test(ENV[k] || ''));
+const REMOTE = urlKey ? ENV[urlKey] : '';
+const prefix = urlKey ? urlKey.replace(/(_DATABASE)?_URL$/, '') : '';
+const TOKEN = ENV.TURSO_AUTH_TOKEN || ENV.LIBSQL_AUTH_TOKEN || (prefix && (ENV[prefix + '_AUTH_TOKEN'] || ENV[prefix + '_DATABASE_AUTH_TOKEN'] || ENV[prefix + '_TOKEN'])) || (Object.keys(ENV).find((k) => /AUTH_TOKEN$/.test(k) && /TURSO|LIBSQL|DATABASE|STORAGE/.test(k)) ? ENV[Object.keys(ENV).find((k) => /AUTH_TOKEN$/.test(k) && /TURSO|LIBSQL|DATABASE|STORAGE/.test(k))] : '');
+if (!REMOTE) fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+const client = createClient(REMOTE ? { url: REMOTE, authToken: TOKEN || undefined } : { url: 'file:' + DB_PATH });
 
-db.exec(`
-CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT);
-CREATE TABLE IF NOT EXISTS counters (scope TEXT, year INTEGER, value INTEGER, PRIMARY KEY (scope, year));
-CREATE TABLE IF NOT EXISTS clients (
-  id INTEGER PRIMARY KEY, name TEXT NOT NULL, company TEXT, ice TEXT, phone TEXT, email TEXT,
-  address TEXT, city TEXT, notes TEXT, created_at TEXT DEFAULT (datetime('now')));
-CREATE TABLE IF NOT EXISTS services (
-  id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT, unit TEXT DEFAULT 'forfait',
-  unit_price REAL DEFAULT 0, active INTEGER DEFAULT 1, sort INTEGER DEFAULT 0);
-CREATE TABLE IF NOT EXISTS leads (
-  id INTEGER PRIMARY KEY, name TEXT, company TEXT, phone TEXT, email TEXT, need TEXT, message TEXT,
-  source TEXT, status TEXT DEFAULT 'nouveau', quote_id INTEGER, created_at TEXT DEFAULT (datetime('now')));
-CREATE TABLE IF NOT EXISTS quotes (
-  id INTEGER PRIMARY KEY, number TEXT UNIQUE, client_id INTEGER REFERENCES clients(id),
-  title TEXT, status TEXT DEFAULT 'brouillon', issue_date TEXT, valid_until TEXT,
-  tva_rate REAL DEFAULT 20, discount_pct REAL DEFAULT 0, deposit_pct REAL DEFAULT 50,
-  delay TEXT, notes TEXT, conditions TEXT, token TEXT UNIQUE,
-  sent_at TEXT, viewed_at TEXT, accepted_at TEXT, accepted_name TEXT,
-  total_ht REAL DEFAULT 0, total_tva REAL DEFAULT 0, total_ttc REAL DEFAULT 0,
-  created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now')));
-CREATE TABLE IF NOT EXISTS quote_items (
-  id INTEGER PRIMARY KEY, quote_id INTEGER REFERENCES quotes(id) ON DELETE CASCADE, position INTEGER,
-  label TEXT, description TEXT, qty REAL DEFAULT 1, unit TEXT, unit_price REAL DEFAULT 0);
-CREATE TABLE IF NOT EXISTS invoices (
-  id INTEGER PRIMARY KEY, number TEXT UNIQUE, quote_id INTEGER REFERENCES quotes(id), client_id INTEGER REFERENCES clients(id),
-  kind TEXT, title TEXT, issue_date TEXT, due_date TEXT, tva_rate REAL DEFAULT 20,
-  total_ht REAL DEFAULT 0, total_tva REAL DEFAULT 0, total_ttc REAL DEFAULT 0,
-  notes TEXT, token TEXT UNIQUE, cancelled INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now')));
-CREATE TABLE IF NOT EXISTS invoice_items (
-  id INTEGER PRIMARY KEY, invoice_id INTEGER REFERENCES invoices(id) ON DELETE CASCADE, position INTEGER,
-  label TEXT, description TEXT, qty REAL DEFAULT 1, unit TEXT, unit_price REAL DEFAULT 0);
-CREATE TABLE IF NOT EXISTS payments (
-  id INTEGER PRIMARY KEY, invoice_id INTEGER REFERENCES invoices(id) ON DELETE CASCADE,
-  date TEXT, amount REAL, method TEXT, reference TEXT, created_at TEXT DEFAULT (datetime('now')));
-CREATE TABLE IF NOT EXISTS projects (
-  id INTEGER PRIMARY KEY, quote_id INTEGER UNIQUE REFERENCES quotes(id), client_id INTEGER REFERENCES clients(id),
-  title TEXT, status TEXT DEFAULT 'a_demarrer', due_date TEXT, site_url TEXT, steps TEXT, notes TEXT,
-  created_at TEXT DEFAULT (datetime('now')), delivered_at TEXT);
-CREATE TABLE IF NOT EXISTS expenses (
-  id INTEGER PRIMARY KEY, date TEXT, supplier TEXT, category TEXT, label TEXT,
-  amount_ttc REAL DEFAULT 0, tva REAL DEFAULT 0, method TEXT, project_id INTEGER, created_at TEXT DEFAULT (datetime('now')));
-CREATE INDEX IF NOT EXISTS i_quotes_client ON quotes(client_id);
-CREATE INDEX IF NOT EXISTS i_inv_quote ON invoices(quote_id);
-CREATE INDEX IF NOT EXISTS i_pay_inv ON payments(invoice_id);
-`);
+const plain = (rs) => rs.rows.map((r) => { const o = {}; rs.columns.forEach((c, i) => { const v = r[i]; o[c] = typeof v === 'bigint' ? Number(v) : v; }); return o; });
+function api(ex) {
+  const run1 = async (sql, args) => ex.execute({ sql, args: args.map((a) => (a === undefined ? null : a)) });
+  return {
+    prepare: (sql) => ({
+      get: async (...a) => plain(await run1(sql, a))[0],
+      all: async (...a) => plain(await run1(sql, a)),
+      run: async (...a) => { const r = await run1(sql, a); return { changes: r.rowsAffected, lastInsertRowid: Number(r.lastInsertRowid ?? 0) }; },
+    }),
+  };
+}
+const db = {
+  ...api(client),
+  exec: (sql) => client.executeMultiple(sql),
+  /* transaction d'écriture : await db.tx(async (t) => { await t.prepare(…).run(…) }) */
+  async tx(fn) { const t = await client.transaction('write'); try { const out = await fn(api(t)); await t.commit(); return out; } catch (e) { try { await t.rollback(); } catch (_) {} throw e; } finally { t.close(); } },
+  client,
+};
 
 const DEFAULTS = {
   company_name: 'Digilago', company_tagline: 'Sites web, Google et IA pour les entreprises marocaines',
@@ -65,37 +44,23 @@ const DEFAULTS = {
   default_conditions: "Le présent devis, signé ou accepté en ligne, vaut bon de commande.\nUn acompte est exigible à la commande ; les travaux démarrent à sa réception. Le solde est payable à la mise en ligne du site.\nLe nom de domaine est offert la première année ; l’hébergement de la première année est inclus sauf mention contraire.\nLes contenus (textes, photos, logo) fournis par le client restent sa propriété. Le site livré et ses sources sont cédés au client après paiement intégral.\nDeux séries de modifications sont incluses à chaque étape de validation.",
   quote_prefix: 'DG-D', invoice_prefix: 'DG-F', whatsapp: '212649953813', public_url: '',
 };
-const getSet = db.prepare('SELECT value FROM settings WHERE key = ?');
-const putSet = db.prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value');
-for (const [k, v] of Object.entries(DEFAULTS)) if (!getSet.get(k)) putSet.run(k, v);
-
-function settings() {
-  const out = { ...DEFAULTS };
-  for (const r of db.prepare('SELECT key, value FROM settings').all()) out[r.key] = r.value;
-  return out;
-}
-function saveSettings(obj) { for (const k of Object.keys(DEFAULTS)) if (k in obj) putSet.run(k, String(obj[k] ?? '')); }
-
-/* Numérotation continue par année, sans trou : DG-D-2026-0001 */
-function nextNumber(scope, prefix, dateStr) {
-  const year = Number((dateStr || new Date().toISOString()).slice(0, 4));
-  db.exec('BEGIN IMMEDIATE');
-  try {
-    const row = db.prepare('SELECT value FROM counters WHERE scope = ? AND year = ?').get(scope, year);
-    const v = (row ? row.value : 0) + 1;
-    db.prepare('INSERT INTO counters (scope, year, value) VALUES (?, ?, ?) ON CONFLICT(scope, year) DO UPDATE SET value = excluded.value').run(scope, year, v);
-    db.exec('COMMIT');
-    return `${prefix}-${year}-${String(v).padStart(4, '0')}`;
-  } catch (e) { db.exec('ROLLBACK'); throw e; }
-}
-
-/* Mises à niveau de la base (colonnes ajoutées) */
-for (const [t, c, d] of [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT']]) {
-  const cols = db.prepare(`PRAGMA table_info(${t})`).all().map((r) => r.name);
-  if (!cols.includes(c)) db.exec(`ALTER TABLE ${t} ADD COLUMN ${c} ${d}`);
-}
-
-/* Catalogue professionnel : modifiable dans l'interface (les prix restent à fixer par vous) */
+const SCHEMA = `
+CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT);
+CREATE TABLE IF NOT EXISTS counters (scope TEXT, year INTEGER, value INTEGER, PRIMARY KEY (scope, year));
+CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY, name TEXT NOT NULL, company TEXT, ice TEXT, phone TEXT, email TEXT, address TEXT, city TEXT, notes TEXT, whatsapp TEXT, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS services (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT, unit TEXT DEFAULT 'forfait', unit_price REAL DEFAULT 0, active INTEGER DEFAULT 1, sort INTEGER DEFAULT 0);
+CREATE TABLE IF NOT EXISTS leads (id INTEGER PRIMARY KEY, name TEXT, company TEXT, phone TEXT, email TEXT, need TEXT, message TEXT, source TEXT, status TEXT DEFAULT 'nouveau', quote_id INTEGER, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS quotes (id INTEGER PRIMARY KEY, number TEXT UNIQUE, client_id INTEGER REFERENCES clients(id), title TEXT, status TEXT DEFAULT 'brouillon', issue_date TEXT, valid_until TEXT, tva_rate REAL DEFAULT 20, discount_pct REAL DEFAULT 0, deposit_pct REAL DEFAULT 50, delay TEXT, notes TEXT, conditions TEXT, token TEXT UNIQUE, sent_at TEXT, viewed_at TEXT, accepted_at TEXT, accepted_name TEXT, total_ht REAL DEFAULT 0, total_tva REAL DEFAULT 0, total_ttc REAL DEFAULT 0, created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS quote_items (id INTEGER PRIMARY KEY, quote_id INTEGER REFERENCES quotes(id) ON DELETE CASCADE, position INTEGER, label TEXT, description TEXT, qty REAL DEFAULT 1, unit TEXT, unit_price REAL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS invoices (id INTEGER PRIMARY KEY, number TEXT UNIQUE, quote_id INTEGER REFERENCES quotes(id), client_id INTEGER REFERENCES clients(id), kind TEXT, title TEXT, issue_date TEXT, due_date TEXT, tva_rate REAL DEFAULT 20, total_ht REAL DEFAULT 0, total_tva REAL DEFAULT 0, total_ttc REAL DEFAULT 0, notes TEXT, token TEXT UNIQUE, cancelled INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS invoice_items (id INTEGER PRIMARY KEY, invoice_id INTEGER REFERENCES invoices(id) ON DELETE CASCADE, position INTEGER, label TEXT, description TEXT, qty REAL DEFAULT 1, unit TEXT, unit_price REAL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS payments (id INTEGER PRIMARY KEY, invoice_id INTEGER REFERENCES invoices(id) ON DELETE CASCADE, date TEXT, amount REAL, method TEXT, reference TEXT, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY, quote_id INTEGER UNIQUE REFERENCES quotes(id), client_id INTEGER REFERENCES clients(id), title TEXT, status TEXT DEFAULT 'a_demarrer', due_date TEXT, site_url TEXT, steps TEXT, notes TEXT, info TEXT, token TEXT, created_at TEXT DEFAULT (datetime('now')), delivered_at TEXT);
+CREATE TABLE IF NOT EXISTS expenses (id INTEGER PRIMARY KEY, date TEXT, supplier TEXT, category TEXT, label TEXT, amount_ttc REAL DEFAULT 0, tva REAL DEFAULT 0, method TEXT, project_id INTEGER, created_at TEXT DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS i_quotes_client ON quotes(client_id);
+CREATE INDEX IF NOT EXISTS i_inv_quote ON invoices(quote_id);
+CREATE INDEX IF NOT EXISTS i_pay_inv ON payments(invoice_id);
+`;
 const CATALOGUE = [
   ['Site vitrine sur mesure', 'Conception et développement d’un site sur mesure à votre identité visuelle (logo, couleurs, typographie). Jusqu’à 6 pages, en français, anglais et arabe, adapté aux ordinateurs, tablettes et téléphones.', 'forfait'],
   ['Code optimisé et performance', 'Développement sur mesure, sans modèle préfabriqué : chargement rapide, images WebP et AVIF, chargement différé, objectif Google Lighthouse 90 et plus.', 'forfait'],
@@ -109,14 +74,44 @@ const CATALOGUE = [
   ['Traduction professionnelle', 'Traduction et adaptation de vos contenus en français, anglais et arabe, avec mise en page de droite à gauche pour l’arabe.', 'page'],
   ['Maintenance et support', 'Mises à jour, sécurité, modifications mineures et support prioritaire sur WhatsApp.', 'mois'],
 ];
-{
-  const has = db.prepare('SELECT id, description FROM services WHERE name = ?');
-  const ins = db.prepare('INSERT INTO services (name, description, unit, unit_price, sort) VALUES (?, ?, ?, 0, ?)');
-  const upd = db.prepare('UPDATE services SET description = ?, sort = ? WHERE id = ?');
-  const OLD = new Set(['Design à votre identité, jusqu’à 6 pages, trilingue FR, EN, AR, adapté au téléphone', 'Création, vérification et optimisation complète de la fiche', 'Catalogue, panier, paiement en ligne (CMI) ou à la livraison, gestion des commandes', 'Réservations, espace client, tableau de bord', 'Domaine, hébergement rapide, HTTPS, sauvegardes', 'Mises à jour, sécurité, modifications mineures, support WhatsApp']);
-  CATALOGUE.forEach(([n, d, u], i) => { const r = has.get(n); if (!r) ins.run(n, d, u, i); else if (!r.description || OLD.has(r.description)) upd.run(d, i, r.id); });
-  for (const old of ['Référencement Google et IA', 'Nom de domaine et hébergement', 'Rédaction et traduction']) db.prepare('UPDATE services SET active = 0 WHERE name = ? AND unit_price = 0').run(old);
-}
 const STEPS = ['Brief et identité', 'Maquette validée', 'Développement', 'Textes SEO et GEO', 'Fiche Google', 'Mise en ligne'];
 
-module.exports = { db, settings, saveSettings, nextNumber, DB_PATH, STEPS };
+/* Initialisation unique (au premier appel) : tables, colonnes ajoutées, réglages, catalogue */
+let ready = null;
+function init() {
+  if (ready) return ready;
+  ready = (async () => {
+    if (!REMOTE) await db.exec('PRAGMA journal_mode = WAL;');
+    await db.exec(SCHEMA);
+    for (const [t, c, d] of [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT']]) {
+      const cols = (await db.prepare(`PRAGMA table_info(${t})`).all()).map((r) => r.name);
+      if (!cols.includes(c)) await db.exec(`ALTER TABLE ${t} ADD COLUMN ${c} ${d}`);
+    }
+    for (const [k, v] of Object.entries(DEFAULTS)) await db.prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)').run(k, v);
+    for (let i = 0; i < CATALOGUE.length; i++) {
+      const [n, d, u] = CATALOGUE[i];
+      if (!(await db.prepare('SELECT id FROM services WHERE name = ?').get(n))) await db.prepare('INSERT INTO services (name, description, unit, unit_price, sort) VALUES (?, ?, ?, 0, ?)').run(n, d, u, i);
+    }
+  })().catch((e) => { ready = null; throw e; });
+  return ready;
+}
+
+async function settings() {
+  const out = { ...DEFAULTS };
+  for (const r of await db.prepare('SELECT key, value FROM settings').all()) out[r.key] = r.value;
+  return out;
+}
+async function saveSettings(obj) { for (const k of Object.keys(DEFAULTS)) if (k in obj) await db.prepare('INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value').run(k, String(obj[k] ?? '')); }
+
+/* Numérotation continue par année, sans trou : DG-D-2026-0001 */
+async function nextNumber(scope, prefix, dateStr) {
+  const year = Number((dateStr || new Date().toISOString()).slice(0, 4));
+  return db.tx(async (t) => {
+    const row = await t.prepare('SELECT value FROM counters WHERE scope = ? AND year = ?').get(scope, year);
+    const v = (row ? row.value : 0) + 1;
+    await t.prepare('INSERT INTO counters (scope, year, value) VALUES (?, ?, ?) ON CONFLICT(scope, year) DO UPDATE SET value = excluded.value').run(scope, year, v);
+    return `${prefix}-${year}-${String(v).padStart(4, '0')}`;
+  });
+}
+
+module.exports = { db, init, settings, saveSettings, nextNumber, DB_PATH, STEPS, REMOTE };

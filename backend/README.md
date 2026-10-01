@@ -30,50 +30,37 @@ npm install
 npm start           # http://localhost:3000
 ```
 
-À la première visite, choisissez votre mot de passe, puis complétez **Paramètres** (ICE, RIB…) et vos **Prestations** (vos prix).
+En local, la base est un simple fichier (`backend/data/digilago.db`), créé tout seul. À la première visite, choisissez votre mot de passe, puis complétez **Paramètres** et **Prestations**.
 
-Node.js 22.13 ou plus récent est nécessaire (la base de données SQLite est intégrée à Node, rien d'autre à installer).
+## Mettre en ligne sur Vercel (avec la base Turso)
 
-## Mettre en ligne
+Vercel n'a pas de disque permanent : la base de données est donc chez **Turso**, une base compatible SQLite qui se branche à Vercel en un clic. Le code est déjà prêt pour les deux.
 
-Il faut un hébergement **avec un disque persistant** (la base de données est un fichier).
+1. **Créer le projet** : sur vercel.com, **Add New → Project**, choisissez votre dépôt GitHub, puis dans **Root Directory** choisissez **`backend`**. Framework : **Other**. Ne lancez pas encore le déploiement, ou laissez-le échouer : c'est normal sans base.
+2. **Brancher la base** : dans le projet, onglet **Storage → Create Database → Turso** (ou **Marketplace → Turso**). Liez-la au projet : Vercel ajoute tout seul `TURSO_DATABASE_URL` et `TURSO_AUTH_TOKEN`.
+3. **Ajouter les variables** (**Settings → Environment Variables**) :
+   - `ADMIN_PASSWORD` : votre mot de passe ;
+   - `SESSION_SECRET` : une longue phrase secrète au hasard ;
+   - `SITE_ORIGIN` : `https://digilago.ma` ;
+   - `NODE_ENV` : `production`.
+4. **Déployer** (**Deployments → Redeploy**). Les tables se créent toutes seules à la première visite.
+5. **Votre adresse** : **Settings → Domains** → `gestion.digilago.ma`, puis l'enregistrement DNS indiqué par Vercel chez votre registrar.
+6. **Dans l'espace** : **Paramètres → Adresse de cet espace en ligne** = `https://gestion.digilago.ma`.
 
-### Option 1 : Render (le plus simple)
-1. Envoyez le dépôt sur GitHub.
-2. Sur render.com : **New → Blueprint**, choisissez le dépôt : le fichier `render.yaml` configure tout (service web + disque de 1 Go).
-3. Ajoutez la variable `ADMIN_PASSWORD` (ou choisissez le mot de passe à la première visite).
-4. Ajoutez votre sous-domaine, par exemple `gestion.digilago.ma`, dans **Settings → Custom Domain**.
-
-### Option 2 : un VPS avec Docker (le plus économique)
-```bash
-cd backend
-docker compose up -d --build     # la base est gardée dans backend/data
-```
-Placez ensuite un proxy HTTPS devant (Caddy, Nginx) pour `gestion.digilago.ma`.
-
-### Option 3 : Railway, Fly.io…
-Utilisez le `Dockerfile` et montez un volume sur `/data`.
+Si les noms des variables Turso sont différents chez vous, `LIBSQL_URL` et `LIBSQL_AUTH_TOKEN` fonctionnent aussi.
 
 ## Relier le site
 
-Pour que les demandes du site arrivent dans l'espace de gestion :
-1. Sur GitHub : **Settings → Secrets and variables → Actions → Variables** → ajoutez `GESTION_URL` = `https://gestion.digilago.ma`.
-2. Dans l'hébergement de la gestion, mettez `SITE_ORIGIN` = `https://digilago.ma`.
-3. Republiez le site : les formulaires envoient alors chaque demande à WhatsApp **et** dans « Demandes du site ».
+1. Dans le dossier principal : `python tools/set_gestion_url.py https://gestion.digilago.ma`
+2. Envoyez sur GitHub : le site redéployé envoie chaque demande à WhatsApp **et** dans « Demandes du site ».
 
-## Variables
+## Autres hébergements
 
-| Variable | Rôle |
-|---|---|
-| `PORT` | Port d'écoute (fourni par l'hébergeur) |
-| `ADMIN_PASSWORD` | Mot de passe initial (facultatif) |
-| `DB_PATH` | Fichier de la base, sur le disque persistant |
-| `SITE_ORIGIN` | Adresse du site autorisée à envoyer des demandes |
-| `NODE_ENV` | `production` pour des cookies sécurisés (HTTPS) |
+`Dockerfile`, `docker-compose.yml` et `render.yaml` restent disponibles pour un serveur classique : la base est alors un fichier (`DB_PATH`) sur un disque persistant.
 
 ## Sauvegardes
 
-**Paramètres → Télécharger la sauvegarde complète** télécharge toute la base. Faites-le au moins une fois par semaine, ou copiez le fichier `DB_PATH` automatiquement.
+**Paramètres → Télécharger la sauvegarde complète** télécharge toutes vos données (format JSON). Faites-le au moins une fois par semaine. Turso garde aussi un historique de votre base.
 
 ## Tests
 

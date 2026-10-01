@@ -4,13 +4,16 @@
   "private": true,
   "description": "Digilago Gestion : devis, acomptes, factures et paiements.",
   "main": "server.js",
-  "engines": { "node": ">=22.13" },
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
-    "start": "node --disable-warning=ExperimentalWarning server.js",
-    "dev": "node --watch --disable-warning=ExperimentalWarning server.js",
-    "test": "node --disable-warning=ExperimentalWarning --test test/gestion.test.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test test/gestion.test.js"
   },
   "dependencies": {
+    "@libsql/client": "^0.18.0",
     "express": "^4.21.2"
   }
 }
