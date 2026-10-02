@@ -1901,9 +1901,29 @@
       d.classList.toggle("on", y > VH * 0.9);
     };
   })();
-  // Préparé après le premier affichage : le haut de page s'affiche d'abord.
+  // Préparé à l'approche de la section (et non au chargement) : les copies qui font tourner les
+  // rangées en boucle téléchargeraient aussitôt leurs longues captures, même hors de l'écran.
   LATE.push(function () {
-    document.querySelectorAll(".scat").forEach(function (cat) {
+    var cats = document.querySelectorAll(".scat");
+    if (!cats.length) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(
+        function (es) {
+          es.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            io.unobserve(e.target);
+            scRow(e.target);
+          });
+        },
+        { rootMargin: "1400px 0px" },
+      );
+      cats.forEach(function (cat) {
+        io.observe(cat);
+      });
+    } else cats.forEach(scRow);
+  });
+  function scRow(cat) {
+    {
       var wrap = cat.querySelector(".sc-wrap"),
         row = cat.querySelector(".sc-row");
       if (!row) return;
@@ -1975,8 +1995,8 @@
       window.addEventListener("resize", function () {
         row.querySelectorAll(".lp").forEach(measure);
       });
-    });
-  });
+    }
+  }
   (function () {
     var vids = function () {
       return document.querySelectorAll(".lpv video");

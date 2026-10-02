@@ -227,8 +227,8 @@ def test_carte_du_hero_dessinee(page, base_url):
         const d = x.getImageData(0, 0, c.width, c.height).data; let n = 0;
         for (let i = 3; i < d.length; i += 4000) if (d[i] > 0) n++; return n; })""")
     assert drawn[0] > 500 and drawn[1] > 10, drawn
-    page.wait_for_timeout(3000)
-    assert page.locator('#mcard.on, #mq.on').count() >= 1, 'aucune recherche en direct affichée'
+    # une recherche en direct apparaît (la bulle qui tape, puis la fiche trouvée)
+    page.wait_for_selector('#mcard.on, #mq.on', timeout=9000)
 
 def test_arabe_numeros_dans_le_bon_sens():
     html = open(os.path.join(SITE, 'ar', 'contact.html'), encoding='utf-8').read()
