@@ -9,6 +9,8 @@ y compris après avoir régénéré les pages avec l'ancien générateur.
   3. dedupe_pages  plus aucun bloc en double entre les pages
      articles      articles SEO / GEO (src/articles/*.json), page Guides, colonne Guides du pied de page
      services_page page Services : expertises, clients, comparatif, garanties
+     cta_band      bandeau de fin de page « On vous rappelle » (rappel gratuit, WhatsApp, démarrer)
+     contact_page  formulaire de contact simplifié (détails facultatifs repliés)
      gradients     dégradés ciel → nuit entre les sections (src/css/gradients.css)
      titles        titres des pages (onglet, Google et grand titre), sauf l'accueil
   4. fonts         polices hébergées sur le site
@@ -22,7 +24,7 @@ Usage : python3 tools/build.py      (ou : npm run build / make build)
 import os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STEPS = ['simplify_map', 'design_html', 'hero_map', 'dedupe_pages', 'articles', 'services_page', 'titles', 'gradients', 'fonts', 'inject', 'i18n_build', 'seo', 'set_gestion_url']
+STEPS = ['simplify_map', 'design_html', 'hero_map', 'dedupe_pages', 'articles', 'services_page', 'cta_band', 'contact_page', 'titles', 'gradients', 'fonts', 'inject', 'i18n_build', 'seo', 'set_gestion_url']
 
 for s in STEPS:
     print('──', s)

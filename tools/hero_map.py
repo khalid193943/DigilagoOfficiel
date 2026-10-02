@@ -14,6 +14,7 @@ Ce script écrit dans la page :
 Usage : python3 tools/hero_map.py
 """
 import json, os, re
+import brand_icons as BI
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SITE = os.path.join(ROOT, 'site')
@@ -145,9 +146,9 @@ def build():
     ev = []
     for q, c, (dx, dy), name, kind, img, client in EVENTS:
         x, y = city(c)
-        ev.append('<template data-xy="%.1f,%.1f"%s><span class="mc-v"><img src="assets/m-%s.webp" alt="" width="400" height="250" '
-                  'decoding="async"></span><span class="mc-b"><span class="mc-t">%s</span><b>%s</b><small>%s</small>'
-                  '<span class="mc-f"><i></i>Trouvé sur Google</span></span><em>%s</em></template>'
+        ev.append(('<template data-xy="%.1f,%.1f"%s><span class="mc-v"><img src="assets/m-%s.webp" alt="" width="400" height="250" '
+                   'decoding="async"></span><span class="mc-b"><span class="mc-t">%s</span><b>%s</b><small>%s</small>'
+                   '<span class="mc-f">' + BI.GOOGLE.replace('%', '%%') + 'Trouvé sur Google</span></span><em>%s</em></template>')
                   % (x + dx, y + dy, ' data-cl="1"' if client else '', img, 'Client Digilago' if client else 'Exemple',
                      name, kind, q))
     return ('<div class="groundmap" id="hb"><canvas class="mcv" id="mcv" aria-hidden="true"></canvas>'

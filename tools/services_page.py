@@ -10,6 +10,7 @@ Ajoute à services.html :
 Usage : python3 tools/services_page.py
 """
 import os, re
+import brand_icons as BI
 
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'site')
 P = os.path.join(SITE, 'services.html')
@@ -86,9 +87,10 @@ def tiles():
         if img:
             vis = ('<span class="bx-vis"><span class="bx-bar"><i></i><i></i><i></i></span><img src="assets/m-%s.webp" alt="" '
                    'width="400" height="250" loading="lazy" decoding="async"></span>') % img
-        out.append('<a class="bx rv%s" href="%s"><span class="bx-ic">%s</span><span class="bx-k">%s</span><b>%s</b>'
+        brand = {'pin': BI.MAPS, 'seo': BI.GOOGLE, 'ai': BI.CHATGPT}.get(k)
+        out.append('<a class="bx rv%s" href="%s"><span class="bx-ic%s">%s</span><span class="bx-k">%s</span><b>%s</b>'
                    '<span class="bx-d">%s</span>%s<span class="bx-go">%s%s</span>%s</a>' % (
-                       ' bx-' + size if size else '', href, ic(k), tag, title, text,
+                       ' bx-' + size if size else '', href, ' brand' if brand else '', brand or ic(k), tag, title, text,
                        ('<span class="bx-tags">%s</span>' % ''.join('<i>%s</i>' % c for c in chips)) if chips else '',
                        go, ic('arrow'), vis))
     out.append('<a class="bx bx-cta rv" href="demarrer.html"><span class="bx-k">Sur mesure</span><b>Votre projet ne rentre '

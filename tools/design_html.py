@@ -11,6 +11,7 @@
 
 Usage : python3 tools/design_html.py
 """
+import brand_icons as BI
 import os, re
 
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'site')
@@ -204,10 +205,99 @@ def slide_steps(h):
     return h
 
 
+# Manifeste : les quatre petites images dans la phrase, colorées et liées au sens de chaque passage
+ZEL = ('<svg viewBox="0 0 132 60" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs>'
+       '<pattern id="zlg" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#F6E7CB"/>'
+       '<g fill="#0F8A6A"><path d="M0 -6l4.2 4.2H10v5.8L0 14l-10-10V-1.8h5.8z" transform="translate(0 0) scale(.6)"/>'
+       '<path d="M0 -6l4.2 4.2H10v5.8L0 14l-10-10V-1.8h5.8z" transform="translate(24 0) scale(.6)"/>'
+       '<path d="M0 -6l4.2 4.2H10v5.8L0 14l-10-10V-1.8h5.8z" transform="translate(0 24) scale(.6)"/>'
+       '<path d="M0 -6l4.2 4.2H10v5.8L0 14l-10-10V-1.8h5.8z" transform="translate(24 24) scale(.6)"/></g>'
+       '<rect x="6" y="6" width="12" height="12" fill="#1F57C7"/><rect x="6" y="6" width="12" height="12" fill="#1F57C7" transform="rotate(45 12 12)"/>'
+       '<rect x="8.6" y="8.6" width="6.8" height="6.8" fill="#D2553A" transform="rotate(45 12 12)"/><circle cx="12" cy="12" r="2.2" fill="#F2B233"/>'
+       '<circle cx="0" cy="12" r="1.6" fill="#D2553A"/><circle cx="24" cy="12" r="1.6" fill="#D2553A"/><circle cx="12" cy="0" r="1.6" fill="#D2553A"/><circle cx="12" cy="24" r="1.6" fill="#D2553A"/>'
+       '</pattern></defs><rect class="zl-r" x="-24" y="-24" width="180" height="108" fill="url(#zlg)"/></svg>')
+SEARCH_IP = BI.GOOGLE + '<span class="gs"><b></b><em></em></span>'
+SPARK = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 0c1 6.5 5.5 11 12 12-6.5 1-11 5.5-12 12-1-6.5-5.5-11-12-12 6.5-1 11-5.5 12-12z" fill="#fff"/></svg>'
+FACES = [('#F2B233', '#F5CBA7', '#B45309'), ('#1F57C7', '#C68642', '#0B2A6B'), ('#E8688A', '#FAD7B5', '#9D174D'), ('#0F8A6A', '#8D5524', '#064E3B')]
+
+
+def face(bg, skin, shirt):
+    return ('<i style="background:%s"><svg viewBox="0 0 36 36" aria-hidden="true" focusable="false"><circle cx="18" cy="14.5" r="6.6" fill="%s"/>'
+            '<path d="M5.5 36a12.5 11 0 0 1 25 0z" fill="%s"/></svg></i>') % (bg, skin, shirt)
+
+
+def sim_icons(h):
+    """Simulateur « Tapez votre nom » : les vraies icônes Google, Google Maps et ChatGPT sur les trois aperçus."""
+    for label, icon in (('Google</span>', BI.GOOGLE), ('Google Maps</span>', BI.MAPS), ('Réponse d’une IA</span>', BI.CHATGPT)):
+        h = h.replace('<span class="sk2"><i></i>' + label, '<span class="sk2">' + icon + label)
+    return h
+
+
+def mani_pills(h):
+    h = re.sub(r'<span class="ip zel" aria-hidden="true">.*?</span>(?= <span class="w">Pourtant)',
+               '<span class="ip zel" aria-hidden="true">%s</span>' % ZEL, h, count=1, flags=re.S)
+    h = re.sub(r'<span class="ip pin" aria-hidden="true">.*?</svg></span>|<span class="ip pin sq" aria-hidden="true">.*?</em></span></span>',
+               '<span class="ip pin sq" aria-hidden="true">%s</span>' % SEARCH_IP, h, count=1, flags=re.S)
+    h = re.sub(r'<span class="ip ai" aria-hidden="true">.*?</span>(?=<span class="w">,</span> <span class="w">et</span>)',
+               '<span class="ip ai" aria-hidden="true">%s</span>' % (SPARK + BI.CHATGPT + SPARK), h, count=1, flags=re.S)
+    h = re.sub(r'<span class="ip av" aria-hidden="true">.*?</span>(?= <span class="w">vous</span>)',
+               '<span class="ip av" aria-hidden="true">%s<b>★★★★★</b></span>' % ''.join(face(*f) for f in FACES), h, count=1, flags=re.S)
+    # l'illustration et la virgule qui la suit restent sur la même ligne
+    for cls in ('ip pin sq', 'ip ai'):
+        h = re.sub(r'(?<!<span class="nb">)(<span class="%s" aria-hidden="true">.*?</span>)(<span class="w">,</span>)' % cls,
+                   lambda m: m.group(1) + m.group(2) if '<span class="nb">' + m.group(1) in h else '<span class="nb">' + m.group(1) + m.group(2) + '</span>',
+                   h, count=1, flags=re.S)
+    return h
+
+
+# Final de l'accueil : « C'est maintenant » devient le grand appel à l'action, juste avant le pied de page
+ARW = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+       'stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>')
+CHK = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" '
+       'stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>')
+WAI = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2'
+       'a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1'
+       'a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3a.4.4 0 0 0 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7'
+       ' 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>')
+
+
+def finale(h):
+    m = re.search(r'<section class="(?:blk mom|fin mom)" id="moment">.*?</section>', h, re.S)
+    if not m:
+        return h
+    old = m.group(0)
+    vis = re.search(r'<div class="mom-vis rv d2" aria-hidden="true">.*?</span></div>\n?</div>', old, re.S)
+    vis = vis.group(0) if vis else ''
+    pts = re.findall(r'<b>([^<]+)</b></span></li>', old)[:3] or [
+        'Vos clients cherchent déjà sur leur téléphone', 'Ailleurs, la première place se paie cher', 'Au Maroc, elle est encore libre']
+    new = ('<section class="fin mom" id="moment"><div class="fin-sky" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i>'
+           '<i class="st"></i></div><div class="fin-in w"><div class="fin-txt"><span class="mom-k rv"><i></i>Le bon moment</span>'
+           '<h2 class="rv d1">C’est maintenant, <em>pas quand tout le monde y sera.</em></h2>'
+           '<p class="rv d2">Vos clients vous cherchent sur leur téléphone. Soyez le premier qu’ils trouvent.</p>'
+           '<ol class="fin-pts rv d2">%s</ol><div class="fin-cta rv d3"><a class="fin-go" href="demarrer.html"><span>Démarrer mon projet</span>'
+           '<i>%s</i></a><a class="fin-wa" href="https://wa.me/212649953813" target="_blank" rel="noopener noreferrer">%sWhatsApp</a></div>'
+           '<ul class="fin-trust rv d3"><li>%sPrix écrit avant de commencer</li><li>%sPremière version en 72 h</li><li>%sRéponse le jour même</li></ul>'
+           '<a class="fin-read rv d3" href="guide-bon-moment-maroc.html">Lire pourquoi, 5 min%s</a></div>%s</div></section>') % (
+        ''.join('<li><span>%02d</span><b>%s</b></li>' % (k + 1, t) for k, t in enumerate(pts)), ARW, WAI, CHK, CHK, CHK, ARW, vis)
+    h = h.replace(old, '', 1)
+    i = h.index('<footer')
+    h = h[:i] + new + '\n' + h[i:]
+    # rail des sections : « Le bon moment » passe juste avant « Contact »
+    m = re.search(r'<a href="#moment" data-t="moment">.*?</a>', h, re.S)
+    if m and h.index(m.group(0)) < h.index('<a href="#vis" data-t="vis">'):
+        h = h.replace(m.group(0), '', 1)
+        j = h.index('<a href="#foot" data-t="foot">')
+        h = h[:j] + m.group(0) + h[j:]
+    return h
+
+
 def main():
     h = open(P, encoding='utf-8').read()
     h = slides(h)
     h = slide_steps(h)
+    h = mani_pills(h)
+    h = sim_icons(h)
+    h = finale(h)
     h = showcase(h)
     h = no_preloader(h)
     h = vision(h)

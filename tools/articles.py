@@ -16,11 +16,21 @@ SITE = os.path.join(ROOT, 'site')
 SRC = os.path.join(ROOT, 'src', 'articles')
 BASE = os.path.join(SITE, 'guide-prix-site-web-maroc.html')
 
-# Ordre de la page Guides (les nouveaux articles d'abord, la FAQ à la fin)
-ORDER = ['creation-site-web-maroc.html', 'creer-boutique-en-ligne-maroc.html', 'shopify-maroc.html',
-         'application-mobile-maroc.html', 'agence-web-maroc.html', 'referencement-seo-maroc.html',
-         'guide-prix-site-web-maroc.html', 'guide-google-chatgpt-maroc.html', 'guide-fiche-google-business-maroc.html',
-         'guide-site-vitrine-boutique-application.html', 'guide-bon-moment-maroc.html', 'faq.html']
+# Page Guides : trois familles (une page absente est simplement ignorée), la FAQ à la fin
+GROUPS = [
+    ('Créer et réussir en ligne', 'Les bases,', 'expliquées simplement.',
+     ['creation-site-web-maroc.html', 'guide-prix-site-web-maroc.html', 'creer-boutique-en-ligne-maroc.html', 'shopify-maroc.html',
+      'application-mobile-maroc.html', 'agence-web-maroc.html', 'wordpress-ou-sur-mesure-maroc.html',
+      'guide-site-vitrine-boutique-application.html', 'nom-de-domaine-ma.html', 'guide-bon-moment-maroc.html']),
+    ('Par métier', 'Un guide', 'pour votre activité.',
+     ['site-web-dentiste-maroc.html', 'site-web-medecin-clinique-maroc.html', 'site-web-ecole-privee-maroc.html',
+      'site-web-institut-beaute-maroc.html', 'site-web-restaurant-maroc.html', 'site-web-riad-hotel-maroc.html',
+      'site-web-auto-ecole-maroc.html', 'site-web-agence-immobiliere-maroc.html']),
+    ('Visibilité et ventes', 'Être trouvé,', 'et choisi.',
+     ['referencement-seo-maroc.html', 'guide-google-chatgpt-maroc.html', 'guide-fiche-google-business-maroc.html',
+      'avis-google-maroc.html', 'publicite-google-maroc.html', 'vendre-instagram-whatsapp-maroc.html',
+      'paiement-en-ligne-maroc.html', 'faq.html']),
+]
 FOOT = [('creation-site-web-maroc.html', 'Création de site web'), ('creer-boutique-en-ligne-maroc.html', 'Boutique en ligne'),
         ('shopify-maroc.html', 'Shopify au Maroc'), ('application-mobile-maroc.html', 'Application mobile'),
         ('referencement-seo-maroc.html', 'Référencement SEO'), ('agence-web-maroc.html', 'Choisir une agence web'),
@@ -45,6 +55,8 @@ def blocks(bs):
             out.append('<ul class="rv">%s</ul>' % ''.join('<li>%s</li>' % x for x in b['ul']))
         elif 'ol' in b:
             out.append('<ol class="rv">%s</ol>' % ''.join('<li>%s</li>' % x for x in b['ol']))
+        elif 'img' in b:
+            out.append(figure(b['img'], b.get('alt', ''), b.get('cap', '')))
         elif 'note' in b:
             out.append('<p class="rv art-note">%s</p>' % b['note'])
         elif 'table' in b:
@@ -56,6 +68,27 @@ def blocks(bs):
     return ''.join(out)
 
 
+BAR = '<span class="art-bar"><i></i><i></i><i></i></span>'
+
+
+def shot(img):
+    """Vignette 760 × 475 (haut de la page) pour la couverture d'un article."""
+    dst = os.path.join(SITE, 'assets', 'c-%s.webp' % img)
+    if not os.path.exists(dst):
+        from PIL import Image
+        im = Image.open(os.path.join(SITE, 'assets', img + '.webp')).convert('RGB')
+        w = im.width
+        im.crop((0, 0, w, round(w * .625))).save(dst, 'WEBP', quality=80)
+    return 'assets/c-%s.webp' % img
+
+
+def figure(img, alt, cap):
+    """Capture d'un vrai site dans un cadre de navigateur ; au survol, la page défile de haut en bas."""
+    return ('<figure class="art-fig rv"><div class="art-shot" tabindex="0">%s<div class="art-scroll"><img src="assets/%s.webp" alt="%s" '
+            'loading="lazy" decoding="async"></div></div>%s</figure>') % (
+        BAR, img, html.escape(alt, quote=True), ('<figcaption>%s</figcaption>' % cap) if cap else '')
+
+
 def article(d):
     secs = d.get('sections') or []
     toc = ''
@@ -63,7 +96,11 @@ def article(d):
         toc = '<nav class="art-toc rv" aria-label="Sommaire"><b>Sommaire</b><ol>%s</ol></nav>' % ''.join(
             '<li><a href="#%s">%s</a></li>' % (slug(s['h2']), s['h2']) for s in secs)
     body = ''.join('<h2 class="rv" id="%s">%s</h2>%s' % (slug(s['h2']), s['h2'], blocks(s['blocks'])) for s in secs)
-    return '<section class="blk art-wrap"><article class="art w nar">%s%s</article></section>' % (toc, body)
+    cover = ''
+    if d.get('cover'):
+        cover = ('<figure class="art-cover rv"><div class="art-shot">%s<img src="%s" alt="" width="760" height="475" '
+                 'fetchpriority="high" decoding="async"></div></figure>') % (BAR, shot(d['cover']))
+    return '<section class="blk art-wrap"><article class="art w nar">%s%s%s</article></section>' % (cover, toc, body)
 
 
 def faq_items(qs):
@@ -157,11 +194,19 @@ def main():
     tpl = re.search(r'<a class="gd light rv" href="guide-bon-moment-maroc\.html">.*?</a>', base, re.S).group(0)
     for name, d in data.items():
         open(os.path.join(SITE, name), 'w', encoding='utf-8').write(page(d, base, data, tpl))
-    # page Guides : toutes les cartes
+    # page Guides : les cartes, par famille
     p = os.path.join(SITE, 'guides.html')
     g = open(p, encoding='utf-8').read()
-    g = re.sub(r'(<div class="gd-grid">).*?(</div></section>)', lambda m: m.group(1) + cards(ORDER, data, tpl) + m.group(2),
-               g, count=1, flags=re.S)
+    have = lambda n: n in data or os.path.exists(os.path.join(SITE, n))
+    secs = ''.join(('<section class="blk gd-fam"><div class="sh"><span class="pill rv"><span class="ic"></span>%s</span>'
+                    '<h2 class="rv d1"><span class="l"><span class="li">%s</span></span><span class="l"><span class="li grad">%s</span>'
+                    '</span></h2></div><div class="gd-grid">%s</div></section>') % (t, l1, l2, cards([n for n in names if have(n)], data, tpl))
+                   for t, l1, l2, names in GROUPS)
+    g = re.sub(r'<!--dg:guides-->.*?<!--/dg:guides-->', '', g, flags=re.S)
+    a = g.find('<section class="blk', g.index('</header>'))
+    b = g.index('<section class="blk"><div class="cband')
+    a = b if a < 0 or a > b else a
+    g = g[:a] + '<!--dg:guides-->' + secs + '<!--/dg:guides-->' + g[b:]
     open(p, 'w', encoding='utf-8').write(g)
     # pied de page de toutes les pages
     for f in glob.glob(os.path.join(SITE, '*.html')):
@@ -175,7 +220,7 @@ def main():
         n = re.sub(r'<script type="application/ld\+json">\{"@context": "https://schema\.org", "@graph": \[\{"@type": "Article".*?</script>', '', h, flags=re.S)
         if n != h:
             open(f, 'w', encoding='utf-8').write(n)
-    print(len(data), 'articles ;', len(ORDER), 'cartes sur la page Guides')
+    print(len(data), 'articles ; page Guides :', sum(len(x[3]) for x in GROUPS), 'cartes prévues')
 
 
 if __name__ == '__main__':

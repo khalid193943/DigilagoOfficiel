@@ -83,3 +83,38 @@
     }, 4000);
   }
 })();
+// « On vous rappelle » : prénom + téléphone, envoyés à l'espace de gestion comme les autres demandes.
+(function () {
+  document.querySelectorAll(".cb-form").forEach(function (f) {
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var n = f.elements.n.value.trim(),
+        p = f.elements.p.value.trim();
+      if (p.replace(/\D/g, "").length < 8) {
+        f.classList.add("err");
+        f.elements.p.focus();
+        return;
+      }
+      f.classList.remove("err");
+      var api = (
+        document.documentElement.getAttribute("data-api") || ""
+      ).replace(/\/$/, "");
+      if (api)
+        try {
+          fetch(api + "/api/leads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: n,
+              phone: p,
+              need: "Être rappelé",
+              message: "Demande de rappel depuis " + location.pathname,
+              source: "Rappel, " + document.title.split(" | ")[0],
+            }),
+            keepalive: true,
+          }).catch(function () {});
+        } catch (x) {}
+      f.classList.add("sent");
+    });
+  });
+})();

@@ -221,39 +221,8 @@
    "shopify-maroc.html"
   ]
  },
- "68746fa0f982": {
-  "fr": "Vous cherchiez quelque chose ?",
-  "kind": "text",
-  "ctx": "Vous cherchiez quelque chose ? On vous répond aujourd’hui.",
-  "pages": [
-   "404.html"
-  ]
- },
- "494680d7e361": {
-  "fr": "On vous répond aujourd’hui.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "404.html",
-   "guides.html"
-  ]
- },
- "f02ffb674ac4": {
-  "fr": "Nous contacter",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "404.html",
-   "a-propos.html",
-   "confidentialite.html",
-   "demarrer.html",
-   "guides.html",
-   "mentions-legales.html",
-   "realisations.html"
-  ]
- },
- "4f9fa1dabc59": {
-  "fr": "Agence web à El Jadida. Sites web, Google et IA pour les entreprises marocaines, au Maroc comme à l’international.",
+ "ab446c6864d3": {
+  "fr": "Réponse le jour même",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -281,8 +250,240 @@
    "shopify-maroc.html"
   ]
  },
- "ab446c6864d3": {
-  "fr": "Réponse le jour même",
+ "d66c4da48910": {
+  "fr": "Vous cherchiez quelque chose ?",
+  "kind": "text",
+  "ctx": "Vous cherchiez quelque chose ? On vous répond aujourd’hui.",
+  "pages": [
+   "404.html"
+  ]
+ },
+ "494680d7e361": {
+  "fr": "On vous répond aujourd’hui.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "guides.html"
+  ]
+ },
+ "9dc0888d7ba9": {
+  "fr": "Laissez votre numéro : quelqu’un de l’équipe vous rappelle aujourd’hui, gratuitement et sans engagement.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "f02ffb674ac4": {
+  "fr": "Nous contacter",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "confidentialite.html",
+   "demarrer.html",
+   "guides.html",
+   "mentions-legales.html",
+   "realisations.html"
+  ]
+ },
+ "43370d888308": {
+  "fr": "On vous rappelle",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "e4387ade0f0e": {
+  "fr": "Prénom",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "d3b023eabc9c": {
+  "fr": "Téléphone",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "contact.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "dcc0cab20789": {
+  "fr": "Être rappelé aujourd’hui",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "7236cb7b6d19": {
+  "fr": "Du lundi au samedi, de 9 h à 19 h · gratuit",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "b16c17ac8967": {
+  "fr": "C’est noté, merci !",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "3257aafb2c98": {
+  "fr": "Nous vous rappelons aujourd’hui.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "4f9fa1dabc59": {
+  "fr": "Agence web à El Jadida. Sites web, Google et IA pour les entreprises marocaines, au Maroc comme à l’international.",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -1066,6 +1267,31 @@
    "guides.html",
    "index.html",
    "mentions-legales.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "services.html",
+   "shopify-maroc.html"
+  ]
+ },
+ "0e5c9f914edb": {
+  "fr": "Votre prénom",
+  "kind": "attr:placeholder",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
    "realisations.html",
    "referencement-seo-maroc.html",
    "services.html",
@@ -3482,10 +3708,10 @@
    "referencement-seo-maroc.html"
   ]
  },
- "8d48c0eaccc8": {
-  "fr": "Prêt à passer à l’action ?",
+ "e61f9a92bccd": {
+  "fr": "Prêt à passer à l’action ?",
   "kind": "text",
-  "ctx": "Prêt à passer à l’action ? Première version en 72 heures.",
+  "ctx": "Prêt à passer à l’action ? Première version en 72 heures.",
   "pages": [
    "agence-web-maroc.html",
    "application-mobile-maroc.html",
@@ -5071,14 +5297,6 @@
  },
  "67caf343a3f9": {
   "fr": "Ouvrir dans Google Maps",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "contact.html"
-  ]
- },
- "d3b023eabc9c": {
-  "fr": "Téléphone",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -8487,14 +8705,6 @@
    "demarrer.html"
   ]
  },
- "0e5c9f914edb": {
-  "fr": "Votre prénom",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
  "9a8f9d0a5cc0": {
   "fr": "WhatsApp ou téléphone",
   "kind": "text",
@@ -8742,10 +8952,10 @@
    "realisations.html"
   ]
  },
- "8c7837a17beb": {
-  "fr": "Une question avant ?",
+ "da4713b2343c": {
+  "fr": "Une question avant ?",
   "kind": "text",
-  "ctx": "Une question avant ? On en parle simplement.",
+  "ctx": "Une question avant ? On en parle simplement.",
   "pages": [
    "demarrer.html"
   ]
@@ -8777,14 +8987,6 @@
  "eaa02f3f3362": {
   "fr": "Oui",
   "kind": "attr:data-has",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "e4387ade0f0e": {
-  "fr": "Prénom",
-  "kind": "attr:placeholder",
   "ctx": "",
   "pages": [
    "demarrer.html"
@@ -11376,10 +11578,10 @@
    "guides.html"
   ]
  },
- "e75bf1f48de8": {
-  "fr": "Une question précise ?",
+ "e0f3d1516ed4": {
+  "fr": "Une question précise ?",
   "kind": "text",
-  "ctx": "Une question précise ? On vous répond aujourd’hui.",
+  "ctx": "Une question précise ? On vous répond aujourd’hui.",
   "pages": [
    "guides.html"
   ]
@@ -14584,206 +14786,6 @@
    "index.html"
   ]
  },
- "b075fed32984": {
-  "fr": "Le bon moment",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "374940b670a5": {
-  "fr": "C’est maintenant,",
-  "kind": "text",
-  "ctx": "C’est maintenant, pas quand tout le monde y sera.",
-  "pages": [
-   "index.html"
-  ]
- },
- "a897675ec9c6": {
-  "fr": "pas quand tout le monde y sera.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "d09afb00ce92": {
-  "fr": "Vos clients vous cherchent sur leur téléphone. Soyez le premier qu’ils trouvent.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "9efb56155685": {
-  "fr": "Vos clients cherchent déjà sur leur téléphone",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "9666382ce0cf": {
-  "fr": "Ailleurs, la première place se paie cher",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "d5bf79680477": {
-  "fr": "Au Maroc, elle est encore libre",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "0060f1407b81": {
-  "fr": "Lire pourquoi, 5 min",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "9aa555ea5d24": {
-  "fr": "auto-école",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "ea129238fc57": {
-  "fr": "Vidéos",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "0d16fa3a08cb": {
-  "fr": "Auto-école du centre",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "5f3eb324b781": {
-  "fr": "Ouvert, ferme à 19:00",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "bf144cd34447": {
-  "fr": "Permis Express",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "d9c9d30ac7e8": {
-  "fr": "Horaires non renseignés",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "0b106b3ce297": {
-  "fr": "Auto-école de la gare",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "56febb17ff73": {
-  "fr": "Pas de site web",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "f1d3935c6d30": {
-  "fr": "Votre auto-école",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "de5463fd13df": {
-  "fr": "Site, photos, horaires, tarifs",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "323ad0276f82": {
-  "fr": "1er",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "cb94378313bd": {
-  "fr": "Le client vous choisit",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "fd2089cc6c29": {
-  "fr": "et passe à l’action",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "3c5c075833ff": {
-  "fr": "Appel entrant",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "77ebdfa7b35a": {
-  "fr": "Futur élève",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "7789d59bd2e2": {
-  "fr": "Nouvelle inscription",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "42beb69add75": {
-  "fr": "Nom, numéro, e-mail",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
  "fc19ddfb59ce": {
   "fr": "Des réponses claires aux questions que se posent les entreprises marocaines avant de se lancer.",
   "kind": "text",
@@ -14914,6 +14916,167 @@
  },
  "2b2a4d5e449e": {
   "fr": "l’Asie",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "b075fed32984": {
+  "fr": "Le bon moment",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "374940b670a5": {
+  "fr": "C’est maintenant,",
+  "kind": "text",
+  "ctx": "C’est maintenant, pas quand tout le monde y sera.",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "a897675ec9c6": {
+  "fr": "pas quand tout le monde y sera.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d09afb00ce92": {
+  "fr": "Vos clients vous cherchent sur leur téléphone. Soyez le premier qu’ils trouvent.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "9efb56155685": {
+  "fr": "Vos clients cherchent déjà sur leur téléphone",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "9666382ce0cf": {
+  "fr": "Ailleurs, la première place se paie cher",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d5bf79680477": {
+  "fr": "Au Maroc, elle est encore libre",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "f08fac85f020": {
+  "fr": "Première version en 72 h",
+  "kind": "text",
+  "ctx": "Site web Création de site web sur mesure Vitrine, prise de rendez-vous ou site multilingue : un site rapide, beau sur téléphone et pensé pour Google dès le premier jour. Design unique Français · arabe · anglais Première version en 72 h Le guide de la création ",
+  "pages": [
+   "index.html",
+   "services.html"
+  ]
+ },
+ "0060f1407b81": {
+  "fr": "Lire pourquoi, 5 min",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "9aa555ea5d24": {
+  "fr": "auto-école",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "ea129238fc57": {
+  "fr": "Vidéos",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "0d16fa3a08cb": {
+  "fr": "Auto-école du centre",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "5f3eb324b781": {
+  "fr": "Ouvert, ferme à 19:00",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "bf144cd34447": {
+  "fr": "Permis Express",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d9c9d30ac7e8": {
+  "fr": "Horaires non renseignés",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "0b106b3ce297": {
+  "fr": "Auto-école de la gare",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "56febb17ff73": {
+  "fr": "Pas de site web",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "f1d3935c6d30": {
+  "fr": "Votre auto-école",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "de5463fd13df": {
+  "fr": "Site, photos, horaires, tarifs",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "323ad0276f82": {
+  "fr": "1er",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -15851,10 +16014,10 @@
    "realisations.html"
   ]
  },
- "5e32e9ce97fd": {
-  "fr": "Votre domaine n’est pas dans la liste ?",
+ "2d6c3e57f323": {
+  "fr": "Votre domaine n’est pas dans la liste ?",
   "kind": "text",
-  "ctx": "Votre domaine n’est pas dans la liste ? On crée votre style sur mesure.",
+  "ctx": "Votre domaine n’est pas dans la liste ? On crée votre style sur mesure.",
   "pages": [
    "realisations.html"
   ]
@@ -18405,14 +18568,6 @@
    "services.html"
   ]
  },
- "f08fac85f020": {
-  "fr": "Première version en 72 h",
-  "kind": "text",
-  "ctx": "Site web Création de site web sur mesure Vitrine, prise de rendez-vous ou site multilingue : un site rapide, beau sur téléphone et pensé pour Google dès le premier jour. Design unique Français · arabe · anglais Première version en 72 h Le guide de la création ",
-  "pages": [
-   "services.html"
-  ]
- },
  "2e94172aba35": {
   "fr": "Méthode",
   "kind": "text",
@@ -20150,10 +20305,10 @@
    "services.html"
   ]
  },
- "2c60a92d3ee5": {
-  "fr": "Un projet en tête ?",
+ "f19416958966": {
+  "fr": "Un projet en tête ?",
   "kind": "text",
-  "ctx": "Un projet en tête ? Parlons-en aujourd’hui.",
+  "ctx": "Un projet en tête ? Parlons-en aujourd’hui.",
   "pages": [
    "services.html"
   ]

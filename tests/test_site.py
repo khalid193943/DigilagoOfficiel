@@ -234,3 +234,24 @@ def test_arabe_numeros_dans_le_bon_sens():
     html = open(os.path.join(SITE, 'ar', 'contact.html'), encoding='utf-8').read()
     assert '<bdi dir="ltr">+212 6 49 95 38 13</bdi>' in html
     assert '<bdi dir="ltr">contact@digilago.ma</bdi>' in html
+
+def test_rappel_gratuit_envoie_une_demande(page, base_url):
+    sent = []
+    page.on('request', lambda r: sent.append(r.post_data) if r.url.endswith('/api/leads') and r.method == 'POST' else None)
+    page.goto(f'{base_url}/services.html'); page.wait_for_timeout(800)
+    form = page.locator('.cb-form').first
+    form.scroll_into_view_if_needed()
+    form.locator('button').click()
+    assert 'err' in form.get_attribute('class'), 'un numéro est demandé'
+    form.locator('input[name=n]').fill('Test')
+    form.locator('input[name=p]').fill('06 12 34 56 78')
+    form.locator('button').click(); page.wait_for_timeout(500)
+    assert 'sent' in form.get_attribute('class')
+    assert sent and '"phone":"06 12 34 56 78"' in sent[-1] and 'Rappel' in sent[-1]
+
+def test_final_de_l_accueil(page, base_url):
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(800)
+    order = page.evaluate("""(() => { const m = document.getElementById('moment'), v = document.getElementById('vis'), f = document.getElementById('foot');
+        return [!!(v.compareDocumentPosition(m) & 4), !!(m.compareDocumentPosition(f) & 4)]; })()""")
+    assert order == [True, True], 'le grand appel à l’action doit être juste avant le pied de page'
+    assert page.locator('#moment .fin-go[href="demarrer.html"]').count() == 1
