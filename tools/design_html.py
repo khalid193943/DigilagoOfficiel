@@ -270,25 +270,72 @@ def finale(h):
     vis = vis.group(0) if vis else ''
     pts = re.findall(r'<b>([^<]+)</b></span></li>', old)[:3] or [
         'Vos clients cherchent déjà sur leur téléphone', 'Ailleurs, la première place se paie cher', 'Au Maroc, elle est encore libre']
-    new = ('<section class="fin mom" id="moment"><div class="fin-sky" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i>'
-           '<i class="st"></i></div><div class="fin-in w"><div class="fin-txt"><span class="mom-k rv"><i></i>Le bon moment</span>'
+    new = ('<section class="fin mom" id="moment"><div class="fin-sky" aria-hidden="true"><i class="a1"></i><i class="a2"></i></div>'
+           '<div class="fin-in w"><div class="fin-txt"><span class="mom-k rv"><i></i>Le bon moment</span>'
            '<h2 class="rv d1">C’est maintenant, <em>pas quand tout le monde y sera.</em></h2>'
            '<p class="rv d2">Vos clients vous cherchent sur leur téléphone. Soyez le premier qu’ils trouvent.</p>'
-           '<ol class="fin-pts rv d2">%s</ol><div class="fin-cta rv d3"><a class="fin-go" href="demarrer.html"><span>Démarrer mon projet</span>'
-           '<i>%s</i></a><a class="fin-wa" href="https://wa.me/212649953813" target="_blank" rel="noopener noreferrer">%sWhatsApp</a></div>'
+           '<div class="fin-cta rv d3"><a class="fin-go" href="demarrer.html"><span>Démarrer mon projet</span><i>%s</i></a>'
+           '<a class="fin-wa" href="https://wa.me/212649953813" target="_blank" rel="noopener noreferrer">%sWhatsApp</a></div>'
            '<ul class="fin-trust rv d3"><li>%sPrix écrit avant de commencer</li><li>%sPremière version en 72 h</li><li>%sRéponse le jour même</li></ul>'
-           '<a class="fin-read rv d3" href="guide-bon-moment-maroc.html">Lire pourquoi, 5 min%s</a></div>%s</div></section>') % (
-        ''.join('<li><span>%02d</span><b>%s</b></li>' % (k + 1, t) for k, t in enumerate(pts)), ARW, WAI, CHK, CHK, CHK, ARW, vis)
+           '</div>%s</div></section>') % (ARW, WAI, CHK, CHK, CHK, vis)
     h = h.replace(old, '', 1)
-    i = h.index('<footer')
+    i = h.index('<section class="sec" id="vis"')     # juste avant « La vision »
     h = h[:i] + new + '\n' + h[i:]
-    # rail des sections : « Le bon moment » passe juste avant « Contact »
+    # rail des sections : « Le bon moment » juste avant « La vision »
     m = re.search(r'<a href="#moment" data-t="moment">.*?</a>', h, re.S)
-    if m and h.index(m.group(0)) < h.index('<a href="#vis" data-t="vis">'):
+    if m:
         h = h.replace(m.group(0), '', 1)
-        j = h.index('<a href="#foot" data-t="foot">')
+        j = h.index('<a href="#vis" data-t="vis">')
         h = h[:j] + m.group(0) + h[j:]
     return h
+
+
+# « Ils nous font confiance » devient « Plus qu'un site web » : le partenaire tech complet, preuves à l'appui
+TPI = {
+    'web': '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 3.9 5.8 3.9 9S14.6 18.2 12 21M12 3C9.4 5.8 8.1 8.8 8.1 12s1.3 6.2 3.9 9"/>',
+    'app': '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
+    'sys': '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h4M7 12h7M15.5 8.5l1.5 1.5 2.5-2.5"/>',
+    'auto': '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+    'brand': '<path d="M4 20l4.2-1 10.4-10.4a2 2 0 0 0-2.8-2.8L5.4 16.2z"/><path d="M14.5 7.2l2.8 2.8"/>',
+    'advice': '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/>',
+}
+TP_CARDS = [
+    ('web', 'Sites web et e-commerce', 'Vitrine, réservation, boutique en ligne : rapides, beaux et trouvés sur Google.'),
+    ('app', 'Applications mobiles', 'iOS et Android : fidélité, réservations, commandes, espace client.'),
+    ('sys', 'Systèmes de gestion sur mesure', 'Devis, factures, rendez-vous, inscriptions, stocks : un outil interne pensé pour votre métier.'),
+    ('auto', 'Digitalisation et automatisation', 'WhatsApp automatisé, formulaires, paiements en ligne, tableaux de bord : moins de tâches répétitives.'),
+    ('brand', 'Branding et identité', 'Logo, couleurs, typographies et supports : une marque reconnaissable partout.'),
+    ('advice', 'Conseil tech', 'Choisir les bons outils, au bon prix, sans jargon : nous vous guidons à chaque décision.'),
+]
+TP_DOM = [('École', 'inscriptions, paiements, espace parents'), ('Clinique', 'rendez-vous, rappels, dossiers'),
+          ('Restaurant', 'commandes, menu, livraisons'), ('Commerce', 'stock, caisse, livraisons'),
+          ('Hôtel et riad', 'réservations directes, planning')]
+TP_STATS = [('11 ans', 'de terrain'), ('72 h', 'pour une première version'), ('3 langues', 'français, arabe, anglais'),
+            ('Le jour même', 'pour vous répondre')]
+
+
+def trust_section(h):
+    m = re.search(r'<section class="sec lgs[^"]*" id="trust"[^>]*>.*?</section>', h, re.S)
+    if not m:
+        return h
+    band = re.search(r'<div class="lg-band rv d2">.*?</ul></div>', m.group(0), re.S).group(0)
+    ico = lambda k: ('<span class="tp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+                     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg></span>') % TPI[k]
+    cards = ''.join('<article class="tp-c rv%s">%s<b>%s</b><span>%s</span></article>' % (
+        ('', ' d1', ' d2')[k % 3], ico(i), t, d) for k, (i, t, d) in enumerate(TP_CARDS))
+    dom = ''.join('<li><b>%s</b><span>%s</span></li>' % x for x in TP_DOM)
+    stats = ''.join('<div><b>%s</b><span>%s</span></div>' % x for x in TP_STATS)
+    new = ('<section class="sec lgs tp" id="trust" aria-labelledby="t-trust"><div class="sh dark"><span class="pill rv"><span class="ic"></span>'
+           'Plus qu’un site web</span><h2 id="t-trust" class="rv d1"><span class="l"><span class="li">Votre partenaire tech,</span></span>'
+           '<span class="l"><span class="li grad">de l’idée au quotidien.</span></span></h2><p class="rv d2">Site, application, outils de gestion '
+           'internes, automatisations, identité de marque et conseil : une seule équipe digitalise toute votre entreprise, avec le même soin du '
+           'détail.</p></div><div class="tp-grid w">%s</div><div class="tp-dom w rv"><p><b>Un outil pour chaque métier</b>'
+           '<span>Nous construisons le système dont votre activité a besoin.</span></p><ul>%s</ul></div>'
+           '<div class="tp-proof w rv"><div class="tp-stats">%s</div><p class="tp-lab">Ils nous font confiance</p>%s</div>'
+           '<div class="tp-cta rv"><a class="tp-go" href="demarrer.html">Parlons de votre projet%s</a>'
+           '<a class="lg-more" href="realisations.html">Voir les idées de sites%s</a></div></section>') % (
+        cards, dom, stats, band, ARW, ARW)
+    return h.replace(m.group(0), new, 1)
 
 
 def main():
@@ -298,6 +345,7 @@ def main():
     h = mani_pills(h)
     h = sim_icons(h)
     h = finale(h)
+    h = trust_section(h)
     h = showcase(h)
     h = no_preloader(h)
     h = vision(h)

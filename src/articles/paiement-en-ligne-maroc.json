@@ -1,0 +1,331 @@
+{
+ "file": "paiement-en-ligne-maroc.html",
+ "title": "Paiement en ligne au Maroc : CMI ou à la livraison | Digilago",
+ "description": "Paiement en ligne au Maroc : encaisser par carte via le CMI, organiser le paiement à la livraison, liens de paiement, sécurité et démarches.",
+ "eyebrow": "Guide, 9 min de lecture",
+ "h1": [
+  "Paiement en ligne au Maroc :",
+  "encaisser simplement, sans perdre de ventes."
+ ],
+ "lead": "Carte bancaire via le CMI, paiement à la livraison, virement, lien de paiement : comment fonctionne chaque solution, ce qu’elle demande, et comment les combiner pour vendre en ligne au Maroc.",
+ "headline": "Paiement en ligne au Maroc : carte bancaire (CMI), paiement à la livraison et autres solutions pour encaisser en ligne",
+ "keywords": [
+  "paiement en ligne Maroc",
+  "CMI paiement",
+  "passerelle de paiement Maroc",
+  "paiement à la livraison",
+  "encaisser en ligne Maroc",
+  "paiement par carte Maroc",
+  "lien de paiement",
+  "boutique en ligne Maroc"
+ ],
+ "cover": "16d4918d6c",
+ "sections": [
+  {
+   "h2": "Paiement en ligne au Maroc : quelles solutions pour encaisser ?",
+   "blocks": [
+    {
+     "p": "Au Maroc, le paiement en ligne passe surtout par la carte bancaire, le plus souvent via le CMI et un contrat signé avec votre banque, et on le combine en général avec le paiement à la livraison, où le client règle le livreur. Le virement, le lien de paiement envoyé par WhatsApp et d’autres solutions agréées complètent l’offre selon votre activité."
+    },
+    {
+     "p": "Samedi, 23 h 40. À Tanger, une cliente découvre un caftan d’une boutique de Marrakech. Elle veut commander tout de suite, mais hésite : payer par carte, ou à la livraison ? Si la boutique propose clairement les deux, elle commande. Si elle doit écrire sur WhatsApp et attendre lundi, elle passera sans doute à autre chose."
+    },
+    {
+     "table": {
+      "head": [
+       "Solution",
+       "Comment ça marche",
+       "Idéale pour"
+      ],
+      "rows": [
+       [
+        "Carte bancaire via le CMI",
+        "Le client paie sur une page sécurisée, l’argent arrive sur votre compte professionnel",
+        "Boutiques, réservations, acomptes, inscriptions"
+       ],
+       [
+        "Paiement à la livraison",
+        "Le livreur encaisse à la remise du colis, puis vous reverse les montants",
+        "Premières commandes, clients méfiants envers la carte"
+       ],
+       [
+        "Virement bancaire",
+        "Le client vire le montant, vous livrez après réception",
+        "Entreprises, montants élevés, commandes sur devis"
+       ],
+       [
+        "Lien de paiement",
+        "Vous envoyez un lien par WhatsApp ou e-mail, le client paie par carte",
+        "Ventes en conversation, acomptes, sur-mesure"
+       ],
+       [
+        "Autres établissements de paiement",
+        "Passerelles, portefeuilles mobiles ou paiement en espèces en agence, selon les offres",
+        "Compléter l’offre, toucher les clients sans carte"
+       ],
+       [
+        "Solutions internationales (Stripe, PayPal…)",
+        "Disponibilité limitée ou soumise à conditions pour une entreprise établie au Maroc",
+        "À vérifier au cas par cas"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h2": "Comment fonctionne le paiement par carte avec le CMI ?",
+   "blocks": [
+    {
+     "p": "Le CMI (Centre monétique interbancaire) est la plateforme historique de paiement par carte au Maroc, à laquelle un commerçant accède généralement par sa banque. Vous signez avec elle un contrat d’acceptation du paiement en ligne, votre site est relié à la plateforme, et le client paie sur une page sécurisée : vous ne voyez jamais son numéro de carte."
+    },
+    {
+     "ol": [
+      "Le client valide son panier et choisit « Payer par carte ».",
+      "Il arrive sur la page de paiement sécurisée et saisit sa carte.",
+      "Sa banque peut lui demander une confirmation, par exemple un code reçu par SMS.",
+      "Le paiement accepté, votre site reçoit la confirmation et la commande passe en « payée »."
+     ]
+    },
+    {
+     "p": "Les conditions dépendent de chaque banque, mais attendez-vous à fournir :"
+    },
+    {
+     "ul": [
+      "une entreprise déclarée, avec ses identifiants (registre de commerce, ICE…) et un compte bancaire professionnel ;",
+      "un site en ligne, sécurisé en HTTPS et complet : produits ou services, prix en dirhams, conditions générales de vente, livraison, remboursement, mentions légales, coordonnées ;",
+      "une description claire de votre activité."
+     ]
+    },
+    {
+     "p": "Les frais (mise en service, commission sur chaque transaction, éventuel abonnement) se discutent avec la banque : demandez une offre écrite et comparez. Le marché évolue aussi : d’autres acteurs agréés proposent des solutions d’encaissement."
+    },
+    {
+     "note": "Lancez la demande auprès de votre banque dès le début du projet, car l’étude du dossier prend du temps. En attendant, ouvrez avec le paiement à la livraison, puis activez la carte dès que le contrat est signé."
+    }
+   ]
+  },
+  {
+   "h2": "Quelle passerelle de paiement choisir au Maroc ?",
+   "blocks": [
+    {
+     "p": "La passerelle de paiement est le service technique qui relie votre site au réseau des cartes bancaires. Au Maroc, la piste habituelle reste le CMI via votre banque ; des établissements de paiement agréés proposent aussi passerelles, liens de paiement ou portefeuilles mobiles. Le bon choix dépend de votre banque, de vos clients et de votre plateforme. Posez ces questions avant de signer :"
+    },
+    {
+     "ul": [
+      "<strong>Quelles cartes</strong> : marocaines seulement, ou aussi Visa et Mastercard émises à l’étranger ?",
+      "<strong>Quels frais</strong> : mise en service, commission, abonnement, remboursements ?",
+      "<strong>Quel délai</strong> avant que l’argent arrive sur votre compte ?",
+      "<strong>Quelle intégration</strong> : module prêt pour votre plateforme, ou développement sur mesure ?",
+      "<strong>Quel interlocuteur</strong> si un paiement bloque un samedi soir ?"
+     ]
+    },
+    {
+     "p": "Sur Shopify, le CMI n’est pas un moyen de paiement standard : il faut une solution tierce, à vérifier avec soin (voir <a href=\"shopify-maroc.html\">Shopify au Maroc</a>). Sur un site sur-mesure, l’intégration se fait directement une fois le contrat signé ; pour comparer, lisez <a href=\"wordpress-ou-sur-mesure-maroc.html\">WordPress ou sur-mesure</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Paiement à la livraison : comment l’organiser sans perdre d’argent ?",
+   "blocks": [
+    {
+     "p": "Le paiement à la livraison rassure les clients qui hésitent à payer par carte, et il reste très répandu au Maroc. Son point faible est connu : les colis refusés ou introuvables, qui coûtent un aller-retour sans rien rapporter. On le maîtrise avec une confirmation systématique avant l’envoi et quelques règles simples."
+    },
+    {
+     "ol": [
+      "<strong>Confirmez chaque commande</strong> par appel ou WhatsApp avant l’expédition : nom, adresse précise, repère, créneau.",
+      "<strong>Demandez un acompte</strong> pour le sur-mesure (caftan à vos mesures, meuble sur commande) : un article fait pour un client se revend mal.",
+      "<strong>Choisissez un transporteur</strong> qui encaisse, reverse vite et offre un suivi clair ; comparez les sociétés spécialisées et les offres d’Amana.",
+      "<strong>Affichez frais et délais de livraison</strong> avant la validation : les mauvaises surprises font refuser les colis.",
+      "<strong>Suivez vos retours</strong> par ville et par produit, pour ajuster : livraison offerte ici, acompte là."
+     ]
+    },
+    {
+     "p": "Exemple : une parapharmacie en ligne à Casablanca confirme chaque commande par WhatsApp dans l’heure, propose la carte en premier choix et la livraison en second. Ses clients ont le choix ; elle garde la maîtrise. Pour la logistique complète, voyez notre guide pour <a href=\"creer-boutique-en-ligne-maroc.html\">créer une boutique en ligne au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Faut-il proposer la carte, la livraison, ou les deux ?",
+   "blocks": [
+    {
+     "p": "Dans la plupart des cas, les deux : le paiement à la livraison rassure les nouveaux clients, la carte fait gagner du temps aux habitués, aux clients pressés et à ceux qui commandent depuis l’étranger. Ne proposer qu’un seul moyen, c’est laisser partir une partie des acheteurs."
+    },
+    {
+     "table": {
+      "head": [
+       "Votre activité",
+       "Ce qui marche bien",
+       "Point d’attention"
+      ],
+      "rows": [
+       [
+        "Boutique de mode ou de cosmétique",
+        "Carte et livraison, au choix",
+        "Confirmation avant envoi"
+       ],
+       [
+        "Riad ou maison d’hôtes à Fès",
+        "Acompte par carte à la réservation",
+        "Conditions d’annulation claires"
+       ],
+       [
+        "École privée ou crèche",
+        "Frais d’inscription par carte, virement ou lien",
+        "Reçus et échéances clairs"
+       ],
+       [
+        "Centre de formation ou de langues",
+        "Forfaits payés en ligne à l’inscription",
+        "Politique de remboursement écrite"
+       ],
+       [
+        "Artisan sur mesure",
+        "Acompte par lien de paiement, solde à la livraison",
+        "Devis validé par écrit"
+       ]
+      ]
+     }
+    },
+    {
+     "img": "544d524fe0",
+     "alt": "Exemple de site de centre de langues présentant ses cours et ses forfaits avec leurs prix",
+     "cap": "Exemple de site de centre de langues (modèle) : des forfaits clairs, faciles à régler en ligne à l’inscription."
+    }
+   ]
+  },
+  {
+   "h2": "Comment se faire payer une commande passée sur WhatsApp ?",
+   "blocks": [
+    {
+     "p": "Si vous vendez surtout par WhatsApp ou Instagram, un lien de paiement suffit souvent pour commencer : vous envoyez un lien sécurisé, le client paie par carte sur son téléphone, vous recevez la confirmation. Certaines banques et établissements de paiement le proposent ; comparez les conditions."
+    },
+    {
+     "p": "C’est idéal pour un acompte (robe de mariée sur mesure, séance photo, séjour), une commande passée en conversation ou une prestation sur devis. Pour aller plus loin, lisez notre guide pour <a href=\"vendre-instagram-whatsapp-maroc.html\">vendre sur Instagram et WhatsApp au Maroc</a>."
+    },
+    {
+     "img": "07e509734a",
+     "alt": "Exemple de site de pension pour animaux avec ses services, sa galerie et son formulaire de contact",
+     "cap": "Exemple de site de pension pour animaux (modèle) : pour un service sur réservation, un acompte en ligne limite les réservations fantômes."
+    },
+    {
+     "note": "Ne demandez jamais à un client son numéro de carte, son code ou une photo de sa carte, que ce soit par WhatsApp, par téléphone ou dans un formulaire. Un vrai paiement en ligne se fait toujours sur la page sécurisée de la banque ou du prestataire."
+    }
+   ]
+  },
+  {
+   "h2": "Comment sécuriser le paiement en ligne sur votre site ?",
+   "blocks": [
+    {
+     "p": "Un paiement en ligne sûr repose sur trois piliers : un site en HTTPS, une page de paiement hébergée par le prestataire (vous ne stockez aucune donnée de carte) et une commande validée seulement après la confirmation envoyée par la plateforme de paiement à votre serveur."
+    },
+    {
+     "ul": [
+      "<strong>HTTPS partout</strong>, avec un certificat à jour : le cadenas rassure, et les banques l’exigent en général.",
+      "<strong>Aucune donnée de carte</strong> sur vos serveurs ni dans vos fichiers.",
+      "<strong>Une validation côté serveur</strong> : une commande passe en « payée » quand la plateforme l’a confirmée, pas parce que le client a atteint la page « Merci ».",
+      "<strong>Des accès protégés</strong> : mot de passe solide et double authentification sur le tableau de bord de paiement et l’administration du site.",
+      "<strong>Des tests complets</strong> avant l’ouverture : paiement accepté, refusé, annulé, remboursé."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Quelles règles respecter pour encaisser en ligne au Maroc ?",
+   "blocks": [
+    {
+     "p": "Vendre et encaisser en ligne au Maroc suppose une activité déclarée, des informations claires pour le client et le respect de deux textes clés : la loi 31-08 sur la protection du consommateur et la loi 09-08 sur les données personnelles. Faites valider vos documents par un juriste ou votre comptable."
+    },
+    {
+     "ul": [
+      "<strong>Des prix clairs en dirhams</strong>, frais de livraison indiqués avant la commande.",
+      "<strong>Des conditions générales de vente</strong> : paiement, livraison, retours, remboursement, annulation.",
+      "<strong>Le droit de rétractation</strong> prévu par la loi 31-08 pour la vente à distance, en principe de sept jours, avec des exceptions.",
+      "<strong>Des mentions légales</strong> qui identifient l’entreprise.",
+      "<strong>Une politique de confidentialité</strong> : nom, téléphone et adresse des clients sont protégés par la loi 09-08, sous le contrôle de la CNDP.",
+      "<strong>Des ventes en devises ?</strong> La réglementation des changes s’applique : parlez-en à votre banque."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Quelles erreurs font fuir les acheteurs au moment de payer ?",
+   "blocks": [
+    {
+     "p": "Un client prêt à payer peut encore abandonner sa commande à la dernière étape. Les causes les plus fréquentes :"
+    },
+    {
+     "ul": [
+      "Un seul moyen de paiement, alors que vos clients en attendent deux.",
+      "Des frais de livraison découverts à la dernière étape.",
+      "Des CGV copiées d’un site étranger, qui ne collent ni à vos pratiques ni au droit marocain.",
+      "Attendre le contrat de paiement par carte pour ouvrir, au lieu de lancer avec le paiement à la livraison."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Check-list : votre site est-il prêt à encaisser ?",
+   "blocks": [
+    {
+     "p": "Si chacun de ces points est coché, vous pouvez ouvrir sereinement :"
+    },
+    {
+     "ul": [
+      "Activité déclarée, compte bancaire professionnel ouvert.",
+      "Demande de paiement par carte déposée auprès de la banque.",
+      "Paiement à la livraison organisé, confirmation avant envoi prévue.",
+      "Prix, frais et délais de livraison visibles avant la commande.",
+      "CGV, mentions légales, politiques de retour et de confidentialité en ligne.",
+      "HTTPS actif, aucune donnée de carte stockée, accès protégés.",
+      "Paiements testés : accepté, refusé, annulé, remboursé.",
+      "Confirmations automatiques par e-mail ou WhatsApp."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago peut vous aider",
+   "blocks": [
+    {
+     "p": "Digilago, agence web basée à El Jadida, crée des boutiques en ligne et des sites avec réservation pensés pour le Maroc : paiement à la livraison, paiement en ligne, suivi des commandes, WhatsApp, en français, en arabe et en anglais. Le prix est annoncé par écrit avant de commencer, la première version arrive en 72 heures et, si elle ne vous plaît pas, vous ne payez rien. Consultez nos <a href=\"services.html\">services</a>, notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix</a>, ou <a href=\"demarrer.html\">démarrez votre projet</a>."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "Comment accepter le paiement par carte sur son site au Maroc ?",
+   "a": "Il faut une entreprise déclarée, un compte bancaire professionnel et un contrat d’acceptation du paiement en ligne avec votre banque, qui passe le plus souvent par le CMI. Votre site est ensuite relié à la plateforme de paiement, et vos clients paient sur une page sécurisée. Le site doit être en HTTPS et afficher CGV, mentions légales et politique de remboursement."
+  },
+  {
+   "q": "Qu’est-ce que le CMI ?",
+   "a": "Le CMI, ou Centre monétique interbancaire, est la plateforme historique de traitement des paiements par carte au Maroc. Un commerçant y accède généralement par sa banque, en signant un contrat d’acceptation du paiement en ligne. Le client paie alors sur une page sécurisée, sans que le commerçant voie ses données de carte."
+  },
+  {
+   "q": "Combien coûte le paiement en ligne avec le CMI ?",
+   "a": "Les frais dépendent de votre banque et de votre contrat : mise en service, commission sur chaque transaction, parfois un abonnement. Demandez une offre écrite et détaillée, et comparez avant de signer. Prévoyez aussi le coût de l’intégration technique sur votre site."
+  },
+  {
+   "q": "Le paiement à la livraison est-il encore utile au Maroc ?",
+   "a": "Oui, il reste très répandu et rassure les clients qui hésitent à payer par carte, surtout pour une première commande. Pour limiter les colis refusés, confirmez chaque commande par appel ou WhatsApp avant l’envoi, et demandez un acompte pour le sur-mesure. L’idéal est de le proposer à côté de la carte."
+  },
+  {
+   "q": "Peut-on utiliser Stripe ou PayPal au Maroc ?",
+   "a": "Pour une entreprise établie au Maroc, la disponibilité de Stripe et de PayPal est limitée ou soumise à conditions, et elle peut évoluer. Vérifiez directement auprès de ces services ce qui est possible dans votre cas. Pour encaisser des cartes marocaines, la piste habituelle reste le CMI via votre banque."
+  },
+  {
+   "q": "Peut-on encaisser en ligne sans site web ?",
+   "a": "En partie : certaines banques et établissements de paiement proposent des liens de paiement à envoyer par WhatsApp, et le paiement à la livraison ne demande pas de site. Mais un site avec catalogue, prix et conditions de vente rassure davantage, et il est en général exigé pour un contrat de paiement en ligne."
+  },
+  {
+   "q": "Combien coûte une boutique en ligne avec paiement par carte au Maroc ?",
+   "a": "À titre indicatif, une boutique en ligne avec catalogue, paiement CMI ou à la livraison et gestion des commandes coûte environ 15 000 à 60 000 MAD au Maroc. S’ajoutent les frais du contrat de paiement, la livraison, l’hébergement et la maintenance. Demandez toujours un devis écrit et détaillé."
+  }
+ ],
+ "related": [
+  "creer-boutique-en-ligne-maroc.html",
+  "shopify-maroc.html",
+  "vendre-instagram-whatsapp-maroc.html"
+ ]
+}

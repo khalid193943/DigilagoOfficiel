@@ -20,12 +20,26 @@
 ## Pages principales
 
 - [À propos de Digilago : agence web à El Jadida](https://www.digilago.ma/a-propos.html): Onze ans de terrain devenus Digilago : notre histoire, notre mission et nos valeurs.
+- [Avis Google au Maroc : en obtenir plus sans tricher](https://www.digilago.ma/avis-google-maroc.html): Avis Google au Maroc : obtenir plus d’avis clients, y répondre et améliorer votre note Google Maps, sans enfreindre les règles de Google.
 - [Contactez Digilago : réponse le jour même](https://www.digilago.ma/contact.html): Parlons de votre projet : WhatsApp, téléphone ou e-mail. Réponse le jour même.
 - [Démarrer votre projet : première version en 72 h](https://www.digilago.ma/demarrer.html): Lancez votre projet en deux minutes : site web, fiche Google, visibilité IA. Première version en 72 heures.
 - [Guides pratiques : site web, Google et IA au Maroc](https://www.digilago.ma/guides.html): Des guides clairs pour les entreprises marocaines : prix d’un site web, référencement local, fiche Google, visibilité dans ChatGPT et les IA.
 - [Digilago](https://www.digilago.ma/): Site web, fiche Google et visibilité dans les IA pour les entreprises marocaines. Première version en 72 h.
+- [Nom de domaine .ma : bien le choisir et l’acheter](https://www.digilago.ma/nom-de-domaine-ma.html): Nom de domaine .ma ou .com ? Choisir le bon nom, l’acheter auprès d’un bureau d’enregistrement, le protéger, l’héberger et créer un e-mail pro.
+- [Paiement en ligne au Maroc : CMI ou à la livraison](https://www.digilago.ma/paiement-en-ligne-maroc.html): Paiement en ligne au Maroc : encaisser par carte via le CMI, organiser le paiement à la livraison, liens de paiement, sécurité et démarches.
+- [Publicité Google et Meta au Maroc : petit budget](https://www.digilago.ma/publicite-google-maroc.html): Publicité Google, Facebook et Instagram au Maroc : budget, enchères, ciblage par ville, erreurs à éviter. Bien démarrer avec un petit budget.
 - [Exemples de sites web par métier au Maroc](https://www.digilago.ma/realisations.html): Choisissez votre domaine et découvrez un exemple de site : santé, éducation, restauration, commerce… Le vôtre sera adapté à votre logo et à vos couleurs.
 - [Services : site web, fiche Google, SEO et IA au Maroc](https://www.digilago.ma/services.html): Sites web sur mesure, fiche Google, référencement, visibilité dans les IA, applications et automatisations pour les entreprises marocaines.
+- [Site web agence immobilière et promoteur au Maroc](https://www.digilago.ma/site-web-agence-immobiliere-maroc.html): Site web d’agence immobilière ou de promoteur au Maroc : annonces filtrables, projets neufs, visites, acheteurs MRE, WhatsApp, Google. Conseils et pièges.
+- [Site web auto-école au Maroc : plus d’inscriptions](https://www.digilago.ma/site-web-auto-ecole-maroc.html): Site web d’auto-école au Maroc : pré-inscription au permis en ligne, formules, planning, WhatsApp et Google. Exemples, erreurs à éviter, prix indicatifs.
+- [Site web dentiste au Maroc : attirer des patients](https://www.digilago.ma/site-web-dentiste-maroc.html): Site web pour dentiste au Maroc : pages de soins, rendez-vous en ligne, WhatsApp, Google Maps et règles de l’Ordre. Le guide pour attirer des patients.
+- [Site web école privée et crèche au Maroc : guide](https://www.digilago.ma/site-web-ecole-privee-maroc.html): Site web d’école privée ou de crèche au Maroc : inscription en ligne, espace parents, FR/AR/EN, Google. Exemples réels à El Jadida et check-list.
+- [Site web institut de beauté et spa au Maroc](https://www.digilago.ma/site-web-institut-beaute-maroc.html): Site pour institut de beauté, spa ou centre esthétique au Maroc : carte des soins, réservation en ligne, WhatsApp, Instagram et Google. Le guide complet.
+- [Site web médecin et clinique au Maroc : le guide](https://www.digilago.ma/site-web-medecin-clinique-maroc.html): Site web pour médecin, cabinet médical ou clinique au Maroc : contenus sobres, prise de rendez-vous en ligne, Google, données de santé. Le guide pratique.
+- [Site web restaurant Maroc : menu et réservation](https://www.digilago.ma/site-web-restaurant-maroc.html): Site web pour restaurant ou café au Maroc : menu en ligne, réservation, commande WhatsApp, Google Maps et touristes. Le guide pour remplir vos tables.
+- [Site web riad et hôtel Maroc : réservation directe](https://www.digilago.ma/site-web-riad-hotel-maroc.html): Site web pour riad, maison d’hôtes ou hôtel au Maroc : réservation directe, site multilingue pour touristes, Google. Pour moins dépendre des plateformes.
+- [Vendre sur Instagram et WhatsApp au Maroc](https://www.digilago.ma/vendre-instagram-whatsapp-maroc.html): Vendre sur Instagram et WhatsApp au Maroc : ce qui marche, les limites, WhatsApp Business, et comment passer à un site e-commerce sans perdre vos clients.
+- [WordPress ou sur mesure au Maroc : que choisir ?](https://www.digilago.ma/wordpress-ou-sur-mesure-maroc.html): WordPress, Wix ou site sur mesure au Maroc ? Comparatif honnête : prix, vitesse, arabe, SEO, maintenance, refonte. Le bon choix selon votre activité.
 
 ## Guides
 
@@ -341,6 +355,34 @@ Ce devrait être vous : le code, les comptes App Store et Google Play, le nom de
 
 Pas directement : une application se trouve surtout dans les stores, alors que Google référence les sites web. Pour attirer de nouveaux clients, il faut un site bien référencé et une fiche Google Business soignée ; l’application sert ensuite à les fidéliser.
 
+### Comment obtenir plus d’avis Google au Maroc ?
+
+Demandez un avis à chaque client, au moment où il est satisfait, avec le lien court de votre fiche Google Business partagé par WhatsApp ou via un QR code à la caisse. Répondez à tous les avis, et n’offrez jamais de récompense en échange d’un avis.
+
+### Est-il permis d’acheter des avis Google ?
+
+Non. Google interdit les avis achetés, les faux avis et les avis obtenus contre une remise ou un cadeau. Il peut supprimer ces avis, empêcher temporairement la fiche d’en recevoir de nouveaux et, dans certains cas, afficher un avertissement aux internautes.
+
+### Peut-on supprimer un avis Google négatif ?
+
+Vous ne pouvez pas supprimer vous-même un avis Google. Vous pouvez signaler un avis qui enfreint les règles (faux client, insultes, conflit d’intérêts), mais un avis négatif sincère restera en ligne. La meilleure réponse est alors une réponse publique, calme et précise.
+
+### Faut-il répondre à tous les avis Google ?
+
+Oui, aux positifs comme aux négatifs. Vos réponses sont publiques et montrent votre sérieux aux futurs clients ; Google recommande lui-même de répondre aux avis. Répondez dans la langue de l’avis.
+
+### Comment est calculée la note Google Maps ?
+
+La note affichée sur une fiche est calculée par Google à partir des notes de une à cinq étoiles laissées par les utilisateurs. Les clients regardent aussi le nombre d’avis : une très bonne note sur de nombreux avis récents inspire plus confiance qu’une note parfaite sur trois avis.
+
+### Mes employés ou ma famille peuvent-ils laisser un avis sur ma fiche ?
+
+Non, c’est un conflit d’intérêts au regard des règles de Google, même si leur avis est sincère. Seuls de vrais clients, ayant vécu une vraie expérience, doivent laisser un avis.
+
+### Comment obtenir un lien direct vers les avis de ma fiche Google ?
+
+Dans votre fiche Google Business, utilisez l’option « Demander des avis » : Google fournit un lien court qui ouvre directement la fenêtre de notation. Partagez-le par WhatsApp, dans votre signature e-mail ou sous forme de QR code dans vos locaux.
+
 ### Combien coûte la création d’un site web au Maroc ?
 
 À titre indicatif, un site vitrine à partir d’un thème coûte environ 3 000 à 8 000 MAD au Maroc, un site vitrine sur-mesure et multilingue environ 8 000 à 25 000 MAD, et une boutique en ligne environ 15 000 à 60 000 MAD. Ces fourchettes varient selon les prestataires : demandez toujours un devis écrit et détaillé.
@@ -437,6 +479,90 @@ Oui. Un site bien construit accueille ensuite une boutique ou un espace de rése
 
 Pas forcément. Un site rapide et bien pensé pour le téléphone suffit à beaucoup d’entreprises. L’application devient utile quand vos clients l’utilisent chaque semaine.
 
+### Qui peut enregistrer un nom de domaine .ma ?
+
+Les conditions d’attribution du .ma sont fixées par l’ANRT dans sa charte de nommage, et elles peuvent évoluer. Le bureau d’enregistrement vérifie votre situation et vous indique les pièces à fournir. Renseignez-vous avant de choisir votre nom, surtout si votre entreprise est établie hors du Maroc.
+
+### Combien coûte un nom de domaine .ma ?
+
+Le prix dépend du bureau d’enregistrement et se paie à chaque renouvellement. Comparez le tarif de la première année, celui des années suivantes et les services inclus. Le nom de domaine reste une petite ligne du budget d’un site, à côté de l’hébergement et de la maintenance.
+
+### Un nom de domaine .ma aide-t-il le référencement au Maroc ?
+
+Il aide Google à comprendre que votre site s’adresse au Maroc, car les extensions nationales sont un signal de ciblage géographique. Mais le contenu, la vitesse, la fiche Google et les avis comptent bien davantage pour apparaître en tête. Un .com bien travaillé peut aussi très bien se positionner au Maroc.
+
+### Comment créer un email professionnel au Maroc ?
+
+Une adresse e-mail professionnelle s’obtient en reliant votre nom de domaine à un service de messagerie : celui de votre hébergeur ou une suite comme Google Workspace ou Microsoft 365, payantes par utilisateur. Créez des adresses par fonction, comme contact@ ou devis@, puis configurez les enregistrements MX, SPF, DKIM et DMARC pour que vos e-mails n’arrivent pas en indésirables.
+
+### Mon site doit-il être hébergé au Maroc ?
+
+Pas forcément : un hébergement rapide, sécurisé et sauvegardé, avec un réseau de diffusion (CDN), sert très bien les visiteurs marocains même si les serveurs sont à l’étranger. Si votre site collecte des données personnelles hébergées hors du Maroc, la loi 09-08 encadre ce transfert : renseignez-vous auprès de la CNDP ou d’un juriste.
+
+### Que se passe-t-il si j’oublie de renouveler mon nom de domaine ?
+
+Votre site et vos e-mails cessent de fonctionner et, passé un éventuel délai de grâce, le nom peut être enregistré par quelqu’un d’autre. Activez le renouvellement automatique, gardez une adresse de contact à jour et vérifiez que le domaine est bien à votre nom.
+
+### Comment accepter le paiement par carte sur son site au Maroc ?
+
+Il faut une entreprise déclarée, un compte bancaire professionnel et un contrat d’acceptation du paiement en ligne avec votre banque, qui passe le plus souvent par le CMI. Votre site est ensuite relié à la plateforme de paiement, et vos clients paient sur une page sécurisée. Le site doit être en HTTPS et afficher CGV, mentions légales et politique de remboursement.
+
+### Qu’est-ce que le CMI ?
+
+Le CMI, ou Centre monétique interbancaire, est la plateforme historique de traitement des paiements par carte au Maroc. Un commerçant y accède généralement par sa banque, en signant un contrat d’acceptation du paiement en ligne. Le client paie alors sur une page sécurisée, sans que le commerçant voie ses données de carte.
+
+### Combien coûte le paiement en ligne avec le CMI ?
+
+Les frais dépendent de votre banque et de votre contrat : mise en service, commission sur chaque transaction, parfois un abonnement. Demandez une offre écrite et détaillée, et comparez avant de signer. Prévoyez aussi le coût de l’intégration technique sur votre site.
+
+### Le paiement à la livraison est-il encore utile au Maroc ?
+
+Oui, il reste très répandu et rassure les clients qui hésitent à payer par carte, surtout pour une première commande. Pour limiter les colis refusés, confirmez chaque commande par appel ou WhatsApp avant l’envoi, et demandez un acompte pour le sur-mesure. L’idéal est de le proposer à côté de la carte.
+
+### Peut-on utiliser Stripe ou PayPal au Maroc ?
+
+Pour une entreprise établie au Maroc, la disponibilité de Stripe et de PayPal est limitée ou soumise à conditions, et elle peut évoluer. Vérifiez directement auprès de ces services ce qui est possible dans votre cas. Pour encaisser des cartes marocaines, la piste habituelle reste le CMI via votre banque.
+
+### Peut-on encaisser en ligne sans site web ?
+
+En partie : certaines banques et établissements de paiement proposent des liens de paiement à envoyer par WhatsApp, et le paiement à la livraison ne demande pas de site. Mais un site avec catalogue, prix et conditions de vente rassure davantage, et il est en général exigé pour un contrat de paiement en ligne.
+
+### Combien coûte une boutique en ligne avec paiement par carte au Maroc ?
+
+À titre indicatif, une boutique en ligne avec catalogue, paiement CMI ou à la livraison et gestion des commandes coûte environ 15 000 à 60 000 MAD au Maroc. S’ajoutent les frais du contrat de paiement, la livraison, l’hébergement et la maintenance. Demandez toujours un devis écrit et détaillé.
+
+### Quel budget minimum pour faire de la publicité Google au Maroc ?
+
+Google n’impose pas de budget minimum : vous fixez un budget journalier, modifiable ou suspendu à tout moment. Meta applique un minimum quotidien qui dépend de la devise du compte. Le bon budget part de ce que vous rapporte un client et d’une somme de test, investie quelques semaines sur une seule offre.
+
+### Combien coûte un clic sur Google Ads au Maroc ?
+
+Il n’existe pas de prix fixe : le coût d’un clic résulte d’une enchère et varie selon le mot-clé, la ville, la concurrence et la qualité de votre annonce comme de votre page. Pour une estimation sur vos propres mots-clés, utilisez le Planificateur de mots-clés de Google Ads.
+
+### Google Ads ou publicité Facebook et Instagram : que choisir ?
+
+Choisissez Google Ads si vos clients cherchent déjà vos services, comme un plombier, une auto-école ou un serrurier. Préférez Facebook et Instagram si votre offre se montre et donne envie : mode, restaurant, institut de beauté. Avec un petit budget, commencez par un seul canal, mesurez les contacts, puis élargissez.
+
+### Peut-on cibler une seule ville ou un quartier ?
+
+Oui : Google Ads et Meta permettent de cibler une ville, une région ou un rayon autour d’une adresse. Sur Google, l’option « présence » limite vos annonces aux personnes situées dans la zone, alors que « présence ou intérêt » inclut celles qui s’y intéressent depuis ailleurs, ce qui peut servir pour le tourisme.
+
+### Faut-il un site web pour faire de la publicité en ligne ?
+
+Sur Meta, une publicité peut renvoyer vers WhatsApp ou Instagram, mais un site rassure davantage et permet de mesurer les résultats. Sur Google, la plupart des annonces mènent à une page de votre site, dont la qualité influence la position et le coût. Une page rapide et claire reste souvent le meilleur investissement avant toute campagne.
+
+### Qu’est-ce qu’un mot-clé négatif sur Google Ads ?
+
+C’est un mot qui empêche votre annonce de s’afficher lorsqu’une recherche le contient. Une auto-école exclut par exemple « gratuit », « pdf » ou « recrutement » pour ne pas payer de clics inutiles. Le rapport « Termes de recherche » de Google Ads aide à compléter la liste chaque semaine.
+
+### En combien de temps une campagne donne-t-elle des résultats ?
+
+Les annonces peuvent s’afficher dès leur validation et apporter des contacts en quelques jours. Mais Google et Meta passent par une phase d’apprentissage : attendez quelques semaines de données avant de juger, sans tout modifier entre-temps. La publicité est rapide mais temporaire, alors que le référencement est plus lent mais durable.
+
+### Comment payer Google Ads ou la publicité Meta depuis le Maroc ?
+
+Le paiement se fait généralement par carte bancaire utilisable pour les paiements en ligne à l’international. Renseignez-vous auprès de votre banque sur l’activation, les plafonds et les règles applicables aux paiements à l’étranger, et récupérez les factures pour votre comptabilité. Gardez le compte publicitaire et la carte à votre nom.
+
 ### Combien de temps faut-il pour apparaître en première page de Google au Maroc ?
 
 Sur des recherches concurrentielles, comptez généralement trois à six mois de travail régulier. Une fiche Google Business bien remplie peut, elle, générer des appels en quelques semaines. Personne ne peut garantir une première place, mais une méthode sérieuse vous en rapproche mois après mois.
@@ -520,3 +646,323 @@ Pas forcément pour une petite boutique simple, montée avec un thème gratuit. 
 ### Peut-on passer de Shopify à un site sur-mesure plus tard ?
 
 Oui. Produits, clients et commandes s’exportent depuis Shopify et peuvent être repris dans une nouvelle boutique. Il faut surtout conserver les adresses des pages ou mettre en place des redirections, pour ne pas perdre votre référencement Google.
+
+### Combien coûte un site web pour agence immobilière au Maroc ?
+
+À titre indicatif, environ 8 000 à 25 000 MAD pour un site vitrine sur-mesure et multilingue, environ 12 000 à 35 000 MAD avec annonces et rendez-vous de visite, et à partir de 40 000 MAD pour une plateforme sur-mesure. Les montants varient selon les prestataires : demandez un devis écrit et détaillé.
+
+### Un site d’agence est-il utile si je publie déjà sur Avito ou Mubawab ?
+
+Oui. Les portails apportent des contacts, mais vos biens y côtoient ceux des concurrents et les règles ne dépendent pas de vous. Votre site met votre marque seule à l’écran, vous fait trouver sous votre nom sur Google et vous garde la maîtrise de vos contacts. Les deux se complètent.
+
+### Que doit contenir le site d’un promoteur immobilier ?
+
+Une page par programme avec perspectives, plans, typologies, situation et avancement des travaux daté, des prix « à partir de » si votre stratégie le permet, et une prise de rendez-vous au bureau de vente. Pour les acheteurs à l’étranger, ajoutez la visite vidéo et une explication simple des démarches.
+
+### Comment apparaître sur « appartement à vendre Casablanca » ?
+
+Créez des pages dédiées à cette recherche et à ses variantes par quartier, avec un vrai texte d’introduction, des annonces uniques et à jour, et un site rapide sur téléphone, relié à une fiche Google Business complète. Sur un marché aussi concurrentiel, comptez généralement trois à six mois de travail régulier.
+
+### Faut-il afficher les prix des biens sur le site ?
+
+Dans la plupart des cas, oui : un prix clair filtre les demandes et inspire confiance. « Prix sur demande » peut se justifier pour quelques biens d’exception, mais généralisé, il décourage les acheteurs. Pour un programme neuf, un prix « à partir de » par typologie est un bon compromis.
+
+### Comment toucher les acheteurs MRE ?
+
+Proposez des visites vidéo, une page qui explique les démarches pour acheter depuis l’étranger, un formulaire pour planifier ses visites pendant le séjour et des réponses rapides sur WhatsApp, malgré le décalage horaire. Une campagne publicitaire ciblée peut compléter le référencement.
+
+### Quelles données personnelles un site immobilier peut-il collecter ?
+
+Seulement celles qui sont nécessaires : nom, téléphone, e-mail et projet de l’acheteur ou du vendeur. Au Maroc, la loi 09-08 protège ces données, sous le contrôle de la CNDP : affichez une politique de confidentialité et ne publiez jamais les coordonnées d’un propriétaire ou d’un locataire.
+
+### En combien de temps peut-on lancer un site immobilier ?
+
+Un site de promoteur ou une vitrine d’agence peut être en ligne en quelques semaines si les contenus sont prêts ; une plateforme d’annonces avec gestion des biens demande davantage. Chez Digilago, une première version arrive en 72 heures, et vous ne payez que si elle vous plaît.
+
+### Combien coûte un site web pour une auto-école au Maroc ?
+
+À titre indicatif, environ 3 000 à 8 000 MAD pour un site à partir d’un thème, 8 000 à 25 000 MAD pour un site sur-mesure en français et en arabe, et 12 000 à 35 000 MAD avec réservation des leçons. Les montants varient selon les prestataires : demandez un devis écrit et détaillé.
+
+### Peut-on s’inscrire au permis de conduire en ligne au Maroc ?
+
+Sur le site d’une auto-école, on peut se pré-inscrire en ligne : choisir sa formule, laisser ses coordonnées et recevoir la liste des pièces à fournir. Le dossier officiel est ensuite constitué avec l’auto-école, selon la procédure en vigueur auprès de l’administration.
+
+### Que doit contenir le site d’une auto-école ?
+
+Les catégories de permis préparées, les formules et leur contenu, les tarifs ou un prix « à partir de », le déroulement de la formation, l’équipe, les véhicules, l’adresse et les horaires. Un bouton WhatsApp et un formulaire de pré-inscription doivent être visibles sur chaque page.
+
+### Faut-il afficher ses prix sur le site d’une auto-école ?
+
+C’est conseillé : un prix clair, ou au minimum « à partir de », filtre les demandes et inspire confiance. Précisez ce que comprend chaque formule (code, heures de conduite, frais annexes) pour éviter les malentendus et les avis négatifs.
+
+### Comment attirer plus d’élèves dans mon auto-école ?
+
+Soignez votre fiche Google Business, demandez un avis à chaque élève le jour de son permis, publiez des pages qui reprennent les recherches de votre ville et répondez vite sur WhatsApp. Une campagne Google ciblée sur votre quartier peut compléter le tout avant les périodes chargées.
+
+### Peut-on promettre « permis garanti » sur son site ?
+
+Mieux vaut l’éviter : la réussite dépend de l’élève et de l’examen, et les dates d’examen ne dépendent pas que de l’auto-école. Mettez plutôt en avant des faits vérifiables : formation, horaires, véhicules, accompagnement et avis réels d’élèves.
+
+### Mon site d’auto-école doit-il être en arabe ?
+
+Oui, c’est recommandé : beaucoup de futurs élèves et de parents cherchent en arabe ou en darija. Une version française et une version arabe rédigées, avec un affichage correct de droite à gauche, élargissent nettement votre public.
+
+### En combien de temps peut-on lancer le site d’une auto-école ?
+
+Avec des contenus prêts (formules, tarifs, photos, horaires), un site vitrine peut être en ligne en quelques jours à quelques semaines. Chez Digilago, une première version est livrée en 72 heures, et vous ne payez que si elle vous plaît.
+
+### Combien coûte un site web pour dentiste au Maroc ?
+
+À titre indicatif, comptez environ 8 000 à 25 000 MAD pour un site vitrine sur-mesure, multilingue et optimisé pour Google, et environ 12 000 à 35 000 MAD avec la prise de rendez-vous en ligne. Le nom de domaine, l’hébergement et la maintenance s’ajoutent chaque année. Demandez toujours un devis écrit et détaillé.
+
+### Un dentiste a-t-il le droit d’avoir un site internet au Maroc ?
+
+Oui, à condition que le site reste informatif et sobre. La publicité des professions médicales est encadrée par leurs ordres : on présente le praticien, les soins, les horaires et l’accès, sans promesse de résultat, sans promotion et sans témoignages utilisés comme publicité. En cas de doute, l’Ordre national des médecins dentistes reste la référence.
+
+### Peut-on prendre rendez-vous chez le dentiste en ligne au Maroc ?
+
+Oui. Le plus simple est d’ajouter au site du cabinet un bouton WhatsApp et un formulaire de demande de rendez-vous, que le cabinet confirme ensuite. Les cabinets dont le planning est numérique peuvent proposer un agenda en ligne, où le patient choisit directement un créneau libre.
+
+### Comment apparaître en premier quand on cherche « dentiste Casablanca » ?
+
+Il faut combiner une fiche Google complète et vérifiée, des avis réguliers et un site rapide sur téléphone, avec une page par soin et par quartier. Sur une recherche aussi concurrentielle, comptez généralement trois à six mois de travail régulier. Viser d’abord son quartier, par exemple « dentiste Maârif », est souvent plus accessible.
+
+### Peut-on publier des avis de patients sur le site d’un cabinet dentaire ?
+
+La prudence s’impose : mettre en avant des témoignages de patients comme argument publicitaire s’accorde mal avec la déontologie des professions médicales. Les avis Google, eux, sont laissés librement par les patients sur votre fiche. Répondez-y avec courtoisie, sans jamais évoquer les soins d’une personne.
+
+### Faut-il un site en arabe pour un cabinet dentaire ?
+
+Oui, c’est fortement recommandé au Maroc : beaucoup de patients cherchent leur dentiste en arabe ou en darija, et certains lisent plus facilement l’arabe que le français. La version arabe doit être rédigée par un humain et s’afficher correctement de droite à gauche.
+
+### Combien de temps faut-il pour créer le site d’un cabinet dentaire ?
+
+Un site vitrine de cabinet dentaire peut être prêt en quelques jours à quelques semaines ; la prise de rendez-vous en ligne demande un peu plus. Le délai dépend surtout de la rapidité à fournir photos, textes et validations. Chez Digilago, une première version est livrée en 72 heures.
+
+### La fiche Google suffit-elle, sans site web ?
+
+La fiche Google place le cabinet sur la carte, mais elle ne peut ni expliquer vos soins, ni rassurer un patient anxieux, ni recueillir une demande de rendez-vous détaillée. La fiche attire le regard ; le site convainc et transforme la visite en rendez-vous.
+
+### Combien coûte un site web pour une école privée au Maroc ?
+
+À titre indicatif, comptez environ 8 000 à 25 000 MAD pour un site vitrine sur-mesure et multilingue, et environ 12 000 à 35 000 MAD avec pré-inscription et réservation de visites. Les montants varient selon les prestataires, le nombre de cycles et de langues. Demandez toujours un devis écrit et détaillé.
+
+### Peut-on vraiment faire les inscriptions scolaires en ligne ?
+
+Oui, sous forme de pré-inscription : les parents remplissent un formulaire court, puis l’école rappelle la famille pour une visite ou un entretien. Le dossier complet et le paiement se finalisent ensuite selon les règles de l’établissement, à l’accueil ou par carte via le CMI.
+
+### Que doit contenir le site d’une crèche ?
+
+Le site d’une crèche présente l’équipe, l’âge d’accueil, les horaires, une journée type, les repas, la sécurité et la façon dont les parents sont informés. De vraies photos des locaux et un bouton pour réserver une visite ou écrire sur WhatsApp sont indispensables.
+
+### Peut-on publier des photos d’élèves sur le site de l’école ?
+
+Seulement avec l’accord écrit des parents, idéalement recueilli dans le dossier d’inscription. Au Maroc, les données personnelles, dont l’image, sont protégées par la loi 09-08, sous le contrôle de la CNDP. Privilégiez les photos de groupe, de dos ou d’activités, sans nom complet.
+
+### Le site d’une école doit-il être en arabe et en français ?
+
+C’est fortement recommandé, car au Maroc les parents cherchent en français, en arabe et parfois en darija. Chaque version doit être rédigée, pas traduite automatiquement. L’anglais sert aux écoles à profil international ou qui accueillent des familles étrangères.
+
+### Comment faire apparaître mon école privée sur Google ?
+
+Il faut un site avec une page par cycle, des titres qui reprennent les recherches des parents (« école privée El Jadida », « crèche Casablanca »), une fiche Google Business complète et des avis réguliers. Sur une ville concurrentielle, comptez généralement trois à six mois de travail régulier.
+
+### Le site de l’école remplace-t-il Massar ?
+
+Non. Massar reste la plateforme officielle du ministère pour la scolarité et les notes. Le site, lui, informe et attire de nouvelles familles ; un espace parents peut y ajouter les menus ou les circulaires de l’établissement.
+
+### Digilago a-t-il déjà réalisé des sites d’écoles ?
+
+Oui. À El Jadida, l’Académie Georges Claude, le Groupe scolaire Ange Bleu, Les Marronniers et le Jardin Ange Bleu ont confié leur site à Digilago. Ces sites sont en ligne : jugez par vous-même de leur clarté et de leur vitesse.
+
+### Combien coûte un site pour institut de beauté au Maroc ?
+
+À titre indicatif, comptez environ 8 000 à 25 000 MAD pour un site vitrine sur-mesure, multilingue et optimisé pour Google, et environ 12 000 à 35 000 MAD avec la réservation en ligne. Le nom de domaine, l’hébergement et la maintenance s’ajoutent chaque année. Demandez toujours un devis écrit et détaillé.
+
+### Instagram ne suffit-il pas pour un institut de beauté ?
+
+Instagram est excellent pour montrer votre travail, mais il ne vous place pas sur Google et Maps comme un site relié à une fiche Google, il ne gère pas de vraies réservations et votre compte ne vous appartient pas vraiment. Le site complète Instagram : il affiche les prix, prend les réservations et vous rend visible quand on cherche un institut dans votre ville.
+
+### Comment mettre en place la réservation en ligne pour un spa ou un institut ?
+
+Le site affiche vos soins, leur durée et les créneaux libres ; la cliente réserve, reçoit une confirmation puis un rappel la veille. Pour un petit institut, un bouton WhatsApp et un formulaire de demande suffisent souvent. Dans tous les cas, la réservation doit être reliée à votre planning réel pour éviter les doublons.
+
+### Peut-on demander un acompte en ligne pour limiter les rendez-vous non honorés ?
+
+Oui, une partie du soin peut être réglée en ligne par carte, via le CMI, au moment de la réservation. C’est particulièrement utile pour les forfaits mariée et les soins longs. Annoncez clairement vos conditions d’annulation et de remboursement avant le paiement.
+
+### Faut-il afficher ses prix sur le site d’un institut de beauté ?
+
+Oui, c’est recommandé : les clientes comparent sur leur téléphone et choisissent souvent l’adresse qui répond d’avance. Si un prix dépend de la longueur des cheveux ou de la zone traitée, affichez un « à partir de ». Pour les actes de médecine esthétique, la règle est différente : informez sobrement, sans promotion.
+
+### Peut-on publier des photos avant/après sur le site d’un centre esthétique ?
+
+Pour des soins de beauté, seulement avec l’accord écrit de la cliente et sans retouche trompeuse. Pour des actes médicaux, mieux vaut s’en abstenir comme argument commercial, car la publicité des professions médicales est encadrée par leurs ordres. Les photos de vos cabines, de vos produits et de vos mains au travail sont une alternative sûre.
+
+### Faut-il un site en anglais pour un spa au Maroc ?
+
+Oui si vous recevez des touristes ou des résidents étrangers, par exemple à Marrakech, Agadir, Essaouira ou Tanger. Certains voyageurs réservent leur soin avant même d’arriver : une version anglaise rédigée par un humain, avec réservation et paiement en ligne, leur facilite la décision.
+
+### Peut-on vendre des cartes cadeaux sur le site d’un spa ?
+
+Oui : la cliente choisit un montant ou un soin, paie par carte via le CMI et reçoit un bon à offrir par e-mail ou WhatsApp. Les cartes cadeaux se vendent à toute heure, sans mobiliser de cabine, et amènent de nouvelles clientes. Pensez à indiquer clairement leur durée de validité.
+
+### Un médecin a-t-il le droit d’avoir un site internet au Maroc ?
+
+Oui, à condition que le site reste informatif et sobre. La publicité des professions médicales est encadrée par leurs ordres : on présente le médecin, sa spécialité, les actes réalisés, les horaires et l’accès, sans promesse de résultat, sans promotion et sans témoignages utilisés comme publicité. En cas de doute, l’Ordre national des médecins reste la référence.
+
+### Combien coûte un site web pour un cabinet médical au Maroc ?
+
+À titre indicatif, comptez environ 8 000 à 25 000 MAD pour un site vitrine sur-mesure, multilingue et optimisé pour Google, et environ 12 000 à 35 000 MAD avec la prise de rendez-vous en ligne. Une clinique avec de nombreux services coûte davantage. Le nom de domaine, l’hébergement et la maintenance s’ajoutent chaque année.
+
+### Comment proposer la prise de rendez-vous médecin en ligne ?
+
+Le plus simple est d’ajouter au site un bouton WhatsApp et un formulaire de demande de rendez-vous que le secrétariat confirme. Les cabinets et cliniques dont le planning est numérique peuvent proposer un agenda en ligne, avec un calendrier par médecin et un rappel automatique la veille.
+
+### Une plateforme de rendez-vous médicale suffit-elle, sans site ?
+
+Une plateforme peut apporter de la visibilité, mais votre profil y suit ses règles et ne vous appartient pas. Votre propre site vous permet d’expliquer votre pratique, d’apparaître sur Google sous votre nom et de garder le lien avec vos patients. Les deux peuvent se compléter.
+
+### Peut-on publier des témoignages de patients sur le site d’une clinique ?
+
+La prudence s’impose : des témoignages de patients utilisés comme argument publicitaire s’accordent mal avec la sobriété attendue des professions médicales, et posent la question du secret médical. Laissez les avis s’exprimer librement sur Google et répondez-y sans jamais évoquer l’état de santé d’une personne.
+
+### Le site d’un médecin doit-il respecter la loi 09-08 ?
+
+Oui, dès qu’il collecte des données personnelles, même un nom et un téléphone. Les données relatives à la santé sont considérées comme sensibles : limitez le formulaire au strict nécessaire, sécurisez le site et publiez une politique de confidentialité. Les démarches auprès de la CNDP sont à vérifier avec un juriste.
+
+### Comment apparaître sur Google quand on cherche un médecin dans sa ville ?
+
+Il faut une fiche Google vérifiée, avec la bonne catégorie et des horaires exacts, et un site rapide sur téléphone, avec une page par spécialité. Les données structurées et des réponses claires aux questions fréquentes aident aussi les assistants IA à vous citer. Sur les recherches concurrentielles, comptez plusieurs mois de travail régulier.
+
+### Combien de temps faut-il pour créer le site d’une clinique ?
+
+Le site d’un médecin seul peut être prêt en quelques jours à quelques semaines ; celui d’une clinique, avec plusieurs services et un agenda par médecin, demande davantage. Le rythme dépend surtout des contenus et des validations internes. Chez Digilago, une première version est livrée en 72 heures.
+
+### Un restaurant a-t-il vraiment besoin d’un site web au Maroc ?
+
+Oui, dès qu’il veut être trouvé par des clients qui ne le connaissent pas encore. Le site affiche le menu, les prix, les horaires et la réservation, et donne à Google les informations qui vous font apparaître sur la carte. Instagram donne envie, mais ne remplace ni Google ni la réservation.
+
+### Comment mettre le menu de son restaurant en ligne ?
+
+Le plus efficace est une page de menu en texte, classée par catégories, avec les prix et quelques photos des plats phares. Évitez le PDF ou la photo de la carte papier, difficiles à lire sur téléphone et mal compris par Google. Un QR code posé sur les tables peut ensuite renvoyer vers cette même page.
+
+### Quelle est la meilleure solution de réservation en ligne pour un restaurant ?
+
+Pour la plupart des restaurants marocains, un formulaire simple (date, heure, couverts, téléphone) qui arrive sur WhatsApp, avec une confirmation rapide, suffit. Un module avec créneaux en temps réel se justifie pour les adresses très demandées.
+
+### Peut-on prendre les commandes de son restaurant sur WhatsApp ?
+
+Oui. Un bouton « Commander sur WhatsApp » placé sur chaque plat peut ouvrir un message déjà rempli avec le plat, la quantité et l’adresse de livraison. Quand le volume augmente, un module de commande en ligne avec panier et paiement à la livraison limite les erreurs.
+
+### Faut-il être sur Glovo si l’on a déjà un site ?
+
+Les deux se complètent. Les plateformes de livraison apportent visibilité et livreurs, en échange d’une commission fixée par contrat, tandis que le site permet aux habitués de commander en direct : la plateforme pour être découvert, le site pour fidéliser.
+
+### Combien coûte un site web de restaurant au Maroc ?
+
+À titre indicatif, comptez environ 3 000 à 8 000 MAD pour un site vitrine à partir d’un thème, 8 000 à 25 000 MAD en sur-mesure multilingue et 12 000 à 35 000 MAD avec la réservation en ligne. Ces fourchettes varient selon les prestataires : demandez un devis écrit.
+
+### Le site de mon restaurant doit-il être en anglais ?
+
+Oui si vous recevez des touristes ou des expatriés, notamment à Marrakech, Fès, Essaouira ou Agadir. Le français et l’arabe restent la base pour la clientèle marocaine. Chaque version, menu compris, doit être rédigée par un humain.
+
+### Comment apparaître en premier sur Google Maps quand on cherche un restaurant ?
+
+Personne ne peut garantir la première place, mais une fiche Google Business complète (catégorie précise, horaires exacts, photos récentes, avis avec réponses), reliée à un site rapide, vous en rapproche. La distance compte aussi : Google privilégie les adresses proches de la personne qui cherche.
+
+### Un riad a-t-il besoin d’un site web s’il est déjà sur Booking ou Airbnb ?
+
+Oui. Les plateformes font découvrir votre riad, mais de nombreux voyageurs cherchent ensuite son nom sur Google avant de réserver. Un site clair, avec réservation directe, leur permet de réserver chez vous sans intermédiaire et vous donne un contact direct avec eux.
+
+### Comment augmenter les réservations directes d’un hôtel au Maroc ?
+
+Il faut un site rapide et rassurant : une page par chambre, des prix clairs, un bouton « Réserver en direct » visible et un WhatsApp joignable. Ajoutez une fiche Google complète reliée au site, des avis récents et une version anglaise, puis invitez vos anciens clients à revenir en direct.
+
+### Qu’est-ce qu’un moteur de réservation ?
+
+C’est l’outil intégré au site qui affiche les chambres disponibles et leur prix pour les dates choisies, puis enregistre la réservation, avec ou sans paiement en ligne. Relié à un gestionnaire de canaux, il met à jour les disponibilités sur toutes les plateformes et évite les doubles réservations.
+
+### En quelles langues faire le site d’un riad au Maroc ?
+
+Au minimum en français et en anglais pour les touristes, et en arabe pour la clientèle marocaine et arabophone. L’espagnol, l’italien ou l’allemand se justifient selon l’origine de vos voyageurs. Chaque version doit être rédigée par un humain et avoir sa propre adresse pour Google.
+
+### Peut-on encaisser un acompte en ligne au Maroc ?
+
+Oui. Le paiement par carte passe en général par le CMI, après un contrat signé avec votre banque. Vous pouvez encaisser un acompte à la réservation et le solde sur place, à condition d’afficher clairement ces conditions et votre politique d’annulation.
+
+### Combien coûte un site web pour riad ou maison d’hôtes ?
+
+À titre indicatif, comptez au Maroc environ 8 000 à 25 000 MAD pour un site sur-mesure et multilingue, et 12 000 à 35 000 MAD avec la réservation en ligne. Ajoutez chaque année le domaine, l’hébergement, la maintenance et, le cas échéant, l’abonnement au moteur de réservation.
+
+### Comment éviter les doubles réservations entre mon site et les plateformes ?
+
+En reliant vos calendriers : un gestionnaire de canaux met à jour les disponibilités partout à la fois, et certaines plateformes proposent une synchronisation de calendriers. Choisissez cette solution avant de construire le site, pour que la réservation s’y connecte dès le départ.
+
+### Comment un riad peut-il être recommandé par ChatGPT ou Gemini ?
+
+Les assistants IA s’appuient sur des sources claires et cohérentes : un site bien structuré, des données Schema.org, une fiche Google complète, des avis et des mentions sur d’autres sites. Personne ne peut garantir une citation, mais décrire précisément votre riad (quartier, chambres, équipements, expériences) vous en rapproche.
+
+### Peut-on vendre légalement sur Instagram au Maroc ?
+
+Oui, à condition d’exercer une activité déclarée, par exemple sous le statut d’auto-entrepreneur si votre activité y est éligible, ou en société. Les règles de protection du consommateur et des données personnelles (loi 09-08) s’appliquent comme pour un site. Faites valider votre situation par un comptable.
+
+### WhatsApp Business est-il gratuit ?
+
+L’application WhatsApp Business se télécharge gratuitement, et ses fonctions de base (profil, catalogue, réponses rapides, étiquettes) s’utilisent sans abonnement. Les solutions avancées, pour automatiser les messages ou partager une boîte entre plusieurs personnes, relèvent de l’offre professionnelle de Meta, avec sa propre tarification. Vérifiez les conditions en vigueur avant de vous lancer.
+
+### Faut-il un site si l’on vend déjà bien sur Instagram ?
+
+C’est justement le bon moment. Un site absorbe les questions répétées, organise les commandes, ouvre le paiement par carte et vous fait trouver sur Google par de nouveaux clients. Il protège aussi votre activité si votre compte est un jour piraté ou restreint.
+
+### Comment passer d’Instagram à un site e-commerce sans perdre ses clients ?
+
+En reliant les deux plutôt qu’en remplaçant l’un par l’autre : lien en bio vers le site, stories qui renvoient aux fiches produits, bouton WhatsApp sur chaque produit. Gardez les mêmes noms de produits partout et continuez à publier sur Instagram, qui reste votre première source de visiteurs.
+
+### Qu’est-ce qu’un site catalogue avec commande sur WhatsApp ?
+
+C’est un site qui présente tous vos produits avec photos, prix, tailles et disponibilité, mais où la commande se conclut sur WhatsApp : un bouton ouvre un message déjà rempli avec le produit choisi. C’est une étape simple entre le compte Instagram et la boutique en ligne complète.
+
+### Peut-on accepter la carte bancaire quand on vend sur Instagram ?
+
+Le plus simple est de passer par un site : au Maroc, le paiement par carte passe généralement par le CMI, après un contrat avec votre banque, et s’appuie sur une page de paiement sécurisée. En attendant, le paiement à la livraison reste très répandu et bien accepté par les clients.
+
+### Combien coûte un site e-commerce pour une marque Instagram au Maroc ?
+
+À titre indicatif, un site catalogue avec commande sur WhatsApp se situe dans les prix d’un site vitrine, soit environ 3 000 à 25 000 MAD selon qu’il part d’un thème ou qu’il est sur-mesure. Une boutique complète avec panier et paiement coûte environ 15 000 à 60 000 MAD. Les prix varient selon les prestataires.
+
+### Que faire si mon compte Instagram est piraté ou suspendu ?
+
+Suivez la procédure de récupération proposée par Instagram et prévenez vos clients sur WhatsApp et vos autres canaux. Pour limiter le risque, activez la double authentification et ne dépendez pas d’un seul compte : un site à votre nom, avec vos produits et l’historique de vos commandes, continue de vendre pendant ce temps.
+
+### WordPress est-il gratuit ?
+
+Le logiciel WordPress est libre et gratuit, mais un site WordPress ne l’est pas : il faut payer l’hébergement, le nom de domaine, souvent un thème et des extensions premium, ainsi que la maintenance. Additionnez ces coûts sur plusieurs années avant de comparer avec un site sur mesure.
+
+### Un site WordPress est-il bien référencé sur Google ?
+
+Il peut l’être : Google ne favorise ni ne pénalise WordPress, il évalue les contenus, la vitesse sur mobile et la structure des pages. Un site WordPress léger, bien configuré et régulièrement enrichi peut très bien se positionner, alors qu’un thème lourd chargé d’extensions freine souvent le référencement.
+
+### Wix ou WordPress : lequel choisir pour un petit budget au Maroc ?
+
+Wix convient pour démarrer seul et vite, l’hébergement et les mises à jour étant compris dans l’abonnement, mais le site reste lié à la plateforme. WordPress offre plus de liberté et permet de changer de prestataire, en échange d’une maintenance régulière. Si le site doit devenir votre principale source de clients, comparez aussi avec un site sur mesure.
+
+### Un site sur mesure est-il plus cher qu’un site WordPress ?
+
+Au départ, généralement oui : à titre indicatif, un site vitrine à partir d’un thème coûte environ 3 000 à 8 000 MAD au Maroc, contre environ 8 000 à 25 000 MAD pour un site vitrine sur mesure, multilingue et optimisé SEO. Sur plusieurs années, l’écart se réduit, car un site sur mesure n’accumule pas de licences d’extensions à renouveler.
+
+### Peut-on modifier soi-même un site sur mesure ?
+
+Oui, si le prestataire l’a prévu : un bon site sur mesure comprend un espace simple pour changer textes, photos, horaires ou prix sans toucher au code. Vérifiez-le avant de signer. Chez Digilago, vous gardez la main sur vos contenus et une formation de 30 minutes est incluse.
+
+### Mon site WordPress a été piraté : que faire ?
+
+Changez tous les mots de passe, restaurez une sauvegarde saine, puis mettez à jour le cœur, le thème et les extensions, en supprimant celles qui ne servent plus. Consultez ensuite le rapport « Problèmes de sécurité » de Google Search Console et demandez un réexamen une fois le site nettoyé. Après plusieurs piratages, une refonte est souvent plus sûre qu’une nouvelle réparation.
+
+### Combien de temps prend une refonte de site ?
+
+Pour un site vitrine, une refonte prend de quelques jours à quelques semaines ; une boutique en ligne ou un site avec réservation demandent davantage. Le délai dépend surtout de la reprise des contenus et des redirections, indispensables pour garder vos positions sur Google. Chez Digilago, la première version du nouveau site est livrée en 72 heures.
+
+### Faut-il choisir un développeur WordPress basé au Maroc ?
+
+Ce n’est pas obligatoire, mais c’est un vrai avantage : même fuseau horaire, échanges rapides sur WhatsApp, maîtrise de l’arabe et connaissance du CMI comme du paiement à la livraison. Où qu’il soit, exigez des sites de référence, des licences à votre nom et un contrat de maintenance écrit.

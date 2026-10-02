@@ -1,5 +1,5 @@
 'use strict';
-const { esc, money, pct, dateFr, amountWords, num } = require('./fmt');
+const { esc, money, pct, dateFr, amountWords, num, round2 } = require('./fmt');
 
 const LOGO = '<svg viewBox="14 8 38 48" aria-hidden="true"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="currentColor"/><path d="M28 10 A22 22 0 0 1 28 54 Z" fill="currentColor"/></svg>';
 const KIND = { acompte: 'Facture d’acompte', situation: 'Facture de situation', solde: 'Facture de solde', totale: 'Facture', avoir: 'Avoir' };
@@ -21,9 +21,17 @@ function renderDoc({ type, doc, items, client, s, paid = 0, quote = null }) {
   const isBC = type === 'bdc';
   const isQ = type === 'devis' || isBC;
   const t = { ht: num(doc.total_ht), tva: num(doc.total_tva), ttc: num(doc.total_ttc) };
-  const subtotal = items.reduce((a, it) => a + num(it.qty, 1) * num(it.unit_price), 0);
+  /* Prix saisis TTC : le document affiche quand même le prix unitaire HT, le HT, la TVA et le TTC
+     (mentions légales). Les lignes HT se déduisent du TTC et tombent juste sur le total HT. */
+  const k = num(doc.prices_ttc) ? 1 + num(doc.tva_rate) / 100 : 1;
+  const L = items.map((it) => ({ it, unit: round2(num(it.unit_price) / k), total: round2(num(it.qty, 1) * num(it.unit_price) / k) }));
+  if (k !== 1 && !(num(doc.discount_pct) > 0) && L.length) {
+    const diff = round2(t.ht - L.reduce((a, x) => a + x.total, 0)), last = [...L].reverse().find((x) => x.total !== 0);
+    if (last && Math.abs(diff) > 0.004 && Math.abs(diff) < 0.05) { last.total = round2(last.total + diff); if (num(last.it.qty, 1) === 1) last.unit = last.total; }
+  }
+  const subtotal = L.reduce((a, x) => a + x.total, 0);
   const discount = isQ ? subtotal - t.ht : 0;
-  const rows = items.map((it, i) => `<tr><td class="c-n">${i + 1}</td><td><b>${esc(it.label)}</b>${it.description ? `<small>${esc(it.description)}</small>` : ''}</td><td class="c-r">${String(num(it.qty, 1)).replace('.', ',')}${it.unit ? ` <i>${esc(it.unit)}</i>` : ''}</td>${num(it.unit_price) === 0 ? '<td class="c-r off" colspan="2">Offert</td>' : `<td class="c-r">${money(it.unit_price)}</td><td class="c-r">${money(num(it.qty, 1) * num(it.unit_price))}</td>`}</tr>`).join('');
+  const rows = L.map(({ it, unit, total }, i) => `<tr><td class="c-n">${i + 1}</td><td><b>${esc(it.label)}</b>${it.description ? `<small>${esc(it.description)}</small>` : ''}</td><td class="c-r">${String(num(it.qty, 1)).replace('.', ',')}${it.unit ? ` <i>${esc(it.unit)}</i>` : ''}</td>${num(it.unit_price) === 0 ? '<td class="c-r off" colspan="2">Offert</td>' : `<td class="c-r">${money(unit)}</td><td class="c-r">${money(total)}</td>`}</tr>`).join('');
   const title = isBC ? 'Bon de commande' : isQ ? 'Devis' : (KIND[doc.kind] || 'Facture');
   const deposit = isQ ? t.ttc * num(doc.deposit_pct) / 100 : 0;
   const due = isQ ? 0 : Math.max(0, t.ttc - paid);

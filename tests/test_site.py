@@ -160,7 +160,8 @@ def test_bon_moment(page, base_url):
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(1500)
     page.locator('#moment').scroll_into_view_if_needed(); page.wait_for_timeout(2500)
     assert 'go' in page.locator('#moment').get_attribute('class')
-    assert page.locator('#moment .mom-go').get_attribute('href') == 'guide-bon-moment-maroc.html'
+    assert page.locator('#moment .fin-read').get_attribute('href') == 'guide-bon-moment-maroc.html'
+    assert page.locator('#moment .fin-go').get_attribute('href') == 'demarrer.html'
 
 # ─── Versions anglaise et arabe ───────────────────────────────────────
 LANG_PAGES = [(l, p) for l in ('en', 'ar') for p in PAGES]

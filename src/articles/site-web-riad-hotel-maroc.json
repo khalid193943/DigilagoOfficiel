@@ -1,0 +1,327 @@
+{
+ "file": "site-web-riad-hotel-maroc.html",
+ "title": "Site web riad et hôtel Maroc : réservation directe | Digilago",
+ "description": "Site web pour riad, maison d’hôtes ou hôtel au Maroc : réservation directe, site multilingue pour touristes, Google. Pour moins dépendre des plateformes.",
+ "eyebrow": "Guide, 10 min de lecture",
+ "h1": [
+  "Site web pour riad, maison d’hôtes et hôtel au Maroc :",
+  "plus de réservations directes."
+ ],
+ "lead": "Les plateformes vous font connaître ; votre site vous fait choisir. Pages de chambres, réservation en ligne, langues, paiement, Google et IA : le guide pour que vos voyageurs réservent chez vous, en direct.",
+ "headline": "Site web pour riad, maison d’hôtes et hôtel au Maroc : obtenir plus de réservations directes (2026)",
+ "keywords": [
+  "site web riad",
+  "site riad Marrakech",
+  "site maison d’hôtes",
+  "site hôtel Maroc",
+  "réservation directe hôtel Maroc",
+  "site web hôtel multilingue",
+  "moteur de réservation",
+  "riad Fès",
+  "maison d’hôtes Essaouira",
+  "site pour touristes"
+ ],
+ "sections": [
+  {
+   "h2": "Pourquoi un riad ou un hôtel a-t-il besoin de son propre site web, s’il est déjà sur Booking et Airbnb ?",
+   "blocks": [
+    {
+     "p": "Parce que les plateformes vous font découvrir, mais c’est votre site web qui transforme cette découverte en réservation directe, sans commission d’intermédiaire et avec un lien direct avec le voyageur. Un riad, une maison d’hôtes ou un hôtel au Maroc a besoin des deux : la plateforme comme vitrine, le site comme maison."
+    },
+    {
+     "p": "Dimanche soir, à Lyon. Claire prépare un long week-end à Marrakech. Sur une plateforme, elle repère votre riad : patio, fontaine, terrasse sur les toits de la médina. Avant de réserver, elle tape le nom du riad sur Google. Soit elle trouve un beau site, en français, avec les chambres, un bouton « Réserver en direct » et un WhatsApp pour demander un transfert depuis l’aéroport. Soit elle ne trouve rien, et elle retourne sur la plateforme… ou chez le riad voisin."
+    },
+    {
+     "p": "Ce qu’apporte un site à votre nom :"
+    },
+    {
+     "ul": [
+      "<strong>Pas de commission d’intermédiaire</strong> sur les réservations directes : seuls restent, le cas échéant, les frais de paiement en ligne.",
+      "<strong>Le contact direct</strong> avec le voyageur avant son arrivée : heure d’arrivée, transfert, régime alimentaire, anniversaire.",
+      "<strong>Des clients qui reviennent</strong> vers vous, et non vers la plateforme.",
+      "<strong>Votre histoire, racontée à votre façon</strong> : la maison, la famille, le quartier, la cuisine.",
+      "<strong>Une présence sur Google et dans les assistants IA</strong>, à votre nom."
+     ]
+    },
+    {
+     "note": "Il ne s’agit pas de quitter les plateformes : elles restent un excellent canal pour être découvert. L’objectif est qu’une part croissante de vos réservations arrive en direct, notamment les clients fidèles et ceux qui vous cherchent par votre nom. Relisez aussi vos contrats : certains encadrent les prix que vous affichez ailleurs."
+    }
+   ]
+  },
+  {
+   "h2": "Que doit contenir le site d’un riad ou d’une maison d’hôtes pour donner envie de réserver ?",
+   "blocks": [
+    {
+     "p": "Le site d’un riad doit faire voyager en dix secondes, puis répondre à toutes les questions pratiques : les chambres, les prix, l’accès, les services et la façon de réserver. Le voyageur réserve quand il n’a plus aucun doute."
+    },
+    {
+     "table": {
+      "head": [
+       "Page",
+       "Ce que le voyageur veut savoir",
+       "À ne pas oublier"
+      ],
+      "rows": [
+       [
+        "Accueil",
+        "L’ambiance, le lieu, le style",
+        "Une grande photo du patio ou de la terrasse, et le bouton « Réserver » toujours visible"
+       ],
+       [
+        "Chambres et suites",
+        "Taille, lits, salle de bain, vue, prix",
+        "Une page par chambre, plusieurs photos, la capacité"
+       ],
+       [
+        "Services et expériences",
+        "Petit-déjeuner, hammam, dîner, excursions",
+        "Transferts aéroport, cours de cuisine, sorties (Agafay, Ourika, Essaouira…)"
+       ],
+       [
+        "Accès",
+        "Comment arriver, surtout en médina",
+        "Le point où l’on accueille le voyageur, un plan, le parking le plus proche"
+       ],
+       [
+        "Conditions",
+        "Annulation, acompte, horaires",
+        "Taxe de séjour éventuelle, enfants, animaux"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "La page « Accès » est souvent oubliée. À Marrakech ou à Fès, de nombreux riads se trouvent dans des ruelles où les voitures ne passent pas : expliquer où le taxi dépose le voyageur, et que quelqu’un l’attend pour l’accompagner, évite bien des appels inquiets un soir d’arrivée."
+    }
+   ]
+  },
+  {
+   "h2": "Comment fonctionne la réservation directe sur le site d’un hôtel au Maroc ?",
+   "blocks": [
+    {
+     "p": "La réservation directe passe par un moteur de réservation intégré au site : le voyageur choisit ses dates, voit les chambres libres et leur prix, puis confirme, avec ou sans paiement en ligne. Pour une petite maison d’hôtes, une demande par formulaire ou par WhatsApp, confirmée à la main, peut suffire au départ."
+    },
+    {
+     "table": {
+      "head": [
+       "Formule",
+       "Comment ça marche",
+       "Pour qui"
+      ],
+      "rows": [
+       [
+        "Demande par formulaire ou WhatsApp",
+        "Le voyageur envoie ses dates, vous confirmez disponibilité et prix",
+        "Maisons d’hôtes de quelques chambres, démarrage"
+       ],
+       [
+        "Moteur de réservation",
+        "Disponibilités et prix en temps réel, confirmation immédiate",
+        "Riads et hôtels qui reçoivent des réservations chaque jour"
+       ],
+       [
+        "Moteur et gestionnaire de canaux",
+        "Les disponibilités se mettent à jour partout : site, Booking, Airbnb…",
+        "Établissements présents sur plusieurs plateformes"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Le vrai danger, c’est la double réservation : la même chambre vendue deux fois pour les mêmes nuits. Un gestionnaire de canaux (channel manager), ou au minimum une synchronisation des calendriers quand vos plateformes la proposent, l’évite. Choisissez l’outil avec votre prestataire avant de construire le site, pas après."
+    },
+    {
+     "p": "Avant de payer, le voyageur veut être rassuré :"
+    },
+    {
+     "ul": [
+      "Le prix total affiché clairement : petit-déjeuner et taxes compris ou non.",
+      "Les conditions d’annulation en une phrase, à côté du bouton.",
+      "Une confirmation immédiate par e-mail et par WhatsApp.",
+      "Un numéro joignable pour ceux qui préfèrent parler à quelqu’un."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Quels moyens de paiement proposer sur le site d’un riad ou d’un hôtel ?",
+   "blocks": [
+    {
+     "p": "Proposez le paiement par carte bancaire en ligne, via le CMI après accord de votre banque, pour encaisser un acompte ou tout le séjour, et laissez la possibilité de régler le solde sur place. Les voyageurs étrangers ont l’habitude de payer par carte en réservant, et un acompte engage le client."
+    },
+    {
+     "ul": [
+      "<strong>Carte via le CMI</strong> : la démarche passe par votre banque ; demandez les conditions et commissions de votre contrat.",
+      "<strong>Acompte, puis solde sur place</strong> : une formule souple, appréciée des petites structures.",
+      "<strong>Virement</strong> pour les groupes, les mariages et les séminaires.",
+      "<strong>Prix en dirhams</strong> : une indication en euros peut aider, à condition de préciser la devise réellement débitée."
+     ]
+    },
+    {
+     "p": "Tous les détails dans notre guide du <a href=\"paiement-en-ligne-maroc.html\">paiement en ligne au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Un site multilingue pour les touristes : quelles langues pour un riad ou un hôtel au Maroc ?",
+   "blocks": [
+    {
+     "p": "Un site d’hébergement au Maroc doit au minimum parler français et anglais pour les touristes, et arabe pour la clientèle marocaine et arabophone ; selon vos voyageurs, l’espagnol, l’italien ou l’allemand peuvent s’ajouter. Regardez d’où viennent vos clients actuels : vos réservations vous donnent la réponse."
+    },
+    {
+     "ul": [
+      "Chaque langue rédigée et relue par un humain : une traduction automatique se repère tout de suite, et elle n’inspire pas confiance au moment de payer.",
+      "Des mots-clés propres à chaque langue : « riad with pool Marrakech medina » n’est pas « riad avec piscine Marrakech », ni « رياض في مراكش ».",
+      "Chaque version sur sa propre adresse, signalée à Google (hreflang), pour que le voyageur anglais arrive sur la page anglaise.",
+      "Le numéro WhatsApp visible dans toutes les versions : beaucoup de familles marocaines préfèrent appeler ou écrire avant de réserver."
+     ]
+    },
+    {
+     "p": "Juillet, à Marrakech. Une famille cherche « maison d’hôtes Essaouira piscine » pour une semaine. Le père veut voir le prix de la chambre familiale et poser une question en arabe, sur WhatsApp. Si votre site ne parle qu’anglais et ne montre aucun numéro, cette réservation part ailleurs."
+    }
+   ]
+  },
+  {
+   "h2": "Comment le site d’un riad à Marrakech ou à Fès se fait-il trouver sur Google et dans les IA ?",
+   "blocks": [
+    {
+     "p": "Un site de riad se fait trouver par trois portes : Google, sur votre nom et sur des recherches précises (« riad avec piscine médina Marrakech ») ; la fiche Google Business, avec ses photos et ses avis ; et les assistants IA, de plus en plus utilisés pour préparer un voyage."
+    },
+    {
+     "ul": [
+      "<strong>Des photos professionnelles</strong>, prises à la bonne heure : le patio le matin, la terrasse au coucher du soleil. Pour un hébergement, c’est le premier argument de vente.",
+      "<strong>Une page par chambre et par expérience</strong> (hammam, cours de cuisine, excursion) : chacune peut apparaître sur sa propre recherche.",
+      "<strong>Une fiche Google Business complète</strong>, reliée au site : voir notre <a href=\"guide-fiche-google-business-maroc.html\">guide de la fiche Google</a>.",
+      "<strong>Des avis</strong> demandés à chaque voyageur satisfait, et une réponse à chacun, dans sa langue : voir <a href=\"avis-google-maroc.html\">comment obtenir des avis Google</a>.",
+      "<strong>Des données structurées</strong> Schema.org (type d’hébergement, équipements, horaires d’arrivée) et une FAQ claire, pour que ChatGPT ou Gemini puissent vous citer quand on leur demande « un riad calme avec terrasse près de Jemaa el-Fna »."
+     ]
+    },
+    {
+     "img": "8600fd681b",
+     "alt": "Exemple de site au design chaleureux : grandes photos d’ambiance aux tons bruns et dorés, textes courts et bouton de réservation",
+     "cap": "Exemple de site d’institut de beauté, modèle. Grandes photos, tons chauds, peu de texte : l’approche qui convient aussi à un riad."
+    },
+    {
+     "p": "Pour aller plus loin : <a href=\"referencement-seo-maroc.html\">le référencement SEO au Maroc</a> et <a href=\"guide-google-chatgpt-maroc.html\">être recommandé par ChatGPT</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Quelles erreurs coûtent des réservations directes ?",
+   "blocks": [
+    {
+     "p": "La plus coûteuse : un site moins clair ou moins rassurant que la plateforme. Si réserver chez vous est plus compliqué que réserver ailleurs, le voyageur ira ailleurs."
+    },
+    {
+     "ul": [
+      "Des prix introuvables, ou « sur demande » pour une simple chambre double.",
+      "Un bouton « Réserver » qui renvoie… vers la plateforme.",
+      "Des photos sombres, anciennes, ou retouchées au point de décevoir à l’arrivée.",
+      "Un site lent, chargé de vidéos, ouvert en 4G depuis l’aéroport.",
+      "Aucune indication pour trouver le riad dans la médina.",
+      "Un nom de domaine qui ne vous appartient pas. Voir <a href=\"nom-de-domaine-ma.html\">choisir son nom de domaine .ma</a>.",
+      "Oublier la loi 09-08 : noms, téléphones et dates de séjour sont des données personnelles, qui demandent une politique de confidentialité et, si nécessaire, des démarches auprès de la CNDP."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Combien coûte un site web pour riad ou hôtel au Maroc ?",
+   "blocks": [
+    {
+     "p": "À titre indicatif, un site d’hébergement sur-mesure et multilingue coûte au Maroc environ 8 000 à 25 000 MAD, et un site avec réservation en ligne environ 12 000 à 35 000 MAD. Un site à partir d’un thème démarre vers 3 000 à 8 000 MAD, mais convient rarement à un établissement qui vit de ses photos et de plusieurs langues."
+    },
+    {
+     "table": {
+      "head": [
+       "Projet",
+       "Fourchette indicative"
+      ],
+      "rows": [
+       [
+        "Site vitrine à partir d’un thème",
+        "Environ 3 000 à 8 000 MAD"
+       ],
+       [
+        "Site sur-mesure, multilingue, pages chambres",
+        "Environ 8 000 à 25 000 MAD"
+       ],
+       [
+        "Site avec réservation en ligne",
+        "Environ 12 000 à 35 000 MAD"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Ces montants varient selon les prestataires. S’y ajoutent chaque année le nom de domaine, l’hébergement et la maintenance, et, le cas échéant, l’abonnement à un moteur de réservation ou à un gestionnaire de canaux. Comparez ce coût aux commissions versées sur quelques réservations : le calcul se fait vite. Voir notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Check-list avant de lancer le site de votre riad",
+   "blocks": [
+    {
+     "ul": [
+      "Une page par chambre : photos, capacité, lits, salle de bain, prix « à partir de ».",
+      "Un bouton « Réserver en direct » visible sur chaque page, sur téléphone.",
+      "Disponibilités synchronisées avec vos plateformes.",
+      "Paiement ou acompte testé de bout en bout.",
+      "Français, anglais et arabe relus ; d’autres langues selon votre clientèle.",
+      "Une page « Accès » avec point de rendez-vous et plan.",
+      "WhatsApp et téléphone visibles dans toutes les langues.",
+      "Fiche Google reliée au site, avec des photos récentes.",
+      "Conditions d’annulation, mentions légales et politique de confidentialité en ligne."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago peut vous aider",
+   "blocks": [
+    {
+     "p": "Digilago, agence web basée à El Jadida, conçoit des sites pour les riads, maisons d’hôtes et hôtels de tout le Maroc : design sur mesure, pages chambres, réservation directe, français, anglais et arabe, fiche Google, référencement et visibilité dans les IA. Le prix est annoncé par écrit avant de commencer, la première version arrive en 72 heures et, si elle ne vous plaît pas, vous ne payez rien. Voyez nos <a href=\"realisations.html\">idées de sites pour l’hôtellerie</a> ou <a href=\"demarrer.html\">démarrez votre projet</a>. Vous avez aussi une table ? Lisez notre guide du <a href=\"site-web-restaurant-maroc.html\">site web pour restaurant</a>."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "Un riad a-t-il besoin d’un site web s’il est déjà sur Booking ou Airbnb ?",
+   "a": "Oui. Les plateformes font découvrir votre riad, mais de nombreux voyageurs cherchent ensuite son nom sur Google avant de réserver. Un site clair, avec réservation directe, leur permet de réserver chez vous sans intermédiaire et vous donne un contact direct avec eux."
+  },
+  {
+   "q": "Comment augmenter les réservations directes d’un hôtel au Maroc ?",
+   "a": "Il faut un site rapide et rassurant : une page par chambre, des prix clairs, un bouton « Réserver en direct » visible et un WhatsApp joignable. Ajoutez une fiche Google complète reliée au site, des avis récents et une version anglaise, puis invitez vos anciens clients à revenir en direct."
+  },
+  {
+   "q": "Qu’est-ce qu’un moteur de réservation ?",
+   "a": "C’est l’outil intégré au site qui affiche les chambres disponibles et leur prix pour les dates choisies, puis enregistre la réservation, avec ou sans paiement en ligne. Relié à un gestionnaire de canaux, il met à jour les disponibilités sur toutes les plateformes et évite les doubles réservations."
+  },
+  {
+   "q": "En quelles langues faire le site d’un riad au Maroc ?",
+   "a": "Au minimum en français et en anglais pour les touristes, et en arabe pour la clientèle marocaine et arabophone. L’espagnol, l’italien ou l’allemand se justifient selon l’origine de vos voyageurs. Chaque version doit être rédigée par un humain et avoir sa propre adresse pour Google."
+  },
+  {
+   "q": "Peut-on encaisser un acompte en ligne au Maroc ?",
+   "a": "Oui. Le paiement par carte passe en général par le CMI, après un contrat signé avec votre banque. Vous pouvez encaisser un acompte à la réservation et le solde sur place, à condition d’afficher clairement ces conditions et votre politique d’annulation."
+  },
+  {
+   "q": "Combien coûte un site web pour riad ou maison d’hôtes ?",
+   "a": "À titre indicatif, comptez au Maroc environ 8 000 à 25 000 MAD pour un site sur-mesure et multilingue, et 12 000 à 35 000 MAD avec la réservation en ligne. Ajoutez chaque année le domaine, l’hébergement, la maintenance et, le cas échéant, l’abonnement au moteur de réservation."
+  },
+  {
+   "q": "Comment éviter les doubles réservations entre mon site et les plateformes ?",
+   "a": "En reliant vos calendriers : un gestionnaire de canaux met à jour les disponibilités partout à la fois, et certaines plateformes proposent une synchronisation de calendriers. Choisissez cette solution avant de construire le site, pour que la réservation s’y connecte dès le départ."
+  },
+  {
+   "q": "Comment un riad peut-il être recommandé par ChatGPT ou Gemini ?",
+   "a": "Les assistants IA s’appuient sur des sources claires et cohérentes : un site bien structuré, des données Schema.org, une fiche Google complète, des avis et des mentions sur d’autres sites. Personne ne peut garantir une citation, mais décrire précisément votre riad (quartier, chambres, équipements, expériences) vous en rapproche."
+  }
+ ],
+ "related": [
+  "site-web-restaurant-maroc.html",
+  "paiement-en-ligne-maroc.html",
+  "guide-google-chatgpt-maroc.html"
+ ]
+}

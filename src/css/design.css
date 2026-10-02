@@ -623,3 +623,62 @@ html[lang="ar"] .fin-go{padding:0 calc(32 * var(--u)) 0 calc(10 * var(--u))}
 .more-g{display:grid;grid-template-columns:1fr 1fr;gap:calc(12 * var(--u));padding:0 calc(16 * var(--u)) calc(16 * var(--u))}
 .more-g label:last-child{grid-column:1/-1}
 [data-mode="M"] .more-g{grid-template-columns:1fr}
+/* « Plus qu'un site web » : le partenaire tech */
+#trust.tp{padding-bottom:calc(110 * var(--u))!important}
+#trust .sh p{max-width:calc(640 * var(--u));margin-left:auto;margin-right:auto}
+.tp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(16 * var(--u));margin-top:calc(54 * var(--u))}
+.tp-c{position:relative;display:flex;flex-direction:column;gap:calc(8 * var(--u));padding:calc(28 * var(--u));border-radius:calc(22 * var(--u));background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.05));box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 calc(30 * var(--u)) calc(60 * var(--u)) calc(-40 * var(--u)) rgba(5,15,40,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;overflow:hidden;transition:transform .5s cubic-bezier(.16,1,.3,1),background .4s}
+.tp-c:hover{transform:translateY(-6px);background:linear-gradient(160deg,rgba(255,255,255,.2),rgba(255,255,255,.07))}
+.tp-c::after{content:"";position:absolute;right:-30%;top:-40%;width:70%;height:90%;border-radius:50%;background:radial-gradient(closest-side,rgba(156,195,255,.25),transparent);pointer-events:none}
+.tp-ic{display:flex;align-items:center;justify-content:center;width:calc(48 * var(--u));height:calc(48 * var(--u));margin-bottom:calc(10 * var(--u));border-radius:calc(14 * var(--u));background:#fff;color:#1F57C7;box-shadow:0 calc(14 * var(--u)) calc(26 * var(--u)) calc(-12 * var(--u)) rgba(5,15,40,.6)}
+.tp-ic svg{width:52%;height:52%}
+.tp-c b{font-family:Sora,sans-serif;font-weight:600;font-size:calc(20 * var(--u));letter-spacing:-.025em;line-height:1.2}
+.tp-c span:not(.tp-ic){font-size:calc(15 * var(--u));line-height:1.55;color:#DCE7FA}
+.tp-dom{display:flex;align-items:center;gap:calc(26 * var(--u));margin-top:calc(16 * var(--u));padding:calc(22 * var(--u)) calc(26 * var(--u));border-radius:calc(22 * var(--u));background:rgba(8,20,48,.35);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.tp-dom p{display:flex;flex-direction:column;gap:calc(4 * var(--u));margin:0;flex:none;max-width:calc(240 * var(--u));color:#fff}
+.tp-dom p b{font-family:Sora,sans-serif;font-weight:600;font-size:calc(17 * var(--u))}
+.tp-dom p span{font-size:calc(13.5 * var(--u));color:#C9D6EE;line-height:1.45}
+.tp-dom ul{display:flex;flex-wrap:wrap;gap:calc(8 * var(--u));margin:0;padding:0;list-style:none}
+.tp-dom li{display:flex;flex-direction:column;padding:calc(10 * var(--u)) calc(14 * var(--u));border-radius:calc(14 * var(--u));background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.tp-dom li b{font-size:calc(14 * var(--u));font-weight:600;color:#fff}
+.tp-dom li span{font-size:calc(12.5 * var(--u));color:#BFD0EE}
+.tp-proof{margin-top:calc(46 * var(--u));text-align:center}
+.tp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(12 * var(--u))}
+.tp-stats div{display:flex;flex-direction:column;align-items:center;gap:calc(4 * var(--u));padding:calc(18 * var(--u)) calc(10 * var(--u))}
+.tp-stats div+div{box-shadow:-1px 0 0 rgba(255,255,255,.14)}
+.tp-stats b{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:500;font-size:calc(40 * var(--u));line-height:1;color:#fff;letter-spacing:-.02em}
+.tp-stats span{font-size:calc(13.5 * var(--u));color:#C9D6EE}
+.tp-lab{margin:calc(30 * var(--u)) 0 calc(4 * var(--u));font-family:"JetBrains Mono",monospace;font-size:calc(11 * var(--u));letter-spacing:.16em;text-transform:uppercase;color:#BFD8FF}
+.tp-cta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:calc(14 * var(--u));margin-top:calc(30 * var(--u))}
+.tp-go{display:inline-flex;align-items:center;gap:calc(10 * var(--u));height:calc(56 * var(--u));padding:0 calc(28 * var(--u));border-radius:999px;background:#fff;color:#0E214E;font-family:Sora,sans-serif;font-weight:600;font-size:calc(16 * var(--u));text-decoration:none;box-shadow:0 calc(20 * var(--u)) calc(40 * var(--u)) calc(-16 * var(--u)) rgba(5,15,40,.7);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.tp-go:hover{transform:translateY(-3px)}
+.tp-go svg{width:calc(18 * var(--u));height:calc(18 * var(--u))}
+.tp-cta .lg-more{margin:0!important}
+[data-mode="M"] .tp-grid{grid-template-columns:1fr;gap:calc(10 * var(--u));margin-top:calc(34 * var(--u))}
+[data-mode="M"] .tp-c{padding:calc(20 * var(--u))}
+[data-mode="M"] .tp-dom{flex-direction:column;align-items:flex-start;gap:calc(14 * var(--u))}
+[data-mode="M"] .tp-stats{grid-template-columns:1fr 1fr}
+[data-mode="M"] .tp-stats div:nth-child(3){box-shadow:none}
+[data-mode="M"] .tp-stats b{font-size:calc(30 * var(--u))}
+html[lang="ar"] .tp-go svg{transform:scaleX(-1)}
+/* Final, version courte et premium (avant « La vision ») : le fond suit la page, le téléphone a ses vraies proportions */
+html body .fin.mom{background:transparent;padding:calc(120 * var(--u)) 0 calc(120 * var(--u))!important}
+.fin-sky .a1{opacity:.75}.fin-sky .a2{opacity:.6}
+.fin h2{font-size:calc(64 * var(--u))}
+.fin-txt>p{max-width:calc(480 * var(--u))}
+.fin-cta{margin-top:calc(30 * var(--u))}
+.fin .mom-ph{width:calc(272 * var(--u))!important;height:calc(564 * var(--u))!important;display:flex}
+.fin .mom-scr{flex:1;display:flex;flex-direction:column;height:100%;box-sizing:border-box}
+.fin .mom-list{flex:none}
+.fin .mom-note{margin-top:auto!important;padding-bottom:calc(14 * var(--u))}
+.fin .mom-pop.p1{left:-6%;top:22%}
+.fin .mom-pop.p2{right:-6%;bottom:22%}
+[data-mode="M"] html body .fin.mom,[data-mode="M"] body .fin.mom{padding:calc(80 * var(--u)) 0 calc(70 * var(--u))!important}
+[data-mode="M"] .fin h2{font-size:calc(40 * var(--u))}
+[data-mode="M"] .fin .mom-ph{width:calc(250 * var(--u))!important;height:calc(518 * var(--u))!important}
+.fin .mrw{gap:calc(8 * var(--u));padding:0 calc(9 * var(--u))}
+.fin .mrw-av{width:calc(30 * var(--u));height:calc(30 * var(--u))}
+.fin .mrw-tx b{font-size:calc(12 * var(--u))}
+.fin .mrw-tx small{font-size:calc(9.5 * var(--u));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fin .mrw-rk{padding:calc(3 * var(--u)) calc(7 * var(--u));font-size:calc(11 * var(--u))}
+.fin h2{max-width:calc(620 * var(--u))}

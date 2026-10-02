@@ -1,0 +1,335 @@
+{
+ "file": "wordpress-ou-sur-mesure-maroc.html",
+ "title": "WordPress ou sur mesure au Maroc : que choisir ? | Digilago",
+ "description": "WordPress, Wix ou site sur mesure au Maroc ? Comparatif honnête : prix, vitesse, arabe, SEO, maintenance, refonte. Le bon choix selon votre activité.",
+ "eyebrow": "Comparatif, 10 min de lecture",
+ "h1": [
+  "WordPress ou site sur mesure :",
+  "que choisir pour votre entreprise au Maroc ?"
+ ],
+ "lead": "Un comparatif franc, qui dit aussi quand WordPress est le meilleur choix, pour trouver le site qui convient vraiment à votre entreprise, à votre budget et à vos ambitions au Maroc.",
+ "headline": "WordPress ou site sur mesure : que choisir pour son entreprise au Maroc ? Le comparatif honnête (2026)",
+ "keywords": [
+  "WordPress Maroc",
+  "site WordPress",
+  "site sur mesure",
+  "WordPress ou site sur mesure",
+  "développeur WordPress Maroc",
+  "Wix ou WordPress",
+  "refonte de site",
+  "site sur mesure Maroc",
+  "WooCommerce",
+  "refonte site web Maroc"
+ ],
+ "cover": "7bb45a65f3",
+ "sections": [
+  {
+   "h2": "WordPress ou site sur mesure : que choisir pour son entreprise au Maroc ?",
+   "blocks": [
+    {
+     "p": "Pour une entreprise au Maroc, choisissez <strong>WordPress</strong> si votre site vit surtout de contenus que vous publiez vous-même chaque semaine (blog, magazine, actualités) et si quelqu’un est chargé de l’entretenir. Choisissez un <strong>site sur mesure</strong> si votre priorité est d’attirer des clients : rapide sur téléphone, en français et en arabe, bien placé sur Google, sans mises à jour à surveiller. Wix, lui, dépanne pour tester une idée avec un tout petit budget."
+    },
+    {
+     "ul": [
+      "<strong>Youssef, à Casablanca</strong>, publie trois recettes par semaine et vit de son audience : WordPress, conçu pour publier, est fait pour lui.",
+      "<strong>Nadia, à Rabat</strong>, dirige un centre de langues et veut des inscriptions en septembre : il lui faut un site sur mesure, rapide, en trois langues, avec préinscription et WhatsApp.",
+      "<strong>Karim, à Tanger</strong>, teste des box de pâtisseries maison : un site Wix monté en un week-end suffit, le temps de valider son idée."
+     ]
+    },
+    {
+     "p": "Le bon outil dépend donc de votre objectif, pas de la mode. Pour les bases du projet, voir notre guide de la <a href=\"creation-site-web-maroc.html\">création de site web au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Site WordPress, Wix, site sur mesure : de quoi parle-t-on ?",
+   "blocks": [
+    {
+     "p": "Un site WordPress est construit avec un logiciel prêt à l’emploi, habillé d’un thème ; un site Wix est assemblé dans un éditeur en ligne, sur abonnement ; un site sur mesure est dessiné et programmé pour votre seule entreprise."
+    },
+    {
+     "ul": [
+      "<strong>WordPress</strong> : un logiciel libre et gratuit de gestion de contenu (un « CMS »), installé sur un hébergement. Un <strong>thème</strong> donne l’apparence, des <strong>extensions</strong> ajoutent les fonctions.",
+      "<strong>Wix</strong> : un constructeur par glisser-déposer. Hébergement et mises à jour sont inclus, mais le site reste sur la plateforme.",
+      "<strong>Sur mesure</strong> : un design et un code créés pour votre site, sans thème générique. Vos textes et photos restent modifiables depuis un espace dédié."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "WordPress, Wix ou sur mesure : le comparatif honnête",
+   "blocks": [
+    {
+     "p": "Aucune solution ne gagne partout : WordPress offre la liberté et un immense choix d’extensions, Wix la simplicité, le sur mesure la performance et l’image."
+    },
+    {
+     "table": {
+      "head": [
+       "Critère",
+       "WordPress",
+       "Wix",
+       "Site sur mesure"
+      ],
+      "rows": [
+       [
+        "Budget de départ",
+        "Faible à moyen",
+        "Le plus faible, si vous faites tout",
+        "Plus élevé"
+       ],
+       [
+        "Coûts annuels",
+        "Hébergement, domaine, licences, maintenance",
+        "Abonnement, tant que le site existe",
+        "Hébergement, domaine, maintenance"
+       ],
+       [
+        "Design",
+        "Thème partagé avec d’autres sites",
+        "Modèles, dans les limites de l’outil",
+        "Unique, créé pour votre marque"
+       ],
+       [
+        "Vitesse sur téléphone",
+        "Bonne si optimisé, souvent alourdie par les extensions",
+        "Correcte, peu de prise sur la technique",
+        "Excellente si le code est léger"
+       ],
+       [
+        "Référencement",
+        "Très bon potentiel, à bien configurer",
+        "Réglages essentiels, options avancées limitées",
+        "Structure et Schema.org prévus dès le départ"
+       ],
+       [
+        "Arabe et multilingue",
+        "Multilingue par extension, arabe variable selon le thème",
+        "Possible, à tester",
+        "Trois langues conçues ensemble"
+       ],
+       [
+        "Maintenance",
+        "Mises à jour fréquentes indispensables",
+        "Assurée par la plateforme",
+        "Assurée par le prestataire"
+       ],
+       [
+        "Liberté de partir",
+        "Totale : logiciel libre",
+        "Faible : le site reste chez Wix",
+        "Totale si code et domaine sont à vous"
+       ],
+       [
+        "Idéal pour",
+        "Blogs, médias, sites riches en articles",
+        "Tester une idée",
+        "PME qui veulent des clients"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "Ce sont des tendances, pas des fatalités : un WordPress soigné peut être très rapide, et un sur mesure mal conçu, lent. Jugez sur pièce, en ouvrant sur votre téléphone, en 4G, les sites déjà réalisés par le prestataire."
+    }
+   ]
+  },
+  {
+   "h2": "Quand WordPress est-il le bon choix pour une entreprise au Maroc ?",
+   "blocks": [
+    {
+     "p": "WordPress est le bon choix quand votre site publie beaucoup de contenus, que vous voulez les gérer vous-même, et qu’une personne est clairement chargée de sa maintenance."
+    },
+    {
+     "ul": [
+      "<strong>Un blog, un média, un magazine</strong> : WordPress a été conçu pour publier et classer des articles.",
+      "<strong>Une équipe qui écrit à plusieurs</strong>, avec des rôles distincts.",
+      "<strong>Un développeur WordPress de confiance</strong>, déjà à vos côtés pour les mises à jour.",
+      "<strong>Un budget serré</strong>, si vous acceptez un design proche d’un thème existant."
+     ]
+    },
+    {
+     "p": "La condition non négociable, c’est la maintenance : cœur, thème et extensions reçoivent des mises à jour qui corrigent souvent des failles. Un site abandonné ralentit, casse ou se fait pirater, avec parfois un avertissement de Google qui fait fuir vos visiteurs."
+    },
+    {
+     "note": "Fuyez les thèmes et extensions premium « offerts » ou vendus à prix cassé : ces versions piratées cachent parfois du code malveillant et ne sont jamais mises à jour. Exigez des licences officielles à votre nom."
+    }
+   ]
+  },
+  {
+   "h2": "Quand un site sur mesure est-il le meilleur investissement ?",
+   "blocks": [
+    {
+     "p": "Un site sur mesure est le meilleur choix quand il doit d’abord vous amener des clients : plus rapide, mieux structuré pour Google et les assistants IA, fidèle à votre image, il intègre exactement les fonctions utiles, sans extensions superflues."
+    },
+    {
+     "ul": [
+      "<strong>Votre métier repose sur la confiance</strong> : cabinet, clinique, école, hôtel. Un design unique rassure plus qu’un thème déjà vu.",
+      "<strong>Vous visez des recherches disputées</strong> dans votre ville, où vitesse et structure font la différence.",
+      "<strong>Vous voulez trois langues</strong>, dont un arabe impeccable, de droite à gauche.",
+      "<strong>Vous avez besoin de fonctions précises</strong> : rendez-vous, préinscriptions, paiement via le CMI, WhatsApp sur chaque page."
+     ]
+    },
+    {
+     "p": "Prenez une école privée à El Jadida en période d’inscriptions : le soir, des parents comparent trois établissements sur leur téléphone. Ils veulent voir les locaux et les cycles, puis réserver une visite en deux gestes. Voir notre guide du <a href=\"site-web-ecole-privee-maroc.html\">site d’école privée au Maroc</a>."
+    },
+    {
+     "img": "28230191c1",
+     "alt": "Page d’accueil du site du Groupe scolaire Ange Bleu à El Jadida : photo de l’établissement, accroche et bouton Réserver une visite",
+     "cap": "Site du Groupe scolaire Ange Bleu (El Jadida), réalisé sur mesure par Digilago."
+    },
+    {
+     "p": "Le sur mesure a ses exigences : un budget de départ plus élevé, et un risque de dépendance si le code reste opaque. Exigez code et domaine à votre nom, des technologies répandues et un espace pour modifier vos contenus."
+    }
+   ]
+  },
+  {
+   "h2": "Wix ou WordPress : que choisir pour démarrer avec un petit budget ?",
+   "blocks": [
+    {
+     "p": "Pour démarrer seul avec un très petit budget, Wix est le plus simple : tout est inclus dans l’abonnement, rien n’est à installer. WordPress offre plus de liberté et permet de changer d’hébergeur ou de prestataire, mais demande des notions techniques. Dans les deux cas, textes, photos, version arabe et référencement restent à votre charge."
+    },
+    {
+     "p": "Revenons à Karim : tant qu’il teste ses box, Wix lui suffit. Le jour où il voudra le paiement par carte, une version arabe soignée et une vraie place sur Google, il refera son site, et il le sait dès le départ. Voir aussi <a href=\"vendre-instagram-whatsapp-maroc.html\">vendre sur Instagram et WhatsApp au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Et pour une boutique en ligne : WooCommerce, Shopify ou sur mesure ?",
+   "blocks": [
+    {
+     "p": "Les trois fonctionnent pour vendre en ligne au Maroc ; le bon choix dépend surtout des moyens de paiement visés, carte via le CMI ou paiement à la livraison, et de la taille de votre catalogue."
+    },
+    {
+     "ul": [
+      "<strong>WooCommerce</strong>, l’extension e-commerce de WordPress : souple et répandue. Le CMI passe généralement par une extension, à valider avec votre banque, et la maintenance devient encore plus sensible.",
+      "<strong>Shopify</strong> : rapide à lancer, sur abonnement. Le CMI n’y est pas intégré nativement : voir <a href=\"shopify-maroc.html\">Shopify au Maroc</a>.",
+      "<strong>Sur mesure</strong> : un parcours d’achat pensé pour le Maroc (paiement à la livraison, CMI, confirmation WhatsApp), sans abonnement à une plateforme."
+     ]
+    },
+    {
+     "img": "16d4918d6c",
+     "alt": "Exemple de page d’accueil d’une boutique en ligne de parapharmacie, avec bannière promotionnelle, produits en vedette et boutons d’ajout au panier",
+     "cap": "Exemple de boutique en ligne de parapharmacie : catalogue clair, promotions visibles, panier accessible."
+    },
+    {
+     "p": "Tout le pas à pas est dans notre guide pour <a href=\"creer-boutique-en-ligne-maroc.html\">créer une boutique en ligne au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Combien coûte un site WordPress ou un site sur mesure au Maroc ?",
+   "blocks": [
+    {
+     "p": "À titre indicatif, un site vitrine réalisé à partir d’un thème, WordPress ou autre, coûte environ 3 000 à 8 000 MAD au Maroc ; un site vitrine sur mesure, multilingue et optimisé pour le référencement, environ 8 000 à 25 000 MAD."
+    },
+    {
+     "p": "Pour comparer honnêtement, additionnez sur trois ans : création, hébergement, domaine, licences (souvent annuelles), maintenance, et le temps passé à réparer ce qu’une mise à jour a cassé. Les montants varient selon les prestataires : exigez un devis écrit et consultez notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix d’un site web au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Comment choisir un développeur WordPress au Maroc ?",
+   "blocks": [
+    {
+     "p": "Un bon développeur WordPress au Maroc vous montre des sites rapides qu’il entretient encore, installe des licences officielles à votre nom, limite les extensions et propose un contrat de maintenance clair. Posez-lui ces questions :"
+    },
+    {
+     "ol": [
+      "Quels sites maintenez-vous aujourd’hui ? Ouvrez-les sur votre téléphone, en 4G.",
+      "Quel thème et quelles extensions installerez-vous, et à quel nom seront les licences ?",
+      "Qui fait les mises à jour, et que se passe-t-il si l’une d’elles casse le site ?",
+      "Où sont les sauvegardes, et en combien de temps restaurez-vous le site ?",
+      "Aurai-je un accès administrateur complet, à l’hébergement et au nom de domaine ?"
+     ]
+    },
+    {
+     "p": "Ces questions valent aussi pour une agence en sur mesure : voir comment <a href=\"agence-web-maroc.html\">choisir une agence web au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Refonte de site : faut-il quitter WordPress ?",
+   "blocks": [
+    {
+     "p": "Pas forcément : si votre site WordPress est récent, rapide et entretenu, des améliorations ciblées suffisent. La refonte de site s’impose quand il est lent, piraté, impossible à modifier, abandonné par son développeur, ou qu’il ne vous apporte aucun contact."
+    },
+    {
+     "p": "Scénario classique : un riad à Fès, dont le site monté par un freelance devenu injoignable n’a jamais été mis à jour. Un matin, des pages de spam en langue étrangère apparaissent sur Google sous son nom. Réparer coûte alors parfois plus cher que reconstruire (voir le <a href=\"site-web-riad-hotel-maroc.html\">site web de riad et d’hôtel</a>). Pour ne pas perdre votre place sur Google :"
+    },
+    {
+     "ol": [
+      "<strong>Récupérez vos accès</strong> : domaine, hébergement, Search Console, fiche Google.",
+      "<strong>Listez les pages qui attirent des visiteurs</strong> dans Google Search Console.",
+      "<strong>Gardez les adresses</strong>, ou redirigez chaque ancienne page vers la nouvelle (redirection 301).",
+      "<strong>Reprenez les contenus qui fonctionnent</strong> au lieu de tout jeter.",
+      "<strong>Après la mise en ligne</strong>, envoyez le sitemap, surveillez Search Console et mettez à jour le lien de votre <a href=\"guide-fiche-google-business-maroc.html\">fiche Google Business</a>."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Quelles erreurs éviter avant de choisir ?",
+   "blocks": [
+    {
+     "p": "L’erreur la plus fréquente est de choisir un outil avant d’avoir défini l’objectif du site. Autres pièges :"
+    },
+    {
+     "ul": [
+      "Juger un thème sur sa démonstration, remplie de photos professionnelles et de textes factices.",
+      "Oublier la maintenance en comparant les devis.",
+      "Laisser le domaine ou les accès au nom du prestataire.",
+      "Installer des dizaines d’extensions « au cas où ».",
+      "Croire qu’un site sur mesure est forcément long à livrer, ou qu’un site se suffit sans <a href=\"referencement-seo-maroc.html\">référencement</a>."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago peut vous aider",
+   "blocks": [
+    {
+     "p": "Digilago, agence web basée à El Jadida, conçoit pour les entreprises de tout le Maroc des sites sur mesure, codés à la main, en français, en arabe et en anglais. Hébergement, sécurité, sauvegardes et mises à jour sont pris en charge, et vous gardez la main sur vos contenus. Un site à refaire ? Précisez-le en <a href=\"demarrer.html\">démarrant votre projet</a> : prix annoncé par écrit avant de commencer, première version en 72 heures et, si elle ne vous plaît pas, vous ne payez rien. Voir aussi nos <a href=\"realisations.html\">idées de sites par métier</a>, ou écrivez-nous sur WhatsApp au +212 6 49 95 38 13."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "WordPress est-il gratuit ?",
+   "a": "Le logiciel WordPress est libre et gratuit, mais un site WordPress ne l’est pas : il faut payer l’hébergement, le nom de domaine, souvent un thème et des extensions premium, ainsi que la maintenance. Additionnez ces coûts sur plusieurs années avant de comparer avec un site sur mesure."
+  },
+  {
+   "q": "Un site WordPress est-il bien référencé sur Google ?",
+   "a": "Il peut l’être : Google ne favorise ni ne pénalise WordPress, il évalue les contenus, la vitesse sur mobile et la structure des pages. Un site WordPress léger, bien configuré et régulièrement enrichi peut très bien se positionner, alors qu’un thème lourd chargé d’extensions freine souvent le référencement."
+  },
+  {
+   "q": "Wix ou WordPress : lequel choisir pour un petit budget au Maroc ?",
+   "a": "Wix convient pour démarrer seul et vite, l’hébergement et les mises à jour étant compris dans l’abonnement, mais le site reste lié à la plateforme. WordPress offre plus de liberté et permet de changer de prestataire, en échange d’une maintenance régulière. Si le site doit devenir votre principale source de clients, comparez aussi avec un site sur mesure."
+  },
+  {
+   "q": "Un site sur mesure est-il plus cher qu’un site WordPress ?",
+   "a": "Au départ, généralement oui : à titre indicatif, un site vitrine à partir d’un thème coûte environ 3 000 à 8 000 MAD au Maroc, contre environ 8 000 à 25 000 MAD pour un site vitrine sur mesure, multilingue et optimisé SEO. Sur plusieurs années, l’écart se réduit, car un site sur mesure n’accumule pas de licences d’extensions à renouveler."
+  },
+  {
+   "q": "Peut-on modifier soi-même un site sur mesure ?",
+   "a": "Oui, si le prestataire l’a prévu : un bon site sur mesure comprend un espace simple pour changer textes, photos, horaires ou prix sans toucher au code. Vérifiez-le avant de signer. Chez Digilago, vous gardez la main sur vos contenus et une formation de 30 minutes est incluse."
+  },
+  {
+   "q": "Mon site WordPress a été piraté : que faire ?",
+   "a": "Changez tous les mots de passe, restaurez une sauvegarde saine, puis mettez à jour le cœur, le thème et les extensions, en supprimant celles qui ne servent plus. Consultez ensuite le rapport « Problèmes de sécurité » de Google Search Console et demandez un réexamen une fois le site nettoyé. Après plusieurs piratages, une refonte est souvent plus sûre qu’une nouvelle réparation."
+  },
+  {
+   "q": "Combien de temps prend une refonte de site ?",
+   "a": "Pour un site vitrine, une refonte prend de quelques jours à quelques semaines ; une boutique en ligne ou un site avec réservation demandent davantage. Le délai dépend surtout de la reprise des contenus et des redirections, indispensables pour garder vos positions sur Google. Chez Digilago, la première version du nouveau site est livrée en 72 heures."
+  },
+  {
+   "q": "Faut-il choisir un développeur WordPress basé au Maroc ?",
+   "a": "Ce n’est pas obligatoire, mais c’est un vrai avantage : même fuseau horaire, échanges rapides sur WhatsApp, maîtrise de l’arabe et connaissance du CMI comme du paiement à la livraison. Où qu’il soit, exigez des sites de référence, des licences à votre nom et un contrat de maintenance écrit."
+  }
+ ],
+ "related": [
+  "creation-site-web-maroc.html",
+  "guide-prix-site-web-maroc.html",
+  "agence-web-maroc.html"
+ ]
+}

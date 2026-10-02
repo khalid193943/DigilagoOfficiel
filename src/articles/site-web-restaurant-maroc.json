@@ -1,0 +1,347 @@
+{
+ "file": "site-web-restaurant-maroc.html",
+ "title": "Site web restaurant Maroc : menu et réservation | Digilago",
+ "description": "Site web pour restaurant ou café au Maroc : menu en ligne, réservation, commande WhatsApp, Google Maps et touristes. Le guide pour remplir vos tables.",
+ "eyebrow": "Guide, 10 min de lecture",
+ "h1": [
+  "Site web pour restaurant et café au Maroc :",
+  "plus de tables pleines, moins d’appels perdus."
+ ],
+ "lead": "Menu en ligne, réservation, commande sur WhatsApp, Google Maps, touristes : ce qu’un site de restaurant doit faire au Maroc pour transformer une recherche sur téléphone en table réservée.",
+ "headline": "Site web pour restaurant et café au Maroc : menu en ligne, réservation, commande WhatsApp et visibilité sur Google (2026)",
+ "keywords": [
+  "site web restaurant Maroc",
+  "site internet restaurant Maroc",
+  "site web café",
+  "menu en ligne",
+  "réservation restaurant en ligne",
+  "commande WhatsApp restaurant",
+  "restaurant Casablanca",
+  "restaurant Marrakech",
+  "QR code menu",
+  "fiche Google restaurant"
+ ],
+ "sections": [
+  {
+   "h2": "Un site web de restaurant au Maroc, à quoi ça sert quand on a déjà Instagram ?",
+   "blocks": [
+    {
+     "p": "Un site web de restaurant au Maroc sert à transformer une recherche faite sur un téléphone en table réservée ou en commande : il montre votre menu à jour, vos prix, vos horaires et votre adresse, et permet de réserver ou de commander sur WhatsApp en un geste. Instagram donne envie ; le site rassure, et Google le comprend."
+    },
+    {
+     "p": "Vendredi, 19 h 30, à Guéliz. Un couple de touristes tape « restaurant marocain Marrakech » sur son téléphone. Google affiche une carte et trois adresses. Ils ouvrent la première fiche, touchent « Site web », cherchent la carte en anglais et les prix. S’ils ne trouvent rien en quelques secondes, ils passent à l’adresse suivante. La même scène se joue à Casablanca pour un déjeuner d’affaires, ou à El Jadida pour un brunch du dimanche."
+    },
+    {
+     "ul": [
+      "<strong>Un menu lisible et à jour</strong>, au lieu de photos de la carte perdues entre deux stories.",
+      "<strong>Des prix clairs</strong> : la question « c’est combien ? » en message privé, beaucoup de clients préfèrent ne pas la poser.",
+      "<strong>Une présence sur Google</strong> : vos plats, votre cuisine et votre quartier deviennent des recherches sur lesquelles vous apparaissez.",
+      "<strong>Une réservation ou une commande sans attente</strong>, même en plein service."
+     ]
+    },
+    {
+     "p": "Instagram nourrit l’envie ; le site conclut. Vous vendez aussi des pâtisseries ou des coffrets ? Lisez <a href=\"vendre-instagram-whatsapp-maroc.html\">pourquoi un site change tout quand on vend sur Instagram et WhatsApp</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Que doit contenir le site internet d’un restaurant ou d’un café ?",
+   "blocks": [
+    {
+     "p": "Le site d’un restaurant doit répondre en quelques secondes à cinq questions : qu’est-ce qu’on mange, combien ça coûte, où c’est, quand c’est ouvert et comment réserver. Tout le reste vient après."
+    },
+    {
+     "table": {
+      "head": [
+       "Page ou élément",
+       "Ce que le client y cherche",
+       "Le détail qui fait la différence"
+      ],
+      "rows": [
+       [
+        "Accueil",
+        "L’ambiance, le type de cuisine, le quartier",
+        "Une vraie photo de la salle ou de la terrasse, et un bouton « Réserver » visible tout de suite"
+       ],
+       [
+        "Menu",
+        "Les plats, les prix, les formules",
+        "Un menu en texte, pas une photo floue de la carte papier"
+       ],
+       [
+        "Réservation",
+        "Une table pour ce soir ou pour un groupe",
+        "Date, heure, nombre de couverts, confirmation rapide"
+       ],
+       [
+        "Infos pratiques",
+        "Adresse, horaires, parking, accès",
+        "Une carte cliquable et les horaires spéciaux du Ramadan"
+       ],
+       [
+        "Groupes et événements",
+        "Anniversaires, séminaires, ftour",
+        "Une demande de devis par formulaire ou par WhatsApp"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "Un café n’a pas besoin de tout cela : pour un coffee shop à Rabat ou un salon de thé à Tanger, une page unique bien faite suffit souvent (ambiance, carte, horaires, adresse, WhatsApp). On ajoute des pages quand l’activité le demande."
+    }
+   ]
+  },
+  {
+   "h2": "Comment mettre son menu en ligne pour qu’il soit lu par les clients et par Google ?",
+   "blocks": [
+    {
+     "p": "Mettez votre menu en ligne sous la forme d’une vraie page web, en texte, organisée par catégories, avec les prix et une photo pour les plats phares. Un PDF lourd ou une photo de la carte papier s’ouvre mal sur téléphone, et Google n’en comprend qu’une partie, parfois rien du tout."
+    },
+    {
+     "ol": [
+      "<strong>Classez par catégories</strong> : entrées, tajines, grillades, desserts, boissons ; ou, pour un café, boissons chaudes, jus, brunch.",
+      "<strong>Écrivez de vrais intitulés</strong> : « Tajine de poulet aux citrons confits et olives » se lit mieux, et se cherche mieux, que « Tajine maison ».",
+      "<strong>Affichez les prix</strong> en dirhams, comme sur la carte en salle.",
+      "<strong>Signalez l’essentiel</strong> : plats végétariens, plats épicés, principaux allergènes (fruits à coque, gluten, lait).",
+      "<strong>Gardez la main</strong> : un espace simple pour changer un prix ou masquer un plat épuisé."
+     ]
+    },
+    {
+     "p": "Ce même menu sert en salle : un <strong>QR code</strong> sur chaque table ouvre la page du menu, avec le choix de la langue. Plus besoin de réimprimer la carte à chaque changement de prix."
+    }
+   ]
+  },
+  {
+   "h2": "Réservation de restaurant en ligne : formulaire, WhatsApp ou module dédié ?",
+   "blocks": [
+    {
+     "p": "Pour la plupart des restaurants marocains, la meilleure formule est un formulaire de réservation simple (date, heure, nombre de couverts, téléphone) qui arrive sur votre WhatsApp et que votre équipe confirme par un message. Un module avec créneaux en temps réel se justifie quand vous servez plusieurs services par soir."
+    },
+    {
+     "table": {
+      "head": [
+       "Formule",
+       "Comment ça marche",
+       "Pour qui"
+      ],
+      "rows": [
+       [
+        "Bouton WhatsApp",
+        "Le client écrit, vous répondez",
+        "Petits restaurants, cafés, démarrage"
+       ],
+       [
+        "Formulaire et confirmation WhatsApp",
+        "Une demande complète arrive, votre équipe confirme",
+        "La majorité des restaurants"
+       ],
+       [
+        "Module de réservation avec créneaux",
+        "Le client choisit un créneau libre, la réservation s’enregistre seule",
+        "Adresses très demandées, plusieurs services, groupes fréquents"
+       ]
+      ]
+     }
+    },
+    {
+     "ul": [
+      "Demandez toujours un numéro de téléphone, pour confirmer et prévenir en cas d’imprévu.",
+      "Envoyez un petit rappel le jour même : une table oubliée, c’est une table vide.",
+      "Ajoutez un champ « occasion » (anniversaire, repas d’affaires) : votre équipe s’organise, le client s’en souvient.",
+      "Pour les groupes et le ftour du Ramadan, prévoyez une confirmation la veille ou un acompte."
+     ]
+    },
+    {
+     "note": "Un nom et un téléphone sont des données personnelles, protégées par la loi 09-08 : prévoyez une politique de confidentialité et, si nécessaire, des démarches auprès de la CNDP."
+    }
+   ]
+  },
+  {
+   "h2": "Faut-il prendre les commandes à emporter et en livraison sur WhatsApp ?",
+   "blocks": [
+    {
+     "p": "Oui, pour commencer : un bouton « Commander sur WhatsApp » sur chaque plat, qui pré-remplit le message, suffit à beaucoup de restaurants et de snacks. Quand les commandes se multiplient, un module de commande en ligne (panier, paiement à la livraison ou par carte) évite les erreurs."
+    },
+    {
+     "p": "Mardi, 21 h, à Agadir. Sur le site d’un snack, un étudiant choisit une pizza et un jus, touche « Commander », et WhatsApp s’ouvre avec un message prêt : « Bonjour, je voudrais 1 pizza margherita taille M et 1 jus d’orange, livraison à Talborjt. » Votre équipe reçoit une commande claire, pas un « salam, c’est combien la pizza ? » suivi de dix messages."
+    },
+    {
+     "img": "16d4918d6c",
+     "alt": "Exemple de boutique en ligne de parapharmacie : produits classés, prix visibles et bouton d’ajout au panier sous chaque article",
+     "cap": "Exemple de boutique en ligne (parapharmacie), modèle. Une commande en ligne pour restaurant suit la même logique : chaque plat, son prix, un bouton."
+    },
+    {
+     "ul": [
+      "<strong>Les plateformes de livraison</strong>, comme Glovo, apportent de la visibilité et des livreurs, en échange d’une commission prévue par votre contrat.",
+      "<strong>La commande directe sur votre site</strong> se fait sans intermédiaire, mais la livraison est à organiser : vos livreurs ou des coursiers.",
+      "<strong>Le bon équilibre</strong> : les plateformes pour être découvert, la commande directe pour vos habitués (QR code sur le sac, carte de fidélité), dans le respect de votre contrat."
+     ]
+    },
+    {
+     "p": "Pour aller plus loin, voyez <a href=\"creer-boutique-en-ligne-maroc.html\">créer une boutique en ligne au Maroc</a> et notre guide du <a href=\"paiement-en-ligne-maroc.html\">paiement en ligne au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Comment faire apparaître son restaurant sur Google Maps, à Casablanca, à Marrakech ou ailleurs ?",
+   "blocks": [
+    {
+     "p": "Pour apparaître sur Google Maps, il faut une fiche Google Business complète, reliée à votre site web : c’est elle qui s’affiche quand quelqu’un tape « restaurant Casablanca » ou « café près de moi ». Le site donne à Google le détail de vos plats et de votre quartier."
+    },
+    {
+     "ul": [
+      "<strong>Une catégorie précise</strong> : « Restaurant marocain », « Restaurant de fruits de mer » ou « Café », plutôt que « Restaurant » tout court.",
+      "<strong>Les liens du menu et de la réservation</strong> renseignés sur la fiche.",
+      "<strong>Des horaires exacts</strong>, y compris pendant le Ramadan : un client qui trouve porte close laisse rarement un bon avis.",
+      "<strong>Des photos récentes</strong> de vos plats, de la salle et de la façade : on choisit un restaurant avec les yeux.",
+      "<strong>Des avis</strong>, demandés avec un petit QR code glissé dans l’addition, et des réponses à chacun. Voir notre guide des <a href=\"avis-google-maroc.html\">avis Google</a>."
+     ]
+    },
+    {
+     "p": "Sur le site, une page par spécialité peut vous placer sur des recherches précises : « brunch Casablanca Gauthier », « ftour Ramadan Marrakech ». Les données structurées Schema.org (cuisine, horaires, menu, réservation) aident Google et les assistants IA à vous recommander. Voir notre <a href=\"guide-fiche-google-business-maroc.html\">guide de la fiche Google</a> et <a href=\"guide-google-chatgpt-maroc.html\">comment être recommandé par ChatGPT</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Un site de restaurant en plusieurs langues : pour qui, et comment ?",
+   "blocks": [
+    {
+     "p": "Dès que vous recevez des touristes ou des expatriés, un site en français, en arabe et en anglais devient indispensable : à Marrakech, Fès, Essaouira ou Agadir, une partie de vos clients ne lit ni le français ni l’arabe. Pour une clientèle de quartier, le français et l’arabe suffisent souvent."
+    },
+    {
+     "ul": [
+      "Chaque langue a son menu, rédigé et relu : une « pastilla au pigeon » ne se traduit pas mot à mot.",
+      "Les recherches changent d’une langue à l’autre : « rooftop restaurant Marrakech » n’est pas « restaurant terrasse Marrakech ».",
+      "L’arabe s’affiche de droite à gauche, avec une mise en page soignée."
+     ]
+    },
+    {
+     "p": "Le même raisonnement vaut pour l’hébergement : lisez notre guide du <a href=\"site-web-riad-hotel-maroc.html\">site web pour riad et hôtel au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Quelles erreurs font fuir les clients d’un site de restaurant ?",
+   "blocks": [
+    {
+     "p": "L’erreur numéro un : un site qui ne dit ni si le restaurant est ouvert ce soir, ni combien coûtent les plats. Viennent ensuite :"
+    },
+    {
+     "ul": [
+      "Un menu en PDF de plusieurs pages, illisible sur téléphone.",
+      "Des prix ou des horaires périmés, différents de ceux affichés sur Google.",
+      "Une vidéo d’accueil lourde, qui met de longues secondes à se charger en 4G.",
+      "Aucun bouton pour appeler, réserver ou écrire sur WhatsApp en haut de la page.",
+      "Des photos de banque d’images : le client veut voir votre tajine, pas celui d’un autre.",
+      "Un site jamais mis à jour : ni la carte d’été ni les menus du Ramadan n’y apparaissent.",
+      "Un nom de domaine au nom du prestataire : votre adresse web doit vous appartenir. Voir <a href=\"nom-de-domaine-ma.html\">bien choisir son nom de domaine .ma</a>."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Combien coûte un site web pour un restaurant au Maroc ?",
+   "blocks": [
+    {
+     "p": "À titre indicatif, un site vitrine de restaurant coûte au Maroc environ 3 000 à 8 000 MAD à partir d’un thème, et 8 000 à 25 000 MAD en sur-mesure multilingue ; la réservation ou la commande en ligne font monter le budget."
+    },
+    {
+     "table": {
+      "head": [
+       "Besoin",
+       "Fourchette indicative"
+      ],
+      "rows": [
+       [
+        "Site vitrine avec menu, à partir d’un thème",
+        "Environ 3 000 à 8 000 MAD"
+       ],
+       [
+        "Site sur-mesure, multilingue, menu modifiable",
+        "Environ 8 000 à 25 000 MAD"
+       ],
+       [
+        "Site avec réservation en ligne",
+        "Environ 12 000 à 35 000 MAD"
+       ],
+       [
+        "Commande en ligne avec panier et paiement",
+        "Environ 15 000 à 60 000 MAD"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Ces montants varient selon les prestataires. Ajoutez chaque année le nom de domaine, l’hébergement et la maintenance. Tout le détail dans notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix d’un site web au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Check-list : votre site de restaurant est-il prêt ?",
+   "blocks": [
+    {
+     "p": "Avant la mise en ligne, vérifiez ces points :"
+    },
+    {
+     "ul": [
+      "Menu en texte, à jour, avec les prix, en français, en arabe et, si besoin, en anglais.",
+      "Boutons « Réserver », « Appeler » et « WhatsApp » visibles dès l’ouverture de la page.",
+      "Horaires identiques sur le site et sur Google, y compris pendant le Ramadan.",
+      "Affichage rapide en 4G, testé sur plusieurs téléphones.",
+      "Adresse, carte et indications d’accès (parking, repère).",
+      "QR code du menu imprimé pour les tables.",
+      "Fiche Google reliée au site, avec liens du menu et de la réservation.",
+      "Politique de confidentialité en ligne si vous recevez des réservations."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago peut vous aider",
+   "blocks": [
+    {
+     "p": "Digilago, agence web basée à El Jadida, crée des sites pour les restaurants et les cafés de tout le Maroc : menu modifiable, réservation, commande sur WhatsApp, trois langues et fiche Google. Le prix est annoncé par écrit avant de commencer, la première version arrive en 72 heures et, si elle ne vous plaît pas, vous ne payez rien. Voyez nos <a href=\"realisations.html\">idées de sites par métier</a> ou <a href=\"demarrer.html\">décrivez votre restaurant en deux minutes</a>. Vous préférez écrire ? WhatsApp au +212 6 49 95 38 13, du lundi au samedi, de 9 h à 19 h."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "Un restaurant a-t-il vraiment besoin d’un site web au Maroc ?",
+   "a": "Oui, dès qu’il veut être trouvé par des clients qui ne le connaissent pas encore. Le site affiche le menu, les prix, les horaires et la réservation, et donne à Google les informations qui vous font apparaître sur la carte. Instagram donne envie, mais ne remplace ni Google ni la réservation."
+  },
+  {
+   "q": "Comment mettre le menu de son restaurant en ligne ?",
+   "a": "Le plus efficace est une page de menu en texte, classée par catégories, avec les prix et quelques photos des plats phares. Évitez le PDF ou la photo de la carte papier, difficiles à lire sur téléphone et mal compris par Google. Un QR code posé sur les tables peut ensuite renvoyer vers cette même page."
+  },
+  {
+   "q": "Quelle est la meilleure solution de réservation en ligne pour un restaurant ?",
+   "a": "Pour la plupart des restaurants marocains, un formulaire simple (date, heure, couverts, téléphone) qui arrive sur WhatsApp, avec une confirmation rapide, suffit. Un module avec créneaux en temps réel se justifie pour les adresses très demandées."
+  },
+  {
+   "q": "Peut-on prendre les commandes de son restaurant sur WhatsApp ?",
+   "a": "Oui. Un bouton « Commander sur WhatsApp » placé sur chaque plat peut ouvrir un message déjà rempli avec le plat, la quantité et l’adresse de livraison. Quand le volume augmente, un module de commande en ligne avec panier et paiement à la livraison limite les erreurs."
+  },
+  {
+   "q": "Faut-il être sur Glovo si l’on a déjà un site ?",
+   "a": "Les deux se complètent. Les plateformes de livraison apportent visibilité et livreurs, en échange d’une commission fixée par contrat, tandis que le site permet aux habitués de commander en direct : la plateforme pour être découvert, le site pour fidéliser."
+  },
+  {
+   "q": "Combien coûte un site web de restaurant au Maroc ?",
+   "a": "À titre indicatif, comptez environ 3 000 à 8 000 MAD pour un site vitrine à partir d’un thème, 8 000 à 25 000 MAD en sur-mesure multilingue et 12 000 à 35 000 MAD avec la réservation en ligne. Ces fourchettes varient selon les prestataires : demandez un devis écrit."
+  },
+  {
+   "q": "Le site de mon restaurant doit-il être en anglais ?",
+   "a": "Oui si vous recevez des touristes ou des expatriés, notamment à Marrakech, Fès, Essaouira ou Agadir. Le français et l’arabe restent la base pour la clientèle marocaine. Chaque version, menu compris, doit être rédigée par un humain."
+  },
+  {
+   "q": "Comment apparaître en premier sur Google Maps quand on cherche un restaurant ?",
+   "a": "Personne ne peut garantir la première place, mais une fiche Google Business complète (catégorie précise, horaires exacts, photos récentes, avis avec réponses), reliée à un site rapide, vous en rapproche. La distance compte aussi : Google privilégie les adresses proches de la personne qui cherche."
+  }
+ ],
+ "related": [
+  "site-web-riad-hotel-maroc.html",
+  "guide-fiche-google-business-maroc.html",
+  "vendre-instagram-whatsapp-maroc.html"
+ ]
+}

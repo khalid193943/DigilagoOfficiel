@@ -550,7 +550,7 @@ app.post('/assistant', async (req, res) => {
   const kindN = { vitrine: 'Site vitrine', ecommerce: 'Boutique en ligne', landing: 'Landing page', application: 'Application' }[b.kind] || 'Site';
   const sit = b.situation === 'site' ? ' (refonte)' : '';
   const company = String(b.nc_company || '').trim();
-  const qbody = { ...b, title: `${kindN}${sit}${company ? ' ' + company : ''}${b.metier ? ', ' + b.metier : ''}`, issue_date: today(), items, nc_name: b.nc_name, nc_company: b.nc_company, nc_phone: b.nc_phone, nc_email: b.nc_email, nc_city: b.nc_city, pack: JSON.stringify(b) };
+  const qbody = { ...b, prices_ttc: '1', title: `${kindN}${sit}${company ? ' ' + company : ''}${b.metier ? ', ' + b.metier : ''}`, issue_date: today(), items, nc_name: b.nc_name, nc_company: b.nc_company, nc_phone: b.nc_phone, nc_email: b.nc_email, nc_city: b.nc_city, pack: JSON.stringify(b) };
   let qid;
   try { qid = await saveQuote(qbody); } catch (e) { return res.status(400).send(layout({ title: 'Nouveau projet', body: `<div class="flash err">${esc(e.message)}</div><a class="btn" href="/assistant">Revenir</a>` })); }
   const q = await Q.quote.get(qid);
@@ -574,7 +574,10 @@ async function quoteForm({ q = {}, items = [], client = null, lead = null, error
   const v = (k, d = '') => esc(q[k] ?? d);
   const nl = lead || {};
   const curPlan = q.plan_key || (q.plan ? planKey(planOf(q)) : '50-50');
-  return `${errors ? `<div class="flash err">${esc(errors)}</div>` : ''}<form method="post" class="qform" id="qform" data-services='${esc(JSON.stringify(services.map((x) => ({ n: x.name, d: x.description, u: x.unit, p: x.unit_price }))))}'>
+  /* Les nouveaux devis se saisissent TTC : le prix tapé est ce que paie le client. Un ancien devis garde son mode (HT). */
+  const ttcMode = q.id ? !!num(q.prices_ttc) : q.prices_ttc === undefined ? true : String(q.prices_ttc) === '1';
+  const P = ttcMode ? 'TTC' : 'HT';
+  return `${errors ? `<div class="flash err">${esc(errors)}</div>` : ''}<form method="post" class="qform" id="qform" data-ttc="${ttcMode ? 1 : 0}" data-services='${esc(JSON.stringify(services.map((x) => ({ n: x.name, d: x.description, u: x.unit, p: x.unit_price }))))}'>
 ${lead ? `<input type="hidden" name="lead_id" value="${lead.id}">` : ''}
 <div class="qf-main"><section class="card"><div class="card-h"><h2>Client</h2></div>
 <div class="row"><label class="grow">Client<select name="client_id" id="clientSel"><option value="">Choisir un client…</option><option value="new"${cid === 'new' ? ' selected' : ''}>+ Nouveau client</option>${clients.map((c) => `<option value="${c.id}"${String(cid) === String(c.id) ? ' selected' : ''}>${esc(c.company ? c.company + ' (' + c.name + ')' : c.name)}</option>`).join('')}</select></label></div>
@@ -583,14 +586,15 @@ ${lead ? `<input type="hidden" name="lead_id" value="${lead.id}">` : ''}
 <div class="row r4"><label>Date<input type="date" name="issue_date" value="${v('issue_date', today())}"></label><label>Validité (jours)<input name="validity" inputmode="numeric" value="${esc(q.valid_until && q.issue_date ? Math.round((new Date(q.valid_until) - new Date(q.issue_date)) / 864e5) : s.default_validity)}"></label><label>TVA<select name="tva_rate" id="tva">${[20, 14, 10, 7, 0].map((r) => `<option value="${r}"${num(q.tva_rate ?? s.default_tva) === r ? ' selected' : ''}>${r ? r + ' %' : 'Non applicable'}</option>`).join('')}</select></label><label>Délai<input name="delay" value="${v('delay', s.default_delay)}"></label></div></section>
 <section class="card"><div class="card-h"><h2>Prestations</h2><div class="chips">${services.slice(0, 8).map((x) => `<button type="button" class="chip" data-add="${esc(x.name)}">+ ${esc(x.name)}</button>`).join('')}</div></div>
 <datalist id="svc">${services.map((x) => `<option value="${esc(x.name)}">`).join('')}</datalist>
-<table class="items"><thead><tr><th></th><th>Désignation</th><th>Qté</th><th>Unité</th><th>Prix HT</th><th>Total HT</th><th></th></tr></thead><tbody id="itemsBody">${items.map(row).join('')}</tbody></table>
+<input type="hidden" name="prices_ttc" value="${ttcMode ? 1 : 0}">${ttcMode ? `<p class="ttc-note"><b>Prix TTC : tapez ce que le client paie.</b> 5 000 saisis = le client paie 5 000 DH. Le HT et la TVA sont calculés automatiquement pour le devis et la facture.</p>` : `<p class="ttc-note old"><b>Ancien devis saisi en prix HT</b> : la TVA s’ajoute aux prix. Les nouveaux devis se saisissent TTC.</p>`}
+<table class="items"><thead><tr><th></th><th>Désignation</th><th>Qté</th><th>Unité</th><th>Prix ${P}</th><th>Total ${P}</th><th></th></tr></thead><tbody id="itemsBody">${items.map(row).join('')}</tbody></table>
 <button type="button" class="btn ghost sm" id="addRow">${ICONS.plus}Ajouter une ligne</button></section>
 <section class="card"><div class="card-h"><h2>Notes et conditions</h2></div><label>Notes pour le client<textarea name="notes" rows="2" placeholder="Ex. : inclut 3 allers-retours de modifications">${v('notes')}</textarea></label><label>Conditions<textarea name="conditions" rows="4">${v('conditions', s.default_conditions)}</textarea></label></section></div>
 <aside class="qf-side"><div class="card sticky"><h2>Récapitulatif</h2>
 <div class="row r2"><label>Remise (%)<input name="discount_pct" id="disc" inputmode="decimal" value="${v('discount_pct', 0)}"></label><label>Paiement<select name="plan_key" id="planKey">${Object.entries(PLANS).map(([k, x]) => `<option value="${k}"${curPlan === k ? ' selected' : ''}>${esc(x.n)}</option>`).join('')}<option value="custom"${curPlan === 'custom' ? ' selected' : ''}>Sur mesure…</option></select></label></div>
 <label id="planCustomW"${curPlan === 'custom' ? '' : ' hidden'}>Échéancier sur mesure (une ligne par tranche : libellé ; %)<textarea name="plan_custom" rows="3" placeholder="Acompte ; 30&#10;Maquette validée ; 30&#10;Mise en ligne ; 40">${esc(curPlan === 'custom' ? planOf(q).map((x) => x.l + ' ; ' + x.p).join('\n') : '')}</textarea></label>
 <input type="hidden" name="deposit_pct" id="dep" value="${v('deposit_pct', s.default_deposit)}">
-<dl class="sum"><dt>Sous-total HT</dt><dd id="sSub">0,00</dd><dt>Remise</dt><dd id="sDisc">0,00</dd><dt>Total HT</dt><dd id="sHt">0,00</dd><dt>TVA</dt><dd id="sTva">0,00</dd><dt class="big">Total TTC</dt><dd class="big" id="sTtc">0,00</dd></dl>
+<dl class="sum"><dt>Sous-total ${P}</dt><dd id="sSub">0,00</dd><dt>Remise</dt><dd id="sDisc">0,00</dd><dt>Total HT</dt><dd id="sHt">0,00</dd><dt>TVA</dt><dd id="sTva">0,00</dd><dt class="big">Total TTC</dt><dd class="big" id="sTtc">0,00</dd></dl>
 <div class="plan-prev" id="planPrev" data-plans='${esc(JSON.stringify(Object.fromEntries(Object.entries(PLANS).map(([k, x]) => [k, x.t]))))}'></div>
 <button class="btn wide" name="then" value="voir">Enregistrer le devis</button><button class="btn ghost wide" name="then" value="envoyer">Enregistrer et envoyer</button></div></aside></form>`;
 }
@@ -612,11 +616,13 @@ async function saveQuote(body, id = null) {
   if (!clientId) throw new Error('Choisissez un client ou créez-en un.');
   const s = (await settings()), issue = body.issue_date || today();
   const tva = num(body.tva_rate, num(s.default_tva)), disc = Math.min(100, Math.max(0, num(body.discount_pct))), dep = Math.min(100, Math.max(0, num(body.deposit_pct)));
-  const t = totals(items, tva, disc), valid = addDays(issue, num(body.validity, num(s.default_validity)));
-  const f = [clientId, String(body.title || '').trim(), issue, valid, tva, disc, dep, String(body.delay || ''), String(body.notes || ''), String(body.conditions || ''), t.ht, t.tva, t.ttc];
+  /* prices_ttc = 1 : prix saisis TTC (ce que paie le client). Absent : HT, comme les anciens devis et l'API. */
+  const ttcMode = String(body.prices_ttc) === '1';
+  const t = totals(items, tva, disc, ttcMode), valid = addDays(issue, num(body.validity, num(s.default_validity)));
+  const f = [clientId, String(body.title || '').trim(), issue, valid, tva, disc, dep, String(body.delay || ''), String(body.notes || ''), String(body.conditions || ''), t.ht, t.tva, t.ttc, ttcMode ? 1 : 0];
   id = await db.tx(async (t) => {
-    if (id) await t.prepare("UPDATE quotes SET client_id=?, title=?, issue_date=?, valid_until=?, tva_rate=?, discount_pct=?, deposit_pct=?, delay=?, notes=?, conditions=?, total_ht=?, total_tva=?, total_ttc=?, updated_at=datetime('now') WHERE id=?").run(...f, id);
-    else id = Number((await t.prepare('INSERT INTO quotes (client_id, title, issue_date, valid_until, tva_rate, discount_pct, deposit_pct, delay, notes, conditions, total_ht, total_tva, total_ttc, token) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(...f, token())).lastInsertRowid);
+    if (id) await t.prepare("UPDATE quotes SET client_id=?, title=?, issue_date=?, valid_until=?, tva_rate=?, discount_pct=?, deposit_pct=?, delay=?, notes=?, conditions=?, total_ht=?, total_tva=?, total_ttc=?, prices_ttc=?, updated_at=datetime('now') WHERE id=?").run(...f, id);
+    else id = Number((await t.prepare('INSERT INTO quotes (client_id, title, issue_date, valid_until, tva_rate, discount_pct, deposit_pct, delay, notes, conditions, total_ht, total_tva, total_ttc, prices_ttc, token) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(...f, token())).lastInsertRowid);
     await t.prepare('DELETE FROM quote_items WHERE quote_id = ?').run(id);
     const ins = t.prepare('INSERT INTO quote_items (quote_id, position, label, description, qty, unit, unit_price) VALUES (?,?,?,?,?,?,?)');
     for (let i = 0; i < items.length; i++) { const it = items[i]; await ins.run(id, i, it.label, it.description, it.qty, it.unit, it.unit_price); }
@@ -695,7 +701,7 @@ app.post('/devis/:id/statut', async (req, res) => {
 app.post('/devis/:id/dupliquer', async (req, res) => {
   const q = await Q.quote.get(Number(req.params.id)); if (!q) return res.sendStatus(404);
   const plan = planOf(q), pk = planKey(plan);
-  const id = await saveQuote({ client_id: q.client_id, title: q.title, issue_date: today(), validity: (await settings()).default_validity, tva_rate: q.tva_rate, discount_pct: q.discount_pct, deposit_pct: q.deposit_pct, delay: q.delay, notes: q.notes, conditions: q.conditions, items: await Q.qItems.all(q.id), plan_key: pk, plan_custom: pk === 'custom' ? plan.map((x) => x.l + ';' + x.p).join('\n') : '' });
+  const id = await saveQuote({ prices_ttc: q.prices_ttc ? '1' : '0', client_id: q.client_id, title: q.title, issue_date: today(), validity: (await settings()).default_validity, tva_rate: q.tva_rate, discount_pct: q.discount_pct, deposit_pct: q.deposit_pct, delay: q.delay, notes: q.notes, conditions: q.conditions, items: await Q.qItems.all(q.id), plan_key: pk, plan_custom: pk === 'custom' ? plan.map((x) => x.l + ';' + x.p).join('\n') : '' });
   res.redirect(`/devis/${id}/modifier`);
 });
 /* Facture d'une échéance : acompte, situation, solde ou facture unique */
@@ -713,21 +719,23 @@ async function createScheduleInvoice(q, idx) {
   const billed = new Set(prev.map((i) => Number(i.sched_idx))), next = plan.findIndex((x, k) => !billed.has(k));
   if (next !== -1 && idx !== next) throw new Error(`Facturez d’abord l’échéance « ${plan[next].l} ».`);
   let lines;
-  if (kind === 'acompte' || kind === 'situation') lines = [{ label: `${plan[idx].l} : ${pct(plan[idx].p)} du devis ${q.number}`, description: q.title || '', qty: 1, unit: 'forfait', unit_price: round2(q.total_ht * plan[idx].p / 100) }];
+  /* devis saisi TTC : les lignes de la facture sont TTC aussi (le client paie exactement l'échéance annoncée) */
+  const ttcM = !!num(q.prices_ttc), base = ttcM ? q.total_ttc : q.total_ht, baseOf = (i) => ttcM ? i.total_ttc : i.total_ht;
+  if (kind === 'acompte' || kind === 'situation') lines = [{ label: `${plan[idx].l} : ${pct(plan[idx].p)} du devis ${q.number}`, description: q.title || '', qty: 1, unit: 'forfait', unit_price: round2(base * plan[idx].p / 100) }];
   else {
     lines = items.map((it) => ({ label: it.label, description: it.description, qty: it.qty, unit: it.unit, unit_price: it.unit_price }));
     const sub = items.reduce((a, it) => a + num(it.qty, 1) * num(it.unit_price), 0);
-    if (num(q.discount_pct) > 0) lines.push({ label: `Remise ${pct(q.discount_pct)}`, description: '', qty: 1, unit: '', unit_price: -round2(sub - q.total_ht) });
-    for (const a of prev) lines.push({ label: `Déjà facturé : ${a.number}${a.label ? ' (' + a.label + ')' : ''}`, description: '', qty: 1, unit: '', unit_price: -round2(a.total_ht) });
+    if (num(q.discount_pct) > 0) lines.push({ label: `Remise ${pct(q.discount_pct)}`, description: '', qty: 1, unit: '', unit_price: -round2(sub - base) });
+    for (const a of prev) lines.push({ label: `Déjà facturé : ${a.number}${a.label ? ' (' + a.label + ')' : ''}`, description: '', qty: 1, unit: '', unit_price: -round2(baseOf(a)) });
   }
-  let t = totals(lines, q.tva_rate, 0);
+  let t = totals(lines, q.tva_rate, 0, ttcM);
   /* Montants au centime près : chaque échéance vaut exactement ce qu'annonce l'échéancier du devis,
      et le solde est le reste exact (les arrondis ne dérivent plus d'un centime). */
   const fit = (ht, ttc) => { if (Math.abs(ttc - t.ttc) <= 0.05 && Math.abs(ht - t.ht) <= 0.05) t = { ...t, ht, ttc, tva: round2(ttc - ht) }; };
   if (kind === 'solde' || kind === 'totale') fit(round2(q.total_ht - prev.reduce((a, i) => a + i.total_ht, 0)), round2(q.total_ttc - prev.reduce((a, i) => a + i.total_ttc, 0)));
   else fit(round2(q.total_ht * plan[idx].p / 100), round2(q.total_ttc * plan[idx].p / 100));
   const number = await nextNumber('invoice', s.invoice_prefix, issue, tx);
-  const id = Number((await tx.prepare('INSERT INTO invoices (number, quote_id, client_id, kind, title, issue_date, due_date, tva_rate, total_ht, total_tva, total_ttc, notes, token, sched_idx, label) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(number, q.id, q.client_id, kind, q.title, issue, addDays(issue, num(s.default_due_days, 15)), q.tva_rate, t.ht, t.tva, t.ttc, '', token(), idx, plan[idx].l)).lastInsertRowid);
+  const id = Number((await tx.prepare('INSERT INTO invoices (number, quote_id, client_id, kind, title, issue_date, due_date, tva_rate, total_ht, total_tva, total_ttc, notes, token, sched_idx, label, prices_ttc) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(number, q.id, q.client_id, kind, q.title, issue, addDays(issue, num(s.default_due_days, 15)), q.tva_rate, t.ht, t.tva, t.ttc, '', token(), idx, plan[idx].l, ttcM ? 1 : 0)).lastInsertRowid);
   const ins = tx.prepare('INSERT INTO invoice_items (invoice_id, position, label, description, qty, unit, unit_price) VALUES (?,?,?,?,?,?,?)');
   for (let i = 0; i < lines.length; i++) { const l = lines[i]; await ins.run(id, i, l.label, l.description || '', l.qty, l.unit || '', l.unit_price); }
   if (kind === 'solde' || kind === 'totale') await tx.prepare("UPDATE quotes SET status = 'facture' WHERE id = ?").run(q.id);
@@ -788,7 +796,7 @@ app.post('/factures/:id/avoir', async (req, res) => {
   const made = await db.tx(async (tx) => {
     const cur = await tx.prepare('SELECT cancelled FROM invoices WHERE id = ?').get(inv.id); if (!cur || cur.cancelled) return null;
     const number = await nextNumber('credit', 'DG-AV', today(), tx);
-    const id = Number((await tx.prepare('INSERT INTO invoices (number, quote_id, client_id, kind, title, issue_date, due_date, tva_rate, total_ht, total_tva, total_ttc, notes, token, credit_of, label) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(number, inv.quote_id, inv.client_id, 'avoir', inv.title, today(), today(), inv.tva_rate, -inv.total_ht, -inv.total_tva, -inv.total_ttc, `Avoir sur la facture ${inv.number}`, token(), inv.id, 'Avoir ' + inv.number)).lastInsertRowid);
+    const id = Number((await tx.prepare('INSERT INTO invoices (number, quote_id, client_id, kind, title, issue_date, due_date, tva_rate, total_ht, total_tva, total_ttc, notes, token, credit_of, label, prices_ttc) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(number, inv.quote_id, inv.client_id, 'avoir', inv.title, today(), today(), inv.tva_rate, -inv.total_ht, -inv.total_tva, -inv.total_ttc, `Avoir sur la facture ${inv.number}`, token(), inv.id, 'Avoir ' + inv.number, inv.prices_ttc ? 1 : 0)).lastInsertRowid);
     const ins = tx.prepare('INSERT INTO invoice_items (invoice_id, position, label, description, qty, unit, unit_price) VALUES (?,?,?,?,?,?,?)');
     for (let i = 0; i < items.length; i++) { const it = items[i]; await ins.run(id, i, it.label, it.description || '', it.qty, it.unit || '', -it.unit_price); }
     await tx.prepare('UPDATE invoices SET cancelled = 1 WHERE id = ?').run(inv.id);
@@ -927,7 +935,7 @@ app.post('/demandes/:id/traitee', async (req, res) => { await leadStage(Number(r
 app.get('/prestations', async (req, res) => {
   const rows = await db.prepare('SELECT * FROM services ORDER BY sort, id').all();
   const r = (x, i) => `<tr><td><input name="s[${i}][name]" value="${esc(x.name || '')}" placeholder="Nouvelle prestation"><input type="hidden" name="s[${i}][id]" value="${x.id || ''}"></td><td><input name="s[${i}][description]" value="${esc(x.description || '')}"></td><td><input name="s[${i}][unit]" value="${esc(x.unit || 'forfait')}" class="it-u"></td><td><input name="s[${i}][unit_price]" value="${x.unit_price ? String(x.unit_price).replace('.', ',') : ''}" inputmode="decimal" class="it-p" placeholder="0,00"></td><td class="c"><input type="checkbox" name="s[${i}][active]" value="1"${x.active === 0 ? '' : ' checked'}></td></tr>`;
-  const body = `<p class="hint">Vos prestations et vos prix habituels. Ils se remplissent tout seuls dans les devis, et restent modifiables ligne par ligne.</p><form method="post" class="card flush"><table class="tbl edit"><thead><tr><th>Prestation</th><th>Description</th><th>Unité</th><th>Prix HT</th><th class="c">Active</th></tr></thead><tbody>${rows.map(r).join('')}${r({}, rows.length)}${r({}, rows.length + 1)}</tbody></table><div class="pad"><button class="btn">Enregistrer le catalogue</button></div></form>`;
+  const body = `<p class="hint">Vos prestations et vos prix habituels, <b>TTC : le prix que paie le client</b>. Ils se remplissent tout seuls dans les devis, et restent modifiables ligne par ligne.</p><form method="post" class="card flush"><table class="tbl edit"><thead><tr><th>Prestation</th><th>Description</th><th>Unité</th><th>Prix TTC</th><th class="c">Active</th></tr></thead><tbody>${rows.map(r).join('')}${r({}, rows.length)}${r({}, rows.length + 1)}</tbody></table><div class="pad"><button class="btn">Enregistrer le catalogue</button></div></form>`;
   res.send(layout({ title: 'Prestations', active: '/prestations', body, flash: req.query.ok ? 'Catalogue enregistré.' : '' }));
 });
 app.post('/prestations', async (req, res) => {

@@ -1,0 +1,355 @@
+{
+ "file": "site-web-dentiste-maroc.html",
+ "title": "Site web dentiste au Maroc : attirer des patients | Digilago",
+ "description": "Site web pour dentiste au Maroc : pages de soins, rendez-vous en ligne, WhatsApp, Google Maps et règles de l’Ordre. Le guide pour attirer des patients.",
+ "eyebrow": "Guide, 10 min de lecture",
+ "h1": [
+  "Site web pour dentiste au Maroc :",
+  "un cabinet que l’on trouve, et que l’on choisit."
+ ],
+ "lead": "Pages de soins, prise de rendez-vous en ligne, WhatsApp, fiche Google et règles de déontologie : ce dont un cabinet dentaire marocain a besoin pour attirer de nouveaux patients, sans jamais tomber dans la publicité tapageuse.",
+ "headline": "Site web pour dentiste au Maroc : créer le site de son cabinet dentaire, attirer des patients et proposer la prise de rendez-vous en ligne (2026)",
+ "keywords": [
+  "site web dentiste Maroc",
+  "site cabinet dentaire",
+  "site internet dentiste",
+  "création site web cabinet dentaire Maroc",
+  "prise de rendez-vous dentiste en ligne",
+  "attirer des patients dentiste",
+  "dentiste Casablanca",
+  "dentiste Rabat",
+  "dentiste El Jadida",
+  "fiche Google cabinet dentaire"
+ ],
+ "cover": "4c1f45d0b9",
+ "sections": [
+  {
+   "h2": "Pourquoi un site web de dentiste au Maroc fait-il la différence ?",
+   "blocks": [
+    {
+     "p": "Un <strong>site web de dentiste au Maroc</strong> fait la différence parce que vos futurs patients choisissent désormais leur cabinet sur leur téléphone : le site leur permet de vous trouver, de vérifier que vous traitez leur problème et de demander un rendez-vous, même quand le cabinet est fermé."
+    },
+    {
+     "p": "Dimanche, 22 h, à Casablanca. Yassine a une molaire qui le lance depuis le dîner. Il tape « dentiste urgence Maârif » sur Google. Trois cabinets apparaissent sur la carte. Le premier n’affiche qu’un numéro fixe, qui sonne dans le vide. Le deuxième n’a ni site ni photo. Le troisième a un site clair : une page « Urgences dentaires », les horaires du lundi, un bouton WhatsApp et un formulaire de rendez-vous. Yassine laisse son numéro. Lundi à 9 h, la secrétaire le rappelle : c’est ce cabinet qui le soignera, et sans doute toute sa famille ensuite."
+    },
+    {
+     "p": "Même le patient recommandé par un proche vérifie l’adresse, les horaires et les avis avant d’appeler. Un bon site sert donc à :"
+    },
+    {
+     "ul": [
+      "<strong>Rassurer</strong> un patient souvent anxieux, avec un praticien qu’il voit et un cabinet qu’il reconnaît.",
+      "<strong>Informer</strong> sur les soins et les questions pratiques.",
+      "<strong>Soulager le téléphone</strong> : la secrétaire répond moins souvent aux mêmes questions.",
+      "<strong>Remplir l’agenda</strong>, grâce à la prise de rendez-vous en ligne et à WhatsApp."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Que doit contenir le site d’un cabinet dentaire ?",
+   "blocks": [
+    {
+     "p": "Le site d’un cabinet dentaire doit répondre en quelques secondes à quatre questions : qui va me soigner, quels soins sont proposés, où et quand consulter, et comment prendre rendez-vous. Voici les pages indispensables :"
+    },
+    {
+     "ul": [
+      "<strong>L’accueil</strong> : votre nom, votre ville, vos principaux soins, des boutons « Prendre rendez-vous » et WhatsApp visibles dès l’ouverture.",
+      "<strong>Le cabinet et l’équipe</strong> : parcours, diplômes, langues parlées, vraies photos de la salle d’attente, du fauteuil et de la stérilisation.",
+      "<strong>Une page par soin</strong> : caries, détartrage, prothèses, implants, orthodontie, soins des enfants, urgences, chacun expliqué simplement.",
+      "<strong>Les infos pratiques</strong> : adresse avec un repère (« au-dessus de la pharmacie »), étage, stationnement, horaires du Ramadan, assurances et mutuelles acceptées.",
+      "<strong>Le contact</strong> : numéro cliquable, WhatsApp, formulaire court, carte Google Maps.",
+      "<strong>Les mentions légales et la politique de confidentialité</strong>, indispensables dès qu’un formulaire existe."
+     ]
+    },
+    {
+     "img": "ca364f4df1",
+     "alt": "Exemple de site de clinique dentaire présentant les prothèses et les implants, avec un bouton de prise de rendez-vous",
+     "cap": "Exemple de site de clinique dentaire : chaque soin a sa page, le rendez-vous est à un clic."
+    },
+    {
+     "note": "Conseil : photographiez votre vrai cabinet, un matin, lumières allumées. Un patient anxieux est bien plus rassuré par une stérilisation impeccable que par un sourire de banque d’images."
+    }
+   ]
+  },
+  {
+   "h2": "Comment un site de cabinet dentaire attire-t-il des patients à Casablanca, Rabat ou El Jadida ?",
+   "blocks": [
+    {
+     "p": "Un site de cabinet dentaire attire des patients lorsqu’il apparaît sur leurs recherches exactes, « dentiste Agdal », « implant dentaire Casablanca », « طبيب أسنان الجديدة », et qu’il leur donne une raison claire de vous contacter plutôt que le cabinet voisin. Ces recherches changent selon la ville et le cabinet :"
+    },
+    {
+     "table": {
+      "head": [
+       "Situation du cabinet",
+       "Ce que tapent les patients",
+       "Priorité du site"
+      ],
+      "rows": [
+       [
+        "Cabinet de quartier à Casablanca",
+        "« dentiste Maârif », « dentiste ouvert samedi »",
+        "Quartier bien indiqué, horaires, urgences, WhatsApp"
+       ],
+       [
+        "Cabinet orienté implants à Rabat",
+        "« implant dentaire Rabat », « prothèse dentaire Agdal »",
+        "Pages détaillées par soin, présentation du praticien"
+       ],
+       [
+        "Cabinet familial à El Jadida",
+        "« dentiste enfant El Jadida », recherches en arabe",
+        "Version arabe soignée, soins des enfants, accès"
+       ],
+       [
+        "Cabinet qui reçoit des patients venus de l’étranger",
+        "« dentist Marrakech », « dentiste Tanger »",
+        "Version anglaise, rendez-vous à distance, WhatsApp"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Quatre leviers font ensuite monter votre site :"
+    },
+    {
+     "ul": [
+      "<strong>Une page par soin, et par ville si besoin</strong> : Google comprend bien mieux « Implant dentaire à Rabat » que « Nos prestations ».",
+      "<strong>Une fiche Google complète</strong>, catégorie « Dentiste », reliée au site : voir notre <a href=\"guide-fiche-google-business-maroc.html\">guide de la fiche Google</a>.",
+      "<strong>Des données structurées</strong> Schema.org (type Dentist) qui décrivent cabinet, adresse et horaires.",
+      "<strong>Des réponses claires aux questions fréquentes</strong>, que ChatGPT, Gemini ou Perplexity reprennent quand on leur demande « un dentiste pour enfants à El Jadida »."
+     ]
+    },
+    {
+     "p": "Sur une recherche concurrentielle comme « dentiste Casablanca », comptez généralement trois à six mois de travail régulier. Pour aller plus loin : notre guide du <a href=\"referencement-seo-maroc.html\">référencement SEO au Maroc</a> et <a href=\"guide-google-chatgpt-maroc.html\">comment apparaître sur Google et dans ChatGPT</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Prise de rendez-vous dentiste en ligne : WhatsApp, formulaire ou agenda ?",
+   "blocks": [
+    {
+     "p": "Pour la plupart des cabinets, la meilleure solution combine un bouton WhatsApp toujours visible et un formulaire de demande de rendez-vous que la secrétaire confirme ; l’agenda en ligne, avec des créneaux en temps réel, convient aux cabinets dont le planning est déjà numérique."
+    },
+    {
+     "table": {
+      "head": [
+       "Solution",
+       "Idéale pour",
+       "Point d’attention"
+      ],
+      "rows": [
+       [
+        "Bouton WhatsApp",
+        "Tous les cabinets",
+        "Un message d’accueil automatique hors horaires"
+       ],
+       [
+        "Formulaire de demande",
+        "Cabinets qui gardent la main sur l’agenda",
+        "Rester court : aucun questionnaire médical"
+       ],
+       [
+        "Agenda en ligne",
+        "Cabinets à plusieurs praticiens",
+        "Synchronisé avec l’agenda réel, pour éviter les doublons"
+       ],
+       [
+        "Plateforme de rendez-vous médicale",
+        "Un complément de visibilité",
+        "Le profil ne vous appartient pas : lisez les conditions"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Un bon parcours tient en quatre étapes :"
+    },
+    {
+     "ol": [
+      "Le patient choisit un motif simple : contrôle, douleur, détartrage, avis pour un implant, enfant.",
+      "Il indique ses disponibilités, son nom et son téléphone.",
+      "Le cabinet confirme par WhatsApp ou par téléphone, le jour même.",
+      "Un rappel part automatiquement la veille, pour limiter les rendez-vous oubliés."
+     ]
+    },
+    {
+     "p": "Ces automatisations se branchent sur votre site : voyez nos <a href=\"services.html\">services</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Quelles règles un dentiste doit-il respecter sur son site au Maroc ?",
+   "blocks": [
+    {
+     "p": "Le site d’un dentiste doit rester informatif et sobre : au Maroc, la publicité des professions médicales est encadrée par leurs ordres, et les chirurgiens-dentistes relèvent des règles déontologiques de l’Ordre national des médecins dentistes. Un site qui informe est bienvenu ; un site qui fait de la réclame vous expose."
+    },
+    {
+     "table": {
+      "head": [
+       "À présenter sans hésiter",
+       "À éviter"
+      ],
+      "rows": [
+       [
+        "Votre nom, vos diplômes, vos qualifications reconnues",
+        "Les superlatifs : « le meilleur dentiste de Casablanca »"
+       ],
+       [
+        "Les soins pratiqués, expliqués de façon pédagogique",
+        "Les promesses : « sourire parfait garanti », « zéro douleur »"
+       ],
+       [
+        "Les horaires, l’accès, les langues parlées",
+        "Les promotions et réductions sur les soins"
+       ],
+       [
+        "De vraies photos du cabinet et du matériel",
+        "Les témoignages de patients utilisés comme publicité"
+       ],
+       [
+        "Les questions fréquentes, la préparation d’une consultation",
+        "Les photos avant/après comme vitrine commerciale"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "En cas de doute sur un texte, une photo ou l’affichage de tarifs, interrogez votre ordre avant de publier. Un bon prestataire vous le rappellera, plutôt que de vous pousser à « vendre »."
+    }
+   ]
+  },
+  {
+   "h2": "Avis Google et secret médical : comment s’y prendre ?",
+   "blocks": [
+    {
+     "p": "Les avis Google sont laissés librement par les patients et pèsent lourd dans le choix d’un dentiste ; votre rôle est d’y répondre avec courtoisie, sans jamais confirmer qu’une personne est votre patient ni évoquer ses soins. À un avis mécontent sur l’attente, une réponse sobre suffit : « Merci pour votre retour, nous regrettons ce désagrément. N’hésitez pas à appeler le cabinet pour en parler. » Pour la méthode complète, lisez notre guide des <a href=\"avis-google-maroc.html\">avis Google au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Données des patients : que change la loi 09-08 ?",
+   "blocks": [
+    {
+     "p": "Dès que votre site collecte des données, même un nom et un téléphone, la loi 09-08 s’applique ; les informations relatives à la santé y sont considérées comme sensibles, donc plus strictement encadrées. La règle d’or : collecter le nécessaire, et bien le protéger."
+    },
+    {
+     "ul": [
+      "Un formulaire limité au motif général, au nom et au téléphone : aucun antécédent médical en ligne.",
+      "HTTPS partout, un hébergement sécurisé, des accès réservés au cabinet.",
+      "Une politique de confidentialité claire : quelles données, pourquoi, combien de temps.",
+      "WhatsApp réservé aux rendez-vous, plutôt qu’à l’échange de radios ou de comptes rendus.",
+      "Les démarches auprès de la CNDP (déclaration ou autorisation selon les cas), à faire confirmer par un juriste."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Faut-il un site de dentiste en arabe, en français et en anglais ?",
+   "blocks": [
+    {
+     "p": "Oui pour le français et l’arabe, car vos patients cherchent dans les deux langues, et souvent en darija ; l’anglais devient utile si vous recevez des patients étrangers, ou des Marocains résidant à l’étranger qui profitent de l’été pour se faire soigner. Chaque version doit être rédigée, pas traduite automatiquement, et l’arabe doit s’afficher proprement, de droite à gauche."
+    },
+    {
+     "img": "fe08b0e7cb",
+     "alt": "Exemple de site de clinique dentaire en anglais, avec le titre Excellence in Dental Care et un accès à la prise de rendez-vous",
+     "cap": "Exemple de site de clinique dentaire en anglais, pensé pour les patients venus de l’étranger."
+    }
+   ]
+  },
+  {
+   "h2": "Combien coûte un site web pour cabinet dentaire au Maroc ?",
+   "blocks": [
+    {
+     "p": "À titre indicatif, un site vitrine sur-mesure, multilingue et optimisé pour Google coûte environ 8 000 à 25 000 MAD au Maroc, et un site avec prise de rendez-vous en ligne environ 12 000 à 35 000 MAD. Un site fait à partir d’un thème démarre vers 3 000 à 8 000 MAD, mais il est souvent plus lent et plus difficile à bien référencer."
+    },
+    {
+     "p": "Le prix varie selon le nombre de soins présentés, les langues et le type de rendez-vous. Ajoutez chaque année le nom de domaine, l’hébergement et la maintenance. Détails dans notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix d’un site web au Maroc</a> ; pour l’adresse du site, voyez <a href=\"nom-de-domaine-ma.html\">comment choisir son nom de domaine .ma</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Quelles erreurs font fuir les patients d’un site de dentiste ?",
+   "blocks": [
+    {
+     "p": "L’erreur la plus fréquente est un site joli sur ordinateur mais pénible sur téléphone, sans numéro cliquable : le patient qui a mal ne cherche pas longtemps, il appelle le cabinet suivant. Les autres pièges :"
+    },
+    {
+     "ul": [
+      "Des photos de banque d’images au lieu de votre vrai cabinet.",
+      "Des horaires périmés, surtout pendant le Ramadan et l’été.",
+      "Une seule page « Soins » qui énumère tout sans rien expliquer.",
+      "Un discours commercial contraire aux règles de votre ordre.",
+      "Un nom de domaine ou une fiche Google au nom du prestataire."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "La check-list du site de votre cabinet dentaire",
+   "blocks": [
+    {
+     "p": "Avant la mise en ligne, vérifiez ces points : s’ils sont tous cochés, votre site est prêt à recevoir des patients."
+    },
+    {
+     "ul": [
+      "Praticien présenté, avec diplômes et langues parlées.",
+      "Une page claire par soin principal, urgences comprises.",
+      "Adresse, repère, horaires (Ramadan compris), assurances acceptées.",
+      "WhatsApp, numéro cliquable et formulaire testés sur téléphone.",
+      "Versions française et arabe relues par un humain, anglaise si besoin.",
+      "Fiche Google vérifiée, catégorie « Dentiste », lien vers le site.",
+      "Textes sobres, sans promesse ni promotion.",
+      "Politique de confidentialité en ligne, formulaire limité au nécessaire."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago peut vous aider",
+   "blocks": [
+    {
+     "p": "Digilago, agence web basée à El Jadida, accompagne les cabinets dentaires dans tout le Maroc : site sur mesure en français, en arabe et en anglais, prise de rendez-vous et WhatsApp, fiche Google, référencement et visibilité dans les IA. Le prix est annoncé par écrit avant de commencer, la première version arrive en 72 heures et, si elle ne vous plaît pas, vous ne payez rien. Parcourez nos <a href=\"realisations.html\">idées de sites pour la santé</a> et notre guide des <a href=\"site-web-medecin-clinique-maroc.html\">sites de médecins et de cliniques</a>, puis <a href=\"demarrer.html\">démarrez votre projet</a> ou écrivez-nous sur WhatsApp au +212 6 49 95 38 13."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "Combien coûte un site web pour dentiste au Maroc ?",
+   "a": "À titre indicatif, comptez environ 8 000 à 25 000 MAD pour un site vitrine sur-mesure, multilingue et optimisé pour Google, et environ 12 000 à 35 000 MAD avec la prise de rendez-vous en ligne. Le nom de domaine, l’hébergement et la maintenance s’ajoutent chaque année. Demandez toujours un devis écrit et détaillé."
+  },
+  {
+   "q": "Un dentiste a-t-il le droit d’avoir un site internet au Maroc ?",
+   "a": "Oui, à condition que le site reste informatif et sobre. La publicité des professions médicales est encadrée par leurs ordres : on présente le praticien, les soins, les horaires et l’accès, sans promesse de résultat, sans promotion et sans témoignages utilisés comme publicité. En cas de doute, l’Ordre national des médecins dentistes reste la référence."
+  },
+  {
+   "q": "Peut-on prendre rendez-vous chez le dentiste en ligne au Maroc ?",
+   "a": "Oui. Le plus simple est d’ajouter au site du cabinet un bouton WhatsApp et un formulaire de demande de rendez-vous, que le cabinet confirme ensuite. Les cabinets dont le planning est numérique peuvent proposer un agenda en ligne, où le patient choisit directement un créneau libre."
+  },
+  {
+   "q": "Comment apparaître en premier quand on cherche « dentiste Casablanca » ?",
+   "a": "Il faut combiner une fiche Google complète et vérifiée, des avis réguliers et un site rapide sur téléphone, avec une page par soin et par quartier. Sur une recherche aussi concurrentielle, comptez généralement trois à six mois de travail régulier. Viser d’abord son quartier, par exemple « dentiste Maârif », est souvent plus accessible."
+  },
+  {
+   "q": "Peut-on publier des avis de patients sur le site d’un cabinet dentaire ?",
+   "a": "La prudence s’impose : mettre en avant des témoignages de patients comme argument publicitaire s’accorde mal avec la déontologie des professions médicales. Les avis Google, eux, sont laissés librement par les patients sur votre fiche. Répondez-y avec courtoisie, sans jamais évoquer les soins d’une personne."
+  },
+  {
+   "q": "Faut-il un site en arabe pour un cabinet dentaire ?",
+   "a": "Oui, c’est fortement recommandé au Maroc : beaucoup de patients cherchent leur dentiste en arabe ou en darija, et certains lisent plus facilement l’arabe que le français. La version arabe doit être rédigée par un humain et s’afficher correctement de droite à gauche."
+  },
+  {
+   "q": "Combien de temps faut-il pour créer le site d’un cabinet dentaire ?",
+   "a": "Un site vitrine de cabinet dentaire peut être prêt en quelques jours à quelques semaines ; la prise de rendez-vous en ligne demande un peu plus. Le délai dépend surtout de la rapidité à fournir photos, textes et validations. Chez Digilago, une première version est livrée en 72 heures."
+  },
+  {
+   "q": "La fiche Google suffit-elle, sans site web ?",
+   "a": "La fiche Google place le cabinet sur la carte, mais elle ne peut ni expliquer vos soins, ni rassurer un patient anxieux, ni recueillir une demande de rendez-vous détaillée. La fiche attire le regard ; le site convainc et transforme la visite en rendez-vous."
+  }
+ ],
+ "related": [
+  "site-web-medecin-clinique-maroc.html",
+  "avis-google-maroc.html",
+  "guide-fiche-google-business-maroc.html"
+ ]
+}

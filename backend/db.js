@@ -110,9 +110,9 @@ const CATALOGUE = [
 const STEPS = ['Brief et identité', 'Maquette validée', 'Développement', 'Textes SEO et GEO', 'Fiche Google', 'Mise en ligne'];
 
 /* Initialisation : rapide quand la base est à jour (1 requête), complète et groupée sinon (quelques requêtes) */
-const SCHEMA_VERSION = '2026-10-01.9';
+const SCHEMA_VERSION = '2026-10-02.1';
 const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT'],
-  ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'],
+  ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'], ['quotes', 'prices_ttc', 'INTEGER'], ['invoices', 'prices_ttc', 'INTEGER'],
   ['invoices', 'sched_idx', 'INTEGER'], ['invoices', 'credit_of', 'INTEGER'], ['invoices', 'label', 'TEXT'],
   ['payments', 'number', 'TEXT'], ['payments', 'token', 'TEXT'], ['payments', 'stamp', 'REAL'],
   ['projects', 'tech', 'TEXT'], ['projects', 'launch', 'TEXT'], ['projects', 'situation', 'TEXT'], ['projects', 'kind', 'TEXT'], ['projects', 'sector', 'TEXT'],

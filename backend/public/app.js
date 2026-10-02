@@ -59,7 +59,11 @@
   function calc(){
     var sub = 0;
     $$('tr.it', body).forEach(function(tr){ var t = num($('.it-q', tr).value || 1) * num($('.it-p', tr).value); tr.querySelector('.it-t').textContent = money(t).replace('\u00a0DH', ''); sub += t; });
-    var disc = sub * Math.min(100, num($('#disc').value)) / 100, ht = sub - disc, tva = ht * num($('#tva').value) / 100, ttc = ht + tva, dep = ttc * Math.min(100, num($('#dep').value)) / 100;
+    /* data-ttc : prix saisis TTC (ce que paie le client) ; le HT et la TVA s'en déduisent */
+    var rate = num($('#tva').value) / 100, disc = sub * Math.min(100, num($('#disc').value)) / 100, ht, tva, ttc;
+    if (form.dataset.ttc === '1') { ttc = sub - disc; ht = Math.round(ttc / (1 + rate) * 100) / 100; tva = ttc - ht; }
+    else { ht = sub - disc; tva = ht * rate; ttc = ht + tva; }
+    var dep = ttc * Math.min(100, num($('#dep').value)) / 100;
     $('#sSub').textContent = money(sub); $('#sDisc').textContent = disc ? '−' + money(disc) : money(0); $('#sHt').textContent = money(ht); $('#sTva').textContent = money(tva); $('#sTtc').textContent = money(ttc);
     planPreview(ttc);
   }

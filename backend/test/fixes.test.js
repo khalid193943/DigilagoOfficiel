@@ -134,3 +134,24 @@ test('mot de passe : l’actuel est exigé, et les anciennes sessions sont ferm�
   assert.strictEqual((await get('/', old)).status, 302, 'l’ancienne session est fermée');
   assert.strictEqual((await get('/', cookie)).status, 200, 'la nouvelle fonctionne');
 });
+
+test('prix saisis TTC : 5 000 saisis = 5 000 payés, au centime, jusqu’aux factures', async () => {
+  const form = await html('/devis/nouveau');
+  assert.match(form, /Prix TTC : tapez ce que le client paie/); assert.match(form, /name="prices_ttc" value="1"/);
+  const q = await quote({ prices_ttc: '1', plan_key: '50-50', 'items[0][unit_price]': '5000' });
+  const d = await html('/devis/' + q);
+  assert.match(d, /Total TTC<\/td><td>5 000,00/, 'le client paie exactement 5 000');
+  assert.match(d, /Total HT<\/td><td>4 166,67/); assert.match(d, /TVA 20.%<\/td><td>833,33/);
+  assert.match(d, /<td class="c-r">4\u202f166,67.DH<\/td><td class="c-r">4\u202f166,67.DH<\/td>/, 'prix unitaire HT affiché, juste au centime');
+  for (const i of [0, 1]) await post(`/devis/${q}/facturer`, { idx: String(i) });
+  let total = 0;
+  for (const id of new Set(await invoicesOf(q))) {
+    const t = (await html('/factures/' + id)).match(/Total TTC<\/span><b>([^<]+)</);
+    assert.strictEqual(num(t[1].replace(/[^\d,]/g, '')), 2500); total += 2500;
+  }
+  assert.strictEqual(total, 5000);
+  /* un devis saisi HT (ancien mode) garde son calcul : 5 000 HT = 6 000 TTC */
+  const old = await quote({ 'items[0][unit_price]': '5000' });
+  assert.match(await html('/devis/' + old), /Total TTC<\/td><td>6 000,00/);
+  assert.match(await html(`/devis/${old}/modifier`), /Ancien devis saisi en prix HT/);
+});

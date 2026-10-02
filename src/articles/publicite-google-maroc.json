@@ -1,0 +1,321 @@
+{
+ "file": "publicite-google-maroc.html",
+ "title": "Publicité Google et Meta au Maroc : petit budget | Digilago",
+ "description": "Publicité Google, Facebook et Instagram au Maroc : budget, enchères, ciblage par ville, erreurs à éviter. Bien démarrer avec un petit budget.",
+ "eyebrow": "Guide, 10 min de lecture",
+ "h1": [
+  "Publicité Google et Meta au Maroc :",
+  "bien commencer avec un petit budget."
+ ],
+ "lead": "Google Ads, Facebook, Instagram : comment lancer une première campagne publicitaire en ligne au Maroc sans gaspiller, de l’objectif au ciblage par ville, jusqu’à la page qui transforme le clic en client.",
+ "headline": "Publicité Google et Meta au Maroc : bien commencer avec un petit budget (guide 2026)",
+ "keywords": [
+  "publicité Google Maroc",
+  "Google Ads Maroc",
+  "publicité Facebook Instagram Maroc",
+  "campagne publicitaire en ligne",
+  "agence Google Ads Maroc",
+  "publicité Meta Maroc",
+  "mots-clés négatifs",
+  "Performance Max",
+  "page d’atterrissage"
+ ],
+ "cover": "8600fd681b",
+ "sections": [
+  {
+   "h2": "Publicité Google ou Meta au Maroc : par où commencer avec un petit budget ?",
+   "blocks": [
+    {
+     "p": "Pour réussir votre publicité Google ou Meta au Maroc avec un petit budget, lancez <strong>une seule campagne, pour une seule offre, dans une seule zone</strong> : Google Ads si vos clients vous cherchent déjà, Facebook et Instagram si vous devez leur donner envie. Puis envoyez chaque clic vers une page claire de votre site, avec un bouton WhatsApp, et comptez les contacts obtenus."
+    },
+    {
+     "p": "<strong>Mardi, 22 h 40, à Casablanca.</strong> Une fuite sous l’évier : Hamza tape « plombier urgence Maârif ». En tête des résultats, des annonces ; il appelle celle qui affiche un numéro et « intervention ce soir ». Il cherchait, Google a répondu."
+    },
+    {
+     "p": "<strong>Dimanche, 16 h, à Rabat.</strong> Salma fait défiler Instagram. La vidéo d’un caftan brodé, publiée par une créatrice de Marrakech quelques semaines avant l’Aïd, l’arrête. Elle touche « Envoyer un message » et la conversation s’ouvre dans WhatsApp. Elle ne cherchait rien, Meta lui a donné envie."
+    }
+   ]
+  },
+  {
+   "h2": "Quelle différence entre Google Ads et la publicité Facebook et Instagram ?",
+   "blocks": [
+    {
+     "p": "Google Ads répond à une demande : l’annonce s’affiche quand quelqu’un tape une recherche liée à votre activité. La publicité Meta crée la demande : elle apparaît dans le fil de personnes choisies selon leur zone, leur âge ou leurs centres d’intérêt."
+    },
+    {
+     "table": {
+      "head": [
+       "Critère",
+       "Google Ads (Recherche)",
+       "Meta : Facebook et Instagram"
+      ],
+      "rows": [
+       [
+        "Moment",
+        "La personne cherche activement",
+        "La personne fait défiler son fil"
+       ],
+       [
+        "Format",
+        "Annonce texte en tête des résultats",
+        "Photo, carrousel, vidéo, Reels, Stories"
+       ],
+       [
+        "Ciblage",
+        "Mots-clés, zone, langue, horaires",
+        "Zone, âge, centres d’intérêt"
+       ],
+       [
+        "Idéal pour",
+        "Urgences, services recherchés, comparaisons",
+        "Produits visuels, ouvertures, offres de saison"
+       ],
+       [
+        "Destination",
+        "Une page dédiée de votre site",
+        "Votre site, ou une conversation WhatsApp"
+       ],
+       [
+        "Piège classique",
+        "Des mots-clés trop larges",
+        "Des J’aime qui ne remplissent pas la caisse"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Les deux se complètent : une auto-école de Kénitra peut garder une petite campagne Google toute l’année, et ajouter Instagram avant l’été."
+    }
+   ]
+  },
+  {
+   "h2": "Comment fonctionnent le budget et les enchères ?",
+   "blocks": [
+    {
+     "p": "Vous fixez un budget, par jour ou pour toute la campagne ; à chaque recherche ou affichage, une enchère automatique choisit les annonces à montrer, en tenant compte du montant proposé mais aussi de la qualité de l’annonce et de la page de destination."
+    },
+    {
+     "ul": [
+      "<strong>Le budget journalier est une moyenne</strong> : Google peut dépenser un peu plus certains jours, moins d’autres, en respectant votre budget sur le mois.",
+      "<strong>La facturation</strong> se fait le plus souvent au clic sur Google, à l’affichage sur Meta, à un prix jamais fixé d’avance : il résulte de l’enchère.",
+      "<strong>La qualité compte</strong> : Google évalue la pertinence de l’annonce, le taux de clic attendu et l’expérience sur la page. Une annonce et une page bien notées peuvent obtenir une meilleure position pour un clic moins cher.",
+      "<strong>Les enchères automatiques</strong> (« Maximiser les conversions ») exigent des conversions mesurées."
+     ]
+    },
+    {
+     "p": "Pour fixer votre budget sans connaître le prix d’un clic, partez de ce que vous rapporte un client (une inscription à l’année, une commande moyenne), puis décidez d’une somme de test, investie quelques semaines sur une seule offre plutôt que saupoudrée."
+    }
+   ]
+  },
+  {
+   "h2": "Comment structurer une première campagne Google Ads au Maroc ?",
+   "blocks": [
+    {
+     "p": "Une première campagne Google Ads tient en peu de choses : le Réseau de Recherche, un groupe d’annonces par service, quelques mots-clés précis, des mots-clés négatifs et une page de destination par groupe."
+    },
+    {
+     "ol": [
+      "<strong>Définissez la conversion</strong> (appel, clic sur WhatsApp, formulaire) et installez le suivi avant de lancer.",
+      "<strong>Restez sur le Réseau de Recherche</strong> : pour un premier test, décochez l’extension au Réseau Display, souvent proposée par défaut.",
+      "<strong>Délimitez la zone</strong> : une ville, des quartiers ou un rayon autour de votre adresse.",
+      "<strong>Un groupe d’annonces par service</strong> : pour une auto-école, « permis B », « permis moto », « code de la route ».",
+      "<strong>Des mots-clés précis</strong>, en « expression exacte » ou « mot clé exact », avant de tester la « requête large ».",
+      "<strong>Des annonces responsives</strong> qui citent la ville, l’offre et ce qui vous distingue, complétées par les composants appel, lieu (relié à votre <a href=\"guide-fiche-google-business-maroc.html\">fiche Google</a>) et liens annexes.",
+      "<strong>Un calendrier</strong> calé sur vos heures de réponse, adapté pendant le Ramadan."
+     ]
+    },
+    {
+     "img": "70d39f3dbf",
+     "alt": "Exemple de site d’auto-école présentant ses formations, ses formules tarifaires et des boutons de contact",
+     "cap": "Exemple de site d’auto-école : formules et tarifs lisibles, contact immédiat. Ce qu’un visiteur venu d’une annonce doit trouver."
+    }
+   ]
+  },
+  {
+   "h2": "Mots-clés négatifs et ciblage par ville : comment ne pas gaspiller son budget ?",
+   "blocks": [
+    {
+     "p": "Les mots-clés négatifs bloquent les recherches qui ne donneront jamais de clients, et le ciblage par ville réserve vos annonces aux personnes que vous pouvez servir : ce sont les deux réglages qui protègent le mieux un petit budget. Négatifs courants :"
+    },
+    {
+     "ul": [
+      "« gratuit », « pdf », « définition », « formation » si vous ne formez pas ;",
+      "« emploi », « recrutement », « stage », « salaire », qui attirent des candidats, pas des clients ;",
+      "les villes que vous ne desservez pas, les marques que vous ne vendez pas."
+     ]
+    },
+    {
+     "p": "Chaque semaine, lisez le rapport « Termes de recherche » : il montre les recherches réelles qui ont déclenché vos annonces, et chaque intrus devient un mot-clé négatif."
+    },
+    {
+     "p": "Vérifiez aussi une option discrète : Google peut cibler les personnes <strong>présentes</strong> dans votre zone, ou celles qui <strong>s’y intéressent</strong>. Pour un pressing à Agadir, choisissez la présence ; pour un <a href=\"site-web-riad-hotel-maroc.html\">riad à Fès</a>, l’intérêt a du sens, car les voyageurs réservent depuis l’étranger. Ajoutez enfin les variantes en darija, et en arabe si votre page existe en arabe."
+    }
+   ]
+  },
+  {
+   "h2": "Performance Max : bonne idée pour démarrer ?",
+   "blocks": [
+    {
+     "p": "Rarement au tout début. Performance Max est une campagne Google très automatisée : à partir de vos textes, images et vidéos, elle diffuse vos annonces sur la Recherche, YouTube, Maps, Gmail et des sites partenaires, et l’algorithme décide où dépenser. Efficace avec un suivi des conversions fiable et alimenté, elle peut sinon disperser un petit budget, avec moins de contrôle sur les emplacements."
+    },
+    {
+     "note": "Commencez par le Réseau de Recherche, repérez ce qui génère des contacts, puis testez Performance Max à côté, avec un budget séparé."
+    }
+   ]
+  },
+  {
+   "h2": "Comment réussir sa publicité Facebook et Instagram au Maroc ?",
+   "blocks": [
+    {
+     "p": "Une publicité Facebook ou Instagram réussie au Maroc repose sur trois choses : un objectif tourné vers l’action (messages, prospects, ventes) plutôt que vers les J’aime, une audience locale bien délimitée, et un visuel authentique qui arrête le pouce dès les premières secondes."
+    },
+    {
+     "ul": [
+      "<strong>Le Gestionnaire de publicités</strong> plutôt que le bouton « Booster », pour choisir l’objectif, l’audience et les emplacements.",
+      "<strong>La structure de Meta</strong> : l’objectif dans la campagne, l’audience et le budget dans l’ensemble de publicités, le visuel dans la publicité.",
+      "<strong>Un bouton qui ouvre WhatsApp</strong> : très efficace au Maroc, où WhatsApp est partout, à condition de répondre vite.",
+      "<strong>Du vrai</strong> : vos produits, vos locaux, votre équipe, en vidéo verticale sous-titrée.",
+      "<strong>Deux ou trois visuels en test</strong>, puis gardez celui qui apporte des contacts, pas des J’aime."
+     ]
+    },
+    {
+     "p": "Pour mesurer les résultats sur votre site, installez le pixel Meta. Il collecte des données personnelles : mentionnez-le dans votre politique de confidentialité, recueillez le consentement et respectez la loi 09-08, sous le contrôle de la CNDP. Voir aussi <a href=\"vendre-instagram-whatsapp-maroc.html\">vendre sur Instagram et WhatsApp</a>."
+    },
+    {
+     "img": "07e509734a",
+     "alt": "Exemple de site de pension pour animaux avec photos de chiens et de chats, présentation des services, galerie et formulaire de contact",
+     "cap": "Exemple de site de pension pour animaux : avant les vacances d’été, c’est vers ce type de page rassurante qu’une publicité Instagram locale doit mener."
+    }
+   ]
+  },
+  {
+   "h2": "Pourquoi la page d’atterrissage compte-t-elle autant que l’annonce ?",
+   "blocks": [
+    {
+     "p": "Parce que l’annonce amène le visiteur, mais c’est la page d’arrivée, dite page d’atterrissage, qui le transforme en client. Une page lente, générique ou sans bouton WhatsApp gaspille chaque clic payé, et Google en tient compte dans la qualité de vos annonces. Une bonne page :"
+    },
+    {
+     "ul": [
+      "<strong>tient la promesse de l’annonce</strong> : « Cours d’anglais adultes à Rabat » mène à la page de ces cours, pas à l’accueil ;",
+      "<strong>s’affiche vite</strong> sur téléphone, même en 4G ;",
+      "<strong>montre WhatsApp et un numéro cliquable</strong> sans avoir à défiler ;",
+      "<strong>rassure</strong> : vraies photos, <a href=\"avis-google-maroc.html\">avis Google</a>, adresse et carte ;",
+      "<strong>donne un repère de prix</strong> et la durée de l’offre, avec un formulaire court."
+     ]
+    },
+    {
+     "img": "544d524fe0",
+     "alt": "Exemple de site de centre de langues présentant les cours proposés, les formules tarifaires et un formulaire de recherche de cours",
+     "cap": "Exemple de site de centre de langues : cours, formules et formulaire visibles d’un coup d’œil, une bonne base pour une campagne d’inscriptions."
+    },
+    {
+     "p": "Et sans site ? Sur Meta, une publicité peut mener directement à WhatsApp, mais vous mesurez moins, rassurez moins, et rien ne reste quand le budget s’arrête. Sur Google, la plupart des annonces mènent à une page de votre site : voir notre guide de la <a href=\"creation-site-web-maroc.html\">création de site web au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Quelles erreurs coûtent le plus cher quand on débute ?",
+   "blocks": [
+    {
+     "p": "Les erreurs les plus coûteuses : diffuser sans mesurer, viser trop large, envoyer les clics vers une page qui ne convertit pas, et juger une campagne trop tôt."
+    },
+    {
+     "ul": [
+      "Booster une publication pour récolter des J’aime.",
+      "Cibler tout le Maroc pour un commerce de quartier.",
+      "Diffuser la nuit, quand personne ne répond aux messages.",
+      "Tout modifier tous les deux jours : Google et Meta ont besoin d’une période d’apprentissage.",
+      "Accepter les recommandations automatiques sans les lire : certaines augmentent surtout le budget.",
+      "Laisser le compte publicitaire au nom d’un prestataire : vous perdriez l’historique en le quittant."
+     ]
+    },
+    {
+     "note": "Professions de santé : au Maroc, leur publicité est encadrée par leurs ordres, et Google comme Meta appliquent leurs propres règles aux annonces liées à la santé. Renseignez-vous auprès de votre ordre avant toute campagne, et misez d’abord sur un site informatif et sobre, sans promesse de résultat (voir le <a href=\"site-web-medecin-clinique-maroc.html\">site de médecin ou de clinique</a>)."
+    }
+   ]
+  },
+  {
+   "h2": "Faut-il passer par une agence Google Ads au Maroc ?",
+   "blocks": [
+    {
+     "p": "Ce n’est pas obligatoire : un commerçant motivé peut lancer seul une petite campagne. Une agence Google Ads au Maroc devient utile quand le temps manque, que le suivi des conversions vous échappe ou que votre site doit aussi être amélioré pour convertir. Dans tous les cas, exigez :"
+    },
+    {
+     "ul": [
+      "un compte publicitaire à votre nom, avec un accès administrateur ;",
+      "une séparation claire entre le budget payé à Google ou à Meta et les honoraires de l’agence ;",
+      "un rapport mensuel en contacts (appels, messages, formulaires), pas seulement en clics ;",
+      "la capacité d’améliorer la page d’atterrissage, pas seulement les annonces."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "La check-list avant de lancer votre campagne publicitaire en ligne",
+   "blocks": [
+    {
+     "p": "Avant de lancer, vérifiez ces huit points : ils évitent la plupart des dépenses inutiles."
+    },
+    {
+     "ul": [
+      "Un objectif unique et mesurable, avec un suivi testé.",
+      "Une page d’atterrissage dédiée, rapide, avec WhatsApp.",
+      "Une zone précise, et l’option de présence vérifiée.",
+      "Des mots-clés précis et une liste de négatifs.",
+      "Un calendrier calé sur vos heures de réponse.",
+      "Un budget de test, une date de fin et une limite de dépenses.",
+      "Un compte publicitaire à votre nom.",
+      "Une fiche Google à jour et des avis récents."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago peut vous aider",
+   "blocks": [
+    {
+     "p": "Digilago, agence web basée à El Jadida, gère pour les entreprises de tout le Maroc des campagnes Google et Meta ciblées sur leur quartier et leur clientèle : campagnes locales, visuels et textes, budget maîtrisé, rapport mensuel. Idéal pour un lancement, une offre ou une saison. Nous créons aussi la page qui transforme le clic en client, et le <a href=\"referencement-seo-maroc.html\">référencement</a> qui continue de travailler quand la publicité s’arrête. Le prix est annoncé par écrit avant de commencer : <a href=\"demarrer.html\">démarrez votre projet</a>, découvrez nos <a href=\"services.html\">services</a> ou écrivez-nous sur WhatsApp au +212 6 49 95 38 13."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "Quel budget minimum pour faire de la publicité Google au Maroc ?",
+   "a": "Google n’impose pas de budget minimum : vous fixez un budget journalier, modifiable ou suspendu à tout moment. Meta applique un minimum quotidien qui dépend de la devise du compte. Le bon budget part de ce que vous rapporte un client et d’une somme de test, investie quelques semaines sur une seule offre."
+  },
+  {
+   "q": "Combien coûte un clic sur Google Ads au Maroc ?",
+   "a": "Il n’existe pas de prix fixe : le coût d’un clic résulte d’une enchère et varie selon le mot-clé, la ville, la concurrence et la qualité de votre annonce comme de votre page. Pour une estimation sur vos propres mots-clés, utilisez le Planificateur de mots-clés de Google Ads."
+  },
+  {
+   "q": "Google Ads ou publicité Facebook et Instagram : que choisir ?",
+   "a": "Choisissez Google Ads si vos clients cherchent déjà vos services, comme un plombier, une auto-école ou un serrurier. Préférez Facebook et Instagram si votre offre se montre et donne envie : mode, restaurant, institut de beauté. Avec un petit budget, commencez par un seul canal, mesurez les contacts, puis élargissez."
+  },
+  {
+   "q": "Peut-on cibler une seule ville ou un quartier ?",
+   "a": "Oui : Google Ads et Meta permettent de cibler une ville, une région ou un rayon autour d’une adresse. Sur Google, l’option « présence » limite vos annonces aux personnes situées dans la zone, alors que « présence ou intérêt » inclut celles qui s’y intéressent depuis ailleurs, ce qui peut servir pour le tourisme."
+  },
+  {
+   "q": "Faut-il un site web pour faire de la publicité en ligne ?",
+   "a": "Sur Meta, une publicité peut renvoyer vers WhatsApp ou Instagram, mais un site rassure davantage et permet de mesurer les résultats. Sur Google, la plupart des annonces mènent à une page de votre site, dont la qualité influence la position et le coût. Une page rapide et claire reste souvent le meilleur investissement avant toute campagne."
+  },
+  {
+   "q": "Qu’est-ce qu’un mot-clé négatif sur Google Ads ?",
+   "a": "C’est un mot qui empêche votre annonce de s’afficher lorsqu’une recherche le contient. Une auto-école exclut par exemple « gratuit », « pdf » ou « recrutement » pour ne pas payer de clics inutiles. Le rapport « Termes de recherche » de Google Ads aide à compléter la liste chaque semaine."
+  },
+  {
+   "q": "En combien de temps une campagne donne-t-elle des résultats ?",
+   "a": "Les annonces peuvent s’afficher dès leur validation et apporter des contacts en quelques jours. Mais Google et Meta passent par une phase d’apprentissage : attendez quelques semaines de données avant de juger, sans tout modifier entre-temps. La publicité est rapide mais temporaire, alors que le référencement est plus lent mais durable."
+  },
+  {
+   "q": "Comment payer Google Ads ou la publicité Meta depuis le Maroc ?",
+   "a": "Le paiement se fait généralement par carte bancaire utilisable pour les paiements en ligne à l’international. Renseignez-vous auprès de votre banque sur l’activation, les plafonds et les règles applicables aux paiements à l’étranger, et récupérez les factures pour votre comptabilité. Gardez le compte publicitaire et la carte à votre nom."
+  }
+ ],
+ "related": [
+  "referencement-seo-maroc.html",
+  "guide-fiche-google-business-maroc.html",
+  "vendre-instagram-whatsapp-maroc.html"
+ ]
+}

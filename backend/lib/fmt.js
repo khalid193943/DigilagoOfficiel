@@ -65,11 +65,18 @@ function amountWords(v) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-/* Totaux d'un document */
-function totals(items, tvaRate = 20, discountPct = 0) {
+/* Totaux d'un document.
+   ttc = false : prix saisis hors taxe, la TVA s'ajoute (anciens documents).
+   ttc = true  : prix saisis TTC, c'est ce que paie le client (5 000 saisis = 5 000 payés) ;
+                 le HT et la TVA s'en déduisent au centime, le total TTC ne bouge jamais. */
+function totals(items, tvaRate = 20, discountPct = 0, ttc = false) {
   const lines = items.map((it) => round2(num(it.qty, 1) * num(it.unit_price)));
   const subtotal = round2(lines.reduce((a, b) => a + b, 0));
   const discount = round2(subtotal * num(discountPct) / 100);
+  if (ttc) {
+    const total = round2(subtotal - discount), ht = round2(total / (1 + num(tvaRate) / 100));
+    return { lines, subtotal, discount, ht, tva: round2(total - ht), ttc: total };
+  }
   const ht = round2(subtotal - discount);
   const tva = round2(ht * num(tvaRate) / 100);
   return { lines, subtotal, discount, ht, tva, ttc: round2(ht + tva) };

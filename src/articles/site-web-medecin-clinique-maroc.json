@@ -1,0 +1,356 @@
+{
+ "file": "site-web-medecin-clinique-maroc.html",
+ "title": "Site web médecin et clinique au Maroc : le guide | Digilago",
+ "description": "Site web pour médecin, cabinet médical ou clinique au Maroc : contenus sobres, prise de rendez-vous en ligne, Google, données de santé. Le guide pratique.",
+ "eyebrow": "Guide, 10 min de lecture",
+ "h1": [
+  "Site web pour médecin et clinique au Maroc :",
+  "informer, rassurer, simplifier le rendez-vous."
+ ],
+ "lead": "Cabinet médical, centre pluridisciplinaire ou clinique : les pages à prévoir, la prise de rendez-vous en ligne, les règles de sobriété et la protection des données de santé, expliquées simplement.",
+ "headline": "Site web pour médecin et clinique au Maroc : créer un site de cabinet médical informatif, visible sur Google, avec prise de rendez-vous en ligne (2026)",
+ "keywords": [
+  "site web médecin Maroc",
+  "site clinique Maroc",
+  "site cabinet médical",
+  "site internet médecin",
+  "prise de rendez-vous médecin en ligne",
+  "création site web clinique Maroc",
+  "site centre médical",
+  "site médecin Casablanca",
+  "fiche Google médecin",
+  "données de santé loi 09-08"
+ ],
+ "cover": "8058870faa",
+ "sections": [
+  {
+   "h2": "Pourquoi un site web de médecin au Maroc est-il devenu indispensable ?",
+   "blocks": [
+    {
+     "p": "Un <strong>site web de médecin au Maroc</strong> est devenu indispensable parce que les patients, et plus encore leurs proches, se renseignent sur leur téléphone avant de choisir : qui consulte, pour quoi, où, quand, et comment obtenir un rendez-vous. Pour une clinique, le site devient aussi le premier guichet d’orientation."
+    },
+    {
+     "p": "Mardi, 21 h 30, à Rabat. Imane cherche « cardiologue Hay Riad » pour sa mère, à qui le généraliste a conseillé un contrôle. Elle a trois questions : l’échographie se fait-elle au cabinet ? Y a-t-il un ascenseur ? Le cabinet travaille-t-il avec son assurance ? À cette heure-ci, personne ne décroche. Le seul cabinet dont le site répond aux trois questions, avec un bouton « Demander un rendez-vous », reçoit sa demande. Le lendemain matin, la secrétaire n’a plus qu’à confirmer."
+    },
+    {
+     "p": "Le site ne remplace ni la consultation ni le téléphone. Il fait ce que le téléphone fait mal : répondre la nuit, répondre à tout le monde à la fois, et orienter vers le bon service."
+    }
+   ]
+  },
+  {
+   "h2": "Cabinet médical, centre ou clinique : quel site pour quelle structure ?",
+   "blocks": [
+    {
+     "p": "Un médecin installé seul a besoin d’un site vitrine de quelques pages, centré sur sa spécialité ; une clinique ou un centre pluridisciplinaire a besoin d’un site organisé par services et par praticiens, avec un parcours clair pour chaque patient."
+    },
+    {
+     "table": {
+      "head": [
+       "Structure",
+       "Pages essentielles",
+       "La fonction qui compte"
+      ],
+      "rows": [
+       [
+        "Médecin généraliste ou de famille",
+        "Le médecin, les motifs de consultation, les infos pratiques",
+        "Rendez-vous simple et WhatsApp"
+       ],
+       [
+        "Spécialiste (pédiatre, cardiologue, ophtalmologue…)",
+        "La spécialité, les examens réalisés au cabinet, la préparation de la consultation",
+        "Une page par examen, demande de rendez-vous"
+       ],
+       [
+        "Centre médical pluridisciplinaire",
+        "Une page par spécialité et par praticien",
+        "Rendez-vous orienté vers le bon médecin"
+       ],
+       [
+        "Clinique",
+        "Services, équipe, urgences, admissions, accès",
+        "Orientation des patients et des familles, numéros directs par service"
+       ],
+       [
+        "Laboratoire ou centre de radiologie",
+        "Analyses et examens, préparation, horaires de prélèvement",
+        "Consignes avant examen, accès sécurisé aux résultats si votre système le permet"
+       ]
+      ]
+     }
+    },
+    {
+     "img": "9d68960ad1",
+     "alt": "Exemple de site de pédiatre, avec la présentation du médecin et un bouton de prise de rendez-vous",
+     "cap": "Exemple de site de pédiatre : un ton doux, des parents rassurés en quelques secondes."
+    },
+    {
+     "img": "548456113f",
+     "alt": "Exemple de site de clinique mettant en avant ses services de soins et d’urgences dès la page d’accueil",
+     "cap": "Exemple de site de clinique : services, urgences et contacts accessibles dès l’accueil."
+    }
+   ]
+  },
+  {
+   "h2": "Que doit contenir le site d’un cabinet médical ?",
+   "blocks": [
+    {
+     "p": "Le site d’un cabinet médical doit présenter le médecin, expliquer ce qu’il prend en charge, donner toutes les informations pratiques et permettre de demander un rendez-vous en un geste. Les pages qui font un bon site :"
+    },
+    {
+     "ul": [
+      "<strong>Le médecin</strong> : spécialité, diplômes, qualifications reconnues, langues parlées au cabinet, une vraie photo.",
+      "<strong>Les motifs de consultation et les examens</strong>, expliqués de façon informative : à quoi sert un holter, comment se passe un fond d’œil, pourquoi venir à jeun pour une prise de sang.",
+      "<strong>Préparer sa consultation</strong> : ordonnances, examens précédents, carte d’assurance.",
+      "<strong>Les infos pratiques</strong> : adresse avec un repère, étage, ascenseur, stationnement, horaires du Ramadan, assurances et mutuelles acceptées.",
+      "<strong>Le rendez-vous et le contact</strong> : numéro cliquable, WhatsApp, formulaire court.",
+      "<strong>Une consigne d’urgence visible</strong> : le site n’est pas un service d’urgence ; indiquez la conduite à tenir et les numéros officiels."
+     ]
+    },
+    {
+     "note": "Rédigez chaque page comme vous l’expliqueriez en consultation : phrases courtes, mots simples, aucun terme technique sans explication. Google et les assistants IA les comprendront aussi mieux."
+    }
+   ]
+  },
+  {
+   "h2": "Quelles règles respecter pour le site d’un médecin ou d’une clinique au Maroc ?",
+   "blocks": [
+    {
+     "p": "Le site d’un médecin ou d’une clinique doit rester informatif et sobre : au Maroc, la publicité des professions médicales est encadrée par leurs ordres, et les médecins relèvent des règles déontologiques de l’Ordre national des médecins. Informer est utile et attendu ; promouvoir comme un commerce ne l’est pas."
+    },
+    {
+     "table": {
+      "head": [
+       "À privilégier",
+       "À éviter"
+      ],
+      "rows": [
+       [
+        "Spécialité, diplômes et qualifications reconnues",
+        "Les titres flous et les superlatifs : « le meilleur spécialiste de la ville »"
+       ],
+       [
+        "Une information médicale générale, pédagogique et prudente",
+        "Les promesses de guérison ou de résultat"
+       ],
+       [
+        "Les examens et actes réalisés",
+        "La comparaison avec des confrères ou d’autres établissements"
+       ],
+       [
+        "Les horaires, l’accès, les démarches d’admission",
+        "Les promotions ou « offres » sur des consultations et des bilans"
+       ],
+       [
+        "De vraies photos des locaux et de l’équipement",
+        "Les témoignages et les photos de patients utilisés comme publicité"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Pour une clinique, la même sobriété reste la meilleure protection, car ses pages présentent des médecins et des actes médicaux. En cas de doute, demandez l’avis de l’Ordre avant de publier."
+    },
+    {
+     "note": "Un test simple : chaque phrase de votre site doit pouvoir être lue à voix haute devant un confrère, sans gêne."
+    }
+   ]
+  },
+  {
+   "h2": "Prise de rendez-vous médecin en ligne : quelle solution choisir ?",
+   "blocks": [
+    {
+     "p": "La solution la plus sûre combine un bouton WhatsApp et un formulaire de demande de rendez-vous confirmé par le secrétariat ; l’agenda en ligne en temps réel convient aux structures dont le planning est déjà numérique, et devient précieux dès qu’il y a plusieurs médecins."
+    },
+    {
+     "table": {
+      "head": [
+       "Solution",
+       "Pour qui",
+       "Point d’attention"
+      ],
+      "rows": [
+       [
+        "WhatsApp avec messages automatiques",
+        "Tous les cabinets",
+        "Un accueil automatique hors horaires, une réponse dès l’ouverture"
+       ],
+       [
+        "Formulaire de demande",
+        "Médecins qui gardent la main sur l’agenda",
+        "Quelques champs, aucune question médicale détaillée"
+       ],
+       [
+        "Agenda en ligne en temps réel",
+        "Centres et cliniques à plusieurs praticiens",
+        "Un agenda par médecin, synchronisé avec le planning réel"
+       ],
+       [
+        "Plateforme de rendez-vous médicale",
+        "En complément de votre site",
+        "Le profil appartient à la plateforme : lisez ses conditions"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Dans une clinique, le parcours doit orienter dès le premier clic :"
+    },
+    {
+     "ol": [
+      "Le patient choisit une spécialité, puis un médecin ou « le premier disponible ».",
+      "Il indique un motif simple (consultation, contrôle, examen) et ses disponibilités.",
+      "Le bon secrétariat reçoit la demande, et non un standard débordé.",
+      "La confirmation, puis le rappel de la veille, partent par WhatsApp ou SMS."
+     ]
+    },
+    {
+     "p": "Ces automatisations se branchent sur votre site : voyez nos <a href=\"services.html\">services</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Comment le site d’une clinique ou d’un cabinet médical se fait-il trouver sur Google ?",
+   "blocks": [
+    {
+     "p": "Le site d’une clinique ou d’un cabinet médical se fait trouver en répondant aux recherches réelles des patients, une spécialité et une ville ou un quartier (« pédiatre El Jadida », « ophtalmologue Maârif », « طبيب أطفال الرباط »), et en étant relié à une fiche Google complète."
+    },
+    {
+     "ul": [
+      "<strong>Une page par spécialité ou par examen</strong> : « Échographie cardiaque à Rabat » plutôt que « Nos services ».",
+      "<strong>Une fiche Google vérifiée</strong>, avec une catégorie précise (« Pédiatre », « Cardiologue », « Clinique ») et des horaires exacts : voir notre <a href=\"guide-fiche-google-business-maroc.html\">guide de la fiche Google</a>.",
+      "<strong>Des données structurées</strong> Schema.org (Physician, MedicalClinic) qui décrivent médecins, spécialités, adresse et horaires.",
+      "<strong>Des questions-réponses claires</strong>, que ChatGPT, Gemini ou Perplexity reprennent quand on leur demande « un pédiatre qui consulte le samedi à El Jadida »."
+     ]
+    },
+    {
+     "img": "128a633682",
+     "alt": "Exemple de site de cardiologue présentant la spécialité et les examens proposés au cabinet",
+     "cap": "Exemple de site de cardiologue : une page par examen aide Google à comprendre votre activité."
+    },
+    {
+     "p": "Les avis Google comptent aussi : répondez-y sans jamais confirmer qu’une personne est votre patient. Voyez nos guides des <a href=\"avis-google-maroc.html\">avis Google</a> et du <a href=\"referencement-seo-maroc.html\">référencement SEO au Maroc</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Données de santé : que dit la loi 09-08 pour un site médical ?",
+   "blocks": [
+    {
+     "p": "Dès que votre site collecte des données, la loi 09-08 s’applique, et les données relatives à la santé y sont considérées comme sensibles : leur traitement est plus strictement encadré, sous le contrôle de la CNDP. En pratique, collectez le minimum et protégez-le."
+    },
+    {
+     "ul": [
+      "Un formulaire limité au nom, au téléphone, à la spécialité et à un motif général.",
+      "Aucun envoi d’ordonnance, de résultat ou de compte rendu par un formulaire ou un e-mail non sécurisé.",
+      "HTTPS sur tout le site, hébergement sécurisé, sauvegardes, accès réservés au personnel concerné.",
+      "Pour les résultats en ligne, un espace patient sécurisé, avec identification.",
+      "Une politique de confidentialité claire, et les démarches CNDP (déclaration ou autorisation selon les cas) validées par un juriste."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Dans quelles langues rédiger le site d’un médecin au Maroc ?",
+   "blocks": [
+    {
+     "p": "En français et en arabe au minimum, car vos patients cherchent dans les deux langues, et souvent en darija ; ajoutez l’anglais si vous recevez des étrangers, par exemple dans une clinique de Marrakech ou de Tanger. Indiquer les langues parlées au cabinet, y compris l’amazigh selon les régions, rassure immédiatement un patient âgé et sa famille. Chaque version doit être rédigée par un humain : une information médicale mal traduite peut induire en erreur."
+    }
+   ]
+  },
+  {
+   "h2": "Combien coûte un site web pour médecin ou clinique au Maroc ?",
+   "blocks": [
+    {
+     "p": "À titre indicatif, un site vitrine sur-mesure, multilingue et optimisé pour Google coûte environ 8 000 à 25 000 MAD au Maroc, et un site avec prise de rendez-vous en ligne environ 12 000 à 35 000 MAD. Une clinique avec de nombreux services et un agenda par médecin se situe plutôt en haut de ces fourchettes ; un espace patient ou une application relèvent d’un projet à part, à partir de 40 000 MAD."
+    },
+    {
+     "p": "Ces montants varient selon les prestataires. Prévoyez aussi les coûts annuels : nom de domaine, hébergement, maintenance. Détails dans notre <a href=\"guide-prix-site-web-maroc.html\">guide des prix</a> ; si vous hésitez entre WordPress et un site codé sur mesure, lisez <a href=\"wordpress-ou-sur-mesure-maroc.html\">notre comparatif</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Quelles erreurs éviter sur le site d’un cabinet médical ?",
+   "blocks": [
+    {
+     "p": "L’erreur la plus grave est de transformer un site médical en brochure publicitaire : promesses, promotions et témoignages exposent le médecin et inquiètent les patients au lieu de les rassurer. Autres pièges fréquents :"
+    },
+    {
+     "ul": [
+      "Des horaires et des numéros périmés, notamment pendant le Ramadan et les jours fériés.",
+      "Une page unique pour toute une clinique, où personne ne trouve le bon service.",
+      "Un formulaire qui demande des antécédents médicaux.",
+      "Un site lent et illisible sur téléphone, alors que les proches cherchent souvent dans l’urgence."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "La check-list du site de votre cabinet ou de votre clinique",
+   "blocks": [
+    {
+     "p": "Avant la mise en ligne, cochez chacun de ces points :"
+    },
+    {
+     "ul": [
+      "Médecins présentés : spécialité, diplômes, langues parlées.",
+      "Une page par spécialité ou par examen principal.",
+      "Adresse, accès, horaires (Ramadan compris), assurances acceptées.",
+      "WhatsApp, numéro cliquable et formulaire testés sur téléphone.",
+      "Consigne d’urgence visible sur toutes les pages.",
+      "Textes sobres, sans promesse, promotion ni témoignage publicitaire.",
+      "Fiche Google vérifiée, bonne catégorie, lien vers le site.",
+      "Politique de confidentialité en ligne, formulaire minimal, démarches CNDP vérifiées."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago peut vous aider",
+   "blocks": [
+    {
+     "p": "Digilago, agence web basée à El Jadida, accompagne médecins, centres médicaux et cliniques dans tout le Maroc : site sur mesure en français, en arabe et en anglais, prise de rendez-vous et WhatsApp automatisé, fiche Google, référencement, visibilité dans les IA, hébergement et maintenance. Le prix est annoncé par écrit avant de commencer, la première version arrive en 72 heures et, si elle ne vous plaît pas, vous ne payez rien. Découvrez nos <a href=\"realisations.html\">idées de sites pour la santé</a> et notre guide des <a href=\"site-web-dentiste-maroc.html\">sites de dentistes</a>, puis <a href=\"demarrer.html\">démarrez votre projet</a> ou écrivez-nous sur WhatsApp au +212 6 49 95 38 13."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "Un médecin a-t-il le droit d’avoir un site internet au Maroc ?",
+   "a": "Oui, à condition que le site reste informatif et sobre. La publicité des professions médicales est encadrée par leurs ordres : on présente le médecin, sa spécialité, les actes réalisés, les horaires et l’accès, sans promesse de résultat, sans promotion et sans témoignages utilisés comme publicité. En cas de doute, l’Ordre national des médecins reste la référence."
+  },
+  {
+   "q": "Combien coûte un site web pour un cabinet médical au Maroc ?",
+   "a": "À titre indicatif, comptez environ 8 000 à 25 000 MAD pour un site vitrine sur-mesure, multilingue et optimisé pour Google, et environ 12 000 à 35 000 MAD avec la prise de rendez-vous en ligne. Une clinique avec de nombreux services coûte davantage. Le nom de domaine, l’hébergement et la maintenance s’ajoutent chaque année."
+  },
+  {
+   "q": "Comment proposer la prise de rendez-vous médecin en ligne ?",
+   "a": "Le plus simple est d’ajouter au site un bouton WhatsApp et un formulaire de demande de rendez-vous que le secrétariat confirme. Les cabinets et cliniques dont le planning est numérique peuvent proposer un agenda en ligne, avec un calendrier par médecin et un rappel automatique la veille."
+  },
+  {
+   "q": "Une plateforme de rendez-vous médicale suffit-elle, sans site ?",
+   "a": "Une plateforme peut apporter de la visibilité, mais votre profil y suit ses règles et ne vous appartient pas. Votre propre site vous permet d’expliquer votre pratique, d’apparaître sur Google sous votre nom et de garder le lien avec vos patients. Les deux peuvent se compléter."
+  },
+  {
+   "q": "Peut-on publier des témoignages de patients sur le site d’une clinique ?",
+   "a": "La prudence s’impose : des témoignages de patients utilisés comme argument publicitaire s’accordent mal avec la sobriété attendue des professions médicales, et posent la question du secret médical. Laissez les avis s’exprimer librement sur Google et répondez-y sans jamais évoquer l’état de santé d’une personne."
+  },
+  {
+   "q": "Le site d’un médecin doit-il respecter la loi 09-08 ?",
+   "a": "Oui, dès qu’il collecte des données personnelles, même un nom et un téléphone. Les données relatives à la santé sont considérées comme sensibles : limitez le formulaire au strict nécessaire, sécurisez le site et publiez une politique de confidentialité. Les démarches auprès de la CNDP sont à vérifier avec un juriste."
+  },
+  {
+   "q": "Comment apparaître sur Google quand on cherche un médecin dans sa ville ?",
+   "a": "Il faut une fiche Google vérifiée, avec la bonne catégorie et des horaires exacts, et un site rapide sur téléphone, avec une page par spécialité. Les données structurées et des réponses claires aux questions fréquentes aident aussi les assistants IA à vous citer. Sur les recherches concurrentielles, comptez plusieurs mois de travail régulier."
+  },
+  {
+   "q": "Combien de temps faut-il pour créer le site d’une clinique ?",
+   "a": "Le site d’un médecin seul peut être prêt en quelques jours à quelques semaines ; celui d’une clinique, avec plusieurs services et un agenda par médecin, demande davantage. Le rythme dépend surtout des contenus et des validations internes. Chez Digilago, une première version est livrée en 72 heures."
+  }
+ ],
+ "related": [
+  "site-web-dentiste-maroc.html",
+  "referencement-seo-maroc.html",
+  "guide-fiche-google-business-maroc.html"
+ ]
+}
