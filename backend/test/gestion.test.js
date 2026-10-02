@@ -201,3 +201,32 @@ test('comptabilité marocaine : TVA sur encaissements, déductions, timbre, écr
   const ae = await (await get('/comptabilite')).text(); assert.match(ae, /Auto-entrepreneur : vos plafonds/); assert.match(ae, /Retenue 30 % par le client/);
   await post('/comptabilite/profil', { fiscal_regime: 'societe_is', tva_assujetti: '1' });
 });
+
+test('demandes à l’instant : compteur, nouvelles arrivées, « contactée » en un geste', async () => {
+  /* sans connexion, rien ne sort */
+  let r = await fetch(base + '/api/pulse', { redirect: 'manual' });
+  assert.strictEqual(r.status, 302);
+  let p = await (await get('/api/pulse')).json();
+  const before = p.n, since = p.last;
+  assert.ok(Number.isInteger(p.n) && Number.isInteger(p.last));
+  r = await fetch(base + '/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Salma', phone: '06 12 34 56 78', need: 'Être rappelé', source: 'Rappel, Services' }) });
+  const { id } = await r.json();
+  p = await (await get('/api/pulse?since=' + since)).json();
+  assert.strictEqual(p.n, before + 1);
+  assert.strictEqual(p.last, id);
+  assert.strictEqual(p.fresh.length, 1);
+  assert.deepStrictEqual(p.fresh[0].src, ['rappel', 'Rappel demandé']);
+  assert.strictEqual(p.fresh[0].wa, '212612345678');
+  assert.strictEqual(p.fresh[0].at, 'à l’instant');
+  /* la carte du pipeline porte ses gestes ; « contactée » répond sans recharger la page */
+  const html = await (await get('/demandes')).text();
+  assert.match(html, new RegExp(`data-done="${id}"`));
+  assert.match(html, /src-rappel/);
+  r = await post('/demandes/' + id + '/etape', { stage: 'contacte' }, { headers: { 'Content-Type': 'application/x-www-form-urlencoded', cookie, Accept: 'application/json' } });
+  assert.deepStrictEqual(await r.json(), { ok: true });
+  p = await (await get('/api/pulse?since=' + id)).json();
+  assert.strictEqual(p.n, before);
+  assert.strictEqual(p.fresh.length, 0);
+  /* classer perdue demande une confirmation */
+  assert.match(await (await get('/demandes/' + id)).text(), /class="lost" data-confirm=/);
+});

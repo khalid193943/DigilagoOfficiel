@@ -25,6 +25,10 @@ const ICONS = {
   report: I('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
   out: I('<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'),
   menu: I('<path d="M4 7h16M4 12h16M4 17h10"/>'),
+  phone: I('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/>'),
+  wa: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 01-3.3-2.9c-.2-.4.2-.4.7-1.3a.4.4 0 000-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 001.8-1.3 2.2 2.2 0 00.2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>',
+  check: I('<path d="M5 12.5l4.2 4.2L19 7"/>'),
+  bell: I('<path d="M6 16V11a6 6 0 1112 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 004 0"/>'),
 };
 /* Barre d'onglets du téléphone : l'essentiel au pouce, le reste dans « Menu ». */
 const TABS = [['/', 'Accueil', 'home'], ['/demandes', 'Demandes', 'lead'], ['/assistant', 'Nouveau', 'plus'], ['/factures', 'Factures', 'invoice']];
@@ -36,6 +40,11 @@ const NAV_GROUPS = [
   ['Réglages', [['/prestations', 'Prestations', 'catalog'], ['/parametres', 'Paramètres', 'settings']]],
 ];
 const NAV = NAV_GROUPS.flatMap((g) => g[1]);
+/* Navigation instantanée : la page survolée est préparée à l'avance (Chrome, Edge). Jamais pour les pages qui
+   changent quelque chose à l'ouverture (messagerie marquée lue, liens clients « consulté »). */
+const NOSPEC = ['/messagerie', '/d/', '/f/', '/bc/', '/recu/', '/brief/', '/comptable/', '/deconnexion'].map((p) => `[href^="${p}"]`).join(',');
+const SPEC = '<script type="speculationrules">' + JSON.stringify({ prerender: [{ where: { and: [{ href_matches: '/*' },
+  { not: { selector_matches: '[target],[download],[data-mark],' + NOSPEC } }] }, eagerness: 'moderate' }] }) + '</script>';
 
 const Q_STATUS = { brouillon: ['Brouillon', 'grey'], envoye: ['Envoyé', 'blue'], vu: ['Consulté', 'violet'], accepte: ['Accepté', 'green'], refuse: ['Refusé', 'red'], facture: ['Facturé', 'navy'], expire: ['Expiré', 'amber'] };
 const P_STATUS = { proposition: ['Proposition', 'amber'], a_demarrer: ['À démarrer', 'grey'], en_cours: ['En cours', 'blue'], validation: ['En validation', 'violet'], livre: ['Livré', 'green'] };
@@ -49,9 +58,11 @@ function layout({ title, active = '', body, flash = '', actions = '' }) {
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Digilago">
 <link rel="icon" href="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 8 38 48"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="#1F57C7"/><path d="M28 10 A22 22 0 0 1 28 54 Z" fill="#1F57C7"/></svg>')}">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"></head><body class="admin">
+<link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}">
+${SPEC}</head><body class="admin">
 <aside class="side"><a class="brand" href="/"><span>${LOGO}</span><b>digilago</b><em>Gestion</em></a>
 <a class="new${active === '/assistant' ? ' on' : ''}" href="/assistant">${ICONS.spark}<span>Nouveau projet</span></a><button type="button" class="kbar" data-cmdk>${ICONS.search || ""}<span>Rechercher</span><kbd>⌘K</kbd></button><nav>${nav}</nav>
+<button type="button" class="alerts" data-alerts hidden>${ICONS.bell}<span>Activer les alertes</span></button>
 <form method="post" action="/deconnexion" class="out"><button type="submit">${ICONS.out}Déconnexion</button></form></aside>
 <main class="main"><header class="top"><h1>${esc(title)}</h1><div class="top-a">${actions}</div></header>${flash ? `<div class="flash">${esc(flash)}</div>` : ''}${body}</main>
 <nav class="tabbar" aria-label="Navigation rapide">${TABS.map(([h, t, i]) => `<a href="${h}" class="${active === h ? 'on' : ''}${h === '/assistant' ? ' tb-new' : ''}">${ICONS[i]}<span>${t}</span></a>`).join('')}<button type="button" data-menu aria-expanded="false">${ICONS.menu}<span>Menu</span></button></nav>

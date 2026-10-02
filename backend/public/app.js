@@ -10,8 +10,6 @@
   $$('[data-copy]').forEach(function(b){ b.addEventListener('click', function(){ var i = $(b.dataset.copy); i.select(); try { navigator.clipboard.writeText(i.value); } catch (e) { document.execCommand('copy'); } b.textContent = 'Copié'; setTimeout(function(){ b.textContent = 'Copier'; }, 1500); }); });
   /* envoyer = marquer le devis comme envoyé */
   $$('[data-mark]').forEach(function(a){ a.addEventListener('click', function(){ try { fetch(a.dataset.mark, { method: 'POST', credentials: 'same-origin' }); } catch (e) {} }); });
-  /* confirmations */
-  $$('form[data-confirm]').forEach(function(f){ f.addEventListener('submit', function(e){ if (!confirm(f.dataset.confirm)) e.preventDefault(); }); });
   /* un formulaire envoyé une fois ne repart pas au double-clic (doubles factures, doubles paiements…) */
   document.addEventListener('submit', function(e){
     var f = e.target; if (e.defaultPrevented || f.method.toLowerCase() !== 'post') return;
@@ -121,4 +119,126 @@
       Array.prototype.forEach.call(tr.children, function(td, i){ if (heads[i]) td.setAttribute('data-label', heads[i]); });
     });
   });
+})();
+
+/* ---------- Demandes à l'instant : alerte dès qu'un client écrit sur le site ----------
+   Toutes les 15 s (page visible), la gestion demande au serveur s'il y a du nouveau : le compteur
+   « Demandes » se met à jour partout, et chaque nouvelle demande s'affiche aussitôt avec ses gestes
+   (appeler, WhatsApp, ouvrir), un petit son et, si vous l'avez autorisée, une notification du système. */
+(function(){
+  'use strict';
+  if (!document.body.classList.contains('admin')) return;
+  var K = 'dg-lead-last', last = 0, t0 = document.title.replace(/^\(\d+\)\s*/, ''), busy = false, hidden = 0, actx = null;
+  try { last = +localStorage.getItem(K) || 0; } catch (e) {}
+  var h = function(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var links = Array.prototype.slice.call(document.querySelectorAll('.side nav a[href="/demandes"], .tabbar a[href="/demandes"]'));
+  var stack = document.createElement('div'); stack.className = 'toasts'; stack.setAttribute('aria-live', 'polite'); document.body.appendChild(stack);
+  function count(n, late){
+    links.forEach(function(a){ var b = a.querySelector('.nb'); if (!n) { if (b) b.remove(); return; } if (!b) { b = document.createElement('i'); b.className = 'nb'; a.appendChild(b); } b.textContent = n > 99 ? '99+' : n; });
+    document.title = (n ? '(' + n + ') ' : '') + t0;
+    var lk = document.querySelector('[data-pulse-late]'); if (lk) lk.textContent = late;
+    var ln = document.querySelector('[data-pulse-n]'); if (ln) ln.textContent = n;
+  }
+  /* un petit carillon (deux notes douces), seulement après un premier geste sur la page */
+  document.addEventListener('pointerdown', function(){ try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) {} }, { once: true });
+  function chime(){
+    if (!actx) return;
+    try { [[880, 0], [1320, .14]].forEach(function(n){ var o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + n[1];
+      o.type = 'sine'; o.frequency.value = n[0]; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.12, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + .5);
+      o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + .55); }); } catch (e) {}
+  }
+  function toast(l){
+    var el = document.createElement('div'); el.className = 'toast src-' + h(l.src[0]);
+    el.innerHTML = '<div class="t-h"><span class="t-src">' + h(l.src[1]) + '</span><em>' + h(l.at) + '</em><button type="button" class="t-x" aria-label="Fermer">×</button></div>' +
+      '<b>' + h(l.who) + '</b>' + (l.need ? '<p>' + h(l.need) + '</p>' : '') + (l.phone ? '<span class="t-ph">' + h(l.phone) + (l.city ? ' · ' + h(l.city) : '') + '</span>' : '') +
+      '<div class="t-a">' + (l.phone ? '<a class="btn sm" href="tel:' + h(l.phone) + '">Appeler</a><a class="btn wa sm" target="_blank" rel="noopener" href="https://wa.me/' + h(l.wa) + '">WhatsApp</a>' : '') + '<a class="btn ghost sm" href="/demandes/' + (+l.id) + '">Ouvrir</a></div>';
+    el.querySelector('.t-x').addEventListener('click', function(){ el.classList.add('out'); setTimeout(function(){ el.remove(); }, 260); });
+    stack.prepend(el); requestAnimationFrame(function(){ el.classList.add('in'); });
+    while (stack.children.length > 3) stack.lastChild.remove();
+    if (document.hidden && window.Notification && Notification.permission === 'granted') {
+      try { var no = new Notification('Nouvelle demande : ' + l.who, { body: [l.src[1], l.phone, l.need].filter(Boolean).join(' · '), tag: 'lead-' + l.id });
+        no.onclick = function(){ window.focus(); location.href = '/demandes/' + (+l.id); }; } catch (e) {}
+    }
+  }
+  /* sur la page des demandes : un bandeau propose d'afficher les nouvelles */
+  function banner(k){
+    if (location.pathname !== '/demandes') return;
+    var b = document.querySelector('.live-b');
+    if (!b) { b = document.createElement('button'); b.type = 'button'; b.className = 'live-b'; b.addEventListener('click', function(){ location.reload(); });
+      var at = document.querySelector('.tools') || document.querySelector('.main > .top'); at.parentNode.insertBefore(b, at.nextSibling); }
+    b.textContent = k + (k > 1 ? ' nouvelles demandes' : ' nouvelle demande') + ' · Afficher';
+  }
+  var waiting = 0;
+  function tick(){
+    if (busy) return; busy = true;
+    fetch('/api/pulse?since=' + last, { credentials: 'same-origin', cache: 'no-store' }).then(function(r){ return r.ok ? r.json() : null; }).then(function(p){
+      busy = false; if (!p) return;
+      count(p.n, p.late);
+      if (!last) last = p.last; /* première visite : pas d'alerte pour les anciennes demandes */
+      else if (p.fresh && p.fresh.length) { p.fresh.slice().reverse().forEach(toast); chime(); waiting += p.fresh.length; banner(waiting); }
+      if (p.last > last) last = p.last;
+      try { localStorage.setItem(K, last); } catch (e) {}
+    }).catch(function(){ busy = false; });
+  }
+  tick(); setInterval(function(){ if (!document.hidden || ++hidden % 4 === 0) tick(); }, 15000);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) tick(); });
+  /* autoriser les notifications du système (une fois, d'un geste) */
+  var ab = document.querySelector('[data-alerts]');
+  if (ab && window.Notification && Notification.permission === 'default') {
+    ab.hidden = false;
+    ab.addEventListener('click', function(){ Notification.requestPermission().then(function(r){ ab.hidden = r !== 'default'; }); });
+  }
+  /* « Contactée » en un geste, depuis la carte du pipeline */
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-done]'); if (!b) return;
+    e.preventDefault(); b.disabled = true;
+    fetch('/demandes/' + (+b.dataset.done) + '/etape', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' }, body: 'stage=contacte' })
+      .then(function(r){ if (!r.ok) throw 0;
+        var card = b.closest('.ld'), to = document.querySelector('.kb-col[data-stage="contacte"]'), from = card && card.closest('.kb-col');
+        b.remove(); if (card) card.classList.remove('fresh');
+        if (card && to && from !== to) { var hd = to.querySelector('header'), em = to.querySelector('.empty'); if (em) em.remove(); hd.parentNode.insertBefore(card, hd.nextSibling); card.classList.add('moved');
+          [from, to].forEach(function(c){ var n = c.querySelectorAll('.ld').length, s = c.querySelector('.kb-n'); if (s) s.textContent = n; }); }
+        tick();
+      }).catch(function(){ b.disabled = false; });
+  });
+})();
+
+/* ---------- Confirmations : une vraie fenêtre (et non la boîte du navigateur) avant les gestes importants ---------- */
+(function(){
+  'use strict';
+  var dlg = null, pending = null;
+  function ask(text, ok, then){
+    if (!dlg) {
+      dlg = document.createElement('dialog'); dlg.className = 'confirm';
+      dlg.innerHTML = '<form method="dialog"><p></p><div class="cf-a"><button value="no" class="btn ghost">Annuler</button><button value="yes" class="btn cf-ok">Confirmer</button></div></form>';
+      document.body.appendChild(dlg);
+      dlg.addEventListener('close', function(){ var f = pending; pending = null; if (f && dlg.returnValue === 'yes') f(); });
+    }
+    dlg.querySelector('p').textContent = text; dlg.querySelector('.cf-ok').textContent = ok || 'Confirmer';
+    pending = then; dlg.returnValue = ''; dlg.showModal(); dlg.querySelector('.cf-ok').focus();
+  }
+  /* la question vient du bouton cliqué (data-confirm) ou du formulaire */
+  document.addEventListener('submit', function(e){
+    var f = e.target, sb = e.submitter, msg = (sb && sb.dataset.confirm) || f.dataset.confirm;
+    if (!msg || f.dataset.confirmed) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    var go = function(){ f.dataset.confirmed = '1'; if (f.requestSubmit) f.requestSubmit(sb || undefined); else f.submit(); setTimeout(function(){ delete f.dataset.confirmed; }, 4000); };
+    if (!window.HTMLDialogElement) { if (confirm(msg)) go(); return; }
+    ask(msg, (sb && sb.dataset.ok) || f.dataset.ok, go);
+  }, true);
+})();
+
+/* ---------- Aperçus des sites (tableau de bord) : chargés seulement quand on les voit, une fois la page prête ----------
+   Un site entier dans la page coûte cher : il ne doit jamais ralentir l'ouverture de la gestion. */
+(function(){
+  'use strict';
+  var fr = document.querySelectorAll('iframe[data-src]'); if (!fr.length) return;
+  var go = function(f){ if (!f.src) f.src = f.dataset.src; };
+  var idle = window.requestIdleCallback || function(cb){ return setTimeout(cb, 400); };
+  var start = function(){
+    if (!('IntersectionObserver' in window)) { Array.prototype.forEach.call(fr, go); return; }
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) { idle(function(){ go(e.target); }); io.unobserve(e.target); } }); }, { rootMargin: '120px' });
+    Array.prototype.forEach.call(fr, function(f){ io.observe(f); });
+  };
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
 })();

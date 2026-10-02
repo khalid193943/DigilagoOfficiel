@@ -339,3 +339,73 @@ code{font-family:"JetBrains Mono",monospace;font-size:12px;padding:2px 6px;borde
 .ttc-note b{color:#0F5132}
 .ttc-note.old{background:#FFF7E6;box-shadow:inset 0 0 0 1px rgba(217,119,6,.25);color:#7C4A03}
 .ttc-note.old b{color:#7C4A03}
+/* ===== Demandes à l'instant : compteurs, alertes, gestes rapides, confirmations ===== */
+.nb{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:auto;padding:0 6px;border-radius:999px;background:#FF5A4E;color:#fff;font:600 11px/1 "JetBrains Mono",monospace;font-style:normal;box-shadow:0 0 0 3px rgba(255,90,78,.2);animation:nbIn .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes nbIn{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.tabbar a{position:relative}.tabbar .nb{position:absolute;top:5px;left:calc(50% + 5px);margin:0;min-width:18px;height:18px;padding:0 5px;font-size:10px}
+/* la carte d'une demande : la fiche, puis les gestes (appeler, WhatsApp, contactée) */
+.ld{padding:0;gap:0;overflow:hidden}
+.ld-a{display:flex;flex-direction:column;gap:4px;padding:12px 13px;color:inherit}
+.ld-a b{font-size:13.5px}.ld-a>span{font-size:12px;color:#5F6B80;line-height:1.35}.ld-a small{font-size:11px;color:#8A9BB8}
+.ld-q{display:flex;align-items:center;gap:6px;padding:8px 10px;border-top:1px solid #EEF2F8;background:#FAFCFF}
+.ld-q a,.ld-q button{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:30px;min-width:30px;padding:0 8px;border:0;border-radius:9px;background:#EEF3FC;color:#1F57C7;font:600 12px/1 "Instrument Sans",sans-serif;cursor:pointer;transition:filter .2s,transform .2s}
+.ld-q a:hover,.ld-q button:hover{filter:brightness(.96);transform:translateY(-1px)}
+.ld-q svg{width:15px;height:15px;flex:none}
+.ld-q a[href^="https://wa.me"]{background:#E7F6EC;color:#15803D}
+.ld-q button{margin-left:auto;padding:0 10px;background:#1F57C7;color:#fff}
+.ld-q button:disabled{opacity:.5}
+.ld.fresh{box-shadow:0 0 0 1.5px rgba(47,107,255,.5),0 14px 30px -20px rgba(14,40,110,.6)}
+.ld.moved{animation:ldIn .55s cubic-bezier(.34,1.56,.64,1)}
+@keyframes ldIn{from{transform:translateY(-10px) scale(.97);opacity:.3}to{transform:none;opacity:1}}
+.ld-m .src-rappel,.lead-k .src-rappel{background:#FFF1E0;color:#B45309}
+.ld-m .src-demarrer,.lead-k .src-demarrer{background:#E8F0FE;color:#1F57C7}
+.ld-m .src-contact,.lead-k .src-contact{background:#F1EAFE;color:#6D28D9}
+/* bandeau : de nouvelles demandes viennent d'arriver */
+.live-b{display:inline-flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 18px;border:0;border-radius:999px;background:linear-gradient(135deg,#2F6BFF,#1F57C7);color:#fff;font:600 13.5px/1.2 "Instrument Sans",sans-serif;cursor:pointer;box-shadow:0 14px 30px -14px rgba(31,87,199,.85);animation:nbIn .5s cubic-bezier(.34,1.56,.64,1)}
+.live-b::before{content:"";width:8px;height:8px;border-radius:50%;background:#FFD36A;animation:lvP 1.6s infinite}
+@keyframes lvP{0%{box-shadow:0 0 0 0 rgba(255,211,106,.75)}100%{box-shadow:0 0 0 10px rgba(255,211,106,0)}}
+/* alertes : en bas à droite (en haut sur téléphone) */
+.toasts{position:fixed;right:20px;bottom:20px;z-index:2000;display:flex;flex-direction:column;gap:10px;width:min(370px,calc(100vw - 24px));pointer-events:none}
+.toast{pointer-events:auto;padding:14px 16px;border-radius:20px;background:rgba(255,255,255,.98);box-shadow:0 0 0 1px rgba(14,33,78,.06),0 26px 54px -18px rgba(8,22,64,.6);color:#0E214E;opacity:0;transform:translateY(16px) scale(.97);transition:opacity .35s,transform .5s cubic-bezier(.34,1.56,.64,1)}
+.toast.in{opacity:1;transform:none}.toast.out{opacity:0;transform:translateX(30px)}
+.t-h{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.t-src{padding:4px 9px;border-radius:999px;background:#E8F0FE;color:#1F57C7;font:500 10.5px/1.2 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+.toast.src-rappel .t-src{background:#FFF1E0;color:#B45309}.toast.src-contact .t-src{background:#F1EAFE;color:#6D28D9}
+.t-h em{font-style:normal;font-size:11.5px;color:#8A9BB8}
+.t-x{margin-left:auto;width:26px;height:26px;border:0;border-radius:50%;background:transparent;color:#8A9BB8;font-size:18px;line-height:1;cursor:pointer}.t-x:hover{background:#F1F4FA;color:#0E214E}
+.toast b{display:block;font-family:Sora,sans-serif;font-size:16.5px;font-weight:600;letter-spacing:-.02em}
+.toast p{margin:4px 0 0;font-size:13px;color:#5F6B80;line-height:1.45}
+.t-ph{display:block;margin-top:6px;font:500 12.5px/1.3 "JetBrains Mono",monospace;color:#24375C}
+.t-a{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+@media (max-width:760px){.toasts{left:10px;right:10px;bottom:auto;top:calc(10px + env(safe-area-inset-top,0px));width:auto}}
+/* autoriser les notifications du système */
+.alerts{display:flex;align-items:center;gap:10px;width:100%;margin-top:auto;padding:9px 12px;border:0;border-radius:10px;background:rgba(255,211,106,.12);color:#FFE3A0;font-weight:500;cursor:pointer}.alerts svg{width:18px}.alerts:hover{background:rgba(255,211,106,.2)}
+.alerts[hidden]{display:none}.alerts:not([hidden])+.out{margin-top:6px}
+/* confirmation avant un geste important */
+dialog.confirm{width:min(440px,calc(100vw - 32px));padding:0;border:0;border-radius:24px;background:#fff;color:#0E214E;box-shadow:0 40px 90px -30px rgba(8,22,64,.7)}
+dialog.confirm::backdrop{background:rgba(9,20,52,.42);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+dialog.confirm form{padding:26px 26px 20px}
+dialog.confirm p{margin:0 0 22px;font-family:Sora,sans-serif;font-size:17px;line-height:1.45;letter-spacing:-.01em}
+.cf-a{display:flex;justify-content:flex-end;gap:8px}
+dialog.confirm[open]{animation:cfIn .32s cubic-bezier(.34,1.56,.64,1)}
+@keyframes cfIn{from{transform:translateY(12px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+/* passage d'une page à l'autre : un fondu très court (Chrome, Edge, Safari récents) */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.16s}
+@media (prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}
+/* « Ma journée » : appeler ou écrire sur WhatsApp sans ouvrir la demande */
+.day-l .qa{display:inline-grid;place-items:center;flex:none;width:32px;height:32px;margin-right:6px;border-radius:50%;background:#EEF3FC;color:#1F57C7;transition:transform .2s}
+.day-l .qa:hover{transform:translateY(-1px)}.day-l .qa svg{width:15px;height:15px}.day-l .qa.wa{background:#E7F6EC;color:#15803D}
+/* « En direct » : la page écoute les nouvelles demandes */
+.live-p{display:inline-flex!important;align-items:center;gap:7px;background:#0E214E!important;color:#fff!important;font:500 10.5px/1.2 "JetBrains Mono",monospace!important;letter-spacing:.08em;text-transform:uppercase}
+.live-p i{width:7px;height:7px;border-radius:50%;background:#FFD36A;animation:lvP 1.6s infinite}
+/* téléphone : dans « Ma journée », le texte garde toute la largeur, les gestes passent dessous */
+@media screen and (max-width:760px){
+  .day-l li{display:grid;grid-template-columns:32px minmax(0,1fr);align-items:start;column-gap:12px;row-gap:8px}
+  .day-l li>span{grid-column:2}
+  .day-l li>.qa,.day-l li>.btn{grid-row:2}
+  .day-l li>.qa:first-of-type{grid-column:2;justify-self:start}
+  .day-l li:has(>.qa)>.qa.wa{grid-column:2;justify-self:start;margin-left:40px}
+  .day-l li>.btn{grid-column:2;justify-self:end}
+  .day-l b{white-space:normal}
+}
