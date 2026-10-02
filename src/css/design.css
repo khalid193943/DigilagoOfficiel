@@ -188,7 +188,7 @@ p{text-wrap:pretty}
 .mc-v img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
 .mc-b{display:flex;flex-direction:column;gap:calc(3 * var(--u));min-width:0;padding-right:calc(4 * var(--u))}
 .mc-t{align-self:flex-start;padding:calc(2 * var(--u)) calc(8 * var(--u));border-radius:999px;background:#EEF3FC;color:#1F57C7;font-family:"JetBrains Mono",monospace;font-size:calc(9.5 * var(--u));letter-spacing:.06em;text-transform:uppercase}
-.mcard.cl .mc-t{background:#F2B233;color:#0B1B3A}
+.mcard.mcl .mc-t{background:#F2B233;color:#0B1B3A}
 .mc-b b{font-family:Sora,sans-serif;font-weight:600;font-size:calc(15 * var(--u));letter-spacing:-.02em;color:#0E214E;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mc-b small{font-size:calc(12 * var(--u));color:#5B6170;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mc-f{display:flex;align-items:center;gap:calc(6 * var(--u));margin-top:calc(2 * var(--u));font-size:calc(11.5 * var(--u));font-weight:600;color:#16A36A}
@@ -682,3 +682,87 @@ html body .fin.mom{background:transparent;padding:calc(120 * var(--u)) 0 calc(12
 .fin .mrw-tx small{font-size:calc(9.5 * var(--u));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fin .mrw-rk{padding:calc(3 * var(--u)) calc(7 * var(--u));font-size:calc(11 * var(--u))}
 .fin h2{max-width:calc(620 * var(--u))}
+/* Clients : logos blancs, domaine, badge « site livré » */
+.tp-lab{display:inline-flex;align-items:center;gap:calc(8 * var(--u))}
+.tp-lab i{font-style:normal;font-size:calc(18 * var(--u));letter-spacing:0}
+.tp-logos{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(12 * var(--u));margin-top:calc(14 * var(--u))}
+.tl{display:flex;flex-direction:column;align-items:center;gap:calc(10 * var(--u));padding:calc(24 * var(--u)) calc(16 * var(--u)) calc(18 * var(--u));border-radius:calc(20 * var(--u));background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);color:#fff;text-decoration:none;transition:background .35s,transform .45s cubic-bezier(.16,1,.3,1)}
+.tl:hover{background:rgba(255,255,255,.12);transform:translateY(-4px)}
+.tl-mark{display:flex;align-items:center;gap:calc(10 * var(--u));min-height:calc(52 * var(--u))}
+.tl-mark>i{display:flex;align-items:center;justify-content:center;flex:none;width:calc(44 * var(--u));height:calc(44 * var(--u));border-radius:50%;font-style:normal}
+.tl-mark>span{display:flex;flex-direction:column;align-items:flex-start;text-align:start}
+.tl-mark b{font-weight:600;font-size:calc(17 * var(--u));line-height:1.1;letter-spacing:-.01em}
+.tl-mark small{font-size:calc(10.5 * var(--u));color:#BFD0EE;letter-spacing:.02em}
+.tl-mark.gc>i{background:#F2B233;color:#0E214E;font-family:Sora,sans-serif;font-weight:600;font-size:calc(15 * var(--u))}
+.tl-mark.gc b{font-family:Sora,sans-serif}
+.tl-mark.ab>i{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.85);font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:600;font-size:calc(17 * var(--u));letter-spacing:-.04em}
+.tl-mark.ab b{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:calc(19 * var(--u))}
+.tl-mark.jab b{font-family:Sora,sans-serif;font-weight:600;font-size:calc(15.5 * var(--u))}
+.tl-mark.lm>span{align-items:center;text-align:center}
+.tl-mark.lm b{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:calc(24 * var(--u));letter-spacing:.18em;line-height:1}
+.tl-mark.lm em{font-family:"Playfair Display",Georgia,serif;font-style:normal;font-weight:600;font-size:calc(17 * var(--u));line-height:1.1}
+.tl-dom{font-family:"JetBrains Mono",monospace;font-size:calc(11.5 * var(--u));color:#9CC3FF;letter-spacing:.02em}
+.tl-ok{display:inline-flex;align-items:center;gap:calc(6 * var(--u));padding:calc(5 * var(--u)) calc(11 * var(--u));border-radius:999px;background:rgba(74,222,128,.14);box-shadow:inset 0 0 0 1px rgba(74,222,128,.35);color:#BBF7D0;font-size:calc(12 * var(--u));font-weight:500}
+.tl-ok i{font-style:normal;font-size:calc(12 * var(--u))}
+[data-mode="M"] .tp-logos{grid-template-columns:1fr 1fr;gap:calc(10 * var(--u))}
+[data-mode="M"] .tl{padding:calc(18 * var(--u)) calc(10 * var(--u)) calc(14 * var(--u))}
+[data-mode="M"] .tl-mark{flex-direction:column;gap:calc(6 * var(--u));text-align:center}
+[data-mode="M"] .tl-mark>span{align-items:center;text-align:center}
+[data-mode="M"] .tl-mark b{font-size:calc(15 * var(--u))}
+[data-mode="M"] .tl-dom{font-size:calc(10 * var(--u))}
+
+/* Carte du haut, tout le Maroc : deux canvas (le fond, puis ce qui vit) dans un même cadre */
+.mwrap{position:absolute;inset:0;transform-origin:50% 60%}
+.mcv0{transform-origin:0 0}
+/* téléphone : la carte se pose en douceur à l'arrivée (le navigateur s'en charge, sans rien redessiner) */
+.hero[data-mode="M"] .mwrap.go{animation:mIn 2.6s cubic-bezier(.2,.72,.18,1) both}
+@keyframes mIn{0%{opacity:0;transform:perspective(1000px) rotateX(24deg) scale(1.1) translateY(4%)}35%{opacity:1}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hero[data-mode="M"] .mwrap.go{animation:none}}
+/* la bulle de recherche est opaque : pas de flou derrière (coûteux à chaque image) */
+.mq{-webkit-backdrop-filter:none;backdrop-filter:none;background:#fff}
+.hero[data-mode="M"] .mlive{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(16,58,150,.42)}
+/* recherche près du haut de la carte : la bulle et la fiche passent sous le point */
+.mq.dn{translate:-50% calc(30 * var(--u))}
+.mcard.dn{translate:-50% calc(64 * var(--u));transform-origin:50% 0}
+.hero[data-mode="M"] .mcard.dn{translate:-50% calc(56 * var(--u))}
+.mcard.dn::after{bottom:auto;top:calc(-7 * var(--u))}
+/* téléphone : le nord du pays est en haut de la carte ; les nuages de l'horizon s'écartent pour ne pas le voiler */
+.hero[data-mode="M"] .cbank{opacity:.55;translate:0 -42%}
+/* Fluidité : pas de flou d'arrière-plan sur les éléments nombreux ou en mouvement (recalculé à chaque image,
+   très coûteux sur téléphone) ; les fonds deviennent un peu plus opaques, le rendu reste le même */
+.lp-hint{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(14,33,78,.88)}
+.lp-view img{will-change:auto}
+html body #sim .so .off-msg{-webkit-backdrop-filter:none;backdrop-filter:none}
+@media (max-width:759px),(hover:none){
+.mc2{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(255,255,255,.88)}
+#vis .vchip{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(14,33,78,.92)!important}
+.srail em,.tp-c{-webkit-backdrop-filter:none;backdrop-filter:none}
+}
+/* ordinateur : la légende « En direct » se place sous les boutons, la carte garde toute sa hauteur */
+.hero[data-mode="D"] .mlive{left:50%;translate:-50% 0;top:calc(-26 * var(--u));width:max-content;max-width:calc(760 * var(--u));padding:calc(6 * var(--u)) calc(16 * var(--u)) calc(6 * var(--u)) calc(12 * var(--u));background:rgba(255,255,255,.14);font-size:calc(12.5 * var(--u))}
+/* la fiche trouvée, un peu plus près de son point */
+.mcard{translate:-50% calc(-100% - 50 * var(--u))}
+.hero[data-mode="M"] .mcard{translate:-50% calc(-100% - 46 * var(--u))}
+.mcard.dn{translate:-50% calc(50 * var(--u))}
+.hero[data-mode="M"] .mcard.dn{translate:-50% calc(46 * var(--u))}
+/* Services, tarifs : le nom de domaine après la première année */
+.dom-note{display:flex;align-items:center;gap:calc(16 * var(--u));max-width:calc(1100 * var(--u));margin:calc(18 * var(--u)) auto 0;padding:calc(16 * var(--u)) calc(24 * var(--u));border-radius:calc(18 * var(--u));background:rgba(255,255,255,.6);box-shadow:0 0 0 1px rgba(255,255,255,.75),0 calc(18 * var(--u)) calc(40 * var(--u)) calc(-24 * var(--u)) rgba(14,33,78,.35);color:#0E214E;font-size:calc(15.5 * var(--u));line-height:1.55}
+.dom-note b{font-weight:600;color:#0E214E}
+.dn-i{flex:none;display:grid;place-items:center;width:calc(42 * var(--u));height:calc(42 * var(--u));border-radius:50%;background:#1F57C7;color:#fff}
+.dn-i svg{width:calc(20 * var(--u));height:calc(20 * var(--u))}
+[data-mode="M"] .dom-note{align-items:flex-start;margin-left:calc(20 * var(--u));margin-right:calc(20 * var(--u));padding:calc(16 * var(--u));font-size:calc(14.5 * var(--u))}
+/* Pied de page sur téléphone : comme sur ordinateur, le grand logo occupe toute la largeur,
+   les deux boutons côte à côte, et pas de second logo juste en dessous */
+[data-mode="M"] .f-cta .giant{margin-bottom:calc(26 * var(--u))!important}
+[data-mode="M"] .foot .fbtn{flex-wrap:nowrap;gap:calc(8 * var(--u));width:100%;justify-content:center}
+[data-mode="M"] .foot .fbtn .cta{display:flex;flex:1 1 auto;min-width:0}
+[data-mode="M"] .foot .fbtn .cta .arw,[data-mode="M"] .foot .fbtn .cta .lbl{height:calc(54 * var(--u))}
+[data-mode="M"] .foot .fbtn .cta .arw{width:calc(50 * var(--u))}
+[data-mode="M"] .foot .fbtn .cta .lbl{flex:1;justify-content:center;padding:0 calc(12 * var(--u));font-size:calc(11.5 * var(--u));white-space:nowrap}
+[data-mode="M"] .foot .fbtn .wa{flex:none;height:calc(54 * var(--u));padding:0 calc(16 * var(--u))}
+[data-mode="M"] .f-grid{margin-top:calc(46 * var(--u))!important;padding-top:calc(34 * var(--u))!important}
+[data-mode="M"] .f-brand .fl-logo{display:none!important}
+[data-mode="M"] .f-brand p{margin-top:0!important;max-width:none!important;font-size:calc(15 * var(--u))!important}
+[data-mode="M"] .foot .f-col a,[data-mode="M"] .foot .f-col span{font-size:calc(14.5 * var(--u))}
+/* le nom de l'entreprise trouvée tient sur deux lignes plutôt que d'être coupé */
+.mc-b b{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}

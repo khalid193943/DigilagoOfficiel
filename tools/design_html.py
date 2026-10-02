@@ -310,6 +310,12 @@ TP_CARDS = [
 TP_DOM = [('École', 'inscriptions, paiements, espace parents'), ('Clinique', 'rendez-vous, rappels, dossiers'),
           ('Restaurant', 'commandes, menu, livraisons'), ('Commerce', 'stock, caisse, livraisons'),
           ('Hôtel et riad', 'réservations directes, planning')]
+TP_LOGOS = [
+    ('gc', '<i>GC</i><span><b>Georges Claude</b><small>École privée · El Jadida</small></span>', 'academie-georgesclaude.ma'),
+    ('ab', '<i>AB</i><span><b>Ange Bleu</b><small>El Jadida · depuis 1986</small></span>', 'angebleu.ma'),
+    ('lm', '<span><b>LES</b><em>Marronniers</em></span>', 'lesmarronniers.ma'),
+    ('ab jab', '<i>AB</i><span><b>Jardin Ange Bleu</b><small>Maternelle · El Jadida</small></span>', 'jardin-angebleu.ma'),
+]
 TP_STATS = [('11 ans', 'de terrain'), ('72 h', 'pour une première version'), ('3 langues', 'français, arabe, anglais'),
             ('Le jour même', 'pour vous répondre')]
 
@@ -318,7 +324,11 @@ def trust_section(h):
     m = re.search(r'<section class="sec lgs[^"]*" id="trust"[^>]*>.*?</section>', h, re.S)
     if not m:
         return h
-    band = re.search(r'<div class="lg-band rv d2">.*?</ul></div>', m.group(0), re.S).group(0)
+    # les clients : leur logo (redessiné en blanc), leur domaine et le badge « site livré »
+    band = ('<div class="tp-logos">%s</div>' % ''.join(
+        '<a class="tl rv%s" href="realisations.html"><span class="tl-mark %s">%s</span><span class="tl-dom">%s</span>'
+        '<span class="tl-ok"><i aria-hidden="true">✅</i>Site livré</span></a>' % (('', ' d1', ' d2', ' d3')[k], c, mark, dom)
+        for k, (c, mark, dom) in enumerate(TP_LOGOS)))
     ico = lambda k: ('<span class="tp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
                      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg></span>') % TPI[k]
     cards = ''.join('<article class="tp-c rv%s">%s<b>%s</b><span>%s</span></article>' % (
@@ -331,7 +341,7 @@ def trust_section(h):
            'internes, automatisations, identité de marque et conseil : une seule équipe digitalise toute votre entreprise, avec le même soin du '
            'détail.</p></div><div class="tp-grid w">%s</div><div class="tp-dom w rv"><p><b>Un outil pour chaque métier</b>'
            '<span>Nous construisons le système dont votre activité a besoin.</span></p><ul>%s</ul></div>'
-           '<div class="tp-proof w rv"><div class="tp-stats">%s</div><p class="tp-lab">Ils nous font confiance</p>%s</div>'
+           '<div class="tp-proof w rv"><div class="tp-stats">%s</div><p class="tp-lab"><i aria-hidden="true">🏆</i>Ils nous font confiance</p>%s</div>'
            '<div class="tp-cta rv"><a class="tp-go" href="demarrer.html">Parlons de votre projet%s</a>'
            '<a class="lg-more" href="realisations.html">Voir les idées de sites%s</a></div></section>') % (
         cards, dom, stats, band, ARW, ARW)
@@ -351,6 +361,9 @@ def main():
     h = vision(h)
     h = pins(h)
     h = story(h)
+    # les 25 longues captures du mur des modèles se chargent à l'approche de la section, pas à l'ouverture
+    # de la page (4 Mo de moins au démarrage, surtout sur téléphone)
+    h = re.sub(r'(<div class="lp-view"><img [^>]*?)loading="eager"', r'\1loading="lazy"', h)
     open(P, 'w', encoding='utf-8').write(h)
     print('index.html mis à jour')
 

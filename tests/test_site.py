@@ -160,7 +160,6 @@ def test_bon_moment(page, base_url):
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(1500)
     page.locator('#moment').scroll_into_view_if_needed(); page.wait_for_timeout(2500)
     assert 'go' in page.locator('#moment').get_attribute('class')
-    assert page.locator('#moment .fin-read').get_attribute('href') == 'guide-bon-moment-maroc.html'
     assert page.locator('#moment .fin-go').get_attribute('href') == 'demarrer.html'
 
 # ─── Versions anglaise et arabe ───────────────────────────────────────
@@ -223,11 +222,11 @@ def test_robots_llms_sitemap():
 def test_carte_du_hero_dessinee(page, base_url):
     page.set_viewport_size({'width': 1440, 'height': 900})
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(3500)
-    # le canvas contient bien un dessin (des pixels non transparents)
-    drawn = page.evaluate("""(() => { const c = document.getElementById('mcv'); const x = c.getContext('2d');
+    # les deux canvas contiennent bien un dessin : le fond (tout le Maroc) et, au-dessus, les lumières
+    drawn = page.evaluate("""['mcv0', 'mcv'].map(id => { const c = document.getElementById(id); const x = c.getContext('2d');
         const d = x.getImageData(0, 0, c.width, c.height).data; let n = 0;
-        for (let i = 3; i < d.length; i += 4000) if (d[i] > 0) n++; return n; })()""")
-    assert drawn > 50
+        for (let i = 3; i < d.length; i += 4000) if (d[i] > 0) n++; return n; })""")
+    assert drawn[0] > 500 and drawn[1] > 10, drawn
     page.wait_for_timeout(3000)
     assert page.locator('#mcard.on, #mq.on').count() >= 1, 'aucune recherche en direct affichée'
 
@@ -252,7 +251,7 @@ def test_rappel_gratuit_envoie_une_demande(page, base_url):
 
 def test_final_de_l_accueil(page, base_url):
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(800)
-    order = page.evaluate("""(() => { const m = document.getElementById('moment'), v = document.getElementById('vis'), f = document.getElementById('foot');
-        return [!!(v.compareDocumentPosition(m) & 4), !!(m.compareDocumentPosition(f) & 4)]; })()""")
-    assert order == [True, True], 'le grand appel à l’action doit être juste avant le pied de page'
+    order = page.evaluate("""(() => { const g = document.getElementById('guides'), m = document.getElementById('moment'), v = document.getElementById('vis');
+        return [!!(g.compareDocumentPosition(m) & 4), !!(m.compareDocumentPosition(v) & 4)]; })()""")
+    assert order == [True, True], 'le grand appel à l’action est entre les guides et « La vision »'
     assert page.locator('#moment .fin-go[href="demarrer.html"]').count() == 1

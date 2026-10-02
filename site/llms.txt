@@ -243,6 +243,10 @@ Le plus simple est de poser régulièrement aux assistants les questions de vos 
 
 Un nom de domaine .ma s’achète auprès d’un bureau d’enregistrement agréé par l’ANRT, l’autorité qui gère l’extension marocaine, et se renouvelle chaque année. Le bureau d’enregistrement vous indique les conditions d’attribution et les pièces éventuellement demandées. Enregistrez-le au nom de votre entreprise, et non à celui de votre prestataire, et notez sa date de renouvellement.
 
+### Combien coûte le renouvellement du nom de domaine avec Digilago ?
+
+Après la première année, votre nom de domaine coûte seulement 500 DH par an avec Digilago : nous le renouvelons pour vous, à temps, pour que votre site et vos e-mails ne s’arrêtent jamais. Vous préférez le payer et le renouveler vous-même auprès du bureau d’enregistrement ? C’est possible aussi : il suffit de nous le dire.
+
 ### Nom de domaine .ma ou .com : lequel choisir ?
 
 Le .ma signale immédiatement une entreprise marocaine et rassure une clientèle locale, tandis que le .com convient mieux à une activité tournée vers l’international. Quand c’est possible, réservez les deux et redirigez l’un vers l’autre, pour protéger votre marque et éviter qu’un concurrent ne les prenne. Choisissez un nom court, facile à dicter au téléphone et sans tiret superflu.
@@ -618,6 +622,10 @@ Oui. La version arabe est incluse dans la présence en ligne complète. L’angl
 ### Qui s’occupe du site après le lancement ?
 
 Nous. Hébergement, sécurité, sauvegardes et mises à jour sont pris en charge. Vous gardez la main sur vos contenus depuis un espace simple, et notre équipe reste joignable sur WhatsApp.
+
+### Combien coûte le nom de domaine après la première année ?
+
+Seulement 500 DH par an : nous le renouvelons pour vous, à temps, sans que vous ayez à y penser. Vous préférez le payer et le renouveler vous-même ? C’est possible aussi, il suffit de nous le dire.
 
 ### Comment activer le paiement à la livraison sur Shopify ?
 

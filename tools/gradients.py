@@ -84,7 +84,7 @@ def main():
            'html body .blk.dk{background:%s!important;padding-top:calc(370 * var(--u))!important;padding-bottom:calc(370 * var(--u))!important}' % grad(440),
            'html body .foot{background:%s!important;padding-top:calc(400 * var(--u))!important}' % foot(460),
            '[data-mode="M"] body .blk.dk{background:%s!important;padding-top:calc(270 * var(--u))!important;padding-bottom:calc(270 * var(--u))!important}' % grad(320),
-           '[data-mode="M"] body .foot{background:%s!important;padding-top:calc(300 * var(--u))!important}' % foot(340),
+           '[data-mode="M"] body .foot{background:%s!important;padding-top:calc(210 * var(--u))!important}' % foot(250),
            # une brume légère qui se dissout dans la nuit, au début de chaque passage
            '.blk.dk::before{content:"";position:absolute;left:0;right:0;top:calc(90 * var(--u));height:calc(300 * var(--u));pointer-events:none;z-index:0;'
            'background:radial-gradient(ellipse 34% 42% at 18% 48%,rgba(255,255,255,.22),rgba(255,255,255,0) 72%),'

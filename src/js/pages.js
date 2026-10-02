@@ -20,7 +20,7 @@
       var g = document.getElementById("giant");
       if (!g) return;
       var W = document.documentElement.clientWidth,
-        pad = W < 760 ? 40 : Math.min(96, W * 0.066);
+        pad = W < 760 ? 14 : Math.min(96, W * 0.066);
       g.style.fontSize = "100px";
       var w = g.getBoundingClientRect().width || 1;
       g.style.fontSize = (100 * (W - pad * 2)) / w + "px";
@@ -30,6 +30,31 @@
   window.addEventListener("resize", lay);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(lay);
   $("fnav").classList.add("on");
+  // La barre du haut se range quand on descend et revient dès qu'on remonte.
+  (function () {
+    var nav = $("fnav"),
+      last = window.scrollY,
+      acc = 0,
+      tick = false;
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (tick) return;
+        tick = true;
+        requestAnimationFrame(function () {
+          tick = false;
+          var y = window.scrollY,
+            d = y - last;
+          last = y;
+          acc = d > 0 === acc > 0 ? acc + d : d;
+          var sh = $("sheet");
+          if (acc > 40 && y > 140 && !(sh && sh.classList.contains("open"))) nav.classList.add("away");
+          else if (acc < -24 || y < 140) nav.classList.remove("away");
+        });
+      },
+      { passive: true },
+    );
+  })();
   var here = location.pathname.split("/").pop() || "index.html";
   document.querySelectorAll(".fnav .fl a").forEach(function (a) {
     if (a.getAttribute("href") === here) a.classList.add("cur-p");

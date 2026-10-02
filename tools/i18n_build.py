@@ -202,6 +202,14 @@ AR_CSS = (
     'html[lang="ar"] body{line-height:1.6}'
     'html[lang="ar"] input[type=tel],html[lang="ar"] input[type=email]{direction:ltr;text-align:right}'
     'html[lang="ar"] :is(h1,h2,h3,h4){line-height:1.3!important}'
+    # toutes les flèches « → » pointent vers la gauche (sens de lecture)
+    'html[lang="ar"] svg:has(> path[d="M2 8h11M9 4l4 4-4 4"]),html[lang="ar"] svg:has(> path[d="M5 12h14M13 6l6 6-6 6"]),'
+    'html[lang="ar"] svg:has(> path[d="M14 8H3M7 4L3 8l4 4"]){transform:scaleX(-1)}'
+    # barre du haut sur téléphone : le logo à droite, les boutons à gauche, arrondis en miroir
+    'html[lang="ar"][data-mode="M"] .fnav .logo{margin-right:0!important;margin-left:auto!important}'
+    'html[lang="ar"][data-mode="M"] .fnav .cta .arw{border-radius:0 12px 12px 0!important}'
+    'html[lang="ar"][data-mode="M"] .fnav .mb{border-radius:999px 0 0 999px!important;padding-right:0!important;'
+    'padding-left:4px;box-shadow:inset -1px 0 0 rgba(255,255,255,.12)}'
 )
 
 LSW_CSS = (

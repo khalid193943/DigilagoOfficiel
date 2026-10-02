@@ -62,7 +62,7 @@ Le dossier `site/` est la version publiée. Les optimisations (vitesse, design, 
 | `tools/build.py` | Lance toutes les étapes ci-dessous dans l'ordre. |
 | `tools/simplify_map.py` | Carte du monde allégée (886 Ko → 231 Ko) et chargée à la demande. |
 | `tools/design_html.py` | Retouches de contenu de l'accueil (carte, quartiers, « Pourquoi un site ? »). |
-| `tools/hero_map.py` | Carte du haut de l'accueil : le Maroc vu du ciel (dessiné en perspective par `home.js`), recherches en direct, fiches. |
+| `tools/hero_map.py` | Carte du haut de l'accueil : tout le Maroc, de Tanger à Dakhla, en 3D (deux canvas dessinés par `home.js` : le fond une fois, les lumières à chaque image ; caméra immobile sur téléphone), recherches en direct, fiches. |
 | `tools/dedupe_pages.py` | Retire les blocs en double entre les pages. |
 | `tools/articles.py` | Articles SEO / GEO depuis `src/articles/*.json` (sommaire, tableaux, FAQ), page Guides, colonne Guides du pied de page. |
 | `tools/services_page.py` | Page Services : expertises reliées aux guides, clients, comparatif, garanties. |

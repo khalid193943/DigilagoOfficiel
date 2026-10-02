@@ -121,6 +121,17 @@ def sections():
     return bento, clients, compare
 
 
+GLOBE = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" '
+         'aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>')
+DOM_NOTE = ('<!--dg:svc-dom--><p class="dom-note rv"><span class="dn-i">' + GLOBE + '</span><span><b>Nom de domaine : '
+            '500 DH par an, après la première année.</b> Nous le renouvelons pour vous, à temps. Vous préférez le payer '
+            'vous-même ? C’est possible aussi.</span></p><!--/dg:svc-dom-->')
+DOM_FAQ = ('<!--dg:svc-domq--><details class="rv"><summary>Combien coûte le nom de domaine après la première année ?'
+           '<i aria-hidden="true"></i></summary><p>Seulement 500 DH par an : nous le renouvelons pour vous, à temps, sans que '
+           'vous ayez à y penser. Vous préférez le payer et le renouveler vous-même ? C’est possible aussi, il suffit de '
+           'nous le dire.</p></details><!--/dg:svc-domq-->')
+
+
 def main():
     h = open(P, encoding='utf-8').read()
     h = re.sub(r'<!--dg:svc-[a-z]+-->.*?<!--/dg:svc-[a-z]+-->', '', h, flags=re.S)
@@ -135,6 +146,11 @@ def main():
     h = h[:i] + '<!--dg:svc-top-->' + bento + clients + '<!--/dg:svc-top-->' + h[i:]
     i = h.index('<section class="blk" id="faq">')
     h = h[:i] + '<!--dg:svc-cmp-->' + compare + '<!--/dg:svc-cmp-->' + h[i:]
+    # le nom de domaine après la première année : sous les tarifs, et dans les questions
+    i = h.index('</section>', h.index('Un prix annoncé d’avance'))
+    h = h[:i] + DOM_NOTE + h[i:]
+    i = h.index('</div></section>', h.index('<section class="blk" id="faq">'))
+    h = h[:i] + DOM_FAQ + h[i:]
     open(P, 'w', encoding='utf-8').write(h)
     print('services : %d expertises, %d clients, comparatif de %d critères' % (len(TILES), len(CLIENTS), len(COMPARE)))
 

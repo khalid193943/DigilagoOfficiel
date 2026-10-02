@@ -12327,6 +12327,22 @@
    "faq.html"
   ]
  },
+ "354303de5b31": {
+  "fr": "Combien coûte le renouvellement du nom de domaine avec Digilago ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "faq.html"
+  ]
+ },
+ "15c227ce1e15": {
+  "fr": "Après la première année, votre nom de domaine coûte seulement 500 DH par an avec Digilago : nous le renouvelons pour vous, à temps, pour que votre site et vos e-mails ne s’arrêtent jamais. Vous préférez le payer et le renouveler vous-même auprès du bureau d’enregistrement ? C’est possible aussi : il suffit de nous le dire.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "faq.html"
+  ]
+ },
  "3ad5ae3dcbc2": {
   "fr": "Nom de domaine .ma ou .com : lequel choisir ?",
   "kind": "text",
@@ -14296,6 +14312,30 @@
    "index.html"
   ]
  },
+ "ee66bfc88c42": {
+  "fr": "Agadir",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "063259c35045": {
+  "fr": "Laâyoune",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "70e616611423": {
+  "fr": "Dakhla",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
  "ebebb9424865": {
   "fr": "Meknès",
   "kind": "text",
@@ -14352,14 +14392,6 @@
    "index.html"
   ]
  },
- "ee66bfc88c42": {
-  "fr": "Agadir",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
  "af262f6f99aa": {
   "fr": "Béni Mellal",
   "kind": "text",
@@ -14378,6 +14410,30 @@
  },
  "a050de188ba8": {
   "fr": "Essaouira",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "e9ca515b8f58": {
+  "fr": "Ouarzazate",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "bdc0c345bd10": {
+  "fr": "Errachidia",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "4923cfced786": {
+  "fr": "Guelmim",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -14456,8 +14512,56 @@
    "index.html"
   ]
  },
- "bdc0c345bd10": {
-  "fr": "Errachidia",
+ "a59ca0b5f2a3": {
+  "fr": "Tiznit",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "9fe1a5ff754e": {
+  "fr": "Taroudant",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "2aa786bd2f2a": {
+  "fr": "Tan-Tan",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d53008b93e38": {
+  "fr": "Smara",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "002cf04eecd9": {
+  "fr": "Boujdour",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "c6f4ff1598ed": {
+  "fr": "Zagora",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "0ea01f31cbf1": {
+  "fr": "Merzouga",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -14944,6 +15048,80 @@
  },
  "a71eb7d947c2": {
   "fr": "radiologie Taza",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d9d606a9e3e7": {
+  "fr": "Clinique dentaire",
+  "kind": "text",
+  "ctx": "métier du secteur « Santé et médical »",
+  "pages": [
+   "index.html",
+   "realisations.html"
+  ]
+ },
+ "36a5b6e09e3e": {
+  "fr": "Soins et implants, Agadir",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "717d9a60506a": {
+  "fr": "dentiste Agadir",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "2dc8fbbea205": {
+  "fr": "École internationale",
+  "kind": "text",
+  "ctx": "métier du secteur « Éducation »",
+  "pages": [
+   "index.html",
+   "realisations.html"
+  ]
+ },
+ "974a6d10b411": {
+  "fr": "Établissement scolaire, Laâyoune",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "791b71455c43": {
+  "fr": "école privée Laâyoune",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "e0dd301a3fe6": {
+  "fr": "Kinésithérapie",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "971892c86885": {
+  "fr": "Cabinet de rééducation, Marrakech",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "20d20febb147": {
+  "fr": "kinésithérapeute Marrakech",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -16820,29 +16998,12 @@
    "index.html"
   ]
  },
- "e0dd301a3fe6": {
-  "fr": "Kinésithérapie",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
  "5494a1ace913": {
   "fr": "Cabinet de rééducation",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
-  ]
- },
- "2dc8fbbea205": {
-  "fr": "École internationale",
-  "kind": "text",
-  "ctx": "métier du secteur « Éducation »",
-  "pages": [
-   "index.html",
-   "realisations.html"
   ]
  },
  "7d1891cbc893": {
@@ -16916,15 +17077,6 @@
   "ctx": "",
   "pages": [
    "index.html"
-  ]
- },
- "d9d606a9e3e7": {
-  "fr": "Clinique dentaire",
-  "kind": "text",
-  "ctx": "métier du secteur « Santé et médical »",
-  "pages": [
-   "index.html",
-   "realisations.html"
   ]
  },
  "f40a5bd81551": {
@@ -17090,22 +17242,6 @@
  },
  "d88544baaa0e": {
   "fr": "Usine",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "063259c35045": {
-  "fr": "Laâyoune",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "70e616611423": {
-  "fr": "Dakhla",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -17420,6 +17556,86 @@
  },
  "b1986bfc8a2f": {
   "fr": "Ils nous font confiance",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "99a3e18460e7": {
+  "fr": "GC",
+  "kind": "text",
+  "ctx": "GC Georges Claude École privée · El Jadida Site livré",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "df451014d49f": {
+  "fr": "Georges Claude",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "df4987522d3b": {
+  "fr": "École privée · El Jadida",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d5b3df8e1e9f": {
+  "fr": "Site livré",
+  "kind": "text",
+  "ctx": "GC Georges Claude École privée · El Jadida Site livré",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "06d945942aa2": {
+  "fr": "AB",
+  "kind": "text",
+  "ctx": "AB Ange Bleu El Jadida · depuis 1986 Site livré",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "5289a8102729": {
+  "fr": "Ange Bleu",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "21e20c33abda": {
+  "fr": "El Jadida · depuis 1986",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "9da1301d46ed": {
+  "fr": "LES",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "46f5ac6ebded": {
+  "fr": "Marronniers",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "c1762994e127": {
+  "fr": "Maternelle · El Jadida",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -26413,6 +26629,22 @@
    "services.html"
   ]
  },
+ "4c76f713c85b": {
+  "fr": "Nom de domaine : 500 DH par an, après la première année.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "services.html"
+  ]
+ },
+ "9d4641551772": {
+  "fr": "Nous le renouvelons pour vous, à temps. Vous préférez le payer vous-même ? C’est possible aussi.",
+  "kind": "text",
+  "ctx": "Nom de domaine : 500 DH par an, après la première année. Nous le renouvelons pour vous, à temps. Vous préférez le payer vous-même ? C’est possible aussi.",
+  "pages": [
+   "services.html"
+  ]
+ },
  "1aa20d9aa61d": {
   "fr": "Sur mesure ou thème ?",
   "kind": "text",
@@ -26720,6 +26952,22 @@
  },
  "6a42bead2e6b": {
   "fr": "Nous. Hébergement, sécurité, sauvegardes et mises à jour sont pris en charge. Vous gardez la main sur vos contenus depuis un espace simple, et notre équipe reste joignable sur WhatsApp.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "services.html"
+  ]
+ },
+ "e6dbc976255e": {
+  "fr": "Combien coûte le nom de domaine après la première année ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "services.html"
+  ]
+ },
+ "6281dc116bc2": {
+  "fr": "Seulement 500 DH par an : nous le renouvelons pour vous, à temps, sans que vous ayez à y penser. Vous préférez le payer et le renouveler vous-même ? C’est possible aussi, il suffit de nous le dire.",
   "kind": "text",
   "ctx": "",
   "pages": [
