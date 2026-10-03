@@ -1,4 +1,6 @@
 (function () {
+  // arabe : la page se lit de droite à gauche (les progressions horizontales partent de la droite)
+  var RTL = document.documentElement.dir === "rtl";
   var RMZ =
       window.matchMedia &&
       matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -231,10 +233,18 @@
     HH = Math.round(Math.max(H, ST + MH * (mode === "M" ? 0.95 : 0.92)));
     VH = H;
     T = H * 0.7;
-    HOLD = H * 0.75;
+    // le temps où le hero reste en place : la caméra survole le pays (plus court sur téléphone)
+    HOLD = H * (mode === "M" ? 0.6 : 0.75);
     MAP.layout(MW, MH, mode === "M");
     hero.style.height = HH + "px";
     hero.style.top = H - HH + "px";
+    // Téléphone : quand la barre d'adresse se replie, l'écran grandit. Calé sur la hauteur d'écran
+    // maximale (lvh, sinon vh qui la donne aussi sur téléphone), le bas du hero reste au bas de l'écran :
+    // plus de bande pâle sous la carte. (Une valeur non reconnue par le navigateur est simplement ignorée.)
+    if (mode === "M") {
+      hero.style.top = "calc(100vh - " + HH + "px)";
+      hero.style.top = "calc(100lvh - " + HH + "px)";
+    }
     $("intro").style.height = HH + HOLD + T + "px";
     css($("dawn"), { top: HH - H + "px", height: H + "px" });
     $("dawnDot").style.top = HH - H + H * 0.46 + "px";
@@ -498,6 +508,13 @@
         S1 = fit({ tx: 300, ty: 310, th: 0.72, ps: -0.34 }, [w * 0.04, Math.max(c0, TOPC), w * 0.96, c1 - 28 * u]);
       }
       KR = F / S0.R;
+      // ordinateur : la caméra est dans le dessin lui-même, le bloc de la carte reste à plat
+      if (!m && wrap) wrap.style.transform = wrap.style.opacity = wrap.style.transformOrigin = "";
+      // téléphone : la caméra tourne autour du studio d'El Jadida
+      if (m && wrap) {
+        setCam(S0);
+        if (proj(hq[0], hq[1])) wrap.style.transformOrigin = P.x.toFixed(1) + "px " + P.y.toFixed(1) + "px";
+      }
       // la légende « En direct » posée sur le haut de la carte : aucun nom ne passe dessous
       var ml = $("mlive");
       PILL = null;
@@ -764,8 +781,7 @@
       if (!S0 || !ready) return;
       if (t0 < 0) {
         t0 = now;
-        // téléphone : la carte se pose en douceur (animation CSS, sans rien redessiner)
-        if (MOB && !RM && wrap) wrap.classList.add("go");
+        // téléphone : la carte se pose en douceur (voir mobCam : la carte graphique s'en charge)
       }
       // la bande du canvas réellement visible (le hero remonte, puis reste en place)
       var top = ST + Math.max(VH - HH, -sy),
@@ -832,6 +848,7 @@
           }
         }
       }
+      if (MOB) mobCam(ti, PAN2, DAWN2);
       // sur téléphone, une fois la carte allumée : 30 images par seconde suffisent pour les lumières
       if (MOB && !moving && ti > 2.6) {
         skip = !skip;
@@ -1027,6 +1044,35 @@
         mcard.classList.remove("on");
       }
     }
+    // Téléphone : la même chorégraphie que sur ordinateur, mais sans rien redessiner.
+    // Le pays (fond, lumières, fiche) est incliné, tourné et rapproché d'un seul bloc par une transformation 3D,
+    // que la carte graphique applique à chaque image (aucun calcul de la page, défilement fluide) :
+    // - à l'arrivée, la carte se pose en se redressant ;
+    // - pendant que le hero reste en place, la caméra survole le pays et s'approche d'El Jadida ;
+    // - à la fin du hero, elle s'élève et la carte s'éloigne sous les nuages.
+    function mobCam(ti, pan, dawn) {
+      if (!wrap) return;
+      if (RM) {
+        S(wrap, "transform", "none");
+        S(wrap, "opacity", "1");
+        return;
+      }
+      var a = Math.min(1, ti / 2.4),
+        ea = 1 - Math.pow(1 - a, 3),
+        e = pan * pan * (3 - 2 * pan),
+        d = dawn * dawn * (3 - 2 * dawn),
+        rx = 24 * (1 - ea) + 14 * e + 14 * d,
+        rz = -1.6 * e + 1.5 * d,
+        sc = (1 + 0.08 * (1 - ea)) * (1 + 0.13 * e) * (1 - 0.2 * d),
+        ty = (0.05 * (1 - ea) - 0.025 * e) * H;
+      S(
+        wrap,
+        "transform",
+        "perspective(" + Math.round(H * 1.9) + "px) translate3d(0," + ty.toFixed(1) + "px,0) rotateX(" +
+          rx.toFixed(2) + "deg) rotateZ(" + rz.toFixed(2) + "deg) scale(" + sc.toFixed(4) + ")",
+      );
+      S(wrap, "opacity", Math.min(1, ti / 0.8).toFixed(3));
+    }
     return { step: step, layout: layout };
   })();
   var DAWN = 0;
@@ -1131,7 +1177,7 @@
   var ST2 = document.querySelectorAll("#stSlides .st-sl"),
     NS = ST2.length;
   function layoutStory(H, W, M) {
-    story.style.height = Math.round(H * (1 + NS * 0.9)) + "px";
+    story.style.height = Math.round(H * (1 + NS * 0.6)) + "px";
   }
   function typeQuery(sl) {
     var q = "dentiste el jadida";
@@ -1171,6 +1217,40 @@
       b.classList.toggle("on", k === i);
     });
     if (i === 0) typeQuery(ST2[0]);
+    nightRun(ST2[i]);
+  }
+  // « Il travaille pendant que vous dormez » : la nuit passe sur le téléphone, au rythme de la liste
+  // (mêmes délais que ses lignes). L'horloge avance, chaque notification arrive à son heure, le jour change
+  // à minuit, puis le jour se lève avec le résumé de la nuit.
+  var NIGHT = [["19:00", 0], ["23:14", 550], ["01:52", 1100], ["06:30", 1650], ["08:00", 2400]],
+    nightT = [];
+  function nightRun(sl) {
+    var ph = sl && sl.querySelector(".rphone.night");
+    if (!ph) return;
+    var clk = ph.querySelector(".lk-t"),
+      ns = ph.querySelectorAll(".lkn");
+    nightT.forEach(clearTimeout);
+    nightT = [];
+    ph.classList.remove("sunrise", "d1on");
+    ns.forEach(function (n) {
+      n.classList.remove("in");
+    });
+    NIGHT.forEach(function (s, k) {
+      nightT.push(
+        setTimeout(
+          function () {
+            clk.textContent = s[0];
+            clk.classList.remove("tick");
+            void clk.offsetWidth;
+            clk.classList.add("tick");
+            if (k >= 2) ph.classList.add("d1on"); // après minuit : samedi
+            if (k >= 1 && ns[k - 1]) ns[k - 1].classList.add("in");
+            if (k === NIGHT.length - 1) ph.classList.add("sunrise");
+          },
+          RM ? 0 : s[1],
+        ),
+      );
+    });
   }
   function storyTop() {
     return story.getBoundingClientRect().top + window.scrollY;
@@ -1184,7 +1264,7 @@
   }
   sFills.forEach(function (el) {
     el.style.width = "100%";
-    el.style.transformOrigin = "0 50%";
+    el.style.transformOrigin = RTL ? "100% 50%" : "0 50%";
   });
   function storyStep(sy) {
     var B = POS.story,
@@ -1259,7 +1339,9 @@
     MC = Array.prototype.slice.call(document.querySelectorAll("#mtTrack .mc2")),
     mtCur = -1,
     mtCW = 0,
-    mtGap = 0;
+    mtGap = 0,
+    mtC0 = 0,
+    mtDir = 1;
   function mtLayout(H) {
     if (!MC.length) return;
     mtCW = MC[0].offsetWidth;
@@ -1267,11 +1349,35 @@
       parseFloat(
         getComputedStyle(mtTrack).columnGap || getComputedStyle(mtTrack).gap,
       ) || 0;
+    // où se trouve la première carte sans déplacement, et dans quel sens la file avance
+    // (vers la droite en français et en anglais, vers la gauche en arabe)
+    mtTrack.style.transform = "none";
+    if (mtTrack._s) mtTrack._s.transform = "none";
+    var r0 = MC[0].getBoundingClientRect(),
+      r1 = (MC[1] || MC[0]).getBoundingClientRect();
+    // centres (et non bords) : la petite mise à l'échelle des cartes ne les déplace pas
+    mtC0 = (r0.left + r0.right) / 2;
+    mtDir = r1.left < r0.left ? -1 : 1;
     mtSec.style.height =
-      Math.round(H + (MC.length - 1) * (mtCW + mtGap) * 0.9) + "px";
+      Math.round(H + (MC.length - 1) * (mtCW + mtGap) * 0.55) + "px";
+  }
+  // Photos des métiers : les cartes hors du cadre ne se chargeraient qu'au dernier moment (vides pendant
+  // le défilement) ; elles sont toutes demandées dès que la section approche.
+  if ("IntersectionObserver" in window && mtSec) {
+    var mtIO = new IntersectionObserver(
+      function (es) {
+        if (!es[0].isIntersecting) return;
+        mtIO.disconnect();
+        mtSec.querySelectorAll(".sp-img img").forEach(function (im) {
+          im.loading = "eager";
+        });
+      },
+      { rootMargin: "150% 0px" },
+    );
+    mtIO.observe(mtSec);
   }
   var mtFill = $("mtFill");
-  if (mtFill) mtFill.style.transformOrigin = "0 50%";
+  if (mtFill) mtFill.style.transformOrigin = RTL ? "100% 50%" : "0 50%";
   function sxStep(sy) {
     if (!MC.length) return;
     var B = POS.mt,
@@ -1280,7 +1386,7 @@
     var p = clamp01(-top / Math.max(1, B.h - VH)),
       W = CW;
     var step = mtCW + mtGap,
-      x = W / 2 - mtCW / 2 - p * (MC.length - 1) * step;
+      x = W / 2 - mtC0 - mtDir * p * (MC.length - 1) * step;
     S(mtTrack, "transform", "translate3d(" + x.toFixed(1) + "px,0,0)");
     var f = p * (MC.length - 1),
       i = Math.round(f);
@@ -1343,11 +1449,16 @@
     vchips = document.querySelectorAll("#vmap .vchip");
   function layoutMore(H) {
     var M = mode === "M";
-    mani.style.height = 2.4 * H + "px";
+    // durées de défilement raccourcies : les animations se jouent plus vite, le visiteur avance
+    mani.style.height = 1.7 * H + "px";
     maniStage.style.height = H + "px";
-    cardH = M ? Math.min(H - 110 * u, 760 * u) : Math.min(H - 160 * u, 640 * u);
+    // chaque carte se pose sous l'onglet de la précédente : les titres des cartes réduites restent lisibles
+    var top0 = (M ? 70 : 104) * u,
+      step = (M ? 46 : 58) * u,
+      last = top0 + (cards.length - 1) * step;
+    cardH = M ? Math.min(H - last - 24 * u, 760 * u) : Math.min(H - last - 24 * u, 640 * u);
     cards.forEach(function (c, i) {
-      c.style.top = (M ? 70 : 110) * u + i * (M ? 14 : 26) * u + "px";
+      c.style.top = top0 + i * step + "px";
       c.style.height = M ? "auto" : cardH + "px";
       c.style.minHeight = M ? cardH * 0.9 + "px" : "";
     });
@@ -1372,6 +1483,20 @@
       return d;
     }),
     cardTops = null,
+    // Onglet de chaque carte (numéro et titre, repris de la carte : déjà traduit) : quand la carte suivante
+    // la recouvre, il reste visible au-dessus. Les trois titres se lisent ensemble.
+    cardTabs = Array.prototype.map.call(cards, function (c) {
+      var t = document.createElement("div"),
+        n = c.querySelector(".sc-n"),
+        h = c.querySelector("h3");
+      t.className = "sc-tab";
+      t.setAttribute("aria-hidden", "true");
+      t.innerHTML =
+        "<span>" + (n ? n.textContent.split("/")[0].trim() : "") + "</span><b>" + (h ? h.textContent : "") + "</b>";
+      c.insertBefore(t, c.firstChild);
+      c.classList.add("has-tab");
+      return t;
+    }),
     fnavEl0 = $("fnav"),
     vsvg = $("vstage") || $("vmap").querySelector("svg");
   function readCards(sy) {
@@ -1861,23 +1986,24 @@
         : 300;
     };
     var gdSync = function () {
-      var i = Math.round(gdT.scrollLeft / gdStep());
+      var sl = Math.abs(gdT.scrollLeft),
+        i = Math.round(sl / gdStep());
       gdD.forEach(function (d, k) {
         d.classList.toggle("on", k === i);
       });
-      $("gdPrev").disabled = gdT.scrollLeft < 8;
+      $("gdPrev").disabled = sl < 8;
       $("gdNext").disabled =
-        gdT.scrollLeft > gdT.scrollWidth - gdT.clientWidth - 8;
+        sl > gdT.scrollWidth - gdT.clientWidth - 8;
     };
     $("gdPrev").addEventListener("click", function () {
-      gdT.scrollBy({ left: -gdStep(), behavior: "smooth" });
+      gdT.scrollBy({ left: (RTL ? 1 : -1) * gdStep(), behavior: "smooth" });
     });
     $("gdNext").addEventListener("click", function () {
-      gdT.scrollBy({ left: gdStep(), behavior: "smooth" });
+      gdT.scrollBy({ left: (RTL ? -1 : 1) * gdStep(), behavior: "smooth" });
     });
     gdD.forEach(function (d, k) {
       d.addEventListener("click", function () {
-        gdT.scrollTo({ left: k * gdStep(), behavior: "smooth" });
+        gdT.scrollTo({ left: (RTL ? -1 : 1) * k * gdStep(), behavior: "smooth" });
       });
     });
     gdT.addEventListener(

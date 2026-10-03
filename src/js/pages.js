@@ -3,6 +3,8 @@
       return document.getElementById(id);
     },
     root = document.documentElement;
+  // arabe : la page se lit de droite à gauche
+  var RTL = root.dir === "rtl";
   var RMZ =
     window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var U = 1,
@@ -464,7 +466,8 @@
           d.classList.toggle("on", k === cur);
         });
         $("rtFill").style.width = (cur / (N - 1)) * 100 + "%";
-        $("rtPlane").style.left = (cur / (N - 1)) * 100 + "%";
+        // en arabe, la route part de la droite
+        $("rtPlane").style[RTL ? "right" : "left"] = (cur / (N - 1)) * 100 + "%";
         if (cur === N - 1) recap();
         var t = steps[cur].querySelector("input");
         if (t && window.matchMedia("(pointer:fine)").matches)
@@ -491,12 +494,8 @@
           );
           return false;
         }
-        if (cur === 1 && !st.name.trim()) {
-          err("Le nom de votre entreprise, s’il vous plaît.");
-          $("wName").focus();
-          return false;
-        }
-        if (cur === 3 && st.tel.replace(/\D/g, "").length < 8) {
+        // seul le téléphone est obligatoire (à l'étape qui le demande)
+        if (steps[cur].querySelector("#wTel") && st.tel.replace(/\D/g, "").length < 8) {
           err("Un numéro de téléphone ou WhatsApp pour vous répondre.");
           $("wTel").focus();
           return false;
@@ -504,15 +503,14 @@
         return true;
       }
       function recap() {
+        var ct = Array.prototype.findIndex.call(steps, function (x) {
+          return !!x.querySelector("#wTel");
+        });
         var rows = [
           ["Besoin", st.needs.join(", ") || "—", 0],
-          ["Entreprise", (st.name || "—") + (st.met ? ", " + st.met : ""), 1],
-          ["Ville", st.city || "—", 1],
-          ["Délai", st.when || "À définir", 2],
-          ["Site existant", st.has || "À préciser", 2],
-          ["Contact", (st.first ? st.first + ", " : "") + (st.tel || "—"), 3],
-          ["Préférence", st.pref, 3],
+          ["Contact", (st.first ? st.first + ", " : "") + (st.tel || "—"), ct],
         ];
+        if (st.name.trim()) rows.push(["Entreprise", st.name + (st.met ? ", " + st.met : ""), ct]);
         $("recap").innerHTML = rows
           .map(function (r) {
             return (
@@ -584,8 +582,8 @@
           d.classList.remove("on");
         });
         $("rtFill").style.width = "100%";
-        $("rtPlane").style.left = "100%";
-        $("rtPlane").style.transform = "translateY(-26px) rotate(-18deg)";
+        $("rtPlane").style[RTL ? "right" : "left"] = "100%";
+        $("rtPlane").style.transform = "translateY(-26px) rotate(" + (RTL ? 18 : -18) + "deg)";
       }
       $("wzNext").addEventListener("click", function () {
         if (!valid()) return;
@@ -639,6 +637,7 @@
         ["wTel", "tel"],
         ["wMail", "mail"],
       ].forEach(function (p) {
+        if (!$(p[0])) return; // champ retiré du formulaire simplifié
         $(p[0]).addEventListener("input", function () {
           st[p[1]] = this.value;
           preview();
@@ -936,14 +935,15 @@
         var on = b.dataset.u === m.u;
         b.classList.toggle("on", on);
         b.setAttribute("aria-selected", on ? "true" : "false");
-        if (on)
-          row.scrollTo({
-            left: Math.max(
-              0,
-              b.offsetLeft - row.clientWidth / 2 + b.offsetWidth / 2,
-            ),
+        // centre la pastille choisie, quel que soit le sens de lecture (en arabe, la rangée part de la droite)
+        if (on) {
+          var rb = b.getBoundingClientRect(),
+            rr = row.getBoundingClientRect();
+          row.scrollBy({
+            left: rb.left + rb.width / 2 - (rr.left + rr.width / 2),
             behavior: "smooth",
           });
+        }
       });
       showEx(s, m);
       if (history.replaceState)

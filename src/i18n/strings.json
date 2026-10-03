@@ -2126,8 +2126,7 @@
   "kind": "text",
   "ctx": "",
   "pages": [
-   "a-propos.html",
-   "index.html"
+   "a-propos.html"
   ]
  },
  "0f82877539da": {
@@ -2151,8 +2150,7 @@
   "kind": "text",
   "ctx": "",
   "pages": [
-   "a-propos.html",
-   "index.html"
+   "a-propos.html"
   ]
  },
  "ab2e61f078ba": {
@@ -5091,7 +5089,6 @@
   "pages": [
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
-   "demarrer.html",
    "vendre-instagram-whatsapp-maroc.html"
   ]
  },
@@ -6248,8 +6245,7 @@
   "kind": "text",
   "ctx": "",
   "pages": [
-   "avis-google-maroc.html",
-   "demarrer.html"
+   "avis-google-maroc.html"
   ]
  },
  "a9aeba9f32d7": {
@@ -7570,8 +7566,7 @@
   "kind": "text",
   "ctx": "",
   "pages": [
-   "contact.html",
-   "demarrer.html"
+   "contact.html"
   ]
  },
  "1d0e5a3f908e": {
@@ -7753,8 +7748,7 @@
   "kind": "text",
   "ctx": "Votre métier École ou crèche Clinique ou cabinet Restaurant ou café Hôtel ou riad Commerce ou boutique Industrie Juridique ou conseil Immobilier Sport et loisirs Beauté et bien-être Tourisme Autre",
   "pages": [
-   "contact.html",
-   "demarrer.html"
+   "contact.html"
   ]
  },
  "fff6de3c49e2": {
@@ -7803,7 +7797,6 @@
   "ctx": "nom d’un secteur d’activité",
   "pages": [
    "contact.html",
-   "demarrer.html",
    "index.html",
    "realisations.html"
   ]
@@ -7822,7 +7815,6 @@
   "ctx": "nom d’un secteur d’activité",
   "pages": [
    "contact.html",
-   "demarrer.html",
    "index.html",
    "realisations.html"
   ]
@@ -7853,7 +7845,6 @@
   "ctx": "nom d’un secteur d’activité",
   "pages": [
    "contact.html",
-   "demarrer.html",
    "index.html",
    "realisations.html"
   ]
@@ -7863,8 +7854,7 @@
   "kind": "text",
   "ctx": "",
   "pages": [
-   "contact.html",
-   "demarrer.html"
+   "contact.html"
   ]
  },
  "088e87d8b127": {
@@ -8025,7 +8015,6 @@
   "ctx": "",
   "pages": [
    "contact.html",
-   "demarrer.html",
    "index.html"
   ]
  },
@@ -10670,8 +10659,8 @@
    "demarrer.html"
   ]
  },
- "9912f7039439": {
-  "fr": "Six petites étapes, deux minutes. Pas de jargon, pas d’engagement : vous validez seulement la première version.",
+ "75591b148c3e": {
+  "fr": "Trois petites étapes, une minute. Pas de jargon, pas d’engagement : vous validez seulement la première version.",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -10705,23 +10694,6 @@
    "js"
   ]
  },
- "d03e74b6f3e3": {
-  "fr": "Entreprise",
-  "kind": "text",
-  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
-  "pages": [
-   "demarrer.html",
-   "js"
-  ]
- },
- "d4f84f4165fa": {
-  "fr": "Rythme",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
  "aa0a641c4f46": {
   "fr": "Décollage",
   "kind": "text",
@@ -10730,8 +10702,8 @@
    "demarrer.html"
   ]
  },
- "0ba4aead7fb6": {
-  "fr": "Étape 1 sur 5",
+ "75949976a348": {
+  "fr": "Étape 1 sur 3",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -10837,227 +10809,8 @@
    "demarrer.html"
   ]
  },
- "cb3cc5e6db8b": {
-  "fr": "Étape 2 sur 5",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "99b13749dd52": {
-  "fr": "Parlez-nous de",
-  "kind": "text",
-  "ctx": "Parlez-nous de votre entreprise.",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "2a1f6ed03c3f": {
-  "fr": "votre entreprise.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "5c5f6687ebf1": {
-  "fr": "Son nom et sa ville suffisent pour commencer.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "d95322e69890": {
-  "fr": "École",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html",
-   "index.html"
-  ]
- },
- "363690dc69ad": {
-  "fr": "Santé",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "3585d7553d86": {
-  "fr": "Restaurant",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html",
-   "index.html",
-   "realisations.html"
-  ]
- },
- "873fbdfce63f": {
-  "fr": "Hôtellerie",
-  "kind": "text",
-  "ctx": "nom d’un secteur d’activité",
-  "pages": [
-   "demarrer.html",
-   "realisations.html"
-  ]
- },
- "d3440a619712": {
-  "fr": "Commerce",
-  "kind": "text",
-  "ctx": "nom d’un secteur d’activité",
-  "pages": [
-   "demarrer.html",
-   "index.html",
-   "realisations.html"
-  ]
- },
- "0fffdca39cec": {
-  "fr": "Juridique",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "cf5f864ee828": {
-  "fr": "Beauté",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "1855c2e35702": {
-  "fr": "Sport",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "972176113f90": {
-  "fr": "Ville",
-  "kind": "text",
-  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
-  "pages": [
-   "demarrer.html",
-   "index.html",
-   "js"
-  ]
- },
- "f15002c3479f": {
-  "fr": "Étape 3 sur 5",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "ae5d8b25c864": {
-  "fr": "Quand voulez-vous",
-  "kind": "text",
-  "ctx": "Quand voulez-vous être en ligne ?",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "352b451b4571": {
-  "fr": "être en ligne ?",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "f8c7f7be6d5a": {
-  "fr": "Et avez-vous déjà un site ?",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "486c9b19bf88": {
-  "fr": "Le plus vite possible",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "5b430632b512": {
-  "fr": "Première version en 72 h",
-  "kind": "text",
-  "ctx": "Délai Première version en 72 h",
-  "pages": [
-   "demarrer.html",
-   "index.html",
-   "realisations.html",
-   "services.html"
-  ]
- },
- "e9d7b28b7551": {
-  "fr": "Dans le mois",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "0df33073159c": {
-  "fr": "On planifie ensemble",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "3d082e8f4001": {
-  "fr": "Je me renseigne",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "614a08233387": {
-  "fr": "Sans engagement",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "37cbd6866f38": {
-  "fr": "Un site existe déjà ?",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "a88c15a3c6ef": {
-  "fr": "Non, c’est le premier",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "fedd8212f304": {
-  "fr": "Oui, à refaire",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "f3dd33fe4506": {
-  "fr": "Étape 4 sur 5",
+ "610abb24ec8a": {
+  "fr": "Étape 2 sur 3",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -11096,32 +10849,16 @@
    "demarrer.html"
   ]
  },
- "a608bc101ea3": {
-  "fr": "E-mail (facultatif)",
+ "e378b3b1a3ff": {
+  "fr": "Nom de l’entreprise (facultatif)",
   "kind": "text",
   "ctx": "",
   "pages": [
    "demarrer.html"
   ]
  },
- "d76aa55a769e": {
-  "fr": "On vous contacte par",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "7c53229a64f4": {
-  "fr": "Appel",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "demarrer.html"
-  ]
- },
- "939d58a0064a": {
-  "fr": "Étape 5 sur 5",
+ "c3b77254cc53": {
+  "fr": "Étape 3 sur 3",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -11297,6 +11034,17 @@
   "ctx": "",
   "pages": [
    "demarrer.html"
+  ]
+ },
+ "5b430632b512": {
+  "fr": "Première version en 72 h",
+  "kind": "text",
+  "ctx": "Délai Première version en 72 h",
+  "pages": [
+   "demarrer.html",
+   "index.html",
+   "realisations.html",
+   "services.html"
   ]
  },
  "a67fe14df0ea": {
@@ -15951,26 +15699,26 @@
    "index.html"
   ]
  },
- "ba18263b9060": {
-  "fr": "08:00 : vous ouvrez avec trois nouveaux clients.",
+ "ef18cefb2a2f": {
+  "fr": "08:00 : vous ouvrez avec deux nouveaux clients.",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "6931fa8fef9f": {
-  "fr": "Votre boutique ferme",
+ "dc92a6d0cc31": {
+  "fr": "Vous fermez",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "ef6b8ac7fca9": {
-  "fr": "Vous rentrez chez vous.",
+ "963b14e49a2d": {
+  "fr": "Votre site, lui, reste ouvert.",
   "kind": "text",
-  "ctx": "Votre boutique ferme Vous rentrez chez vous.",
+  "ctx": "Vous fermez Votre site, lui, reste ouvert.",
   "pages": [
    "index.html"
   ]
@@ -16023,18 +15771,26 @@
    "index.html"
   ]
  },
- "fed147f35681": {
-  "fr": "Vous ouvrez : 3 nouveaux clients",
+ "43431fc90ba2": {
+  "fr": "Vous ouvrez : 2 nouveaux clients",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "272d6108206c": {
-  "fr": "Votre site a travaillé toute la nuit.",
+ "f9f273a2d08c": {
+  "fr": "Et un avis 5 étoiles, arrivés pendant la nuit.",
   "kind": "text",
-  "ctx": "Vous ouvrez : 3 nouveaux clients Votre site a travaillé toute la nuit.",
+  "ctx": "Vous ouvrez : 2 nouveaux clients Et un avis 5 étoiles, arrivés pendant la nuit.",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "cb289d871cea": {
+  "fr": "Vendredi",
+  "kind": "text",
+  "ctx": "",
   "pages": [
    "index.html"
   ]
@@ -16054,6 +15810,22 @@
   "pages": [
    "index.html",
    "vendre-instagram-whatsapp-maroc.html"
+  ]
+ },
+ "f30ecbf5b1cb": {
+  "fr": "Bonjour",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "54a013eb713b": {
+  "fr": "Cette nuit : 2 nouveaux clients, 1 avis 5 étoiles",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html"
   ]
  },
  "653c02eaa6f5": {
@@ -17170,6 +16942,15 @@
    "index.html"
   ]
  },
+ "3585d7553d86": {
+  "fr": "Restaurant",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "index.html",
+   "realisations.html"
+  ]
+ },
  "5866af4229b6": {
   "fr": "Hôtel",
   "kind": "text",
@@ -17246,6 +17027,15 @@
   "ctx": "",
   "pages": [
    "index.html"
+  ]
+ },
+ "972176113f90": {
+  "fr": "Ville",
+  "kind": "text",
+  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
+  "pages": [
+   "index.html",
+   "js"
   ]
  },
  "da968f712b01": {
@@ -17354,80 +17144,32 @@
    "index.html"
   ]
  },
- "47e7228045f6": {
-  "fr": "Site, application, outils de gestion internes, automatisations, identité de marque et conseil : une seule équipe digitalise toute votre entreprise, avec le même soin du détail.",
+ "fa184b4e243c": {
+  "fr": "Site, application, outils de gestion, automatisations, identité visuelle : une seule équipe pour tout votre digital.",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "d5c4c35b85d5": {
-  "fr": "Sites web et e-commerce",
+ "00e08625c68c": {
+  "fr": "Sites et e-commerce",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "757530b6a8f0": {
-  "fr": "Vitrine, réservation, boutique en ligne : rapides, beaux et trouvés sur Google.",
+ "8a4a90b890f7": {
+  "fr": "Gestion sur mesure",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "9ce28ea2afa3": {
-  "fr": "iOS et Android : fidélité, réservations, commandes, espace client.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "20aad2bc8a40": {
-  "fr": "Systèmes de gestion sur mesure",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "2ed960a15b3a": {
-  "fr": "Devis, factures, rendez-vous, inscriptions, stocks : un outil interne pensé pour votre métier.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "628cf2946c46": {
-  "fr": "Digitalisation et automatisation",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "eeeacc1578d2": {
-  "fr": "WhatsApp automatisé, formulaires, paiements en ligne, tableaux de bord : moins de tâches répétitives.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "43277d9e4b7e": {
-  "fr": "Branding et identité",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "4c4f331facda": {
-  "fr": "Logo, couleurs, typographies et supports : une marque reconnaissable partout.",
+ "598357a30ec9": {
+  "fr": "Automatisation",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -17442,112 +17184,56 @@
    "index.html"
   ]
  },
- "e42b2865adb5": {
-  "fr": "Choisir les bons outils, au bon prix, sans jargon : nous vous guidons à chaque décision.",
+ "d89e12c72a63": {
+  "fr": "Ce que nous vous garantissons",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "2dc5b62bbd04": {
-  "fr": "Un outil pour chaque métier",
+ "8f0737081bb2": {
+  "fr": "Vos données protégées",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "fcfe805281c8": {
-  "fr": "Nous construisons le système dont votre activité a besoin.",
-  "kind": "text",
-  "ctx": "Un outil pour chaque métier Nous construisons le système dont votre activité a besoin.",
-  "pages": [
-   "index.html"
-  ]
- },
- "3400d8650c5e": {
-  "fr": "inscriptions, paiements, espace parents",
-  "kind": "text",
-  "ctx": "École inscriptions, paiements, espace parents",
-  "pages": [
-   "index.html"
-  ]
- },
- "921456e8e334": {
-  "fr": "rendez-vous, rappels, dossiers",
-  "kind": "text",
-  "ctx": "Clinique rendez-vous, rappels, dossiers",
-  "pages": [
-   "index.html"
-  ]
- },
- "6f93450b5a19": {
-  "fr": "commandes, menu, livraisons",
-  "kind": "text",
-  "ctx": "Restaurant commandes, menu, livraisons",
-  "pages": [
-   "index.html"
-  ]
- },
- "4871ee381c76": {
-  "fr": "stock, caisse, livraisons",
-  "kind": "text",
-  "ctx": "Commerce stock, caisse, livraisons",
-  "pages": [
-   "index.html"
-  ]
- },
- "152b6de724d5": {
-  "fr": "réservations directes, planning",
-  "kind": "text",
-  "ctx": "Hôtel et riad réservations directes, planning",
-  "pages": [
-   "index.html"
-  ]
- },
- "0de0609f15e7": {
-  "fr": "de terrain",
+ "85e8b325424a": {
+  "fr": "Site sécurisé (HTTPS), accès protégés, sauvegardes régulières. Le site et le domaine restent à votre nom.",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "d194be21b20b": {
-  "fr": "72 h",
+ "f54867461dc2": {
+  "fr": "Confidentialité totale",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "48fb576c3f18": {
-  "fr": "3 langues",
+ "0a4cd7a63d38": {
+  "fr": "Vos fichiers, vos clients et vos chiffres restent entre nous. Accord de confidentialité signé sur demande.",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "faedc977d766": {
-  "fr": "français, arabe, anglais",
+ "6f73cc746a64": {
+  "fr": "Délais tenus",
   "kind": "text",
   "ctx": "",
   "pages": [
    "index.html"
   ]
  },
- "493786d43119": {
-  "fr": "Le jour même",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "8f84cfcc97a3": {
-  "fr": "pour vous répondre",
+ "ac6c9ea4b221": {
+  "fr": "Un planning écrit dès le départ, une première version en 72 h, un point chaque semaine.",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -17562,88 +17248,8 @@
    "index.html"
   ]
  },
- "99a3e18460e7": {
-  "fr": "GC",
-  "kind": "text",
-  "ctx": "GC Georges Claude École privée · El Jadida Site livré",
-  "pages": [
-   "index.html"
-  ]
- },
- "df451014d49f": {
-  "fr": "Georges Claude",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "df4987522d3b": {
-  "fr": "École privée · El Jadida",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "d5b3df8e1e9f": {
-  "fr": "Site livré",
-  "kind": "text",
-  "ctx": "GC Georges Claude École privée · El Jadida Site livré",
-  "pages": [
-   "index.html"
-  ]
- },
- "06d945942aa2": {
-  "fr": "AB",
-  "kind": "text",
-  "ctx": "AB Ange Bleu El Jadida · depuis 1986 Site livré",
-  "pages": [
-   "index.html"
-  ]
- },
  "5289a8102729": {
   "fr": "Ange Bleu",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "21e20c33abda": {
-  "fr": "El Jadida · depuis 1986",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "9da1301d46ed": {
-  "fr": "LES",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "46f5ac6ebded": {
-  "fr": "Marronniers",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "c1762994e127": {
-  "fr": "Maternelle · El Jadida",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "index.html"
-  ]
- },
- "9e6984820825": {
-  "fr": "Voir les idées de sites",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -18210,6 +17816,102 @@
  "9c02541c678c": {
   "fr": "Réponse suivante",
   "kind": "attr:aria-label",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "7c67380ee5de": {
+  "fr": "Élèves entrant dans une école privée au Maroc",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "9c660428d0e4": {
+  "fr": "Médecin recevant une patiente dans une clinique",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "6f99f321d02e": {
+  "fr": "Serveur apportant un tajine sur la terrasse d’un restaurant",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d16f5f33897b": {
+  "fr": "Terrasse de riad au coucher du soleil, face à la Koutoubia",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "c6460b5046a9": {
+  "fr": "Boutique d’artisanat marocain : sacs en cuir et lanternes",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "9b86e1f70f6a": {
+  "fr": "Technicien qui suit une ligne de production robotisée",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "9ab5688d00f3": {
+  "fr": "Avocat qui conseille un client dans son cabinet",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "e0784de76cac": {
+  "fr": "Agent immobilier qui présente une villa à un couple",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "d050dd2fc95d": {
+  "fr": "Joueurs sur les terrains d’un club de padel au coucher du soleil",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "7fef6f1c1789": {
+  "fr": "Soin du visage dans un institut de beauté",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "e6ce47730363": {
+  "fr": "Voyageuse qui admire Marrakech et l’Atlas enneigé",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "index.html"
+  ]
+ },
+ "b403197dfb81": {
+  "fr": "Chefs de chantier qui consultent les plans devant une grue",
+  "kind": "attr:alt",
   "ctx": "",
   "pages": [
    "index.html"
@@ -22360,6 +22062,22 @@
   "fr": "4 idées de style",
   "kind": "text",
   "ctx": "",
+  "pages": [
+   "realisations.html"
+  ]
+ },
+ "873fbdfce63f": {
+  "fr": "Hôtellerie",
+  "kind": "text",
+  "ctx": "nom d’un secteur d’activité",
+  "pages": [
+   "realisations.html"
+  ]
+ },
+ "d3440a619712": {
+  "fr": "Commerce",
+  "kind": "text",
+  "ctx": "nom d’un secteur d’activité",
   "pages": [
    "realisations.html"
   ]
@@ -39387,6 +39105,14 @@
  },
  "4ebe469c1f7f": {
   "fr": "Un numéro de téléphone ou WhatsApp pour vous répondre.",
+  "kind": "js",
+  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
+  "pages": [
+   "js"
+  ]
+ },
+ "d03e74b6f3e3": {
+  "fr": "Entreprise",
   "kind": "js",
   "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
   "pages": [

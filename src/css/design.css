@@ -623,44 +623,40 @@ html[lang="ar"] .fin-go{padding:0 calc(32 * var(--u)) 0 calc(10 * var(--u))}
 .more-g{display:grid;grid-template-columns:1fr 1fr;gap:calc(12 * var(--u));padding:0 calc(16 * var(--u)) calc(16 * var(--u))}
 .more-g label:last-child{grid-column:1/-1}
 [data-mode="M"] .more-g{grid-template-columns:1fr}
-/* « Plus qu'un site web » : le partenaire tech */
-#trust.tp{padding-bottom:calc(110 * var(--u))!important}
-#trust .sh p{max-width:calc(640 * var(--u));margin-left:auto;margin-right:auto}
-.tp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(16 * var(--u));margin-top:calc(54 * var(--u))}
-.tp-c{position:relative;display:flex;flex-direction:column;gap:calc(8 * var(--u));padding:calc(28 * var(--u));border-radius:calc(22 * var(--u));background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.05));box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 calc(30 * var(--u)) calc(60 * var(--u)) calc(-40 * var(--u)) rgba(5,15,40,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;overflow:hidden;transition:transform .5s cubic-bezier(.16,1,.3,1),background .4s}
-.tp-c:hover{transform:translateY(-6px);background:linear-gradient(160deg,rgba(255,255,255,.2),rgba(255,255,255,.07))}
-.tp-c::after{content:"";position:absolute;right:-30%;top:-40%;width:70%;height:90%;border-radius:50%;background:radial-gradient(closest-side,rgba(156,195,255,.25),transparent);pointer-events:none}
-.tp-ic{display:flex;align-items:center;justify-content:center;width:calc(48 * var(--u));height:calc(48 * var(--u));margin-bottom:calc(10 * var(--u));border-radius:calc(14 * var(--u));background:#fff;color:#1F57C7;box-shadow:0 calc(14 * var(--u)) calc(26 * var(--u)) calc(-12 * var(--u)) rgba(5,15,40,.6)}
-.tp-ic svg{width:52%;height:52%}
-.tp-c b{font-family:Sora,sans-serif;font-weight:600;font-size:calc(20 * var(--u));letter-spacing:-.025em;line-height:1.2}
-.tp-c span:not(.tp-ic){font-size:calc(15 * var(--u));line-height:1.55;color:#DCE7FA}
-.tp-dom{display:flex;align-items:center;gap:calc(26 * var(--u));margin-top:calc(16 * var(--u));padding:calc(22 * var(--u)) calc(26 * var(--u));border-radius:calc(22 * var(--u));background:rgba(8,20,48,.35);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.tp-dom p{display:flex;flex-direction:column;gap:calc(4 * var(--u));margin:0;flex:none;max-width:calc(240 * var(--u));color:#fff}
-.tp-dom p b{font-family:Sora,sans-serif;font-weight:600;font-size:calc(17 * var(--u))}
-.tp-dom p span{font-size:calc(13.5 * var(--u));color:#C9D6EE;line-height:1.45}
-.tp-dom ul{display:flex;flex-wrap:wrap;gap:calc(8 * var(--u));margin:0;padding:0;list-style:none}
-.tp-dom li{display:flex;flex-direction:column;padding:calc(10 * var(--u)) calc(14 * var(--u));border-radius:calc(14 * var(--u));background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.tp-dom li b{font-size:calc(14 * var(--u));font-weight:600;color:#fff}
-.tp-dom li span{font-size:calc(12.5 * var(--u));color:#BFD0EE}
-.tp-proof{margin-top:calc(46 * var(--u));text-align:center}
-.tp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(12 * var(--u))}
-.tp-stats div{display:flex;flex-direction:column;align-items:center;gap:calc(4 * var(--u));padding:calc(18 * var(--u)) calc(10 * var(--u))}
-.tp-stats div+div{box-shadow:-1px 0 0 rgba(255,255,255,.14)}
-.tp-stats b{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:500;font-size:calc(40 * var(--u));line-height:1;color:#fff;letter-spacing:-.02em}
-.tp-stats span{font-size:calc(13.5 * var(--u));color:#C9D6EE}
-.tp-lab{margin:calc(30 * var(--u)) 0 calc(4 * var(--u));font-family:"JetBrains Mono",monospace;font-size:calc(11 * var(--u));letter-spacing:.16em;text-transform:uppercase;color:#BFD8FF}
-.tp-cta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:calc(14 * var(--u));margin-top:calc(30 * var(--u))}
-.tp-go{display:inline-flex;align-items:center;gap:calc(10 * var(--u));height:calc(56 * var(--u));padding:0 calc(28 * var(--u));border-radius:999px;background:#fff;color:#0E214E;font-family:Sora,sans-serif;font-weight:600;font-size:calc(16 * var(--u));text-decoration:none;box-shadow:0 calc(20 * var(--u)) calc(40 * var(--u)) calc(-16 * var(--u)) rgba(5,15,40,.7);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+/* « Plus qu'un site web » : le partenaire tech, en court (six métiers, trois engagements, les clients) */
+#trust.tp{padding-bottom:calc(100 * var(--u))!important}
+#trust .sh p{max-width:calc(600 * var(--u));margin-left:auto;margin-right:auto}
+.tp-in{width:calc(100% - 48px);max-width:calc(1040 * var(--u));margin:0 auto}
+.tp-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:calc(10 * var(--u));margin:calc(40 * var(--u)) 0 0;padding:0;list-style:none}
+.tp-chips li{display:flex;align-items:center;gap:calc(9 * var(--u));padding:calc(10 * var(--u)) calc(16 * var(--u));border-radius:999px;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);color:#fff;font-size:calc(14.5 * var(--u));line-height:1.2}
+.tp-i{display:flex;flex:none;width:calc(18 * var(--u));height:calc(18 * var(--u));color:#BFD8FF}
+.tp-i svg,.tp-pi svg,.tp-seal svg{width:100%;height:100%}
+.tp-card{margin-top:calc(26 * var(--u));padding:calc(30 * var(--u)) calc(32 * var(--u)) calc(32 * var(--u));border-radius:calc(26 * var(--u));background:#fff;color:#0E214E;box-shadow:0 calc(40 * var(--u)) calc(80 * var(--u)) calc(-40 * var(--u)) rgba(5,15,40,.7)}
+.tp-ct{display:flex;align-items:center;gap:calc(12 * var(--u));margin:0 0 calc(22 * var(--u));font-family:Sora,sans-serif;font-weight:500;font-size:calc(21 * var(--u));letter-spacing:-.025em;color:#0E214E}
+.tp-seal{display:flex;flex:none;width:calc(42 * var(--u));height:calc(42 * var(--u));padding:calc(8 * var(--u));box-sizing:border-box;border-radius:50%;background:#F2B233;color:#0B1B3A}
+.tp-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(26 * var(--u))}
+.tp-p{display:flex;flex-direction:column;gap:calc(8 * var(--u));padding-top:calc(18 * var(--u));border-top:1px solid #DCE4F2}
+.tp-pi{display:flex;width:calc(28 * var(--u));height:calc(28 * var(--u));margin-bottom:calc(4 * var(--u));color:#1F57C7}
+.tp-p b{font-family:Sora,sans-serif;font-weight:500;font-size:calc(18 * var(--u));letter-spacing:-.02em;color:#0E214E}
+.tp-p span{font-size:calc(15 * var(--u));line-height:1.55;color:#3A4E72}
+.tp-f{display:flex;align-items:center;justify-content:space-between;gap:calc(24 * var(--u));margin-top:calc(26 * var(--u))}
+.tp-who{display:flex;flex-direction:column;gap:calc(4 * var(--u));margin:0;font-size:calc(14 * var(--u));line-height:1.6;color:#C9D6EE}
+.tp-who b{font-weight:500;font-size:calc(15 * var(--u));color:#fff}
+.tp-who a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.25)}
+.tp-who a:hover{color:#fff;border-color:#fff}
+.tp-go{display:inline-flex;flex:none;align-items:center;gap:calc(10 * var(--u));height:calc(56 * var(--u));padding:0 calc(28 * var(--u));border-radius:999px;background:#fff;color:#0E214E;font-family:Sora,sans-serif;font-weight:600;font-size:calc(16 * var(--u));text-decoration:none;box-shadow:0 calc(20 * var(--u)) calc(40 * var(--u)) calc(-16 * var(--u)) rgba(5,15,40,.7);transition:transform .4s cubic-bezier(.16,1,.3,1)}
 .tp-go:hover{transform:translateY(-3px)}
 .tp-go svg{width:calc(18 * var(--u));height:calc(18 * var(--u))}
-.tp-cta .lg-more{margin:0!important}
-[data-mode="M"] .tp-grid{grid-template-columns:1fr;gap:calc(10 * var(--u));margin-top:calc(34 * var(--u))}
-[data-mode="M"] .tp-c{padding:calc(20 * var(--u))}
-[data-mode="M"] .tp-dom{flex-direction:column;align-items:flex-start;gap:calc(14 * var(--u))}
-[data-mode="M"] .tp-stats{grid-template-columns:1fr 1fr}
-[data-mode="M"] .tp-stats div:nth-child(3){box-shadow:none}
-[data-mode="M"] .tp-stats b{font-size:calc(30 * var(--u))}
-html[lang="ar"] .tp-go svg{transform:scaleX(-1)}
+[data-mode="M"] .tp-in{width:calc(100% - 32px)}
+[data-mode="M"] .tp-chips{display:grid;grid-template-columns:1fr 1fr;gap:calc(8 * var(--u));margin-top:calc(28 * var(--u))}
+[data-mode="M"] .tp-chips li{padding:calc(10 * var(--u)) calc(12 * var(--u));font-size:calc(13 * var(--u))}
+[data-mode="M"] .tp-card{padding:calc(22 * var(--u)) calc(20 * var(--u));border-radius:calc(22 * var(--u))}
+[data-mode="M"] .tp-ct{font-size:calc(18 * var(--u));margin-bottom:calc(14 * var(--u))}
+[data-mode="M"] .tp-g{grid-template-columns:1fr;gap:calc(16 * var(--u))}
+[data-mode="M"] .tp-p{padding-top:calc(14 * var(--u))}
+[data-mode="M"] .tp-p span{font-size:calc(14 * var(--u))}
+[data-mode="M"] .tp-f{flex-direction:column;align-items:stretch;text-align:center}
+[data-mode="M"] .tp-go{justify-content:center}
 /* Final, version courte et premium (avant « La vision ») : le fond suit la page, le téléphone a ses vraies proportions */
 html body .fin.mom{background:transparent;padding:calc(120 * var(--u)) 0 calc(120 * var(--u))!important}
 .fin-sky .a1{opacity:.75}.fin-sky .a2{opacity:.6}
@@ -682,42 +678,11 @@ html body .fin.mom{background:transparent;padding:calc(120 * var(--u)) 0 calc(12
 .fin .mrw-tx small{font-size:calc(9.5 * var(--u));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fin .mrw-rk{padding:calc(3 * var(--u)) calc(7 * var(--u));font-size:calc(11 * var(--u))}
 .fin h2{max-width:calc(620 * var(--u))}
-/* Clients : logos blancs, domaine, badge « site livré » */
-.tp-lab{display:inline-flex;align-items:center;gap:calc(8 * var(--u))}
-.tp-lab i{font-style:normal;font-size:calc(18 * var(--u));letter-spacing:0}
-.tp-logos{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(12 * var(--u));margin-top:calc(14 * var(--u))}
-.tl{display:flex;flex-direction:column;align-items:center;gap:calc(10 * var(--u));padding:calc(24 * var(--u)) calc(16 * var(--u)) calc(18 * var(--u));border-radius:calc(20 * var(--u));background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);color:#fff;text-decoration:none;transition:background .35s,transform .45s cubic-bezier(.16,1,.3,1)}
-.tl:hover{background:rgba(255,255,255,.12);transform:translateY(-4px)}
-.tl-mark{display:flex;align-items:center;gap:calc(10 * var(--u));min-height:calc(52 * var(--u))}
-.tl-mark>i{display:flex;align-items:center;justify-content:center;flex:none;width:calc(44 * var(--u));height:calc(44 * var(--u));border-radius:50%;font-style:normal}
-.tl-mark>span{display:flex;flex-direction:column;align-items:flex-start;text-align:start}
-.tl-mark b{font-weight:600;font-size:calc(17 * var(--u));line-height:1.1;letter-spacing:-.01em}
-.tl-mark small{font-size:calc(10.5 * var(--u));color:#BFD0EE;letter-spacing:.02em}
-.tl-mark.gc>i{background:#F2B233;color:#0E214E;font-family:Sora,sans-serif;font-weight:600;font-size:calc(15 * var(--u))}
-.tl-mark.gc b{font-family:Sora,sans-serif}
-.tl-mark.ab>i{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.85);font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:600;font-size:calc(17 * var(--u));letter-spacing:-.04em}
-.tl-mark.ab b{font-family:"Playfair Display",Georgia,serif;font-weight:500;font-size:calc(19 * var(--u))}
-.tl-mark.jab b{font-family:Sora,sans-serif;font-weight:600;font-size:calc(15.5 * var(--u))}
-.tl-mark.lm>span{align-items:center;text-align:center}
-.tl-mark.lm b{font-family:"Playfair Display",Georgia,serif;font-weight:600;font-size:calc(24 * var(--u));letter-spacing:.18em;line-height:1}
-.tl-mark.lm em{font-family:"Playfair Display",Georgia,serif;font-style:normal;font-weight:600;font-size:calc(17 * var(--u));line-height:1.1}
-.tl-dom{font-family:"JetBrains Mono",monospace;font-size:calc(11.5 * var(--u));color:#9CC3FF;letter-spacing:.02em}
-.tl-ok{display:inline-flex;align-items:center;gap:calc(6 * var(--u));padding:calc(5 * var(--u)) calc(11 * var(--u));border-radius:999px;background:rgba(74,222,128,.14);box-shadow:inset 0 0 0 1px rgba(74,222,128,.35);color:#BBF7D0;font-size:calc(12 * var(--u));font-weight:500}
-.tl-ok i{font-style:normal;font-size:calc(12 * var(--u))}
-[data-mode="M"] .tp-logos{grid-template-columns:1fr 1fr;gap:calc(10 * var(--u))}
-[data-mode="M"] .tl{padding:calc(18 * var(--u)) calc(10 * var(--u)) calc(14 * var(--u))}
-[data-mode="M"] .tl-mark{flex-direction:column;gap:calc(6 * var(--u));text-align:center}
-[data-mode="M"] .tl-mark>span{align-items:center;text-align:center}
-[data-mode="M"] .tl-mark b{font-size:calc(15 * var(--u))}
-[data-mode="M"] .tl-dom{font-size:calc(10 * var(--u))}
-
 /* Carte du haut, tout le Maroc : deux canvas (le fond, puis ce qui vit) dans un même cadre */
 .mwrap{position:absolute;inset:0;transform-origin:50% 60%}
 .mcv0{transform-origin:0 0}
-/* téléphone : la carte se pose en douceur à l'arrivée (le navigateur s'en charge, sans rien redessiner) */
-.hero[data-mode="M"] .mwrap.go{animation:mIn 2.6s cubic-bezier(.2,.72,.18,1) both}
-@keyframes mIn{0%{opacity:0;transform:perspective(1000px) rotateX(24deg) scale(1.1) translateY(4%)}35%{opacity:1}100%{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.hero[data-mode="M"] .mwrap.go{animation:none}}
+/* téléphone : la carte (fond, lumières, fiche) bouge d'un seul bloc, calculé par la carte graphique (home.js, mobCam) */
+.hero[data-mode="M"] .mwrap{will-change:transform,opacity;backface-visibility:hidden}
 /* la bulle de recherche est opaque : pas de flou derrière (coûteux à chaque image) */
 .mq{-webkit-backdrop-filter:none;backdrop-filter:none;background:#fff}
 .hero[data-mode="M"] .mlive{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(16,58,150,.42)}
@@ -766,3 +731,92 @@ html body #sim .so .off-msg{-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-mode="M"] .foot .f-col a,[data-mode="M"] .foot .f-col span{font-size:calc(14.5 * var(--u))}
 /* le nom de l'entreprise trouvée tient sur deux lignes plutôt que d'être coupé */
 .mc-b b{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}
+
+/* ── « Tous les métiers » : chaque carte montre le haut d'un vrai site, avec sa photo (tools/metiers.py) ── */
+.mc2-site .sp-site.sp-ph{background:var(--bg);color:#fff;isolation:isolate}
+.sp-ph .sp-img{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--ac2)}
+.sp-ph .sp-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--op,50% 50%);transform:scale(1.03);transition:transform 2.8s cubic-bezier(.2,.65,.25,1)}
+/* la carte au centre prend vie : sa photo s'approche lentement */
+.mc2.on .sp-ph .sp-img img{transform:scale(1.09)}
+/* un voile sombre en bas et à gauche, pour que le texte se lise sur toutes les photos */
+.sp-ph::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(6,14,32,.5) 0,rgba(6,14,32,0) 20%),linear-gradient(0deg,rgba(6,14,32,.88) 0,rgba(6,14,32,.55) 30%,rgba(6,14,32,0) 64%),linear-gradient(90deg,rgba(6,14,32,.42) 0,rgba(6,14,32,0) 62%)}
+.mc2-site .sp-site.sp-ph .sp-bar{z-index:2;background:rgba(6,14,32,.32);color:#fff}
+.sp-ph .sp-u{flex:0 1 44%;height:calc(9 * var(--u));margin-left:calc(10 * var(--u));border-radius:999px;background:rgba(255,255,255,.2)}
+.mc2-site .sp-site.sp-ph .sp-l{z-index:2;max-width:74%;gap:calc(6 * var(--u));text-shadow:0 1px 14px rgba(0,0,0,.45)}
+.mc2-site .sp-site.sp-ph .sp-k{color:#fff;opacity:.88}
+.mc2-site .sp-site.sp-ph .sp-l b{color:#fff;font-size:calc(22 * var(--u));line-height:1.08}
+.mc2-site .sp-site.sp-ph .sp-cta{background:var(--ac);color:var(--acf,#fff);text-shadow:none;box-shadow:0 calc(8 * var(--u)) calc(18 * var(--u)) calc(-8 * var(--u)) rgba(0,0,0,.55)}
+[data-mode="M"] .mc2-site .sp-site.sp-ph .sp-l{left:calc(14 * var(--u));bottom:calc(14 * var(--u))}
+[data-mode="M"] .mc2-site .sp-site.sp-ph .sp-l b{font-size:calc(19 * var(--u))}
+@media (prefers-reduced-motion:reduce){.sp-ph .sp-img img,.mc2.on .sp-ph .sp-img img{transition:none;transform:none}}
+
+/* ── Téléphone : défilement fluide ── */
+/* Nuages sans filtre SVG : le bruit et la déformation, calculés par le processeur, figeaient l'écran
+   près d'une seconde au passage dans les nuages. Un flou calculé par la carte graphique les remplace. */
+@media (hover:none),(max-width:759px){
+.cl .wh{filter:blur(calc(6 * var(--u)))}
+.cl .sh{filter:blur(calc(12 * var(--u)))}
+}
+/* « Tous les métiers » : la scène suit la hauteur visible (le compteur ne passe plus sous la barre du navigateur) */
+.mt2-stage{height:var(--vhs)}
+.mc2-site .sp-site.sp-ph .sp-l{padding:0;justify-content:flex-end}
+/* arabe : le texte de la maquette se lit à droite, le voile suit */
+html[lang="ar"] .mc2-site .sp-site.sp-ph .sp-l{left:auto;right:calc(16 * var(--u));align-items:flex-end;text-align:right}
+html[lang="ar"] .mc2-site .sp-site.sp-ph .sp-k{font-size:calc(11 * var(--u));letter-spacing:0}
+html[lang="ar"] .sp-ph::after{background:linear-gradient(180deg,rgba(6,14,32,.5) 0,rgba(6,14,32,0) 20%),linear-gradient(0deg,rgba(6,14,32,.88) 0,rgba(6,14,32,.55) 30%,rgba(6,14,32,0) 64%),linear-gradient(270deg,rgba(6,14,32,.42) 0,rgba(6,14,32,0) 62%)}
+[data-mode="M"] html[lang="ar"] .mc2-site .sp-site.sp-ph .sp-l,html[lang="ar"][data-mode="M"] .mc2-site .sp-site.sp-ph .sp-l{right:calc(14 * var(--u))}
+
+/* Services (3 cartes empilées) : un onglet en haut de chaque carte, avec son numéro et son titre.
+   Les cartes se posent l'une sous l'onglet de l'autre : réduites, elles gardent leur titre lisible. */
+#stack .sc.has-tab{padding-top:calc(84 * var(--u))!important}
+.sc-tab{position:absolute;top:0;left:0;right:0;height:calc(58 * var(--u));display:flex;align-items:center;gap:calc(14 * var(--u));padding:0 calc(52 * var(--u));border-bottom:1px solid currentColor;border-color:rgba(127,140,170,.22);pointer-events:none}
+.sc-tab span{font-family:"JetBrains Mono",monospace;font-size:calc(12 * var(--u));letter-spacing:.12em;opacity:.7}
+.sc-tab b{font-family:Sora,sans-serif;font-weight:500;font-size:calc(20 * var(--u));letter-spacing:-.02em}
+#stack .sc.has-tab .sc-n{display:none}
+#stack .sc.c1 .sc-tab span{color:#9fc8ff;opacity:1}
+[data-mode="M"] #stack .sc.has-tab{padding-top:calc(64 * var(--u))!important}
+[data-mode="M"] .sc-tab{height:calc(46 * var(--u));padding:0 calc(24 * var(--u));gap:calc(10 * var(--u))}
+[data-mode="M"] .sc-tab b{font-size:calc(16 * var(--u))}
+/* la carte réduite rétrécit depuis son haut : son onglet reste entier, rien ne dépasse dessous */
+#stack .sc.has-tab{transform-origin:50% 0}
+/* téléphone : un peu de place en fin de section, pour que la 3ᵉ carte se pose sous les deux onglets */
+[data-mode="M"] #stack{padding-bottom:38vh}
+/* Secondes lignes des grands titres sur fond bleu : teintes pleines et claires (lisibles), plus de blanc transparent */
+.hero .head h1 .ln + .ln{background:linear-gradient(180deg,#FFFFFF 10%,#D4E5FF 95%)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+#trust .sh h2 .grad,.dif .sh.dark h2 .grad,#vis .sh.dark h2 .grad,#guides .sh.dark h2 .grad{background:linear-gradient(180deg,#FFFFFF,#C9DEFF)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+/* « Démarrer » : des titres d'étape bien lisibles */
+.wz-step h3{font-size:calc(46 * var(--u))!important;line-height:1.08!important;letter-spacing:-.035em!important}
+.wz-step .wz-k{font-size:calc(13 * var(--u))!important}
+.wz-step .wz-h{font-size:calc(17 * var(--u))!important}
+.wz-step .wtile b{font-size:calc(17 * var(--u))!important}
+[data-mode="M"] .wz-step h3{font-size:calc(32 * var(--u))!important}
+[data-mode="M"] .wz-step .wz-h{font-size:calc(15 * var(--u))!important}
+
+/* Changement de page : un fondu court et natif (le navigateur garde l'ancienne page à l'écran jusqu'à ce que
+   la nouvelle soit prête : plus d'écran blanc). Désactivé si le visiteur préfère moins d'animations. */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.26s;animation-timing-function:cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+/* « Il travaille pendant que vous dormez » : la nuit sur le téléphone (home.js, nightRun) */
+.rphone.night .rp-st>span:first-child{visibility:hidden}
+.rphone.night .lock{isolation:isolate}
+.lk-sky{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#3B5BAE 0%,#8A6FA8 42%,#E59A7E 74%,#FFC98A 100%);opacity:0;transition:opacity 1.4s ease}
+.rphone.night.sunrise .lk-sky{opacity:1}
+.lk-d i{font-style:normal}
+.lk-d .d1,.rphone.night.d1on .lk-d .d0{display:none}
+.rphone.night.d1on .lk-d .d1{display:inline}
+.lk-t{font-variant-numeric:tabular-nums}
+.lk-t.tick{animation:lkTick .35s cubic-bezier(.2,.7,.2,1)}
+@keyframes lkTick{0%{opacity:.25;transform:translateY(5px)}100%{opacity:1;transform:none}}
+/* la plus récente en haut, comme sur un vrai téléphone ; chacune arrive à son heure */
+.rphone.night .lk-n{flex-direction:column-reverse}
+.st-sl.run .rphone.night .lkn{opacity:0;transform:translateY(-10px) scale(.96);transition:opacity .45s ease,transform .5s cubic-bezier(.2,.8,.2,1.1)}
+.st-sl.run .rphone.night .lkn.in{opacity:1;transform:none}
+.lkn.sum{background:rgba(255,255,255,.3)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55),0 calc(10 * var(--u)) calc(24 * var(--u)) calc(-12 * var(--u)) rgba(122,78,0,.55)}
+.lkn-ic.sun{background:#FFD36A!important;color:#7A4E00!important}
+.lkn.sum b{opacity:1;font-weight:700}
+@media (prefers-reduced-motion:reduce){.lk-sky{transition:none}.lk-t.tick{animation:none}}
+.rphone.night.sunrise .lkn{background:rgba(30,24,64,.42)!important}
+.rphone.night.sunrise .lkn.sum{background:rgba(30,24,64,.55)!important;box-shadow:inset 0 0 0 1.5px #FFD36A,0 calc(10 * var(--u)) calc(24 * var(--u)) calc(-12 * var(--u)) rgba(60,30,0,.55)}
+.lkn.sum span{white-space:normal;overflow:visible;line-height:1.3}

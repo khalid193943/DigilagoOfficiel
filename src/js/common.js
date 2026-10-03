@@ -118,3 +118,42 @@
     });
   });
 })();
+
+// Pages suivantes chargées d'avance : au survol d'un lien (ordinateur), à l'approche du doigt (téléphone).
+// Le clic ouvre alors la page presque instantanément (les pages sont d'un seul fichier : tout est déjà là).
+(function () {
+  // l'accueil est seulement téléchargé d'avance (son animation d'arrivée doit se jouer sous les yeux du
+  // visiteur) ; les autres pages sont entièrement préparées : le clic les affiche aussitôt
+  var HOME = [{ href_matches: "/" }, { href_matches: "/index.html" }, { href_matches: "/:lang(en|ar)/" },
+    { href_matches: "/:lang(en|ar)/index.html" }];
+  var OUT = { selector_matches: "[target=_blank],[download],.lsw a" };
+  var rules = {
+    prerender: [
+      { source: "document", where: { and: [{ href_matches: "/*" }, { not: OUT }, { not: { or: HOME } }] }, eagerness: "moderate" },
+    ],
+    // toujours en plus : le téléchargement d'avance (si la préparation complète n'est pas possible, il reste)
+    prefetch: [{ source: "document", where: { and: [{ href_matches: "/*" }, { not: OUT }] }, eagerness: "moderate" }],
+  };
+  if (window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules")) {
+    var s = document.createElement("script");
+    s.type = "speculationrules";
+    s.textContent = JSON.stringify(rules);
+    document.head.appendChild(s);
+    return;
+  }
+  // autres navigateurs : un préchargement simple, une seule fois par page
+  var done = {};
+  function warm(e) {
+    var a = e.target && e.target.closest && e.target.closest("a[href]");
+    if (!a || a.target || a.hasAttribute("download") || a.origin !== location.origin || a.pathname === location.pathname) return;
+    var u = a.href.split("#")[0];
+    if (done[u]) return;
+    done[u] = 1;
+    var l = document.createElement("link");
+    l.rel = "prefetch";
+    l.href = u;
+    document.head.appendChild(l);
+  }
+  document.addEventListener("pointerover", warm, { passive: true });
+  document.addEventListener("touchstart", warm, { passive: true });
+})();
