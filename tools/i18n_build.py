@@ -3,7 +3,7 @@
 - Textes, attributs (alt, aria-label…), données des métiers et messages des scripts
   traduits grâce à src/i18n/en.json et src/i18n/ar.json (clés : src/i18n/strings.json).
 - Sélecteur de langue réel (FR · EN · عربي) sur toutes les pages, françaises comprises.
-- Arabe : polices arabes (IBM Plex Sans Arabic, Noto Naskh Arabic pour les accents
+- Arabe : polices arabes (Noto Sans Arabic, Noto Naskh Arabic pour les accents
   en italique), texte de droite à gauche, sans espacement de lettres.
 - Les balises SEO (hreflang, canonique, Schema.org) sont ajoutées ensuite par seo.py.
 
@@ -35,8 +35,8 @@ LINES = {
     M: ["We build your s" + I + "te.", "Your clients", "find you."],
   };''',
     'ar': '''  var LINES = {
-    D: ["نصمّم موقعك الإلكتروني.", "وعملاؤك يجدونك."],
-    M: ["نصمّم موقعك.", "وعملاؤك", "يجدونك."],
+    D: ["نصمّم موقعك الإلكتروني", "ليجدك عملاؤك."],
+    M: ["نصمّم موقعك", "ليجدك عملاؤك."],
   };''',
 }
 
@@ -173,15 +173,17 @@ def js_bundle(kind, TR, lang):
 # ─── polices et styles arabes ──────────────────────────────────────────
 
 AR_CACHE = os.path.join(ROOT, 'src', 'fonts-ar.css')
-AR_URL = ('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600'
+# Noto Sans Arabic et non IBM Plex Sans Arabic : Plex dessine le ي final sans ses deux points (usage égyptien),
+# ce qu'un lecteur marocain lit comme une faute (« فى » pour « في »).
+AR_URL = ('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600'
           '&family=Noto+Naskh+Arabic:wght@500&display=swap')
 # famille latine du site → police arabe qui la prolonge (même nom de famille, plage arabe seulement)
-AR_MAP = [('Sora', 'normal', '500', 'IBM Plex Sans Arabic', '500'),
-          ('Sora', 'normal', '600', 'IBM Plex Sans Arabic', '600'),
-          ('Instrument Sans', 'normal', '400', 'IBM Plex Sans Arabic', '400'),
-          ('Instrument Sans', 'normal', '500', 'IBM Plex Sans Arabic', '500'),
-          ('JetBrains Mono', 'normal', '400', 'IBM Plex Sans Arabic', '400'),
-          ('JetBrains Mono', 'normal', '500', 'IBM Plex Sans Arabic', '500'),
+AR_MAP = [('Sora', 'normal', '500', 'Noto Sans Arabic', '500'),
+          ('Sora', 'normal', '600', 'Noto Sans Arabic', '600'),
+          ('Instrument Sans', 'normal', '400', 'Noto Sans Arabic', '400'),
+          ('Instrument Sans', 'normal', '500', 'Noto Sans Arabic', '500'),
+          ('JetBrains Mono', 'normal', '400', 'Noto Sans Arabic', '400'),
+          ('JetBrains Mono', 'normal', '500', 'Noto Sans Arabic', '500'),
           ('Playfair Display', 'normal', '500', 'Noto Naskh Arabic', '500'),
           ('Playfair Display', 'italic', '500', 'Noto Naskh Arabic', '500')]
 
@@ -192,7 +194,7 @@ AR_CSS = (
     # l'arabe ne s'espace pas lettre par lettre (les lettres doivent rester liées)
     'html[lang="ar"] :is(h1,h2,h3,h4,h5,h6,p,li,span,a,b,em,i,small,button,dd,dt,summary,label,strong,div){'
     'letter-spacing:0!important;text-transform:none!important}'
-    'html[lang="ar"] :is(.logo,.fl-logo,.fsm-top>a,.f-brand>a){direction:ltr}'
+    'html[lang="ar"] :is(.logo,.fl-logo,.fsm-top>a,.f-brand>a:not(.wa)){direction:ltr}'
     'html[lang="ar"] .giant,html[lang="ar"] .word,html[lang="ar"] .fl-logo b,html[lang="ar"] .logo b{'
     'direction:ltr;letter-spacing:-.04em!important}'
     # menus, pied de page et rangées de boutons en miroir (lecture de droite à gauche)
@@ -200,6 +202,26 @@ AR_CSS = (
     '.fbtn,.cta,.mom-cta,.ans-c,.wz-nav,.st4,.incl,.eng,.vals,.obj,.share,.chan,.svs,.flt,.gd-row,.st-tabs){direction:rtl}'
     'html[lang="ar"] :is(.arw svg,.cta svg,.more svg,.ans-go svg,.faq-link svg){transform:scaleX(-1)}'
     'html[lang="ar"] body{line-height:1.6}'
+    # grand titre du hero sur ordinateur : les deux lignes restent centrées l'une sur l'autre
+    'html[dir="rtl"] .hero[data-mode="D"] .head h1{display:flex;flex-direction:column;align-items:center}'
+    # Titres qui apparaissent ligne par ligne : le masque laissait assez de place sous la ligne pour l'alphabet
+    # latin, pas pour l'arabe (les points sous ي، ب، ج… étaient coupés : « في » se lisait « فى »).
+    # Plus de place sous la ligne, et une course plus longue pour que le titre reste caché avant d'apparaître.
+    'html[lang="ar"] :is(.sh h2,.phero h1) .l{padding-bottom:.6em!important;margin-bottom:-.6em!important}'
+    'html[lang="ar"] .sh h2:not(.in) .li{transform:translateY(160%)}'
+    '@keyframes lineUpAr{0%{transform:translateY(160%)}100%{transform:none}}'
+    'html[lang="ar"] :is(.phero h1 .l>span,.phero h1 .l>.lx){animation-name:lineUpAr}'
+    # « Nos valeurs » : chaque mot glisse depuis la droite (sens de lecture), pas depuis la gauche
+    'html[dir="rtl"] .val.rv:not(.in) b{transform:translateX(calc(80 * var(--u)))}'
+    # « Démarrer » : la route des étapes part de la droite (bloc en miroir, l'avion vole vers la gauche),
+    # les étiquettes restent lisibles
+    'html[dir="rtl"] .rt-dot{transform:translateX(50%)}'
+    'html[dir="rtl"] .rt-plane{left:auto;right:0;margin-left:0;margin-right:calc(-15 * var(--u));transition-property:right,transform}'
+    'html[dir="rtl"] .rt-plane svg{transform:scaleX(-1)}'
+    # barres de progression : elles se remplissent depuis la droite
+    'html[dir="rtl"] .prog,html[dir="rtl"] .mt-b i{transform-origin:100% 50%}'
+    # noms latins dans une phrase arabe (clients, marques en liste) : chacun à sa place, de droite à gauche
+    'html[dir="rtl"] :is(.tp-who a,.tl-mark b){unicode-bidi:isolate}'
     'html[lang="ar"] input[type=tel],html[lang="ar"] input[type=email]{direction:ltr;text-align:right}'
     'html[lang="ar"] :is(h1,h2,h3,h4){line-height:1.3!important}'
     # toutes les flèches « → » pointent vers la gauche (sens de lecture)
@@ -221,10 +243,113 @@ LSW_CSS = (
     '.lsw:hover .lsw-m,.lsw:focus-within .lsw-m,.lsw.open .lsw-m{opacity:1;transform:translate(-50%,0);pointer-events:auto}'
     '.lsw-m a{display:block;padding:7px 12px;border-radius:8px;font:500 12px/1 "JetBrains Mono",monospace;'
     'color:#0e214e;text-decoration:none;white-space:nowrap;text-align:center}'
-    '.lsw-m a:hover{background:#eaf3fe}.lsw-m a[lang="ar"]{font-family:"IBM Plex Sans Arabic",Arial,sans-serif;font-size:13px}'
+    '.lsw-m a:hover{background:#eaf3fe}.lsw-m a[lang="ar"]{font-family:"Noto Sans Arabic",Arial,sans-serif;font-size:13px}'
     '.fsm-lang a{text-decoration:none}.f-lang a{color:inherit;text-decoration:none;opacity:.75}'
     '.f-lang a:hover{opacity:1}.f-lang b{font-weight:600;color:#fff}'
 )
+
+
+RTL_START, RTL_END = '<!--dg:rtl-->', '<!--/dg:rtl-->'
+PSEUDO = re.compile(r'(::?(?:before|after|first-line|first-letter|placeholder|marker|selection|-webkit-[\w-]+))(?![\w-])')
+
+
+def rtl_align(h):
+    """Tout « text-align: left / right » de la page, inversé pour la lecture de droite à gauche.
+    Même spécificité que la règle d'origine (:where ne compte pas), placé après elle : il l'emporte."""
+    import tinycss2
+    css = ''.join(re.findall(r'<style[^>]*>(.*?)</style>', h, re.S))
+    flip = {'left': 'right', 'right': 'left'}
+
+    def scoped(sel):
+        out = []
+        for one in sel.split(','):
+            one = one.strip()
+            if not one:
+                continue
+            m = PSEUDO.search(one)
+            out.append(one[:m.start()] + ':where([dir="rtl"] *)' + one[m.start():] if m else one + ':where([dir="rtl"] *)')
+        return ','.join(out)
+
+    def walk(rules):
+        res = []
+        for r in rules:
+            if r.type == 'qualified-rule':
+                decls = tinycss2.parse_declaration_list(r.content, skip_whitespace=True, skip_comments=True)
+                for d in decls:
+                    if d.type == 'declaration' and d.lower_name == 'text-align':
+                        v = tinycss2.serialize(d.value).strip().lower()
+                        sel = tinycss2.serialize(r.prelude).strip()
+                        # les règles déjà écrites pour l'arabe sont justes telles quelles
+                        if v in flip and 'lang="ar"' not in sel and 'dir=' not in sel:
+                            res.append('%s{text-align:%s%s}' % (scoped(sel), flip[v], '!important' if d.important else ''))
+            elif r.type == 'at-rule' and r.lower_at_keyword == 'media' and r.content:
+                inner = walk(tinycss2.parse_rule_list(r.content, skip_whitespace=True, skip_comments=True))
+                if inner:
+                    res.append('@media %s{%s}' % (tinycss2.serialize(r.prelude).strip(), ''.join(inner)))
+        return res
+
+    rules = walk(tinycss2.parse_stylesheet(css, skip_whitespace=True, skip_comments=True))
+    rules += mirror_rules(tinycss2, css, scoped)
+    h = re.sub(re.escape(RTL_START) + '.*?' + re.escape(RTL_END), '', h, flags=re.S)
+    block = RTL_START + '<style>' + ''.join(dict.fromkeys(rules)) + '</style>' + RTL_END
+    return h.replace('</head>', block + '</head>', 1)
+
+
+# Composants dessinés « depuis la gauche » (positions, marges, bordures écrites en dur) : en arabe, ils sont
+# retournés en miroir, propriété par propriété. Liste fermée : les animations de l'accueil, placées par le
+# JavaScript, restent intactes.
+MIRROR = re.compile(r'\.(?:tl|tl-fill|ntl|art|art-toc|fsm-nav|fnav|g-tabs|g-main|smq-bar)(?![\w-])')
+SWAP = {'left': 'right', 'padding-left': 'padding-right', 'margin-left': 'margin-right',
+        'border-left': 'border-right', 'border-left-width': 'border-right-width',
+        'border-left-color': 'border-right-color', 'border-left-style': 'border-right-style',
+        'border-top-left-radius': 'border-top-right-radius', 'border-bottom-left-radius': 'border-bottom-right-radius'}
+SWAP.update({v: k for k, v in list(SWAP.items())})
+
+
+def mirror_rules(tinycss2, css, scoped):
+    def split4(v):
+        parts = re.findall(r'calc\([^()]*(?:\([^()]*\)[^()]*)*\)|[^\s]+', v)
+        return parts
+
+    def flip(decls):
+        d = {x.lower_name: (tinycss2.serialize(x.value).strip(), x.important) for x in decls if x.type == 'declaration'}
+        out = {}
+        for name, (val, imp) in d.items():
+            if name in SWAP:
+                if name in ('left', 'right') and val.replace(' ', '') in ('50%', 'calc(50%)'):
+                    continue                                   # centrage (avec translateX(-50%)) : déjà symétrique
+                other = SWAP[name]
+                out[other] = (val, imp)
+                if other not in d:                         # côté opposé non écrit : on libère celui-ci
+                    out[name] = ('auto' if name in ('left', 'right') else '0', imp)
+            elif name in ('padding', 'margin', 'inset'):
+                v = split4(val)
+                if len(v) == 4 and v[1] != v[3]:
+                    out[name] = (' '.join([v[0], v[3], v[2], v[1]]), imp)
+            elif name == 'border-radius' and '/' not in val:
+                v = split4(val)
+                if len(v) == 4 and (v[0], v[2]) != (v[1], v[3]):
+                    out[name] = (' '.join([v[1], v[0], v[3], v[2]]), imp)
+        return out
+
+    def walk(rules):
+        res = []
+        for r in rules:
+            if r.type == 'qualified-rule':
+                sel = tinycss2.serialize(r.prelude).strip()
+                if not MIRROR.search(sel) or 'lang="ar"' in sel or 'dir=' in sel:
+                    continue
+                out = flip(tinycss2.parse_declaration_list(r.content, skip_whitespace=True, skip_comments=True))
+                if out:
+                    res.append('%s{%s}' % (scoped(sel), ';'.join('%s:%s%s' % (k, v, '!important' if i else '')
+                                                                 for k, (v, i) in out.items())))
+            elif r.type == 'at-rule' and r.lower_at_keyword == 'media' and r.content:
+                inner = walk(tinycss2.parse_rule_list(r.content, skip_whitespace=True, skip_comments=True))
+                if inner:
+                    res.append('@media %s{%s}' % (tinycss2.serialize(r.prelude).strip(), ''.join(inner)))
+        return res
+
+    return walk(tinycss2.parse_stylesheet(css, skip_whitespace=True, skip_comments=True))
 
 
 def ar_fonts(prefix):
@@ -250,7 +375,7 @@ def ar_fonts(prefix):
         faces += ("@font-face{font-family:'%s';font-style:%s;font-weight:%s;font-display:swap;"
                   "src:url(%sassets/fonts/%s.woff2) format('woff2');unicode-range:%s}" % (fam, style, w, prefix, name, rng))
     pre = ''.join('<link rel="preload" href="%sassets/fonts/%s.woff2" as="font" type="font/woff2" crossorigin>'
-                  % (prefix, files[k][0]) for k in [('IBM Plex Sans Arabic', '500'), ('Noto Naskh Arabic', '500')])
+                  % (prefix, files[k][0]) for k in [('Noto Sans Arabic', '500'), ('Noto Naskh Arabic', '500')])
     return '<!--dg:ar-->' + pre + '<style>' + faces + AR_CSS + '</style><!--/dg:ar-->'
 
 
@@ -298,6 +423,9 @@ def main():
             t = re.sub(r'(</(?:strong|b|a|em|i|span)>)[ \u00a0]+(?=[:;?!،؛؟])', r'\1', t)
             t = switchers(t, page, lang)
             t = re.sub(r'(<html\b[^>]*?\blang=)"fr"', r'\1"%s"' % lang, t, count=1)
+            if lang == 'ar':
+                # toute la page se lit de droite à gauche : textes, rangées, grilles, tableaux, listes, formulaires
+                t = re.sub(r'<html\b(?![^>]*\bdir=)', '<html dir="rtl"', t, count=1)
             t = re.sub(r'(?<![./\w])assets/', '../assets/', t)
             kind = 'home' if page == 'index.html' else 'pages'
             tag = '<script data-dg="app">' + bundles[(lang, kind)].replace('</script', '<\\/script') + '</script>'
@@ -306,6 +434,9 @@ def main():
                 t = ltr_runs(t)
                 t = re.sub(r'<!--dg:ar-->.*?<!--/dg:ar-->', '', t, flags=re.S)
                 t = t.replace('<!--dg:fonts-->', ar_fonts('../') + '<!--dg:fonts-->', 1)
+                t = rtl_align(t)
+                # « Démarrer » : les étapes se placent depuis la droite
+                t = re.sub(r'(<span class="rt-dot"[^>]*style=")left:', r'\1right:', t)
             open(os.path.join(SITE, lang, page), 'w', encoding='utf-8').write(t)
     for lang in ('en', 'ar'):
         left = []

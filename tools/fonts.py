@@ -59,10 +59,28 @@ def build():
         faces.append((file, "@font-face{font-family:'%s';font-style:%s;font-weight:%s;font-display:swap;"
                             "src:url(assets/fonts/%s.woff2) format('woff2');unicode-range:%s}"
                       % (fam, style, weight, file, rng)))
+    # Ménage : les polices latines plus utilisées partent, mais jamais les polices arabes
+    # (src/fonts-ar.css) : sans elles, la version arabe devait tout retélécharger à chaque construction
+    # (et la construction échouait hors ligne).
+    keep = set(seen.values()) | ar_names()
     for f in os.listdir(FONTS):
-        if f[:-6] not in seen.values():
+        if f[:-6] not in keep:
             os.remove(os.path.join(FONTS, f))
     return faces
+
+
+def ar_names():
+    """Noms des fichiers des polices arabes (même règle de nommage que tools/i18n_build.py)."""
+    path = os.path.join(ROOT, 'src', 'fonts-ar.css')
+    if not os.path.exists(path):
+        return set()
+    css = open(path, encoding='utf-8').read()
+    out = set()
+    for sub, body in re.findall(r'/\*\s*([\w-]+)\s*\*/\s*@font-face\s*\{(.*?)\}', css, re.S):
+        fam = re.search(r"font-family:\s*'([^']+)'", body).group(1)
+        w = re.search(r'font-weight:\s*(\d+)', body).group(1)
+        out.add('%s-%s' % (fam.lower().replace(' ', '-'), w))
+    return out
 
 
 def main():

@@ -63,17 +63,21 @@ def stub_open(page):
     page.add_init_script('window.__opened = []; window.open = function(u){ window.__opened.push(u); return null; };')
 
 def test_demarrer_un_projet_envoie_sur_whatsapp(page, base_url):
-    stub_open(page)
-    page.goto(f'{base_url}/demarrer.html'); page.wait_for_timeout(1500)
-    page.locator('#wzSec').scroll_into_view_if_needed(); page.wait_for_timeout(800)
-    page.click('[data-need="Site web"]'); page.click('#wzNext')
-    page.fill('#wName', 'Clinique Test'); page.click('[data-met="Santé"]'); page.click('#wzNext')
-    page.click('[data-when="Le plus vite possible"]'); page.click('#wzNext')
-    page.fill('#wTel', '+212 600 000 000'); page.click('#wzNext')
-    page.click('#wzNext'); page.wait_for_timeout(600)
-    url = page.evaluate('window.__opened[0]')
-    assert url.startswith('https://wa.me/212649953813')
-    assert 'Clinique%20Test' in url
+    """Démarrer : trois étapes (besoin, contact, lancement) ; seul le téléphone est obligatoire."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/demarrer.html'); page.wait_for_timeout(800)
+    assert page.locator('#wzCard .wz-step').count() == 3
+    page.locator('#tNeeds .wtile').first.click()
+    page.click('#wzNext'); page.wait_for_timeout(500)
+    page.click('#wzNext'); page.wait_for_timeout(300)
+    assert 'téléphone' in page.inner_text('#wzErr'), 'le téléphone est demandé'
+    page.fill('#wFirst', 'Sara'); page.fill('#wTel', '0612345678')
+    page.click('#wzNext'); page.wait_for_timeout(500)
+    assert page.inner_text('#wzCount').strip() == '3 / 3'
+    assert 'Sara, 0612345678' in page.inner_text('#recap')
+    page.click('#wzNext'); page.wait_for_timeout(1500)
+    assert page.evaluate("document.getElementById('wzCard').classList.contains('sent')")
+    assert 'wa.me/212649953813' in page.get_attribute('#wzWa', 'href')
 
 def test_formulaire_contact_envoie_sur_whatsapp(page, base_url):
     stub_open(page)
@@ -255,3 +259,107 @@ def test_final_de_l_accueil(page, base_url):
         return [!!(g.compareDocumentPosition(m) & 4), !!(m.compareDocumentPosition(v) & 4)]; })()""")
     assert order == [True, True], 'le grand appel à l’action est entre les guides et « La vision »'
     assert page.locator('#moment .fin-go[href="demarrer.html"]').count() == 1
+
+def test_metiers_ont_leur_photo(page, base_url):
+    """« Tous les métiers » : les 12 cartes ont leur photo, et toutes sont chargées dès que la section approche."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(1500)
+    imgs = page.locator('#metiers .mc2 .sp-ph .sp-img img')
+    assert imgs.count() == 12
+    assert all(a for a in imgs.evaluate_all('l => l.map(i => i.alt)')), 'chaque photo a sa description'
+    top = page.evaluate("document.getElementById('metiers').getBoundingClientRect().top + scrollY")
+    page.evaluate(f'window.scrollTo(0, {top})')
+    page.wait_for_function("[...document.querySelectorAll('#metiers .sp-img img')].every(i => i.complete && i.naturalWidth > 0)", timeout=15000)
+
+def test_telephone_barre_d_adresse(page, base_url):
+    """Téléphone : quand la barre d'adresse se replie (l'écran grandit), le hero reste collé au bas de l'écran."""
+    page.set_viewport_size({'width': 390, 'height': 764})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(2000)
+    page.evaluate('window.scrollTo(0, 460)'); page.wait_for_timeout(300)
+    page.set_viewport_size({'width': 390, 'height': 844}); page.wait_for_timeout(500)
+    bottom = page.evaluate("document.getElementById('hero').getBoundingClientRect().bottom")
+    assert abs(bottom - 844) < 2, f'bande vide sous le hero : bas du hero à {bottom} px pour 844 px'
+
+def test_telephone_la_carte_bouge_au_defilement(page, base_url):
+    """Téléphone : pendant que le hero reste en place, la carte bouge (plus de zone morte)."""
+    page.set_viewport_size({'width': 390, 'height': 844})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(3500)
+    t0 = page.evaluate("getComputedStyle(document.getElementById('mwrap')).transform")
+    page.evaluate('window.scrollTo(0, 500)'); page.wait_for_timeout(400)
+    t1 = page.evaluate("getComputedStyle(document.getElementById('mwrap')).transform")
+    assert t0 != t1, 'la carte doit suivre le défilement'
+
+# ─── Arabe : lecture de droite à gauche, sans faute d'affichage ─────────────────────────────────────
+
+AR_PAGES = ['index.html', 'a-propos.html', 'services.html', 'demarrer.html', 'contact.html', 'faq.html',
+            'guide-prix-site-web-maroc.html', 'wordpress-ou-sur-mesure-maroc.html', 'realisations.html']
+
+
+@pytest.mark.parametrize('name', AR_PAGES)
+def test_arabe_droite_a_gauche(page, base_url, name):
+    """Chaque page arabe se lit de droite à gauche, et aucun texte arabe n'est aligné à gauche."""
+    page.set_viewport_size({'width': 390, 'height': 844})
+    page.goto(f'{base_url}/ar/{name}'); page.wait_for_timeout(800)
+    assert page.evaluate('document.documentElement.dir') == 'rtl'
+    bad = page.evaluate(r"""() => [...document.querySelectorAll('body *')].filter(e => {
+        let own = ''; e.childNodes.forEach(n => { if (n.nodeType === 3) own += n.textContent; });
+        if (!/[\u0600-\u06FF]/.test(own) || e.closest('[aria-hidden="true"],script,style')) return false;
+        const c = getComputedStyle(e), r = e.getBoundingClientRect();
+        return r.width > 60 && (c.direction === 'ltr' || c.textAlign === 'left');
+      }).map(e => e.tagName + '.' + e.className + ' «' + e.textContent.trim().slice(0, 30) + '»').slice(0, 5)""")
+    assert not bad, f'textes arabes de gauche à droite : {bad}'
+
+
+def test_arabe_police_avec_points(page, base_url):
+    """Police arabe : Noto Sans Arabic (le ي final garde ses points ; IBM Plex les retirait : « فى » pour « في »)."""
+    page.goto(f'{base_url}/ar/index.html'); page.wait_for_timeout(800)
+    css = page.content()
+    assert 'Noto Sans Arabic' in css and 'IBM Plex Sans Arabic' not in css
+
+
+def test_arabe_frise_en_miroir(page, base_url):
+    """À propos : la ligne de la frise est à droite en arabe (à gauche en français)."""
+    page.set_viewport_size({'width': 390, 'height': 844})
+    pos = {}
+    for lang in ('', 'ar/'):
+        page.goto(f'{base_url}/{lang}a-propos.html'); page.wait_for_timeout(800)
+        pos[lang] = page.evaluate("""(() => { const t = document.querySelector('.tl'), r = t.getBoundingClientRect(),
+            b = parseFloat(getComputedStyle(t, '::before').left); return b - 0 < r.width / 2 ? 'gauche' : 'droite' })()""")
+    assert pos == {'': 'gauche', 'ar/': 'droite'}, pos
+
+
+def test_arabe_metiers_de_droite_a_gauche(page, base_url):
+    """« Tous les métiers » en arabe : la première carte est au centre, la suivante à sa gauche."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/ar/index.html'); page.wait_for_timeout(1500)
+    top = page.evaluate("document.getElementById('metiers').getBoundingClientRect().top + scrollY")
+    page.evaluate(f'window.scrollTo(0, {top})'); page.wait_for_timeout(1200)
+    c = page.evaluate("""[...document.querySelectorAll('#metiers .mc2')].slice(0, 2).map(e => {
+        const r = e.getBoundingClientRect(); return (r.left + r.right) / 2 })""")
+    assert abs(c[0] - 720) < 80 and c[1] < c[0], c
+
+
+def test_arabe_etapes_demarrer(page, base_url):
+    """« Démarrer » en arabe : la première étape est à droite, la dernière à gauche."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/ar/demarrer.html'); page.wait_for_timeout(800)
+    x = page.evaluate("[...document.querySelectorAll('.rt-dot')].map(d => d.getBoundingClientRect().left)")
+    assert x == sorted(x, reverse=True), x
+
+
+# ─── Vitesse : navigation entre les pages, longueur de l'accueil ───────────────────────────────────
+
+@pytest.mark.parametrize('name', ['index.html', 'services.html', 'ar/index.html'])
+def test_pages_suivantes_chargees_d_avance(page, base_url, name):
+    """Les liens du site sont préchargés (règles de spéculation) : le clic ouvre la page presque aussitôt."""
+    page.goto(f'{base_url}/{name}'); page.wait_for_timeout(600)
+    rules = page.evaluate("[...document.querySelectorAll('script[type=speculationrules]')].map(s => JSON.parse(s.textContent))")
+    assert rules and rules[0].get('prefetch') and rules[0].get('prerender'), rules
+
+
+def test_accueil_pas_trop_long_a_parcourir(page, base_url):
+    """Téléphone : les sections qui épinglent l'écran restent courtes ; l'accueil se parcourt sans s'éterniser."""
+    page.set_viewport_size({'width': 390, 'height': 844})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(1500)
+    screens = page.evaluate('document.documentElement.scrollHeight / innerHeight')
+    assert screens < 31, f'accueil de {screens:.1f} écrans'

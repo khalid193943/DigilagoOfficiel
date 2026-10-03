@@ -290,7 +290,8 @@ def finale(h):
     return h
 
 
-# « Ils nous font confiance » devient « Plus qu'un site web » : le partenaire tech complet, preuves à l'appui
+# « Plus qu'un site web » : le partenaire tech, en court. Les six métiers en pastilles, puis ce qui fait confier
+# un projet : trois engagements écrits (sécurité, confidentialité, délais), les clients et un seul bouton.
 TPI = {
     'web': '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 3.9 5.8 3.9 9S14.6 18.2 12 21M12 3C9.4 5.8 8.1 8.8 8.1 12s1.3 6.2 3.9 9"/>',
     'app': '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',
@@ -298,53 +299,44 @@ TPI = {
     'auto': '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
     'brand': '<path d="M4 20l4.2-1 10.4-10.4a2 2 0 0 0-2.8-2.8L5.4 16.2z"/><path d="M14.5 7.2l2.8 2.8"/>',
     'advice': '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/>',
+    'shield': '<path d="M12 3l8 3v6c0 4.6-3.4 8.3-8 9-4.6-.7-8-4.4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+    'lock': '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4M12 15v2"/>',
+    'cal': '<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M16 3v4M8 3v4M4 11h16M9 16l2 2 4-4"/>',
+    'seal': '<path d="M12 2.6l2.3 1.7 2.9.1.9 2.7 2.3 1.8-.9 2.7.9 2.7-2.3 1.8-.9 2.7-2.9.1L12 21.4l-2.3-1.7-2.9-.1-.9-2.7-2.3-1.8.9-2.7-.9-2.7 2.3-1.8.9-2.7 2.9-.1z"/><path d="M9 12l2 2 4-4"/>',
 }
-TP_CARDS = [
-    ('web', 'Sites web et e-commerce', 'Vitrine, réservation, boutique en ligne : rapides, beaux et trouvés sur Google.'),
-    ('app', 'Applications mobiles', 'iOS et Android : fidélité, réservations, commandes, espace client.'),
-    ('sys', 'Systèmes de gestion sur mesure', 'Devis, factures, rendez-vous, inscriptions, stocks : un outil interne pensé pour votre métier.'),
-    ('auto', 'Digitalisation et automatisation', 'WhatsApp automatisé, formulaires, paiements en ligne, tableaux de bord : moins de tâches répétitives.'),
-    ('brand', 'Branding et identité', 'Logo, couleurs, typographies et supports : une marque reconnaissable partout.'),
-    ('advice', 'Conseil tech', 'Choisir les bons outils, au bon prix, sans jargon : nous vous guidons à chaque décision.'),
+TP_CHIPS = [('web', 'Sites et e-commerce'), ('app', 'Applications mobiles'), ('sys', 'Gestion sur mesure'),
+            ('auto', 'Automatisation'), ('brand', 'Identité visuelle'), ('advice', 'Conseil tech')]
+TP_PROMISES = [
+    ('shield', 'Vos données protégées',
+     'Site sécurisé (HTTPS), accès protégés, sauvegardes régulières. Le site et le domaine restent à votre nom.'),
+    ('lock', 'Confidentialité totale',
+     'Vos fichiers, vos clients et vos chiffres restent entre nous. Accord de confidentialité signé sur demande.'),
+    ('cal', 'Délais tenus',
+     'Un planning écrit dès le départ, une première version en 72 h, un point chaque semaine.'),
 ]
-TP_DOM = [('École', 'inscriptions, paiements, espace parents'), ('Clinique', 'rendez-vous, rappels, dossiers'),
-          ('Restaurant', 'commandes, menu, livraisons'), ('Commerce', 'stock, caisse, livraisons'),
-          ('Hôtel et riad', 'réservations directes, planning')]
-TP_LOGOS = [
-    ('gc', '<i>GC</i><span><b>Georges Claude</b><small>École privée · El Jadida</small></span>', 'academie-georgesclaude.ma'),
-    ('ab', '<i>AB</i><span><b>Ange Bleu</b><small>El Jadida · depuis 1986</small></span>', 'angebleu.ma'),
-    ('lm', '<span><b>LES</b><em>Marronniers</em></span>', 'lesmarronniers.ma'),
-    ('ab jab', '<i>AB</i><span><b>Jardin Ange Bleu</b><small>Maternelle · El Jadida</small></span>', 'jardin-angebleu.ma'),
-]
-TP_STATS = [('11 ans', 'de terrain'), ('72 h', 'pour une première version'), ('3 langues', 'français, arabe, anglais'),
-            ('Le jour même', 'pour vous répondre')]
+TP_CLIENTS = ['Académie Georges Claude', 'Ange Bleu', 'Les Marronniers', 'Jardin Ange Bleu']
 
 
 def trust_section(h):
     m = re.search(r'<section class="sec lgs[^"]*" id="trust"[^>]*>.*?</section>', h, re.S)
     if not m:
         return h
-    # les clients : leur logo (redessiné en blanc), leur domaine et le badge « site livré »
-    band = ('<div class="tp-logos">%s</div>' % ''.join(
-        '<a class="tl rv%s" href="realisations.html"><span class="tl-mark %s">%s</span><span class="tl-dom">%s</span>'
-        '<span class="tl-ok"><i aria-hidden="true">✅</i>Site livré</span></a>' % (('', ' d1', ' d2', ' d3')[k], c, mark, dom)
-        for k, (c, mark, dom) in enumerate(TP_LOGOS)))
-    ico = lambda k: ('<span class="tp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
-                     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg></span>') % TPI[k]
-    cards = ''.join('<article class="tp-c rv%s">%s<b>%s</b><span>%s</span></article>' % (
-        ('', ' d1', ' d2')[k % 3], ico(i), t, d) for k, (i, t, d) in enumerate(TP_CARDS))
-    dom = ''.join('<li><b>%s</b><span>%s</span></li>' % x for x in TP_DOM)
-    stats = ''.join('<div><b>%s</b><span>%s</span></div>' % x for x in TP_STATS)
-    new = ('<section class="sec lgs tp" id="trust" aria-labelledby="t-trust"><div class="sh dark"><span class="pill rv"><span class="ic"></span>'
-           'Plus qu’un site web</span><h2 id="t-trust" class="rv d1"><span class="l"><span class="li">Votre partenaire tech,</span></span>'
-           '<span class="l"><span class="li grad">de l’idée au quotidien.</span></span></h2><p class="rv d2">Site, application, outils de gestion '
-           'internes, automatisations, identité de marque et conseil : une seule équipe digitalise toute votre entreprise, avec le même soin du '
-           'détail.</p></div><div class="tp-grid w">%s</div><div class="tp-dom w rv"><p><b>Un outil pour chaque métier</b>'
-           '<span>Nous construisons le système dont votre activité a besoin.</span></p><ul>%s</ul></div>'
-           '<div class="tp-proof w rv"><div class="tp-stats">%s</div><p class="tp-lab"><i aria-hidden="true">🏆</i>Ils nous font confiance</p>%s</div>'
-           '<div class="tp-cta rv"><a class="tp-go" href="demarrer.html">Parlons de votre projet%s</a>'
-           '<a class="lg-more" href="realisations.html">Voir les idées de sites%s</a></div></section>') % (
-        cards, dom, stats, band, ARW, ARW)
+    ico = lambda k, c: ('<span class="%s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+                        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg></span>') % (c, TPI[k])
+    chips = ''.join('<li>%s<span>%s</span></li>' % (ico(k, 'tp-i'), t) for k, t in TP_CHIPS)
+    promises = ''.join('<div class="tp-p">%s<b>%s</b><span>%s</span></div>' % (ico(k, 'tp-pi'), t, d)
+                       for k, t, d in TP_PROMISES)
+    clients = ', '.join('<a href="realisations.html">%s</a>' % c for c in TP_CLIENTS)
+    new = ('<section class="sec lgs tp tp2" id="trust" aria-labelledby="t-trust"><div class="sh dark"><span class="pill rv">'
+           '<span class="ic"></span>Plus qu’un site web</span><h2 id="t-trust" class="rv d1"><span class="l"><span class="li">'
+           'Votre partenaire tech,</span></span><span class="l"><span class="li grad">de l’idée au quotidien.</span></span></h2>'
+           '<p class="rv d2">Site, application, outils de gestion, automatisations, identité visuelle : une seule équipe pour '
+           'tout votre digital.</p></div><div class="tp-in"><ul class="tp-chips rv">%s</ul>'
+           '<div class="tp-card rv"><p class="tp-ct">%s<span>Ce que nous vous garantissons</span></p>'
+           '<div class="tp-g">%s</div></div>'
+           '<div class="tp-f rv"><p class="tp-who"><b>Ils nous font confiance</b><span>%s</span></p>'
+           '<a class="tp-go" href="demarrer.html">Parlons de votre projet%s</a></div></div></section>') % (
+        chips, ico('seal', 'tp-seal'), promises, clients, ARW)
     return h.replace(m.group(0), new, 1)
 
 
