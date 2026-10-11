@@ -82,7 +82,7 @@
     M: ["On crée votre s" + I + "te.", "Vos clients", "vous trouvent."],
   };
   var HOLD = 0,
-    PAN = 0,
+    JRN = 0,
     G = {
       w: 1,
       h: 1,
@@ -233,8 +233,8 @@
     HH = Math.round(Math.max(H, ST + MH * (mode === "M" ? 0.95 : 0.92)));
     VH = H;
     T = H * 0.7;
-    // le temps où le hero reste en place : la caméra survole le pays (plus court sur téléphone)
-    HOLD = H * (mode === "M" ? 0.6 : 0.75);
+    // le temps où le hero reste en place : la caméra part du Maroc et s'éloigne jusqu'au monde entier
+    HOLD = H * (mode === "M" ? 1 : 1.2);
     MAP.layout(MW, MH, mode === "M");
     hero.style.height = HH + "px";
     hero.style.top = H - HH + "px";
@@ -278,12 +278,17 @@
   // Le pays entier, de Tanger à Dakhla, en perspective, dans deux canvas superposés :
   // - le fond (la mer, les pays voisins, le Maroc en relief, la grille de « l'infrastructure digitale »,
   //   les autoroutes) : dessiné une fois, il ne change pas tant que la caméra est immobile ;
-  // - au-dessus, ce qui vit : des centaines de points lumineux (chacun une entreprise que ses clients
-  //   trouvent en ligne), les arcs du studio d'El Jadida vers tout le pays, les noms des villes et la
-  //   recherche en direct (toutes les 3,6 s, une vraie recherche fait s'allumer une entreprise et sa fiche).
+  // - au-dessus, ce qui vit : des centaines de points lumineux, les arcs du studio d'El Jadida vers tout le
+  //   pays, les noms des villes, et de petits cadres de sites en ligne (« votre-hotel.ma — En ligne », avec le
+  //   drapeau du pays) qui se relaient de Tanger à Dakhla.
   // À l'arrivée, la caméra se pose sur le pays et les lumières s'allument depuis El Jadida.
-  // Sur ordinateur, la caméra tourne doucement au défilement puis monte dans les nuages ; sur téléphone,
-  // elle reste immobile : rien à redessiner pendant qu'on fait défiler, le défilement reste fluide.
+  // Puis, au défilement, « nos racines sont au Maroc, notre savoir-faire est mondial » : la caméra s'éloigne
+  // du Maroc (la Méditerranée, puis l'Europe, l'Afrique et le Moyen-Orient, puis le monde) et se redresse
+  // jusqu'à la vue de dessus. Le Maroc reste à sa place (même projection que le monde : Mercator) et prend la
+  // couleur de la marque ; des cadres apparaissent dans le monde (.fr, .ae, .ca…), reliés à El Jadida par une
+  // fine ligne dorée. Le défilement pilote tout, dans les
+  // deux sens ; rien ne détourne le défilement du navigateur. Sans le fichier du monde (pas encore arrivé ou
+  // en échec), ou si le visiteur préfère moins d'animations, la carte reste sur le Maroc.
   var MAP = (function () {
     var cv = $("mcv"),
       cv0 = $("mcv0"),
@@ -294,9 +299,7 @@
     var none = { step: function () {}, layout: function () {} };
     if (!ctx || !cx0 || !geoEl) return none;
     var G = JSON.parse(geoEl.textContent),
-      mq = $("mq"),
-      mqt = mq.querySelector("span"),
-      mcard = $("mcard"),
+      WD = null,
       RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     function xy(e) {
       var p = e.getAttribute("data-xy").split(",");
@@ -321,13 +324,138 @@
         HQL = l.t;
       }
     });
-    var EV = [].map.call(
-      document.querySelectorAll("#mdata template"),
-      function (e) {
-        var p = xy(e);
-        return { x: p[0], y: p[1], el: e, q: e.content.querySelector("em").textContent };
-      },
-    );
+    // Projection de la carte : Mercator, 34,456 px du sol par degré (la même que le Maroc, à < 1 px près)
+    function gpt(lon, lat) {
+      var m = (Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360)) * 180) / Math.PI;
+      return [34.4564 * lon + 613.025, 1350.021 - 34.4362 * m];
+    }
+    // Le plus court chemin sur le globe, d'El Jadida au point (lon, lat), en points du sol de la carte
+    function greatCircle(b) {
+      var r = Math.PI / 180,
+        a = G.hl,
+        l1 = a[0] * r,
+        p1 = a[1] * r,
+        l2 = b[0] * r,
+        p2 = b[1] * r,
+        v1 = [Math.cos(p1) * Math.cos(l1), Math.cos(p1) * Math.sin(l1), Math.sin(p1)],
+        v2 = [Math.cos(p2) * Math.cos(l2), Math.cos(p2) * Math.sin(l2), Math.sin(p2)],
+        om = Math.acos(Math.max(-1, Math.min(1, v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]))),
+        n = 48,
+        o = new Float32Array((n + 1) * 2);
+      for (var k = 0; k <= n; k++) {
+        var t = k / n,
+          s1 = Math.sin((1 - t) * om) / Math.sin(om),
+          s2 = Math.sin(t * om) / Math.sin(om),
+          x = s1 * v1[0] + s2 * v2[0],
+          y = s1 * v1[1] + s2 * v2[1],
+          z = s1 * v1[2] + s2 * v2[2],
+          g = gpt(Math.atan2(y, x) / r, Math.atan2(z, Math.sqrt(x * x + y * y)) / r);
+        o[k * 2] = g[0];
+        o[k * 2 + 1] = g[1];
+      }
+      o[0] = hq[0]; // la ligne part exactement du studio
+      o[1] = hq[1];
+      return o;
+    }
+    // Les cadres « votre-….ma — En ligne » : des exemples de sites en ligne (le « votre- » le dit), au Maroc
+    // puis dans le monde, chacun avec le drapeau et l'extension officielle de son pays. Les fenêtres
+    // data-d (ordinateur) et data-m (téléphone) disent quand chacun est affiché pendant le voyage.
+    var LANG = (document.documentElement.lang || "fr").slice(0, 2),
+      onl = document.querySelector("#mdata b"),
+      ONL = onl ? onl.textContent.trim() : "En ligne";
+    var FR = [].map.call(document.querySelectorAll("#mdata s"), function (e, i) {
+      var p = xy(e),
+        ll = e.getAttribute("data-ll");
+      function win(k) {
+        var a = e.getAttribute("data-" + k);
+        return a ? a.split(",").map(Number) : null;
+      }
+      return {
+        i: i,
+        x: p[0],
+        y: p[1],
+        fl: +e.getAttribute("data-f"),
+        dom: e.getAttribute(LANG === "fr" ? "data-fr" : "data-en"),
+        o: e.hasAttribute("data-o") ? +e.getAttribute("data-o") : -1,
+        wd: win("d"),
+        wm: win("m"),
+        gc: ll ? greatCircle(ll.split(",").map(Number)) : null,
+        p: 0, // avancement de l'apparition (0 → 1)
+        a: 0, // opacité (le cadre s'efface en partant)
+        want: false,
+        t0: 0,
+        side: 0,
+        bx: 0,
+        by: 0,
+        art: null,
+      };
+    });
+    // l'ordre du relais des cadres du Maroc, quand le visiteur ne fait pas défiler
+    var RO = FR.filter(function (f) {
+      return f.o >= 0;
+    }).sort(function (a, b) {
+      return a.o - b.o;
+    });
+    // les drapeaux : une seule petite image (une case de 48 × 36 par pays, 1 px de marge)
+    var FLAGS = null,
+      flu = geoEl.getAttribute("data-flags");
+    if (flu) {
+      var fim = new Image();
+      fim.decoding = "async";
+      fim.onload = function () {
+        FLAGS = fim;
+        FR.forEach(function (f) {
+          f.art = null;
+        });
+        warm();
+      };
+      fim.src = flu;
+    }
+    // Le monde (Natural Earth 1:50m) : terres, frontières et lignes vers le monde, en écarts successifs
+    function bbox(p) {
+      var b = [1e9, 1e9, -1e9, -1e9];
+      for (var i = 0; i < p.length; i += 2) {
+        if (p[i] < b[0]) b[0] = p[i];
+        if (p[i] > b[2]) b[2] = p[i];
+        if (p[i + 1] < b[1]) b[1] = p[i + 1];
+        if (p[i + 1] > b[3]) b[3] = p[i + 1];
+      }
+      return b;
+    }
+    function decodeWorld(d) {
+      function dec(a) {
+        var o = new Float32Array(a.length),
+          x = 0,
+          y = 0;
+        for (var i = 0; i < a.length; i += 2) {
+          x += a[i];
+          y += a[i + 1];
+          o[i] = x * d.q;
+          o[i + 1] = y * d.q;
+        }
+        return o;
+      }
+      var L = d.l.map(dec),
+        B = d.b.map(dec),
+        GR = [],
+        k;
+      // le quadrillage du globe : méridiens tous les 30°, parallèles à 30° près (l'équateur compris)
+      for (k = -180; k <= 180; k += 30) GR.push(new Float32Array(gpt(k, -56).concat(gpt(k, 78))));
+      for (k = -30; k <= 60; k += 30) GR.push(new Float32Array(gpt(-180, k).concat(gpt(180, k))));
+      return { l: L, lb: L.map(bbox), b: B, bb: B.map(bbox), g: GR };
+    }
+    var wurl = geoEl.getAttribute("data-world");
+    if (wurl && window.fetch)
+      fetch(wurl)
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.json();
+        })
+        .then(function (d) {
+          WD = decodeWorld(d);
+          camKey = ""; // le fond est redessiné avec le monde
+        })
+        .catch(function () {}); // sans le monde, la carte reste celle du Maroc
     // Lumières : réparties autour des villes, toujours au même endroit (pseudo-aléatoire stable).
     // À l'arrivée, elles s'allument depuis El Jadida, comme une onde qui gagne tout le pays.
     var seed = 11;
@@ -375,11 +503,18 @@
       F = 1,
       MOB = false,
       S0 = null,
-      S1 = null,
+      KF = null,
+      JS = 0,
+      ZF = 0,
+      ZN = 1,
+      lastNow = 0,
+      SDPR = 1,
+      DRAFT = false,
       KR = 1,
       TOPC = 0,
       PILL = null,
       camKey = "",
+      camExact = "",
       lastStatic = 0,
       REF = null,
       A0 = null,
@@ -437,11 +572,11 @@
       }
       return ok;
     }
-    // Cadre la caméra v pour que tout le pays tienne dans la zone b = [x0, y0, x1, y1] du canvas.
-    function fit(v, b) {
-      var o = G.o,
-        lo = 40,
-        hi = 9000,
+    // Cadre la caméra v pour que tout le pays (ou les points o) tienne dans la zone b = [x0, y0, x1, y1] du canvas.
+    function fit(v, b, o) {
+      o = o || G.o;
+      var lo = 40,
+        hi = 2e5,
         bb;
       v.hy = v.ox = 0;
       function box(R) {
@@ -460,8 +595,8 @@
         }
         return [x0, y0, x1, y1];
       }
-      for (var n = 0; n < 24; n++) {
-        var m = (lo + hi) / 2;
+      for (var n = 0; n < 30; n++) {
+        var m = Math.sqrt(lo * hi);
         bb = box(m);
         if (!bb || bb[2] - bb[0] > b[2] - b[0] || bb[3] - bb[1] > b[3] - b[1]) lo = m;
         else hi = m;
@@ -471,16 +606,127 @@
       v.hy = (b[1] + b[3] - bb[1] - bb[3]) / 2;
       return v;
     }
-    function mix(a, b, e) {
-      return {
-        tx: a.tx + (b.tx - a.tx) * e,
-        ty: a.ty + (b.ty - a.ty) * e,
-        R: a.R * Math.pow(b.R / a.R, e),
-        th: a.th + (b.th - a.th) * e,
-        ps: a.ps + (b.ps - a.ps) * e,
-        hy: a.hy + (b.hy - a.hy) * e,
-        ox: a.ox + (b.ox - a.ox) * e,
-      };
+    // Un cadrage du voyage : la région [lon0, lon1] × [lat0, lat1], vue sous l'angle th, tournée de ps
+    function view(l0, l1, p0, p1, th, ps, band) {
+      var o = [],
+        i,
+        c = gpt((l0 + l1) / 2, (p0 + p1) / 2);
+      for (i = 0; i <= 6; i++) {
+        var lo = l0 + ((l1 - l0) * i) / 6,
+          la = p0 + ((p1 - p0) * i) / 6;
+        o = o.concat(gpt(lo, p0), gpt(lo, p1), gpt(l0, la), gpt(l1, la));
+      }
+      return fit({ tx: c[0], ty: c[1], th: th, ps: ps }, band, o);
+    }
+    // La caméra à l'instant j du voyage (0 : le Maroc, 1 : le monde). Courbe douce (Catmull-Rom) entre les
+    // cadrages, la distance en échelle logarithmique : un zoom régulier, qui ralentit un peu sur chaque étape.
+    var CK = ["tx", "ty", "th", "ps", "hy", "ox"];
+    function camAt(j) {
+      var n = KF.length - 1,
+        f = Math.max(0, Math.min(n - 1e-6, j * n)),
+        k = Math.floor(f),
+        w = f - k;
+      w += (w * w * (3 - 2 * w) - w) * 0.45;
+      var a = KF[Math.max(0, k - 1)],
+        b = KF[k],
+        c = KF[k + 1],
+        d = KF[Math.min(n, k + 2)],
+        w2 = w * w,
+        w3 = w2 * w,
+        o = {};
+      function cr(p0, p1, p2, p3) {
+        return 0.5 * (2 * p1 + (p2 - p0) * w + (2 * p0 - 5 * p1 + 4 * p2 - p3) * w2 + (3 * p1 - p0 - 3 * p2 + p3) * w3);
+      }
+      for (var i = 0; i < CK.length; i++) o[CK[i]] = cr(a[CK[i]], b[CK[i]], c[CK[i]], d[CK[i]]);
+      o.R = Math.exp(cr(Math.log(a.R), Math.log(b.R), Math.log(c.R), Math.log(d.R)));
+      o.th = Math.max(0.3, Math.min(Math.PI / 2, o.th));
+      return o;
+    }
+    function sm(e0, e1, x) {
+      var t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
+      return t * t * (3 - 2 * t);
+    }
+    // Profondeur d'un point du sol devant la caméra ; ce qui passe derrière elle est coupé net (plan proche)
+    function zAt(x, y) {
+      var dx = x - cam.tx,
+        dy = y - cam.ty;
+      return (cam.rc + dx * cam.sp - dy * cam.cp) * cam.c + cam.h * cam.s;
+    }
+    var pen = false;
+    function emit(c, x, y) {
+      proj(x, y);
+      if (pen) c.lineTo(P.x, P.y);
+      else c.moveTo(P.x, P.y);
+      pen = true;
+    }
+    // un contour fermé (une terre), coupé au plan proche
+    function ring(c, p) {
+      var n = p.length,
+        ax = p[n - 2],
+        ay = p[n - 1],
+        az = zAt(ax, ay);
+      pen = false;
+      for (var i = 0; i < n; i += 2) {
+        var bx = p[i],
+          by = p[i + 1],
+          bz = zAt(bx, by);
+        if (az >= ZN !== bz >= ZN) {
+          var t = (ZN - az) / (bz - az);
+          emit(c, ax + (bx - ax) * t, ay + (by - ay) * t);
+        }
+        if (bz >= ZN) emit(c, bx, by);
+        ax = bx;
+        ay = by;
+        az = bz;
+      }
+      if (pen) c.closePath();
+    }
+    // un tracé ouvert (frontière, quadrillage, ligne vers le monde), coupé au plan proche ; n points au plus
+    function line(c, p, n) {
+      n = Math.min(p.length, (n || 1e9) * 2);
+      var ax = p[0],
+        ay = p[1],
+        az = zAt(ax, ay);
+      pen = false;
+      if (az >= ZN) emit(c, ax, ay);
+      for (var i = 2; i < n; i += 2) {
+        var bx = p[i],
+          by = p[i + 1],
+          bz = zAt(bx, by);
+        if (az >= ZN !== bz >= ZN) {
+          var t = (ZN - az) / (bz - az);
+          if (bz >= ZN) pen = false; // on rentre dans le champ : nouveau trait
+          emit(c, ax + (bx - ax) * t, ay + (by - ay) * t);
+          if (bz < ZN) pen = false; // on sort du champ
+        }
+        if (bz >= ZN) emit(c, bx, by);
+        ax = bx;
+        ay = by;
+        az = bz;
+      }
+    }
+    // une boîte du sol est-elle dans le champ ? (sinon, on ne la dessine pas)
+    function boxIn(b, m) {
+      var x0 = 1e9,
+        y0 = 1e9,
+        x1 = -1e9,
+        y1 = -1e9,
+        bh = 0;
+      for (var k = 0; k < 4; k++) {
+        var x = k & 1 ? b[2] : b[0],
+          y = k & 2 ? b[3] : b[1];
+        if (zAt(x, y) < ZN) {
+          bh++;
+          continue;
+        }
+        proj(x, y);
+        if (P.x < x0) x0 = P.x;
+        if (P.x > x1) x1 = P.x;
+        if (P.y < y0) y0 = P.y;
+        if (P.y > y1) y1 = P.y;
+      }
+      if (bh === 4) return false;
+      return bh > 0 || !(x1 < -m || x0 > W + m || y1 < -m || y0 > H + m);
     }
     function layout(w, h, m) {
       MOB = m;
@@ -489,25 +735,43 @@
       H = h;
       cv.width = cv0.width = Math.round(w * DPR);
       cv.height = cv0.height = Math.round(h * DPR);
+      SDPR = DPR;
       F = (m ? 1.3 : 0.95) * w;
       // les parties du canvas visibles au chargement (b0-b1), puis une fois le hero posé (c0-c1) ;
-      // en haut, la place de la légende « En direct »
+      // en haut, la place de la phrase « Des sites en ligne partout au Maroc… »
       var b0 = Math.max(h * 0.1, -ST),
         b1 = Math.min(h, VH - ST),
         c0 = Math.max(h * 0.1, HH - VH - ST),
         c1 = Math.min(h, HH - ST);
       TOPC = (m ? 72 : 44) * u;
+      // le cadre une fois le hero posé
+      var band = m
+          ? [14, Math.max(c0, TOPC * 0.55), w - 14, c1 - 16 * u]
+          : [w * 0.04, Math.max(c0, TOPC * 0.6), w * 0.96, c1 - 28 * u],
+        // les vues larges gardent de l'air sous les boutons du hero
+        wide = [band[0], band[1] + (m ? 14 : 36) * u, band[2], band[3]];
       if (m) {
         // téléphone : le pays debout, de Tanger (en haut) à Dakhla (en bas)
-        S0 = S1 = fit({ tx: 300, ty: 320, th: 0.98, ps: 0.12 }, [14, Math.max(b0, TOPC), w - 14, c1 - 16 * u]);
+        S0 = fit({ tx: 300, ty: 320, th: 0.98, ps: 0.12 }, [14, Math.max(b0, TOPC), w - 14, c1 - 16 * u]);
+        KF = [
+          S0,
+          view(-19, 7, 19, 44.5, 1.12, 0.04, band),
+          view(-25, 46, -6, 58, 1.34, 0, wide),
+          view(-100, 100, -42, 74, Math.PI / 2, 0, wide),
+        ];
       } else {
-        // ordinateur : le pays en travers de l'écran, tout entier visible dès l'arrivée ;
-        // au défilement, la caméra s'approche et tourne doucement
+        // ordinateur : le pays en travers de l'écran, tout entier visible dès l'arrivée
         var y0 = Math.max(b0, TOPC);
         S0 = fit({ tx: 300, ty: 320, th: 0.8, ps: -0.56 }, [w * 0.05, y0, w * 0.95, Math.max(b1 - 22 * u, y0 + 300 * u)]);
-        S1 = fit({ tx: 300, ty: 310, th: 0.72, ps: -0.34 }, [w * 0.04, Math.max(c0, TOPC), w * 0.96, c1 - 28 * u]);
+        KF = [
+          S0,
+          view(-19, 17, 20, 45, 1.02, -0.24, band),
+          view(-28, 64, -2, 60, 1.3, -0.06, wide),
+          view(-170, 180, -56, 76, Math.PI / 2, 0, wide),
+        ];
       }
       KR = F / S0.R;
+      JS = Math.min(JS, 1);
       // ordinateur : la caméra est dans le dessin lui-même, le bloc de la carte reste à plat
       if (!m && wrap) wrap.style.transform = wrap.style.opacity = wrap.style.transformOrigin = "";
       // téléphone : la caméra tourne autour du studio d'El Jadida
@@ -515,7 +779,7 @@
         setCam(S0);
         if (proj(hq[0], hq[1])) wrap.style.transformOrigin = P.x.toFixed(1) + "px " + P.y.toFixed(1) + "px";
       }
-      // la légende « En direct » posée sur le haut de la carte : aucun nom ne passe dessous
+      // la phrase posée sur le haut de la carte : aucun nom ni cadre ne passe dessous
       var ml = $("mlive");
       PILL = null;
       if (ml) {
@@ -527,6 +791,10 @@
       REF = A0 = null;
       LBL = {};
       HQS = null;
+      FR.forEach(function (f) {
+        f.art = null;
+      });
+      warm();
     }
     // Les noms de lieux : dessinés une fois (texte et halo blanc) dans une petite image, puis réutilisés.
     var LBL = {};
@@ -605,14 +873,164 @@
       c.ch = h;
       return (HQS = c);
     }
+    // Un cadre « votre-….ma — En ligne », dessiné une fois dans deux petites images : A, le cadre fini ;
+    // B, le cadre vide (le drapeau et le cadenas ouvert). À l'apparition, le nom de domaine se tape lettre à
+    // lettre (recopié de A), puis le cadenas se ferme et « En ligne » s'allume.
+    var FONT = "'Instrument Sans', 'Noto Sans Arabic', system-ui, sans-serif",
+      OX = 12, // marges autour du cadre, pour son ombre
+      OT = 8,
+      OB = 16;
+    function rr(x, X, Y, w, h, r) {
+      x.beginPath();
+      if (x.roundRect) x.roundRect(X, Y, w, h, r);
+      else x.rect(X, Y, w, h);
+    }
+    function lock(x, X, Y, s, open) {
+      rr(x, X, Y + 4.4 * s, 8 * s, 5.8 * s, 1.5 * s);
+      x.fill();
+      var up = open ? 2.2 * s : 0;
+      x.beginPath();
+      x.moveTo(X + 1.9 * s, Y + 4.6 * s - (open ? up : 0));
+      x.lineTo(X + 1.9 * s, Y + 2.6 * s - up);
+      x.arc(X + 4 * s, Y + 2.6 * s - up, 2.1 * s, Math.PI, 0);
+      x.lineTo(X + 6.1 * s, Y + (open ? 3.2 * s - up : 4.6 * s));
+      x.lineWidth = 1.3 * s;
+      x.stroke();
+    }
+    function frameArt(f) {
+      if (f.art) return f.art;
+      var s = MOB ? 0.92 : 1,
+        h = Math.round(24 * s),
+        pad = 7 * s,
+        fw = 18 * s,
+        fh = 13.5 * s,
+        f1 = "600 " + (11 * s).toFixed(2) + "px " + FONT,
+        f2 = "500 " + (10 * s).toFixed(2) + "px " + FONT,
+        m = document.createElement("canvas").getContext("2d"),
+        cut = f.dom.indexOf("-") + 1,
+        tw = [],
+        k;
+      m.font = f1;
+      for (k = 0; k <= f.dom.length; k++) tw.push(m.measureText(f.dom.slice(0, k)).width);
+      m.font = f2;
+      var sw = m.measureText(ONL).width,
+        lx = pad + fw + 6 * s,
+        tx = lx + 13 * s,
+        dx = tx + tw[f.dom.length] + 10 * s, // le point vert
+        sx = dx + 7 * s,
+        w = Math.ceil(sx + sw + 8 * s);
+      function make(full) {
+        var c = document.createElement("canvas"),
+          x = c.getContext("2d"),
+          fy = (h - fh) / 2;
+        c.width = Math.ceil((w + OX * 2) * DPR);
+        c.height = Math.ceil((h + OT + OB) * DPR);
+        x.scale(DPR, DPR);
+        x.translate(OX, OT);
+        x.save();
+        x.shadowColor = "rgba(11,27,58,.34)";
+        x.shadowBlur = 12 * DPR;
+        x.shadowOffsetY = 4 * DPR;
+        rr(x, 0, 0, w, h, 7 * s);
+        x.fillStyle = "#fff";
+        x.fill();
+        x.restore();
+        rr(x, 0.5, 0.5, w - 1, h - 1, 6.5 * s);
+        x.lineWidth = 1;
+        x.strokeStyle = "#E2B23F";
+        x.stroke();
+        // le drapeau du pays (coins à peine arrondis, un filet pour les drapeaux clairs)
+        rr(x, pad, fy, fw, fh, 2 * s);
+        if (FLAGS) {
+          x.save();
+          x.clip();
+          x.drawImage(FLAGS, f.fl * 50 + 1, 1, 48, 36, pad, fy, fw, fh);
+          x.restore();
+          // le Maroc : l'étoile verte, retracée assez épaisse pour rester visible à cette petite taille
+          if (f.o >= 0) {
+            var k2 = fw / 640,
+              st = [320, 179.4, 284.4, 289, 377.6, 221.4, 262.4, 221.4, 355.6, 289];
+            x.beginPath();
+            for (var j = 0; j < 10; j += 2) x[j ? "lineTo" : "moveTo"](pad + st[j] * k2, fy + st[j + 1] * k2);
+            x.closePath();
+            x.lineJoin = "miter";
+            x.lineWidth = Math.max(0.8, 11.7 * k2 * 2.4);
+            x.strokeStyle = "#006233";
+            x.stroke();
+          }
+        } else {
+          x.fillStyle = "#E6ECF7";
+          x.fill();
+        }
+        rr(x, pad + 0.25, fy + 0.25, fw - 0.5, fh - 0.5, 2 * s);
+        x.lineWidth = 0.5;
+        x.strokeStyle = "rgba(11,27,58,.25)";
+        x.stroke();
+        x.fillStyle = x.strokeStyle = "#34548C";
+        lock(x, lx, h / 2 - 5.1 * s, s, !full);
+        if (full) {
+          // le nom de domaine : « votre- » en gris (c'est un exemple), le reste en bleu nuit
+          x.direction = "ltr";
+          x.textAlign = "left";
+          x.textBaseline = "middle";
+          x.font = f1;
+          x.fillStyle = "#7686A5";
+          x.fillText(f.dom.slice(0, cut), tx, h / 2 + 0.5);
+          x.fillStyle = "#0B1B3A";
+          x.fillText(f.dom.slice(cut), tx + tw[cut], h / 2 + 0.5);
+          x.beginPath();
+          x.arc(dx, h / 2, 5 * s, 0, 6.2832);
+          x.fillStyle = "rgba(34,197,94,.2)";
+          x.fill();
+          x.beginPath();
+          x.arc(dx, h / 2, 2.8 * s, 0, 6.2832);
+          x.fillStyle = "#22C55E";
+          x.fill();
+          x.font = f2;
+          x.fillStyle = "#15803D";
+          x.fillText(ONL, sx, h / 2 + 0.5);
+        }
+        return c;
+      }
+      return (f.art = { A: make(true), B: make(false), w: w, h: h, tx: tx, tw: tw, lx: lx, dx: dx, s: s });
+    }
+    // les cadres sont préparés à l'avance, un par un, quand le navigateur n'a rien d'autre à faire :
+    // rien à dessiner de neuf au moment où un cadre apparaît pendant le défilement
+    var warmT = 0;
+    function prewarm() {
+      warmT = 0;
+      for (var i = 0; i < FR.length; i++)
+        if (!FR[i].art && (FR[i].o >= 0 || (MOB ? FR[i].wm : FR[i].wd))) {
+          frameArt(FR[i]);
+          warm();
+          return;
+        }
+    }
+    function warm() {
+      if (warmT) return;
+      warmT = window.requestIdleCallback ? requestIdleCallback(prewarm, { timeout: 1500 }) : setTimeout(prewarm, 60);
+    }
     // une police arrivée après coup : on refait les étiquettes avec la bonne
     if (document.fonts && document.fonts.addEventListener)
       document.fonts.addEventListener("loadingdone", function () {
         LBL = {};
         HQS = null;
+        FR.forEach(function (f) {
+          f.art = null;
+        });
+        warm();
       });
-    function drawStatic(c) {
-      c.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // Le fond, en pleine définition ; pendant que la caméra bouge, en brouillon (définition simple, sans ombre
+    // floue) : beaucoup moins de pixels à calculer, et l'œil ne voit pas la différence sur un dessin qui bouge.
+    function drawStatic(c, draft) {
+      var q = draft ? Math.min(DPR, 1) : DPR;
+      DRAFT = !!draft;
+      if (q !== SDPR) {
+        SDPR = q;
+        c.canvas.width = Math.round(W * q);
+        c.canvas.height = Math.round(H * q);
+      }
+      c.setTransform(q, 0, 0, q, 0, 0);
       c.clearRect(0, 0, W, H);
       // la mer : un bleu un peu plus profond que le ciel, qui se fond vers le haut
       var g = c.createLinearGradient(0, 0, 0, H);
@@ -621,22 +1039,57 @@
       g.addColorStop(1, "rgba(12,58,150,.3)");
       c.fillStyle = g;
       c.fillRect(0, 0, W, H);
-      // les pays voisins : en retrait
-      c.beginPath();
-      G.a.forEach(function (pts) {
-        if (path(c, pts) > 2) c.closePath();
-      });
-      c.fillStyle = "rgba(235,243,255,.4)";
-      c.fill();
-      // le Maroc, posé comme une plaque : une tranche bleue sous le pays, puis le pays
-      var th = cam.R * 0.012;
+      ZN = Math.max(1, cam.R * 0.04);
+      var i, mg = 40;
+      if (WD) {
+        // le globe : méridiens et parallèles, à peine visibles, quand on prend de la hauteur
+        if (ZF > 0.02) {
+          c.beginPath();
+          for (i = 0; i < WD.g.length; i++) line(c, WD.g[i]);
+          c.lineWidth = 1;
+          c.strokeStyle = "rgba(255,255,255," + (0.17 * ZF).toFixed(3) + ")";
+          c.stroke();
+        }
+        // les terres du monde : en retrait, un peu plus présentes vues de haut
+        c.beginPath();
+        for (i = 0; i < WD.l.length; i++) if (boxIn(WD.lb[i], mg)) ring(c, WD.l[i]);
+        c.fillStyle = "rgba(235,243,255," + (0.4 + 0.24 * ZF).toFixed(3) + ")";
+        c.fill();
+        if (ZF > 0.02) {
+          c.lineJoin = "round";
+          c.lineWidth = 0.8;
+          c.strokeStyle = "rgba(255,255,255," + (0.6 * ZF).toFixed(3) + ")";
+          c.stroke();
+        }
+        // les frontières, très fines, le temps de passer de la Méditerranée au monde
+        var ba = 0.22 * sm(0.1, 0.42, JS) * (1 - 0.45 * sm(0.78, 1, JS));
+        if (ba > 0.01) {
+          c.beginPath();
+          for (i = 0; i < WD.b.length; i++) if (boxIn(WD.bb[i], mg)) line(c, WD.b[i]);
+          c.lineWidth = 0.7;
+          c.strokeStyle = "rgba(31,87,199," + ba.toFixed(3) + ")";
+          c.stroke();
+        }
+      } else {
+        // les pays voisins (avant l'arrivée du monde) : en retrait
+        c.beginPath();
+        G.a.forEach(function (pts) {
+          if (path(c, pts) > 2) c.closePath();
+        });
+        c.fillStyle = "rgba(235,243,255,.4)";
+        c.fill();
+      }
+      // le Maroc, posé comme une plaque : une tranche bleue sous le pays, puis le pays.
+      // Vu de haut, il prend la couleur de la marque et rayonne doucement.
+      var th = cam.R * 0.012 * (1 - ZF),
+        zi = 1 - ZF;
       c.beginPath();
       path(c, G.o, -th);
       c.closePath();
       c.save();
-      c.shadowColor = "rgba(6,28,84,.4)";
-      c.shadowBlur = MOB ? 16 : 26;
-      c.shadowOffsetY = MOB ? 6 : 12;
+      c.shadowColor = "rgba(" + Math.round(6 + 25 * ZF) + "," + Math.round(28 + 59 * ZF) + "," + Math.round(84 + 115 * ZF) + "," + (0.4 + 0.25 * ZF).toFixed(3) + ")";
+      c.shadowBlur = DRAFT ? 0 : (MOB ? 16 : 26) * zi + (MOB ? 12 : 18) * ZF;
+      c.shadowOffsetY = (MOB ? 6 : 12) * zi;
       c.fillStyle = "rgba(118,160,232,.95)";
       c.fill();
       c.restore();
@@ -649,8 +1102,17 @@
       lg.addColorStop(1, "#F8FBFF");
       c.fillStyle = lg;
       c.fill();
+      if (ZF > 0) {
+        c.globalAlpha = ZF;
+        c.fillStyle = "#1F57C7";
+        c.fill();
+        c.globalAlpha = 1;
+      }
       c.save();
       c.clip();
+      // l'intérieur du pays (lumière, quadrillage, relief) s'efface quand le pays devient petit
+      c.globalAlpha = zi;
+      if (zi < 0.02) c.globalAlpha = 0;
       // une lumière douce sur le nord du pays, là où vivent la plupart des entreprises
       if (proj(372, 128)) {
         var sr = Math.max(W, H) * (MOB ? 0.62 : 0.42),
@@ -699,17 +1161,23 @@
           glow(ci[0], ci[1], 2.6 + Math.sqrt(ci[2]) * 0.85, "rgba(47,132,236,.3)");
       });
       c.restore();
+      c.globalAlpha = 1;
       // la côte et la frontière : un trait fin, avec un liseré clair côté mer
       c.beginPath();
       path(c, G.o);
       c.closePath();
       c.lineJoin = "round";
-      c.lineWidth = 2.4;
-      c.strokeStyle = "rgba(255,255,255,.75)";
+      c.lineWidth = 2.4 - 0.9 * ZF;
+      c.strokeStyle = "rgba(255,255,255," + (0.75 + 0.2 * ZF).toFixed(3) + ")";
       c.stroke();
-      c.lineWidth = 0.9;
-      c.strokeStyle = "rgba(31,87,199,.4)";
-      c.stroke();
+      if (zi > 0.02) {
+        c.lineWidth = 0.9;
+        c.strokeStyle = "rgba(31,87,199," + (0.4 * zi).toFixed(3) + ")";
+        c.stroke();
+      }
+      // vu de haut, les routes et les villes ne se distinguent plus : on s'arrête là
+      if (zi < 0.03) return;
+      c.globalAlpha = zi;
       // les autoroutes
       c.lineCap = "round";
       c.beginPath();
@@ -738,6 +1206,7 @@
       c.lineWidth = 1.1;
       c.strokeStyle = "rgba(255,255,255,.95)";
       c.stroke();
+      c.globalAlpha = 1;
     }
     // deux repères au sol, pour suivre la caméra entre deux dessins du fond
     function refAt() {
@@ -747,37 +1216,267 @@
       if (!proj(REF[2], REF[3])) return null;
       return [ax, ay, P.x, P.y];
     }
-    // Recherches en direct
-    var evI = -1,
-      evT = -1e9,
-      ev = null,
-      EVD = 3600,
-      cardW = 0;
-    function pick(now, y0, y1) {
-      for (var n = 0; n < EV.length; n++) {
-        var e = EV[(evI + 1 + n) % EV.length];
-        if (!proj(e.x, e.y)) continue;
-        var room = (MOB ? 140 : 156) * u,
-          dn = P.y < y0 + room;
-        if (P.x > W * 0.14 && P.x < W * 0.86 && (dn ? P.y < y1 - room - 20 * u && P.y > y0 + 20 * u : P.y < y1 - 24 * u)) {
-          evI = EV.indexOf(e);
-          ev = e;
-          mq.classList.toggle("dn", dn);
-          mcard.classList.toggle("dn", dn);
-          evT = now;
-          mcard.innerHTML = e.el.innerHTML;
-          mcard.classList.toggle("mcl", e.el.hasAttribute("data-cl"));
-          cardW = 0;
-          mqt.textContent = RM ? e.q : "";
-          return;
+    // Les cadres sur la carte. Quand le visiteur ne fait pas défiler, les cadres du Maroc se relaient (de Tanger
+    // à Dakhla, dans un ordre qui couvre tout le pays) ; pendant le voyage, chacun a sa fenêtre (data-d, data-m) :
+    // le Maroc, puis la Méditerranée, l'Europe, l'Afrique, le Moyen-Orient et le monde. Une fine ligne dorée
+    // part d'El Jadida vers chaque cadre hors du Maroc. Les plus anciens gardent leur place ; un nouveau cadre
+    // n'apparaît que s'il a la place (ni sur un autre, ni sur la phrase, ni hors de l'écran).
+    var inRelay = false,
+      RA = [], // les cadres du relais, du plus ancien au plus récent
+      rT = 0,
+      rI = 0,
+      rTry = 0,
+      rP = null, // le cadre essayé à cette image
+      lastF = 0,
+      shown = "",
+      ml1 = document.querySelector("#mlive .ml1"),
+      ml2 = document.querySelector("#mlive .ml2");
+    var FV = [];
+    function place(f, ax, ay, b0, b1, strict) {
+      var A = frameArt(f),
+        w = A.w,
+        h = A.h,
+        st = MOB ? 13 : 16,
+        mg = strict ? 6 : 1,
+        order = [f.side, 0, 1, 2, 3];
+      for (var c = 0; c < order.length; c++) {
+        var sd = order[c],
+          x,
+          y;
+        if (c && sd === f.side) continue;
+        if (sd < 2) {
+          // au-dessus ou au-dessous du point (décalé si le bord de l'écran est proche)
+          x = Math.max(8, Math.min(W - 8 - w, ax - w / 2));
+          if (ax < x + 12 || ax > x + w - 12) continue;
+          y = sd === 0 ? ay - st - h : ay + st;
+        } else {
+          y = ay - h / 2;
+          x = sd === 2 ? ax + st : ax - st - w;
+          if (x < 8 || x + w > W - 8) continue;
+        }
+        if (y < b0 + 4 || y + h > b1 - 4) continue;
+        var x1 = x - mg,
+          y1 = y - mg,
+          x2 = x + w + mg,
+          y2 = y + h + mg,
+          hit = false;
+        for (var j = 0; j < PL.length && !hit; j++) hit = x1 < PL[j][2] && x2 > PL[j][0] && y1 < PL[j][3] && y2 > PL[j][1];
+        if (hit) continue;
+        f.side = sd;
+        f.bx = x;
+        f.by = y;
+        return true;
+      }
+      return false;
+    }
+    function frames(now, ti, t, b0, b1) {
+      var dt = lastF ? Math.min(0.1, (now - lastF) / 1000) : 0,
+        i,
+        f,
+        w;
+      lastF = now;
+      // les sous-titres : « partout au Maroc… », puis « …et dans le monde »
+      if (ml1) {
+        var c2 = sm(0.265, 0.33, JS);
+        S(ml1, "opacity", (1 - c2).toFixed(3));
+        S(ml2, "opacity", c2.toFixed(3));
+      }
+      var want = {};
+      if (RM)
+        // moins d'animations : la carte du Maroc, avec ses cadres, immobile
+        FR.forEach(function (f) {
+          var w = MOB ? f.wm : f.wd;
+          if (w && w[0] < 0.25) want[f.i] = 1;
+        });
+      else if (JS < (inRelay ? 0.035 : 0.025)) {
+        // Le relais : un nouveau cadre toutes les 1,2 s (toutes les 0,5 s tant qu'il en manque) ; le plus ancien,
+        // une fois entièrement affiché, laisse sa place. Un cadre qui n'a pas la place est passé : on essaie le
+        // suivant (un par image), jamais deux cadres l'un sur l'autre.
+        var K = MOB ? 3 : 4;
+        if (!inRelay) {
+          RA = [];
+          rT = ti;
+        }
+        inRelay = true;
+        if (ti >= rT && !rP && ti > (MOB ? 1.8 : 1.5)) {
+          rT = ti + (RA.length < K ? 0.5 : 1.2);
+          if (RA.length >= K && (RA[0].p >= 1 || RA[0].a <= 0)) RA.shift();
+          if (RA.length < K) rTry = RO.length;
+        }
+        if (!rP && rTry > 0) {
+          var g = RO[rI++ % RO.length];
+          rTry--;
+          if (RA.indexOf(g) < 0 && g.a <= 0) RA.push((rP = g));
+        }
+        for (var k = 0; k < RA.length; k++) want[RA[k].i] = 1;
+      } else {
+        inRelay = false;
+        rP = null;
+        FR.forEach(function (f) {
+          var w = MOB ? f.wm : f.wd;
+          if (w && JS >= w[0] && JS < w[1]) want[f.i] = 1;
+        });
+      }
+      FV.length = 0;
+      for (i = 0; i < FR.length; i++) {
+        f = FR[i];
+        w = !!want[f.i];
+        if (w && !f.want) f.t0 = now + i * 1e-3;
+        f.want = w;
+        if (w || f.a > 0) FV.push(f);
+      }
+      FV.sort(function (a, b) {
+        return a.t0 - b.t0;
+      });
+      var vis = [];
+      for (i = 0; i < FV.length; i++) {
+        f = FV[i];
+        var on = false;
+        f.ok = zAt(f.x, f.y) >= ZN && proj(f.x, f.y);
+        if (f.ok) {
+          f.ax = P.x;
+          f.ay = P.y;
+          if (f.a <= 0) f.side = 0; // un cadre qui arrive essaie d'abord au-dessus de son point
+          if (f.want && P.x > 4 && P.x < W - 4 && P.y > b0 + 6 && P.y < b1 - 6) on = place(f, P.x, P.y, b0, b1, f.a < 0.5);
+          if (on) {
+            var A = f.art;
+            PL.push([f.bx - 3, f.by - 3, f.bx + A.w + 3, f.by + A.h + 3], [f.ax - 6, f.ay - 6, f.ax + 6, f.ay + 6]);
+            f.dx = f.bx - f.ax;
+            f.dy = f.by - f.ay;
+          } else if (f.a > 0) {
+            // il s'en va : il suit son point, à la même place, et personne ne s'y pose avant son départ
+            f.bx = f.ax + f.dx;
+            f.by = f.ay + f.dy;
+            if (f.art) PL.push([f.bx - 3, f.by - 3, f.bx + f.art.w + 3, f.by + f.art.h + 3]);
+          }
+        }
+        if (f === rP) {
+          if (!on) RA.splice(RA.indexOf(f), 1); // pas la place : au suivant
+          else rTry = 0;
+          rP = null;
+        }
+        if (on) {
+          if (f.a <= 0) {
+            f.a = 1;
+            f.p = 0;
+          } else f.a = Math.min(1, f.a + dt / 0.25);
+          f.p = RM ? 1 : Math.min(1, f.p + dt / (f.gc ? 1.5 : 1.25));
+        } else if (f.a > 0) {
+          f.a = RM ? 0 : Math.max(0, f.a - dt / 0.35);
+          if (f.a <= 0) f.p = 0;
+        }
+        if (f.p >= 1 && f.a >= 1) vis.push(f.dom);
+      }
+      // (pour les tests : les domaines affichés en entier)
+      vis = vis.join(" ");
+      if (vis !== shown && wrap) wrap.setAttribute("data-fr", (shown = vis));
+      // les lignes dorées, d'El Jadida vers les cadres du monde
+      ctx.lineCap = "round";
+      for (i = 0; i < FV.length; i++) {
+        f = FV[i];
+        if (!f.gc || f.a <= 0 || f.p <= 0) continue;
+        var L = clamp01(f.p / 0.42),
+          np = f.gc.length / 2;
+        L = 1 - (1 - L) * (1 - L);
+        var m = Math.max(2, Math.round(1 + (np - 1) * L));
+        ctx.globalAlpha = f.a;
+        ctx.beginPath();
+        line(ctx, f.gc, m);
+        ctx.lineWidth = MOB ? 2.8 : 3.4;
+        ctx.strokeStyle = "rgba(255,211,106,.22)";
+        ctx.stroke();
+        ctx.lineWidth = MOB ? 1.1 : 1.3;
+        ctx.strokeStyle = "rgba(240,176,48,.95)";
+        ctx.stroke();
+        // la tête de la ligne pendant le tracé, puis une petite lumière qui la parcourt
+        var g = L < 1 ? (m - 1) / (np - 1) : RM ? -1 : (t * 0.2 + f.i * 0.37) % 1.8;
+        if (g >= 0 && g <= 1) {
+          var fq = g * (np - 1),
+            q = Math.min(np - 2, Math.floor(fq)) * 2,
+            wq = fq - q / 2,
+            x5 = f.gc[q] + (f.gc[q + 2] - f.gc[q]) * wq,
+            y5 = f.gc[q + 1] + (f.gc[q + 3] - f.gc[q + 1]) * wq;
+          if (zAt(x5, y5) >= ZN && proj(x5, y5)) {
+            ctx.globalAlpha = f.a * (L < 1 ? 1 : Math.sin(Math.PI * g));
+            ctx.drawImage(SPG, P.x - 6, P.y - 6, 12, 12);
+          }
         }
       }
-      // aucune place pour l'instant (la carte est encore peu visible) : on réessaie bientôt
-      ev = null;
-      evT = now - EVD + 600;
+      ctx.globalAlpha = 1;
+      return FV;
+    }
+    // un cadre : son point au sol (une onde à l'arrivée), sa tige, puis le cadre qui grandit depuis la tige
+    function drawFrame(f, t) {
+      var q = f.gc ? (f.p - 0.42) / 0.58 : f.p,
+        A = f.art;
+      if (!f.ok || f.a <= 0 || q <= 0 || !A) return;
+      var pop = clamp01(q / 0.2),
+        e = 1 - Math.pow(1 - pop, 3),
+        ax = f.ax,
+        ay = f.ay,
+        bx = f.bx,
+        by = f.by;
+      ctx.globalAlpha = f.a;
+      if (q < 0.55) {
+        var pe = 1 - Math.pow(1 - q / 0.55, 2);
+        ctx.beginPath();
+        ctx.arc(ax, ay, 4 + pe * (MOB ? 16 : 20), 0, 6.2832);
+        ctx.lineWidth = 1.6;
+        ctx.strokeStyle = "rgba(242,178,51," + (0.9 * (1 - pe)).toFixed(3) + ")";
+        ctx.stroke();
+      }
+      // la tige
+      var sx = f.side < 2 ? ax : ax + (f.side === 2 ? 3 : -3),
+        sy = f.side < 2 ? ay + (f.side === 0 ? -3 : 3) : ay,
+        ex = f.side < 2 ? ax : f.side === 2 ? bx : bx + A.w,
+        ey = f.side < 2 ? (f.side === 0 ? by + A.h : by) : ay;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(sx + (ex - sx) * e, sy + (ey - sy) * e);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(226,178,63,.95)";
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(ax, ay, MOB ? 2.8 : 3.2, 0, 6.2832);
+      ctx.fillStyle = "#F2B233";
+      ctx.fill();
+      ctx.lineWidth = 1.4;
+      ctx.strokeStyle = "#fff";
+      ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha = f.a * Math.min(1, pop * 1.6);
+      var sc = 0.8 + 0.2 * e + Math.sin(pop * Math.PI) * 0.035;
+      ctx.translate(ax, ay);
+      ctx.scale(sc, sc);
+      ctx.translate(-ax, -ay);
+      var cw = A.A.width / DPR,
+        ch = A.A.height / DPR;
+      if (q >= 1) ctx.drawImage(A.A, bx - OX, by - OT, cw, ch);
+      else {
+        ctx.drawImage(A.B, bx - OX, by - OT, cw, ch);
+        // recopie une colonne du cadre fini (le nom tapé, le cadenas fermé, « En ligne »)
+        var part = function (rx, rw) {
+          if (rw > 0) ctx.drawImage(A.A, (OX + rx) * DPR, (OT + 2) * DPR, rw * DPR, (A.h - 4) * DPR, bx + rx, by + 2, rw, A.h - 4);
+        };
+        var ty = clamp01((q - 0.18) / 0.52),
+          kk = Math.round(ty * f.dom.length);
+        part(A.tx - 1, A.tw[kk] + (kk ? 1.5 : 0));
+        if (ty > 0 && ty < 1 && (t * 2.2) % 1 < 0.6) {
+          ctx.fillStyle = "#1F57C7";
+          ctx.fillRect(bx + A.tx + A.tw[kk] + 0.5, by + A.h * 0.26, 1.1, A.h * 0.48);
+        }
+        if (q > 0.74) part(A.lx - 1, 10 * A.s);
+        var so = clamp01((q - 0.76) / 0.24);
+        if (so > 0) {
+          ctx.globalAlpha *= so;
+          part(A.dx - 6 * A.s, A.w - A.dx + 6 * A.s - 2);
+        }
+      }
+      ctx.restore();
+      ctx.globalAlpha = 1;
     }
     var PL = [];
-    function step(now, sy, PAN2, DAWN2) {
+    function step(now, sy, J2, DAWN2) {
       if (!S0 || !ready) return;
       if (t0 < 0) {
         t0 = now;
@@ -790,38 +1489,52 @@
         ti = RM ? 99 : (now - t0) / 1000,
         t = now / 1000,
         v = S0;
-      if (!MOB && !RM) {
-        v = mix(S0, S1, PAN2 * PAN2 * (3 - 2 * PAN2));
-        // l'arrivée : la caméra descend en tournant et se pose sur le pays
-        if (ti < 3.2) {
+      // Le voyage suit le défilement, adouci (un défilement brusque ne fait pas sauter la caméra) ;
+      // il attend le fichier du monde, et n'a pas lieu si le visiteur préfère moins d'animations.
+      var jt = WD && !RM ? J2 : 0,
+        dt = lastNow ? Math.min(0.1, (now - lastNow) / 1000) : 0;
+      lastNow = now;
+      JS += (jt - JS) * (1 - Math.exp(-dt / 0.11));
+      if (Math.abs(jt - JS) < 4e-4) JS = jt;
+      ZF = sm(0.16, 0.6, JS);
+      if (!RM) {
+        v = camAt(JS);
+        // l'arrivée (ordinateur) : la caméra descend en tournant et se pose sur le pays
+        if (!MOB && ti < 3.2) {
           var q = Math.pow(1 - ti / 3.2, 3);
           v.R *= 1 + 0.65 * q;
           v.th += 0.5 * q;
           v.ps += 0.6 * q;
         }
-        // à la fin du hero, la caméra monte dans les nuages
-        if (DAWN2 > 0) {
-          v.R *= 1 + DAWN2 * 0.9;
-          v.th += DAWN2 * 0.35;
+        // à la fin du hero, la caméra monte dans les nuages (ordinateur ; le téléphone : voir mobCam)
+        if (!MOB && DAWN2 > 0) {
+          v.R *= 1 + DAWN2 * (0.9 - 0.6 * JS);
+          v.th = Math.min(Math.PI / 2, v.th + DAWN2 * 0.35 * (1 - JS));
         }
       }
       setCam(v);
-      var key = MOB
-        ? "m"
-        : [v.tx, v.ty, v.R, v.th, v.ps, v.hy, v.ox]
+      ZN = Math.max(1, cam.R * 0.04);
+      var key = [v.tx, v.ty, v.R, v.th, v.ps, v.hy, v.ox]
             .map(function (n) {
               return n.toFixed(2);
             })
             .join();
-      // Le fond est redessiné quand la caméra bouge (ordinateur seulement), au plus toutes les 50 ms :
-      // entre deux, l'image du fond suit la caméra par une simple transformation CSS (sans redessiner).
-      var moving = key !== camKey;
-      if (moving) {
-        if (!camKey || now - lastStatic > 50) {
+      // Le fond est redessiné quand la caméra bouge, au plus toutes les 50 ms : entre deux, l'image du fond
+      // suit la caméra par une simple transformation CSS (sans redessiner). Quand la caméra se pose, il est
+      // redessiné une dernière fois à sa position exacte (image nette, et le même dessin à chaque retour).
+      var exact = [v.tx, v.ty, v.R, v.th, v.ps, v.hy, v.ox].join(),
+        moving = key !== camKey,
+        settle = !moving && exact !== camExact && now - lastStatic > 50;
+      if (moving || settle) {
+        // (sur téléphone, un dessin du fond au plus toutes les 100 ms pendant le mouvement)
+        if (settle || !camKey || now - lastStatic > (MOB ? 100 : 50)) {
+          var dr = !settle && !!camKey;
+          drawStatic(cx0, dr);
           camKey = key;
+          camExact = dr ? "" : exact; // un brouillon sera toujours suivi du dessin net, une fois la caméra posée
           lastStatic = now;
-          drawStatic(cx0);
-          REF = [cam.tx, cam.ty, cam.tx + 80 * cam.cp, cam.ty + 80 * cam.sp];
+          var rl = 0.08 * cam.R;
+          REF = [cam.tx, cam.ty, cam.tx + rl * cam.cp, cam.ty + rl * cam.sp];
           A0 = refAt();
           S(cv0, "transform", "none");
         } else if (A0) {
@@ -848,7 +1561,7 @@
           }
         }
       }
-      if (MOB) mobCam(ti, PAN2, DAWN2);
+      if (MOB) mobCam(ti, DAWN2);
       // sur téléphone, une fois la carte allumée : 30 images par seconde suffisent pour les lumières
       if (MOB && !moving && ti > 2.6) {
         skip = !skip;
@@ -856,9 +1569,11 @@
       }
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      var i, l, a, r, ig;
-      // les entreprises : des points qui scintillent doucement (et s'allument d'un éclat à l'arrivée)
-      for (i = 0; i < LT.length; i++) {
+      var i, l, a, r, ig,
+        lf = 1 - sm(0.05, 0.3, JS);
+      // les entreprises : des points qui scintillent doucement (et s'allument d'un éclat à l'arrivée) ;
+      // quand la caméra s'éloigne, elles se fondent dans le Maroc
+      for (i = 0; lf > 0.01 && i < LT.length; i++) {
         l = LT[i];
         ig = ti - l.on;
         if (ig <= 0 || !proj(l.x, l.y)) continue;
@@ -872,12 +1587,12 @@
           a = Math.min(1, f * 4) * (a + (1 - a) * (1 - f));
           r *= 1 + (1 - f) * 1.8;
         }
-        ctx.globalAlpha = a;
+        ctx.globalAlpha = a * lf;
         ctx.drawImage(l.g ? SPG : SPB, P.x - r, P.y - r, r * 2, r * 2);
       }
       ctx.globalAlpha = 1;
       // la lumière circule sur les autoroutes
-      if (!RM && ti > 1.6)
+      if (!RM && ti > 1.6 && lf > 0.01)
         G.r.forEach(function (pts, k) {
           var n = pts.length / 2 - 1;
           for (var j = 0; j < 2; j++) {
@@ -887,12 +1602,14 @@
             if (!proj(pts[q2] + (pts[q2 + 2] - pts[q2]) * w, pts[q2 + 1] + (pts[q2 + 3] - pts[q2 + 1]) * w)) continue;
             if (P.y < b0 || P.y > b1) continue;
             r = Math.max(2.6, Math.min(8, P.k * 2.2));
-            ctx.globalAlpha = fog(P.z) * Math.min(1, ti - 1.6);
+            ctx.globalAlpha = fog(P.z) * Math.min(1, ti - 1.6) * lf;
             ctx.drawImage(SPB, P.x - r, P.y - r, r * 2, r * 2);
           }
         });
       ctx.globalAlpha = 1;
       // le studio, à El Jadida : des arcs vers tout le Maroc (tracés un à un à l'arrivée)
+      if (lf > 0.01) ctx.globalAlpha = lf;
+      if (lf > 0.01)
       G.arcs.forEach(function (d, k) {
         var dx = d[0] - hq[0],
           dy = d[1] - hq[1],
@@ -920,12 +1637,39 @@
         if (prog > 0 && prog < 1) {
           if (proj(hq[0] + dx * prog, hq[1] + dy * prog, Math.sin(Math.PI * prog) * hgt)) {
             r = Math.max(3, Math.min(7, P.k * 2));
-            ctx.globalAlpha = Math.sin(Math.PI * prog) * fog(P.z);
+            ctx.globalAlpha = Math.sin(Math.PI * prog) * fog(P.z) * lf;
             ctx.drawImage(SPG, P.x - r, P.y - r, r * 2, r * 2);
-            ctx.globalAlpha = 1;
+            ctx.globalAlpha = lf;
           }
         }
       });
+      ctx.globalAlpha = 1;
+      // Vu de haut : une lumière dorée fait le tour du Maroc
+      if (ZF > 0.04) {
+        var per = 0,
+          ox2 = 0,
+          oy2 = 0;
+        ctx.beginPath();
+        for (i = 0; i < G.o.length; i += 2) {
+          proj(G.o[i], G.o[i + 1]);
+          if (i) {
+            per += Math.sqrt((P.x - ox2) * (P.x - ox2) + (P.y - oy2) * (P.y - oy2));
+            ctx.lineTo(P.x, P.y);
+          } else ctx.moveTo(P.x, P.y);
+          ox2 = P.x;
+          oy2 = P.y;
+        }
+        ctx.closePath();
+        if (per > 20) {
+          ctx.setLineDash([per * 0.22, per * 0.78]);
+          ctx.lineDashOffset = -((t * 0.11) % 1) * per;
+          ctx.lineWidth = MOB ? 1.6 : 2;
+          ctx.lineCap = "round";
+          ctx.strokeStyle = "rgba(255,211,106," + (0.95 * ZF).toFixed(3) + ")";
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
       // l'étiquette du studio, puis les noms de lieux (sans se chevaucher : les grandes villes d'abord)
       PL.length = 0;
       if (PILL) PL.push(PILL);
@@ -940,14 +1684,22 @@
         bx = hx - img.cw - 11;
         by = hy2 - img.ch / 2;
         if (bx < 8) bx = hx + 11; // pas la place à gauche : l'étiquette passe à droite
+        // téléphone, vu de haut : sous le point (à gauche, elle prendrait la place des cadres d'Amérique)
+        if (MOB && ZF > 0.5) {
+          bx = Math.max(8, Math.min(W - 8 - img.cw, hx - img.cw / 2));
+          by = hy2 + 10;
+        }
         PL.push([bx - 2, by - 2, bx + img.cw + 2, by + img.ch + 2]);
       }
-      var la = RM ? 1 : Math.min(1, Math.max(0, (ti - 1.1) / 0.8));
-      if (la > 0)
+      var FV = frames(now, ti, t, b0, b1);
+      var la = RM ? 1 : Math.min(1, Math.max(0, (ti - 1.1) / 0.8)),
+        laC = 1 - sm(0.03, 0.24, JS),
+        laS = 1 - sm(0.22, 0.5, JS);
+      if (la > 0 && laS > 0.01)
         for (i = 0; i < LAB.length; i++) {
           l = LAB[i];
           // les petites villes : seulement quand la caméra s'approche (et jamais sur téléphone)
-          if (l.hq || (l.r === 1 && MOB) || !proj(l.x, l.y)) continue;
+          if (l.hq || (l.r === 1 && MOB) || (l.r ? laC : laS) < 0.01 || !proj(l.x, l.y)) continue;
           if (l.r === 1 && P.k < KR * 1.25) continue;
           var sc = Math.round(Math.min(1.25, Math.max(0.85, P.k / KR)) * 20) / 20,
             im = label(l, sc),
@@ -972,7 +1724,7 @@
             ok = true;
           }
           if (!ok) continue;
-          ctx.globalAlpha = fog(P.z) * la;
+          ctx.globalAlpha = fog(P.z) * la * (l.r ? laC : laS);
           ctx.drawImage(im, x, y, im.cw, im.ch);
         }
       ctx.globalAlpha = 1;
@@ -997,60 +1749,16 @@
         ctx.drawImage(img, bx, by, img.cw, img.ch);
         ctx.globalAlpha = 1;
       }
-      // une recherche, puis l'entreprise trouvée s'allume avec sa fiche ;
-      // dès que la caméra monte dans les nuages, la recherche et la fiche s'effacent
-      if (DAWN2 > 0.03) ev = null;
-      else if (ti > 2.9 && now - evT > EVD) pick(now, Math.max(b0, TOPC), b1);
-      var e = ev,
-        el = now - evT;
-      if (e && proj(e.x, e.y)) {
-        var px = P.x,
-          py = P.y;
-        if (el > 900) {
-          var rp = Math.min(1, (el - 900) / 900);
-          for (var k2 = 0; k2 < 2; k2++) {
-            var q3 = Math.min(1, rp * 1.4 - k2 * 0.3);
-            if (q3 <= 0) continue;
-            ctx.beginPath();
-            ctx.arc(px, py, 4 + q3 * 24, 0, 6.2832);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "rgba(242,178,51," + (1 - q3) * 0.9 + ")";
-            ctx.stroke();
-          }
-          ctx.drawImage(SPG, px - 10, py - 10, 20, 20);
-          // le rayon doré monte vers la fiche (ou descend, quand la fiche est sous le point)
-          var bd = mcard.classList.contains("dn") ? 1 : -1,
-            bl = (MOB ? 36 : 42) * u,
-            bm = ctx.createLinearGradient(0, py + bl * bd, 0, py);
-          bm.addColorStop(0, "rgba(255,211,106,0)");
-          bm.addColorStop(1, "rgba(255,211,106,.85)");
-          ctx.fillStyle = bm;
-          ctx.fillRect(px - 1.5, bd > 0 ? py : py - bl, 3, bl);
-        }
-        if (!RM) {
-          var nq = Math.max(0, Math.min(e.q.length, Math.round((el - 150) / 38)));
-          if (mqt.textContent.length !== nq) mqt.textContent = e.q.slice(0, nq);
-        }
-        // la largeur de la fiche est lue une fois par recherche (pas à chaque image)
-        if (!cardW) cardW = mcard.offsetWidth || 0;
-        var fx = Math.max(12 - (px - cardW / 2), Math.min(0, W - 12 - (px + cardW / 2)));
-        S(mq, "transform", "translate3d(" + px.toFixed(1) + "px," + py.toFixed(1) + "px,0)");
-        S(mcard, "transform", "translate3d(" + (px + fx).toFixed(1) + "px," + py.toFixed(1) + "px,0)");
-        if (mcard._ax !== fx) mcard.style.setProperty("--ax", (-(mcard._ax = fx)).toFixed(1) + "px");
-        mq.classList.toggle("on", el > 60 && el < 1250);
-        mcard.classList.toggle("on", el > 1050 && el < EVD - 250);
-      } else {
-        mq.classList.remove("on");
-        mcard.classList.remove("on");
-      }
+      // les cadres, par-dessus tout le reste (les plus récents devant)
+      for (i = 0; i < FV.length; i++) drawFrame(FV[i], t);
     }
     // Téléphone : la même chorégraphie que sur ordinateur, mais sans rien redessiner.
     // Le pays (fond, lumières, fiche) est incliné, tourné et rapproché d'un seul bloc par une transformation 3D,
     // que la carte graphique applique à chaque image (aucun calcul de la page, défilement fluide) :
     // - à l'arrivée, la carte se pose en se redressant ;
-    // - pendant que le hero reste en place, la caméra survole le pays et s'approche d'El Jadida ;
     // - à la fin du hero, elle s'élève et la carte s'éloigne sous les nuages.
-    function mobCam(ti, pan, dawn) {
+    // (Le voyage vers le monde, lui, est dessiné dans le canvas, comme sur ordinateur.)
+    function mobCam(ti, dawn) {
       if (!wrap) return;
       if (RM) {
         S(wrap, "transform", "none");
@@ -1059,12 +1767,11 @@
       }
       var a = Math.min(1, ti / 2.4),
         ea = 1 - Math.pow(1 - a, 3),
-        e = pan * pan * (3 - 2 * pan),
         d = dawn * dawn * (3 - 2 * dawn),
-        rx = 24 * (1 - ea) + 14 * e + 14 * d,
-        rz = -1.6 * e + 1.5 * d,
-        sc = (1 + 0.08 * (1 - ea)) * (1 + 0.13 * e) * (1 - 0.2 * d),
-        ty = (0.05 * (1 - ea) - 0.025 * e) * H;
+        rx = 24 * (1 - ea) + 14 * d,
+        rz = 1.5 * d,
+        sc = (1 + 0.08 * (1 - ea)) * (1 - 0.2 * d),
+        ty = 0.05 * (1 - ea) * H;
       S(
         wrap,
         "transform",
@@ -1077,7 +1784,7 @@
   })();
   var DAWN = 0;
   function mapStep(now) {
-    MAP.step(now, window.scrollY, PAN, DAWN);
+    MAP.step(now, window.scrollY, JRN, DAWN);
   }
   var mliveEl = $("mlive"),
     headEl = $("head"),
@@ -1094,7 +1801,10 @@
       p = clamp01((sy - s0) / T),
       v = (sy - s0) / (VH * 1.35),
       W = CW;
-    PAN = clamp01(sy / (Math.max(0, HH - VH) + HOLD));
+    // le voyage du Maroc vers le monde : il commence quand le hero finit de monter, et s'achève un peu
+    // avant les nuages (le monde reste un instant à l'écran)
+    var s1 = Math.max(0, HH - VH);
+    JRN = clamp01((sy - 0.3 * s1) / (0.7 * s1 + 0.85 * HOLD));
     DAWN = p;
     var h = 1 - clamp01(p / 0.5);
     S(headEl, "opacity", h.toFixed(3));
@@ -1105,6 +1815,7 @@
     );
     S(navEl, "opacity", (1 - clamp01(p / 0.3)).toFixed(3));
     S(hcs, "opacity", (1 - clamp01(p / 0.35)).toFixed(3));
+    // la phrase au-dessus de la carte (« Des sites en ligne partout au Maroc… ») part avec la carte
     if (mliveEl) S(mliveEl, "opacity", (1 - clamp01(p / 0.2)).toFixed(3));
     S(
       hb,

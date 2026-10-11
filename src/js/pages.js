@@ -546,22 +546,18 @@
         } catch (e) {}
       }
       function launch() {
-        var L = [
-          "Bonjour Digilago, je démarre un projet.",
-          "",
-          "Référence : " + ref,
-          "Besoin : " + st.needs.join(", "),
-          "Entreprise : " + st.name + (st.met ? " (" + st.met + ")" : ""),
-          "Ville : " + (st.city || "El Jadida"),
-          "Délai : " + (st.when || "À définir"),
-          "Site existant : " + (st.has || "À préciser"),
-          "",
-          "Contact : " +
-            (st.first ? st.first + ", " : "") +
-            st.tel +
-            (st.mail ? ", " + st.mail : ""),
-          "Préférence : " + st.pref,
-        ];
+        // seulement ce que le visiteur a vraiment indiqué (le formulaire simplifié ne demande plus la ville,
+        // le délai, le site existant ni la préférence : pas de valeur par défaut présentée comme un choix)
+        var has = function (id) {
+            return !!$(id);
+          },
+          L = ["Bonjour Digilago, je démarre un projet.", "", "Référence : " + ref, "Besoin : " + st.needs.join(", ")];
+        if (st.name.trim()) L.push("Entreprise : " + st.name + (st.met ? " (" + st.met + ")" : ""));
+        if (has("wCity") && st.city) L.push("Ville : " + st.city);
+        if (st.when) L.push("Délai : " + st.when);
+        if (st.has) L.push("Site existant : " + st.has);
+        L.push("", "Contact : " + (st.first ? st.first + ", " : "") + st.tel + (st.mail ? ", " + st.mail : ""));
+        if (has("tPref")) L.push("Préférence : " + st.pref);
         var url =
           "https://wa.me/212649953813?text=" + encodeURIComponent(L.join("\n"));
         dgLead({

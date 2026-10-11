@@ -175,35 +175,16 @@ p{text-wrap:pretty}
 /* Carte du hero : le Maroc vu du ciel (canvas), la recherche en direct et la fiche trouvée */
 #hb.groundmap{-webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.4) 4%,#000 12%);mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.4) 4%,#000 12%)}
 .mcv{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
-.mfx{position:absolute;inset:0;z-index:3;pointer-events:none}
-.mq{position:absolute;left:0;top:0;translate:-50% calc(-100% - 30 * var(--u));display:flex;align-items:center;gap:calc(8 * var(--u));height:calc(38 * var(--u));padding:0 calc(16 * var(--u)) 0 calc(12 * var(--u));border-radius:999px;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 0 0 1px rgba(255,255,255,.8),0 calc(16 * var(--u)) calc(34 * var(--u)) calc(-12 * var(--u)) rgba(11,27,58,.45);color:#0B1B3A;font-size:calc(13.5 * var(--u));font-weight:500;white-space:nowrap;opacity:0;scale:.92;transition:opacity .35s,scale .45s cubic-bezier(.34,1.56,.64,1)}
-.mq svg{width:calc(16 * var(--u));height:calc(16 * var(--u));color:#1F57C7;flex:none}
-.mq span::after{content:"";display:inline-block;width:1.5px;height:1.05em;margin-left:2px;vertical-align:-.15em;background:#1F57C7;animation:mqC 1s steps(1) infinite}
 @keyframes mqC{50%{opacity:0}}
-.mq.on{opacity:1;scale:1}
-.mcard{position:absolute;left:0;top:0;--ax:0px;translate:-50% calc(-100% - 64 * var(--u));display:grid;grid-template-columns:calc(84 * var(--u)) 1fr;gap:calc(12 * var(--u));align-items:center;width:calc(300 * var(--u));padding:calc(8 * var(--u));border-radius:calc(16 * var(--u));background:rgba(255,255,255,.97);box-shadow:0 0 0 1px rgba(11,27,58,.05),0 calc(30 * var(--u)) calc(60 * var(--u)) calc(-22 * var(--u)) rgba(11,27,58,.55);opacity:0;scale:.94;transform-origin:50% 100%;transition:opacity .45s,scale .55s cubic-bezier(.34,1.56,.64,1)}
-.mcard.on{opacity:1;scale:1}
-.mcard::after{content:"";position:absolute;left:calc(50% + var(--ax));bottom:calc(-7 * var(--u));width:calc(14 * var(--u));height:calc(14 * var(--u));margin-left:calc(-7 * var(--u));background:#fff;border-radius:3px;transform:rotate(45deg)}
-.mc-v{display:block;width:calc(84 * var(--u));height:calc(84 * var(--u));border-radius:calc(11 * var(--u));overflow:hidden;background:#EAF1FD}
-.mc-v img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
-.mc-b{display:flex;flex-direction:column;gap:calc(3 * var(--u));min-width:0;padding-right:calc(4 * var(--u))}
-.mc-t{align-self:flex-start;padding:calc(2 * var(--u)) calc(8 * var(--u));border-radius:999px;background:#EEF3FC;color:#1F57C7;font-family:"JetBrains Mono",monospace;font-size:calc(9.5 * var(--u));letter-spacing:.06em;text-transform:uppercase}
-.mcard.mcl .mc-t{background:#F2B233;color:#0B1B3A}
-.mc-b b{font-family:Sora,sans-serif;font-weight:600;font-size:calc(15 * var(--u));letter-spacing:-.02em;color:#0E214E;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mc-b small{font-size:calc(12 * var(--u));color:#5B6170;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mc-f{display:flex;align-items:center;gap:calc(6 * var(--u));margin-top:calc(2 * var(--u));font-size:calc(11.5 * var(--u));font-weight:600;color:#16A36A}
-.mc-f i{width:calc(7 * var(--u));height:calc(7 * var(--u));border-radius:50%;background:#16A36A;box-shadow:0 0 0 3px rgba(22,163,106,.18)}
-.mcard em{display:none}
 .mlive{position:absolute;z-index:4;left:4%;top:calc(46 * var(--u));display:flex;align-items:center;gap:calc(8 * var(--u));max-width:min(92%,calc(560 * var(--u)));margin:0;padding:calc(8 * var(--u)) calc(16 * var(--u)) calc(8 * var(--u)) calc(12 * var(--u));border-radius:999px;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);box-shadow:0 0 0 1px rgba(255,255,255,.35);color:#fff;font-size:calc(13 * var(--u));line-height:1.35;text-shadow:0 1px 8px rgba(11,27,58,.25)}
-.mlive i{flex:none;width:calc(8 * var(--u));height:calc(8 * var(--u));border-radius:50%;background:#FFD36A;box-shadow:0 0 0 0 rgba(255,211,106,.7);animation:mLive 2s ease-out infinite}
+.mlive i{flex:none;width:calc(7 * var(--u));height:calc(7 * var(--u));border-radius:50%;background:#4ADE80;box-shadow:0 0 0 0 rgba(74,222,128,.7);animation:mLive2 2s ease-out infinite}
+.mlive b{display:grid;justify-items:center;font-weight:500}
+@keyframes mLive2{to{box-shadow:0 0 0 calc(9 * var(--u)) rgba(74,222,128,0)}}
 @keyframes mLive{to{box-shadow:0 0 0 calc(10 * var(--u)) rgba(255,211,106,0)}}
-.mlive span{flex:none;font-family:"JetBrains Mono",monospace;font-size:calc(10.5 * var(--u));letter-spacing:.12em;text-transform:uppercase;color:#FFE3A0}
+.mlive span{display:block;grid-area:1/1;white-space:nowrap}
+.mlive .ml2{opacity:0}
 .hero[data-mode="M"] .mlive{left:50%;translate:-50% 0;top:calc(24 * var(--u));width:max-content;max-width:calc(100% - 32px);font-size:calc(11.5 * var(--u));border-radius:calc(16 * var(--u))}
-.hero[data-mode="M"] .mcard{width:calc(246 * var(--u));grid-template-columns:calc(64 * var(--u)) 1fr;gap:calc(10 * var(--u));translate:-50% calc(-100% - 56 * var(--u))}
-.hero[data-mode="M"] .mc-v{width:calc(64 * var(--u));height:calc(64 * var(--u))}
-.hero[data-mode="M"] .mc-b b{font-size:calc(13.5 * var(--u))}
-.hero[data-mode="M"] .mq{font-size:calc(12.5 * var(--u));height:calc(34 * var(--u))}
-@media (prefers-reduced-motion:reduce){.mlive i,.mq span::after{animation:none}}
+@media (prefers-reduced-motion:reduce){.mlive i{animation:none}}
 #showcase .sw-wall .lp-view img{transition:transform var(--t,6s) cubic-bezier(.45,0,.25,1)!important}
 #showcase .sw-wall .lp-win{transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s}
 #showcase .sw-wall .lp:hover .lp-win{transform:translateY(-8px) scale(1.03)}
@@ -589,7 +570,6 @@ html[lang="ar"] .fin-go{padding:0 calc(32 * var(--u)) 0 calc(10 * var(--u))}
 .bi{flex:none;display:block}
 .bi-ai{color:#0E214E}
 #sim .so .sk2 .bi{width:calc(16 * var(--u));height:calc(16 * var(--u))}
-.mcard .mc-f .bi{width:calc(13 * var(--u));height:calc(13 * var(--u))}
 .bx-ic.brand{background:#fff!important;box-shadow:0 0 0 1px rgba(14,33,78,.08),0 calc(12 * var(--u)) calc(24 * var(--u)) calc(-12 * var(--u)) rgba(14,33,78,.35)!important}
 .bx-ic.brand svg{width:56%;height:56%}
 .mani-t .ip.sq .bi-g{width:calc(24 * var(--u));height:calc(24 * var(--u))}
@@ -681,16 +661,9 @@ html body .fin.mom{background:transparent;padding:calc(120 * var(--u)) 0 calc(12
 /* Carte du haut, tout le Maroc : deux canvas (le fond, puis ce qui vit) dans un même cadre */
 .mwrap{position:absolute;inset:0;transform-origin:50% 60%}
 .mcv0{transform-origin:0 0}
-/* téléphone : la carte (fond, lumières, fiche) bouge d'un seul bloc, calculé par la carte graphique (home.js, mobCam) */
+/* téléphone : la carte (fond, lumières, cadres) bouge d'un seul bloc, calculé par la carte graphique (home.js, mobCam) */
 .hero[data-mode="M"] .mwrap{will-change:transform,opacity;backface-visibility:hidden}
-/* la bulle de recherche est opaque : pas de flou derrière (coûteux à chaque image) */
-.mq{-webkit-backdrop-filter:none;backdrop-filter:none;background:#fff}
 .hero[data-mode="M"] .mlive{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(16,58,150,.42)}
-/* recherche près du haut de la carte : la bulle et la fiche passent sous le point */
-.mq.dn{translate:-50% calc(30 * var(--u))}
-.mcard.dn{translate:-50% calc(64 * var(--u));transform-origin:50% 0}
-.hero[data-mode="M"] .mcard.dn{translate:-50% calc(56 * var(--u))}
-.mcard.dn::after{bottom:auto;top:calc(-7 * var(--u))}
 /* téléphone : le nord du pays est en haut de la carte ; les nuages de l'horizon s'écartent pour ne pas le voiler */
 .hero[data-mode="M"] .cbank{opacity:.55;translate:0 -42%}
 /* Fluidité : pas de flou d'arrière-plan sur les éléments nombreux ou en mouvement (recalculé à chaque image,
@@ -703,13 +676,8 @@ html body #sim .so .off-msg{-webkit-backdrop-filter:none;backdrop-filter:none}
 #vis .vchip{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(14,33,78,.92)!important}
 .srail em,.tp-c{-webkit-backdrop-filter:none;backdrop-filter:none}
 }
-/* ordinateur : la légende « En direct » se place sous les boutons, la carte garde toute sa hauteur */
+/* ordinateur : la phrase de la carte se place sous les boutons, la carte garde toute sa hauteur */
 .hero[data-mode="D"] .mlive{left:50%;translate:-50% 0;top:calc(-26 * var(--u));width:max-content;max-width:calc(760 * var(--u));padding:calc(6 * var(--u)) calc(16 * var(--u)) calc(6 * var(--u)) calc(12 * var(--u));background:rgba(255,255,255,.14);font-size:calc(12.5 * var(--u))}
-/* la fiche trouvée, un peu plus près de son point */
-.mcard{translate:-50% calc(-100% - 50 * var(--u))}
-.hero[data-mode="M"] .mcard{translate:-50% calc(-100% - 46 * var(--u))}
-.mcard.dn{translate:-50% calc(50 * var(--u))}
-.hero[data-mode="M"] .mcard.dn{translate:-50% calc(46 * var(--u))}
 /* Services, tarifs : le nom de domaine après la première année */
 .dom-note{display:flex;align-items:center;gap:calc(16 * var(--u));max-width:calc(1100 * var(--u));margin:calc(18 * var(--u)) auto 0;padding:calc(16 * var(--u)) calc(24 * var(--u));border-radius:calc(18 * var(--u));background:rgba(255,255,255,.6);box-shadow:0 0 0 1px rgba(255,255,255,.75),0 calc(18 * var(--u)) calc(40 * var(--u)) calc(-24 * var(--u)) rgba(14,33,78,.35);color:#0E214E;font-size:calc(15.5 * var(--u));line-height:1.55}
 .dom-note b{font-weight:600;color:#0E214E}
@@ -729,8 +697,6 @@ html body #sim .so .off-msg{-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-mode="M"] .f-brand .fl-logo{display:none!important}
 [data-mode="M"] .f-brand p{margin-top:0!important;max-width:none!important;font-size:calc(15 * var(--u))!important}
 [data-mode="M"] .foot .f-col a,[data-mode="M"] .foot .f-col span{font-size:calc(14.5 * var(--u))}
-/* le nom de l'entreprise trouvée tient sur deux lignes plutôt que d'être coupé */
-.mc-b b{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}
 
 /* ── « Tous les métiers » : chaque carte montre le haut d'un vrai site, avec sa photo (tools/metiers.py) ── */
 .mc2-site .sp-site.sp-ph{background:var(--bg);color:#fff;isolation:isolate}
