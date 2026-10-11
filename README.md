@@ -21,6 +21,8 @@ Les 13 pages : accueil, services, réalisations, à propos, contact, démarrer u
 
 ## Mettre le site en ligne
 
+**Pas à pas, du premier envoi sur GitHub jusqu'à la vérification : voir [HEBERGEMENT.md](HEBERGEMENT.md).**
+
 Le site et l'espace de gestion sont hébergés sur **Vercel**, relié à ce dépôt GitHub : chaque envoi sur la branche `main` met en ligne automatiquement le site (`www.digilago.ma`, dossier `site/`) et la gestion (`gestion.digilago.ma`, dossier `backend/`). Une autre branche crée des **versions de prévisualisation** (liens privés, visibles une fois connecté à Vercel).
 
 À chaque envoi, GitHub lance aussi les tests (`.github/workflows/deploy.yml`) : le site dans les 3 langues dans un vrai navigateur, et la gestion. Une coche verte = tout fonctionne.
@@ -34,7 +36,7 @@ pip install -r requirements.txt
 python -m playwright install chromium
 
 npm run start      # ou : make serve  → http://localhost:4173
-npm run test       # ou : make test   → 43 tests
+npm run test       # ou : make test   → 278 tests
 ```
 
 Les tests vérifient, sur un vrai navigateur :
@@ -62,7 +64,7 @@ Le dossier `site/` est la version publiée. Les optimisations (vitesse, design, 
 | `tools/build.py` | Lance toutes les étapes ci-dessous dans l'ordre. |
 | `tools/simplify_map.py` | Carte du monde allégée (886 Ko → 231 Ko) et chargée à la demande. |
 | `tools/design_html.py` | Retouches de contenu de l'accueil (carte, quartiers, « Pourquoi un site ? »). |
-| `tools/hero_map.py` | Carte du haut de l'accueil : tout le Maroc, de Tanger à Dakhla, en 3D (deux canvas dessinés par `home.js` : le fond une fois, les lumières à chaque image ; caméra immobile sur téléphone), recherches en direct, fiches. |
+| `tools/hero_map.py` | Carte du haut de l'accueil : tout le Maroc, de Tanger à Dakhla, en 3D (deux canvas dessinés par `home.js` : le fond une fois, les lumières à chaque image ; puis le voyage vers le monde au défilement), petits cadres « votre-site — En ligne » avec le vrai drapeau de chaque pays (flag-icons, MIT : `src/flags/`), monde Natural Earth (`src/geo/`). |
 | `tools/dedupe_pages.py` | Retire les blocs en double entre les pages. |
 | `tools/articles.py` | Articles SEO / GEO depuis `src/articles/*.json` (sommaire, tableaux, FAQ), page Guides, colonne Guides du pied de page. |
 | `tools/services_page.py` | Page Services : expertises reliées aux guides, clients, comparatif, garanties. |
@@ -79,7 +81,7 @@ Après une modification :
 
 ```bash
 npm run build      # ou : make build   (Node.js requis pour la minification)
-npm run test       # 43 tests dans un vrai navigateur
+npm run test       # 278 tests dans un vrai navigateur
 ```
 
 Puis envoyez sur GitHub : le workflow `.github/workflows/deploy.yml` teste et publie tout seul.

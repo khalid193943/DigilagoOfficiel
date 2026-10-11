@@ -231,8 +231,8 @@ def test_carte_du_hero_dessinee(page, base_url):
         const d = x.getImageData(0, 0, c.width, c.height).data; let n = 0;
         for (let i = 3; i < d.length; i += 4000) if (d[i] > 0) n++; return n; })""")
     assert drawn[0] > 500 and drawn[1] > 10, drawn
-    # une recherche en direct apparaît (la bulle qui tape, puis la fiche trouvée)
-    page.wait_for_selector('#mcard.on, #mq.on', timeout=9000)
+    # des cadres « votre-….ma — En ligne » apparaissent sur le Maroc
+    page.wait_for_selector('#mwrap[data-fr*=".ma"]', timeout=9000)
 
 def test_arabe_numeros_dans_le_bon_sens():
     html = open(os.path.join(SITE, 'ar', 'contact.html'), encoding='utf-8').read()
@@ -284,10 +284,214 @@ def test_telephone_la_carte_bouge_au_defilement(page, base_url):
     """Téléphone : pendant que le hero reste en place, la carte bouge (plus de zone morte)."""
     page.set_viewport_size({'width': 390, 'height': 844})
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(3500)
-    t0 = page.evaluate("getComputedStyle(document.getElementById('mwrap')).transform")
-    page.evaluate('window.scrollTo(0, 500)'); page.wait_for_timeout(400)
-    t1 = page.evaluate("getComputedStyle(document.getElementById('mwrap')).transform")
-    assert t0 != t1, 'la carte doit suivre le défilement'
+    t0 = page.evaluate(MAP_SNAP)
+    page.evaluate('window.scrollTo(0, 500)'); page.wait_for_timeout(900)
+    assert page.evaluate(MAP_SNAP) != t0, 'la carte doit suivre le défilement'
+
+
+# ─── Carte du hero : le voyage du Maroc vers le monde ────────────────────────────────────────────
+
+# Empreinte du fond de la carte (canvas dessiné une fois par position de caméra) : deux positions de caméra
+# identiques donnent la même empreinte.
+MAP_SNAP = """(() => { const c = document.getElementById('mcv0'), d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+    let h = 0; for (let i = 0; i < d.length; i += 97) h = (h * 31 + d[i]) | 0; return h + ':' + getComputedStyle(c).transform; })()"""
+# Le fond de la carte, échantillonné (pour comparer deux images à quelques nuances près : le moteur de dessin
+# du navigateur peut arrondir un dégradé d'une nuance sur 255 d'un dessin à l'autre)
+MAP_PIX = """(() => { const c = document.getElementById('mcv0'), d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+    const o = []; for (let i = 0; i < d.length; i += 4 * 13) o.push(d[i], d[i + 1], d[i + 2], d[i + 3]); return o; })()"""
+
+
+def same_map(a, b):
+    """Deux fonds de carte identiques à l'œil : aucun écart de plus de 8 nuances."""
+    return len(a) == len(b) and max(abs(x - y) for x, y in zip(a, b)) <= 8
+
+
+# Part du fond occupée par le bleu de la marque (le Maroc mis en valeur, vu de haut)
+MAP_BRAND = """(() => { const c = document.getElementById('mcv0'), d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+    let n = 0, t = 0; for (let i = 0; i < d.length; i += 4 * 7) { t++; if (Math.abs(d[i] - 31) < 14 && Math.abs(d[i + 1] - 87) < 16 && Math.abs(d[i + 2] - 199) < 18 && d[i + 3] > 200) n++; }
+    return n / t; })()"""
+HERO_END = "document.getElementById('intro').offsetHeight - innerHeight * 1.75"
+
+
+def test_carte_monde_projection_alignee():
+    """Le monde (Natural Earth) est projeté exactement comme le Maroc de la carte : moins d'1 px d'écart."""
+    import sys, json, math
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'tools'))
+    import hero_map as HM
+    t, arcs = HM.topo(os.path.join(os.path.dirname(__file__), '..', 'src', 'geo', 'countries-50m.json'))
+    pts = []
+    for o in t['objects']['countries']['geometries']:
+        if o.get('id') in ('504', '732'):
+            pts += [HM.to_ground(lo, la) for lo, la in HM.topo_ring(arcs, o['arcs'][0])]
+    ref = [tuple(map(float, p.split(','))) for p in re.findall(r'-?[\d.]+,-?[\d.]+', HM.M['outline'])]
+    d = sorted(min(math.hypot(x - a, y - b) for a, b in pts) for x, y in ref)
+    assert d[len(d) // 2] < 0.5 and d[-1] < 1, (d[len(d) // 2], d[-1])
+
+
+@pytest.mark.parametrize('lang', ['', 'en/', 'ar/'])
+def test_carte_monde_fichier_trouve(page, base_url, lang):
+    """Le fichier du monde est trouvé depuis chaque langue, et il est léger."""
+    page.goto(f'{base_url}/{lang}index.html')
+    url = page.evaluate("new URL(document.getElementById('mgeo').dataset.world, location.href).href")
+    r = page.request.get(url)
+    assert r.ok and len(r.body()) < 120_000
+    d = r.json()
+    assert len(d['l']) > 100 and len(d['b']) > 100
+    # les drapeaux des cadres : une seule petite image
+    fl = page.request.get(page.evaluate("new URL(document.getElementById('mgeo').dataset.flags, location.href).href"))
+    assert fl.ok and fl.body()[8:12] == b'WEBP' and len(fl.body()) < 20_000
+
+
+@pytest.mark.parametrize('size', [(1440, 900), (820, 1180), (390, 844)])
+def test_carte_du_maroc_au_monde(page, base_url, size):
+    """Le défilement emmène la caméra du Maroc au monde (le Maroc prend la couleur de la marque),
+    et la ramène exactement au Maroc quand on remonte."""
+    w, h = size
+    errs = []
+    page.on('pageerror', lambda e: errs.append(str(e)))
+    page.set_viewport_size({'width': w, 'height': h})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(5500)
+    start, brand0, pix0 = page.evaluate(MAP_SNAP), page.evaluate(MAP_BRAND), page.evaluate(MAP_PIX)
+    end = page.evaluate(HERO_END)
+    for k in range(1, 11):                      # défilement progressif, comme à la main
+        page.evaluate(f'window.scrollTo(0, {end * k / 10})'); page.wait_for_timeout(120)
+    page.wait_for_timeout(900)
+    assert page.evaluate(MAP_SNAP) != start, 'la caméra a quitté le Maroc'
+    brand1 = page.evaluate(MAP_BRAND)
+    assert brand0 < 0.0003 < brand1, ('le Maroc est mis en valeur, vu de haut', brand0, brand1)
+    for k in range(9, -1, -1):                  # on remonte : le voyage se fait à l'envers
+        page.evaluate(f'window.scrollTo(0, {end * k / 10})'); page.wait_for_timeout(120)
+    page.wait_for_timeout(900)
+    assert same_map(page.evaluate(MAP_PIX), pix0), 'de retour en haut, la carte est revenue exactement sur le Maroc'
+    assert not errs, errs
+
+
+def test_carte_defilement_brusque(page, base_url):
+    """Un défilement brusque (tout en bas du hero d'un coup, puis retour) ne casse rien et arrive au même état."""
+    errs = []
+    page.on('pageerror', lambda e: errs.append(str(e)))
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(5500)
+    start = page.evaluate(MAP_PIX)
+    end = page.evaluate(HERO_END)
+    page.evaluate(f'window.scrollTo(0, {end})'); page.wait_for_timeout(1500)
+    fast = page.evaluate(MAP_PIX)
+    page.evaluate('window.scrollTo(0, 0)'); page.wait_for_timeout(1500)
+    assert same_map(page.evaluate(MAP_PIX), start), 'retour au Maroc'
+    for k in range(1, 11):
+        page.evaluate(f'window.scrollTo(0, {end * k / 10})'); page.wait_for_timeout(120)
+    page.wait_for_timeout(1500)
+    assert same_map(page.evaluate(MAP_PIX), fast), 'même état final, quelle que soit la vitesse'
+    assert not errs, errs
+
+
+def test_carte_mouvement_reduit(browser, base_url):
+    """Moins d'animations : la carte reste posée sur le Maroc pendant le défilement."""
+    ctx = browser.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce')
+    page = ctx.new_page()
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(2500)
+    start = page.evaluate(MAP_SNAP)
+    page.evaluate(f'window.scrollTo(0, {page.evaluate(HERO_END) * 0.9})'); page.wait_for_timeout(1200)
+    assert page.evaluate(MAP_SNAP).split(':')[0] == start.split(':')[0]
+    ctx.close()
+
+
+def test_carte_sans_le_monde(page, base_url):
+    """Si le fichier du monde n'arrive pas, la carte du Maroc reste entière, sans erreur."""
+    errs = []
+    page.on('pageerror', lambda e: errs.append(str(e)))
+    page.route('**/assets/geo-*.json', lambda route: route.abort())
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(5500)
+    start = page.evaluate(MAP_PIX)
+    page.evaluate(f'window.scrollTo(0, {page.evaluate(HERO_END) * 0.9})'); page.wait_for_timeout(1500)
+    assert same_map(page.evaluate(MAP_PIX), start), 'la carte reste sur le Maroc'
+    assert not errs, errs
+
+# ─── Carte du hero : les cadres « votre-site — En ligne », au Maroc puis dans le monde ───────────────
+
+FRAMES_SHOWN = "(document.getElementById('mwrap').dataset.fr || '').split(' ').filter(Boolean)"
+TLD = {'ma': '.ma', 'es': '.es', 'dz': '.dz', 'tn': '.tn', 'it': '.it', 'fr': '.fr', 'sn': '.sn', 'de': '.de',
+       'gb': '.co.uk', 'tr': '.com.tr', 'eg': '.eg', 'ci': '.ci', 'ae': '.ae', 'ru': '.ru', 'in': '.in',
+       'ca': '.ca', 'us': '.us', 'jp': '.jp', 'br': '.com.br'}
+
+
+def test_cadres_donnees():
+    """Chaque cadre est un exemple (« votre-… », « your-… ») avec l'extension officielle de son pays et un vrai
+    drapeau ; jamais plus de 8 cadres à la fois sur ordinateur, 4 sur téléphone."""
+    import sys
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'tools'))
+    import hero_map as HM
+    HM.check_frames()
+    for fr, en, flag, place, wd, wm in HM.FRAMES:
+        assert fr.startswith('votre-') and en.startswith('your-'), fr
+        assert fr.endswith(TLD[flag]) and en.endswith(TLD[flag]) and re.fullmatch(r'[a-z0-9.-]+', fr + en), fr
+        assert os.path.exists(os.path.join(os.path.dirname(__file__), '..', 'src', 'flags', flag + '.svg'))
+        assert isinstance(place, str) == (flag == 'ma'), fr
+    assert sorted(HM.MA_RELAY) == sorted(f[3] for f in HM.FRAMES if f[2] == 'ma')
+    lic = open(os.path.join(os.path.dirname(__file__), '..', 'src', 'flags', 'LICENSE-flag-icons'), encoding='utf-8').read()
+    assert 'MIT License' in lic
+    # le drapeau du Maroc : rouge, avec l'étoile verte
+    ma = open(os.path.join(os.path.dirname(__file__), '..', 'src', 'flags', 'ma.svg'), encoding='utf-8').read()
+    assert '#c1272d' in ma and '#006233' in ma
+    hero = open(os.path.join(SITE, 'index.html'), encoding='utf-8').read()
+    hero = hero[hero.index('id="mlive"'):hero.index('id="hwash"')]
+    assert 'Client Digilago' not in hero and 'Trouvé sur Google' not in hero and 'En direct' not in hero
+
+
+@pytest.mark.parametrize('size,cap', [((1440, 900), 8), ((390, 844), 4)])
+def test_cadres_du_maroc_au_monde(page, base_url, size, cap):
+    """Au repos, des cadres « .ma » se relaient sur le Maroc ; pendant le voyage, des cadres du monde apparaissent
+    (jamais plus de 8, ou 4 sur téléphone) ; à l'arrivée, le monde, sans cadre du Maroc."""
+    w, h = size
+    errs = []
+    page.on('pageerror', lambda e: errs.append(str(e)))
+    page.set_viewport_size({'width': w, 'height': h})
+    page.goto(f'{base_url}/index.html')
+    page.wait_for_function(f"{FRAMES_SHOWN}.length > 0", timeout=9000)
+    seen = set()
+    for _ in range(12):                          # le relais : de nouveaux cadres arrivent, d'autres partent
+        shown = page.evaluate(FRAMES_SHOWN)
+        assert 0 < len(shown) <= cap and all(d.startswith('votre-') and d.endswith('.ma') for d in shown), shown
+        seen |= set(shown)
+        page.wait_for_timeout(500)
+    assert len(seen) >= 3, seen
+    assert page.evaluate("getComputedStyle(document.querySelector('#mlive .ml1')).opacity") == '1'
+    end = page.evaluate(HERO_END)
+    for k in range(1, 31):                       # un défilement tranquille, d'une dizaine de secondes
+        page.evaluate(f'window.scrollTo(0, {end * k / 30})'); page.wait_for_timeout(330)
+        shown = page.evaluate(FRAMES_SHOWN)
+        assert len(shown) <= cap, shown
+        seen |= set(shown)
+    page.wait_for_timeout(2500)
+    final = page.evaluate(FRAMES_SHOWN)
+    assert len(final) >= cap - 1 and not any(d.endswith('.ma') for d in final), final
+    assert len({d.split('.', 1)[1] for d in seen if not d.endswith('.ma')}) >= 6, seen
+    assert page.evaluate("getComputedStyle(document.querySelector('#mlive .ml2')).opacity") == '1'
+    page.evaluate('window.scrollTo(0, 0)'); page.wait_for_timeout(2500)
+    assert all(d.endswith('.ma') for d in page.evaluate(FRAMES_SHOWN)), 'de retour sur le Maroc'
+    assert not errs, errs
+
+
+@pytest.mark.parametrize('lang,prefix,online', [('en/', 'your-', 'Online'), ('ar/', 'your-', 'على الإنترنت')])
+def test_cadres_traduits(page, base_url, lang, prefix, online):
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/{lang}index.html')
+    page.wait_for_function(f"{FRAMES_SHOWN}.length > 0", timeout=9000)
+    assert all(d.startswith(prefix) for d in page.evaluate(FRAMES_SHOWN))
+    assert page.evaluate("document.querySelector('#mdata b').textContent") == online
+
+
+def test_cadres_mouvement_reduit(browser, base_url):
+    """Moins d'animations : la carte du Maroc avec ses cadres, immobile, sans relais."""
+    ctx = browser.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce')
+    page = ctx.new_page()
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(2500)
+    a = page.evaluate(FRAMES_SHOWN)
+    page.wait_for_timeout(3000)
+    assert a and a == page.evaluate(FRAMES_SHOWN) and all(d.endswith('.ma') for d in a), a
+    ctx.close()
+
 
 # ─── Arabe : lecture de droite à gauche, sans faute d'affichage ─────────────────────────────────────
 
