@@ -2,6 +2,10 @@
 import os, re, pytest
 SITE = os.path.join(os.path.dirname(__file__), '..', 'site')
 PAGES = sorted(p for p in os.listdir(SITE) if p.endswith('.html'))
+# pages Secteurs (plus de 200 pages générées sur le même modèle) : toutes sont vérifiées hors navigateur ;
+# dans le navigateur, la page Secteurs, les 18 pages de secteur et un échantillon de pages métier
+VZ_TYPES = [p for p in PAGES if 'data-vz="type"' in open(os.path.join(SITE, p), encoding='utf-8').read()]
+BROWSER_PAGES = [p for p in PAGES if p not in VZ_TYPES] + VZ_TYPES[::12]
 IGNORED = ('fonts.googleapis', 'fonts.gstatic', 'favicon')
 
 def watch(page):
@@ -15,7 +19,7 @@ def watch(page):
     page.on('requestfailed', failed)
     return errors
 
-@pytest.mark.parametrize('name', PAGES)
+@pytest.mark.parametrize('name', BROWSER_PAGES)
 def test_page_charge_sans_erreur(page, base_url, name):
     errors = watch(page)
     resp = page.goto(f'{base_url}/{name}')
@@ -62,8 +66,23 @@ def test_telephone_accueil(page, base_url):
 def stub_open(page):
     page.add_init_script('window.__opened = []; window.open = function(u){ window.__opened.push(u); return null; };')
 
-def test_demarrer_un_projet_envoie_sur_whatsapp(page, base_url):
-    """Démarrer : trois étapes (besoin, contact, lancement) ; seul le téléphone est obligatoire."""
+def lead_api(page, sent, ok=True):
+    """Le serveur de gestion, simulé : on garde ce que la page envoie."""
+    def handle(route, req):
+        if req.method == 'OPTIONS':
+            return route.fulfill(status=204, headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type'})
+        sent.append(req.post_data_json)
+        route.fulfill(status=200 if ok else 500, content_type='application/json', headers={'Access-Control-Allow-Origin': '*'},
+                      body='{"ok":true,"id":1}' if ok else '{"ok":false}')
+    page.route('**/api/leads', handle)
+
+
+def test_demarrer_un_projet_envoie_a_la_gestion(page, base_url):
+    """Démarrer : besoin, contact, moment de rappel ; la demande part dans l'espace de gestion (pas de
+    redirection vers WhatsApp) et l'écran de confirmation dit quand on rappelle."""
+    sent = []
+    stub_open(page)
+    lead_api(page, sent)
     page.set_viewport_size({'width': 1440, 'height': 900})
     page.goto(f'{base_url}/demarrer.html'); page.wait_for_timeout(800)
     assert page.locator('#wzCard .wz-step').count() == 3
@@ -73,11 +92,48 @@ def test_demarrer_un_projet_envoie_sur_whatsapp(page, base_url):
     assert 'téléphone' in page.inner_text('#wzErr'), 'le téléphone est demandé'
     page.fill('#wFirst', 'Sara'); page.fill('#wTel', '0612345678')
     page.click('#wzNext'); page.wait_for_timeout(500)
-    assert page.inner_text('#wzCount').strip() == '3 / 3'
     assert 'Sara, 0612345678' in page.inner_text('#recap')
-    page.click('#wzNext'); page.wait_for_timeout(1500)
+    page.click('#wzNext'); page.wait_for_timeout(300)
+    assert 'quand' in page.inner_text('#wzErr').lower(), 'le moment de rappel est demandé'
+    page.click('#tCb [data-cb="day"]'); page.click('#cbSlot [data-slot="pm"]')
+    page.click('#wzNext'); page.wait_for_timeout(1200)
     assert page.evaluate("document.getElementById('wzCard').classList.contains('sent')")
+    assert page.evaluate('window.__opened') == [], 'aucune ouverture de WhatsApp'
+    assert len(sent) == 1 and sent[0]['phone'] == '0612345678' and sent[0]['callback'] == 'day' and sent[0]['slot'] == 'pm'
+    assert sent[0]['date'] and sent[0]['source'].startswith('Démarrer un projet (DG-')
+    assert 'entre 14 h et 18 h' in page.inner_text('#wzWhen')
+    assert '0612345678' in page.inner_text('#wzTel')
     assert 'wa.me/212649953813' in page.get_attribute('#wzWa', 'href')
+
+
+def test_demarrer_echec_rien_ne_se_perd(page, base_url):
+    """Si l'envoi échoue : un message clair, « Réessayer » et WhatsApp avec la demande complète."""
+    sent = []
+    lead_api(page, sent, ok=False)
+    page.set_viewport_size({'width': 390, 'height': 844})
+    page.goto(f'{base_url}/demarrer.html'); page.wait_for_timeout(800)
+    page.locator('#tNeeds .wtile').first.click(); page.click('#wzNext'); page.wait_for_timeout(400)
+    page.fill('#wTel', '0612345678'); page.click('#wzNext'); page.wait_for_timeout(400)
+    page.locator('#tCb .cbo:not([hidden])').first.click(); page.click('#wzNext'); page.wait_for_timeout(1200)
+    assert page.locator('#wzFail').is_visible()
+    assert not page.evaluate("document.getElementById('wzCard').classList.contains('sent')")
+    assert '0612345678' in page.get_attribute('#wzFailWa', 'href')
+    assert page.locator('#wzRetry').is_visible()
+
+
+@pytest.mark.parametrize('lang', ['en', 'ar'])
+def test_demarrer_traduit(page, base_url, lang):
+    sent = []
+    lead_api(page, sent)
+    page.set_viewport_size({'width': 390, 'height': 844})
+    page.goto(f'{base_url}/{lang}/demarrer.html'); page.wait_for_timeout(800)
+    page.locator('#tNeeds .wtile').first.click(); page.click('#wzNext'); page.wait_for_timeout(400)
+    page.fill('#wTel', '0612345678'); page.click('#wzNext'); page.wait_for_timeout(400)
+    page.click('#tCb [data-cb="day"]'); page.click('#wzNext'); page.wait_for_timeout(1200)
+    assert sent and sent[0]['lang'] == lang and sent[0]['source'].startswith('Démarrer un projet (')
+    txt = page.inner_text('#wzDone')
+    assert ('Tomorrow' in txt) if lang == 'en' else ('غدًا' in txt), txt
+
 
 def test_formulaire_contact_envoie_sur_whatsapp(page, base_url):
     stub_open(page)
@@ -97,7 +153,7 @@ def test_menu_plein_ecran_telephone(page, base_url, name):
     assert page.locator('#dock').count() == 0
     page.click('#mb'); page.wait_for_timeout(1000)
     assert 'open' in page.locator('#sheet').get_attribute('class')
-    assert page.locator('#sheet .fsm-nav a').count() == 6
+    assert page.locator('#sheet .fsm-nav a').count() == 7
     page.click('#closeBtn'); page.wait_for_timeout(900)
     assert 'open' not in page.locator('#sheet').get_attribute('class')
     assert not errors, errors
@@ -164,12 +220,13 @@ def test_bon_moment(page, base_url):
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(1500)
     page.locator('#moment').scroll_into_view_if_needed(); page.wait_for_timeout(2500)
     assert 'go' in page.locator('#moment').get_attribute('class')
-    assert page.locator('#moment .fin-go').get_attribute('href') == 'demarrer.html'
+    assert page.locator('#moment .fin-cta .cta').get_attribute('href') == 'demarrer.html'
 
 # ─── Versions anglaise et arabe ───────────────────────────────────────
 LANG_PAGES = [(l, p) for l in ('en', 'ar') for p in PAGES]
+LANG_BROWSER = [(l, p) for l in ('en', 'ar') for p in BROWSER_PAGES]
 
-@pytest.mark.parametrize('lang,name', LANG_PAGES)
+@pytest.mark.parametrize('lang,name', LANG_BROWSER)
 def test_traduction_charge_sans_erreur(page, base_url, lang, name):
     errors = watch(page)
     resp = page.goto(f'{base_url}/{lang}/{name}')
@@ -258,7 +315,7 @@ def test_final_de_l_accueil(page, base_url):
     order = page.evaluate("""(() => { const g = document.getElementById('guides'), m = document.getElementById('moment'), v = document.getElementById('vis');
         return [!!(g.compareDocumentPosition(m) & 4), !!(m.compareDocumentPosition(v) & 4)]; })()""")
     assert order == [True, True], 'le grand appel à l’action est entre les guides et « La vision »'
-    assert page.locator('#moment .fin-go[href="demarrer.html"]').count() == 1
+    assert page.locator('#moment .fin-cta .cta[href="demarrer.html"]').count() == 1
 
 def test_metiers_ont_leur_photo(page, base_url):
     """« Tous les métiers » : les 12 cartes ont leur photo, et toutes sont chargées dès que la section approche."""
@@ -450,12 +507,14 @@ def test_cadres_du_maroc_au_monde(page, base_url, size, cap):
     page.goto(f'{base_url}/index.html')
     page.wait_for_function(f"{FRAMES_SHOWN}.length > 0", timeout=9000)
     seen = set()
+    full = 0
     for _ in range(12):                          # le relais : de nouveaux cadres arrivent, d'autres partent
         shown = page.evaluate(FRAMES_SHOWN)
-        assert 0 < len(shown) <= cap and all(d.startswith('votre-') and d.endswith('.ma') for d in shown), shown
+        assert len(shown) <= cap and all(d.startswith('votre-') and d.endswith('.ma') for d in shown), shown
+        full += bool(shown)
         seen |= set(shown)
         page.wait_for_timeout(500)
-    assert len(seen) >= 3, seen
+    assert full >= 9 and len(seen) >= 3, (full, seen)
     assert page.evaluate("getComputedStyle(document.querySelector('#mlive .ml1')).opacity") == '1'
     end = page.evaluate(HERO_END)
     for k in range(1, 31):                       # un défilement tranquille, d'une dizaine de secondes
@@ -491,6 +550,113 @@ def test_cadres_mouvement_reduit(browser, base_url):
     page.wait_for_timeout(3000)
     assert a and a == page.evaluate(FRAMES_SHOWN) and all(d.endswith('.ma') for d in a), a
     ctx.close()
+
+
+# ─── Finitions : arabe, sections de l'accueil, langue dans toutes les pages ──────────────────────────
+
+def scroll_to(page, sel, offset=0):
+    """Amène le haut de l'élément à `offset` px du haut de l'écran (la page s'allonge en route : on corrige)."""
+    for _ in range(4):
+        t = page.evaluate(f"document.querySelector('{sel}').getBoundingClientRect().top")
+        page.evaluate(f'window.scrollBy(0, {t - offset})'); page.wait_for_timeout(350)
+
+
+@pytest.mark.parametrize('lang', ['', 'ar/'])
+def test_rail_des_sections_au_bord_droit(page, base_url, lang):
+    """Le rail des sections : tous les points alignés au bord droit, en français comme en arabe."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/{lang}index.html'); page.wait_for_timeout(1000)
+    page.evaluate('window.scrollTo(0, 9000)'); page.wait_for_timeout(1200)
+    xs = page.evaluate("[...document.querySelectorAll('#srail a i')].map(i => Math.round(i.getBoundingClientRect().right))")
+    assert len(set(xs)) == 1 and 1390 < xs[0] <= 1440, xs
+    lab = page.evaluate("(() => { const a = document.querySelector('#srail a.act'); return [a.querySelector('em').getBoundingClientRect().right, a.querySelector('i').getBoundingClientRect().left]; })()")
+    assert lab[0] <= lab[1] + 1, 'l’étiquette est à gauche du point'
+
+
+@pytest.mark.parametrize('lang', ['', 'ar/'])
+def test_modeles_trois_rangees_pleines(page, base_url, lang):
+    """« Nos modèles » : les trois rangées de sites remplissent la largeur de l'écran (aussi en arabe)."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/{lang}index.html'); page.wait_for_timeout(800)
+    scroll_to(page, '#showcase .sw-wall', 100); page.wait_for_timeout(1500)
+    cover = page.evaluate("""[...document.querySelectorAll('#showcase .sw-row')].map(r => {
+        const xs = [...r.querySelectorAll('.lp')].map(l => l.getBoundingClientRect()).filter(b => b.right > 0 && b.left < innerWidth);
+        return xs.length ? [Math.min(...xs.map(b => b.left)), Math.max(...xs.map(b => b.right))] : null; })""")
+    assert len(cover) == 3 and all(c and c[0] < 80 and c[1] > 1360 for c in cover), cover
+
+
+@pytest.mark.parametrize('size', [(1440, 900), (390, 844)])
+def test_expertises_trois_onglets_empiles(page, base_url, size):
+    """« Nos expertises » : en fin de défilement, 01 et 02 restent visibles en onglets au-dessus de 03."""
+    page.set_viewport_size({'width': size[0], 'height': size[1]})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(800)
+    scroll_to(page, '#stack')
+    h = page.evaluate("document.getElementById('stack').offsetHeight")
+    best = None
+    for k in range(40):
+        page.evaluate(f'window.scrollBy(0, {h / 40})'); page.wait_for_timeout(60)
+        tops = page.evaluate("[...document.querySelectorAll('#stack .sc')].map(c => c.getBoundingClientRect().top)")
+        if tops[2] - tops[1] > 20 and tops[1] - tops[0] > 20 and tops[0] >= 0 and abs(tops[2] - float(page.evaluate("parseFloat(document.querySelectorAll('#stack .sc')[2].style.top)"))) < 2:
+            best = tops
+            break
+    assert best, 'la pile complète (01, 02 en onglets, 03 ouverte) est visible'
+    # puis la pile part d'un seul bloc : les écarts entre onglets ne se referment pas
+    for k in range(30):
+        page.evaluate(f'window.scrollBy(0, {h / 40})'); page.wait_for_timeout(40)
+        t = page.evaluate("[...document.querySelectorAll('#stack .sc')].map(c => c.getBoundingClientRect().top)")
+        assert t[2] - t[1] > 15 and t[1] - t[0] > 15, t
+
+
+def test_essayez_resultats_entiers(page, base_url):
+    """« Essayez » : le panneau des résultats est entier dans la section (rien de coupé en bas)."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(800)
+    scroll_to(page, '#sim')
+    sec, card = page.evaluate("""[document.getElementById('sim').getBoundingClientRect().bottom,
+        document.querySelector('#sim .simc').getBoundingClientRect().bottom]""")
+    assert card + 40 < sec, (card, sec)
+
+
+@pytest.mark.parametrize('lang', ['', 'en/', 'ar/'])
+@pytest.mark.parametrize('size,pages', [((1440, 900), 4), ((390, 844), 5)])
+def test_guides_carrousel(page, base_url, lang, size, pages):
+    """« Nos guides » : cartes alignées (aucun décalage), un point par position, flèches jusqu'au bout."""
+    page.set_viewport_size({'width': size[0], 'height': size[1]})
+    page.goto(f'{base_url}/{lang}index.html'); page.wait_for_timeout(800)
+    scroll_to(page, '#gdTrack', size[1] * 0.3); page.wait_for_timeout(900)
+    assert page.evaluate("[...document.querySelectorAll('#gdDots .gd-dot')].filter(d => !d.hidden).length") == pages
+    assert page.locator('#gdPrev').is_disabled()
+    for k in range(pages - 1):
+        page.click('#gdNext'); page.wait_for_timeout(800)
+        tops = page.evaluate("[...document.querySelectorAll('#gdTrack .gd')].map(c => Math.round(c.getBoundingClientRect().top))")
+        assert len(set(tops)) == 1, tops
+        assert page.evaluate("[...document.querySelectorAll('#gdDots .gd-dot')].findIndex(d => d.classList.contains('on'))") == k + 1
+    assert page.locator('#gdNext').is_disabled()
+
+
+def test_mission_vision_titres_et_texte_automatique(page, base_url):
+    """À propos : « Notre mission » et « Notre vision » en titres ; le texte s'allume seul (sans défiler)."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/ar/a-propos.html'); page.wait_for_timeout(800)
+    assert page.evaluate("parseFloat(getComputedStyle(document.querySelector('.mv small')).fontSize)") > 24
+    scroll_to(page, '.mv', 120)
+    page.wait_for_timeout(3800)                       # aucun défilement pendant ce temps
+    on, n = page.evaluate("[document.querySelectorAll('.mv .wd.on').length, document.querySelectorAll('.mv .wd').length]")
+    assert n > 10 and on == n, (on, n)
+
+
+@pytest.mark.parametrize('name', ['services.html', 'ar/contact.html', 'en/a-propos.html', 'index.html', 'guide-prix-site-web-maroc.html'])
+def test_langue_dans_la_barre_du_haut(page, base_url, name):
+    """Chaque page a le menu des langues dans sa barre du haut, qui mène à la même page dans l'autre langue."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/{name}'); page.wait_for_timeout(800)
+    page.evaluate('window.scrollTo(0, 7000)'); page.wait_for_timeout(300)
+    page.evaluate('window.scrollBy(0, -80)'); page.wait_for_timeout(900)   # en remontant, la barre revient
+    page.click('#fnav .lsw-b'); page.wait_for_timeout(400)
+    links = page.locator('#fnav .lsw-m a')
+    assert links.count() == 2 and links.first.is_visible()
+    base = name.split('/')[-1]
+    assert all(h.endswith(base) for h in links.evaluate_all('l => l.map(a => a.getAttribute("href"))'))
 
 
 # ─── Arabe : lecture de droite à gauche, sans faute d'affichage ─────────────────────────────────────
@@ -567,3 +733,91 @@ def test_accueil_pas_trop_long_a_parcourir(page, base_url):
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(1500)
     screens = page.evaluate('document.documentElement.scrollHeight / innerHeight')
     assert screens < 31, f'accueil de {screens:.1f} écrans'
+
+
+# ─── Secteurs : tous les métiers du Maroc ───────────────────────────────
+VZ_SECTORS = [p for p in PAGES if p.startswith('secteur-')]
+
+def test_secteurs_nombre_de_pages():
+    assert len(VZ_SECTORS) == 18
+    assert len(VZ_TYPES) >= 180
+
+@pytest.mark.parametrize('name', PAGES)
+def test_menu_secteurs_partout(name):
+    html = open(os.path.join(SITE, name), encoding='utf-8').read()
+    assert '<a href="secteurs.html">Secteurs</a>' in html, 'lien « Secteurs » absent du menu'
+
+@pytest.mark.parametrize('name', VZ_TYPES + VZ_SECTORS)
+def test_secteurs_donnees_structurees(name):
+    import json
+    html = open(os.path.join(SITE, name), encoding='utf-8').read()
+    data = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S).group(1))
+    types = {g['@type'] for g in data['@graph']}
+    assert {'Service', 'BreadcrumbList', 'FAQPage'} <= types, types
+    service = next(g for g in data['@graph'] if g['@type'] == 'Service')
+    assert len(service['areaServed']) > 20, 'villes desservies manquantes'
+
+def test_secteurs_recherche_globale(page, base_url):
+    errors = watch(page)
+    page.goto(f'{base_url}/secteurs.html'); page.wait_for_timeout(800)
+    page.fill('#vzHubQ', 'coffee'); page.wait_for_timeout(300)
+    hrefs = page.eval_on_selector_all('#vzHubR a', 'els => els.map(e => e.getAttribute("href"))')
+    assert 'site-web-coffee-shop-maroc.html' in hrefs
+    assert hrefs[-1].startswith('demarrer.html?metier=')
+    page.fill('#vzHubQ', 'plombier'); page.wait_for_timeout(300)
+    assert page.locator('#vzHubR a').count() >= 2
+    assert not errors, errors
+
+def test_secteur_filtre_et_fenetre(page, base_url):
+    errors = watch(page)
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/secteur-restauration-cafe-maroc.html'); page.wait_for_timeout(800)
+    total = page.locator('.vz-card').count()
+    page.click('.vz-chip[data-g="sucre"]'); page.wait_for_timeout(200)
+    shown = page.locator('.vz-card:not([hidden])').count()
+    assert 0 < shown < total
+    page.click('.vz-chip[data-g=""]'); page.fill('.vz-find .vz-q input', 'zzzz'); page.wait_for_timeout(200)
+    assert page.locator('.vz-none').is_visible()
+    page.fill('.vz-find .vz-q input', ''); page.wait_for_timeout(200)
+    page.click('#t-food-truck'); page.wait_for_timeout(600)
+    assert page.evaluate('document.getElementById("vzDlg").open')
+    assert 'metier=Food%20truck' in page.locator('.vz-dl-go').get_attribute('href')
+    page.click('.vz-dl-x'); page.wait_for_timeout(300)
+    assert not page.evaluate('document.getElementById("vzDlg").open')
+    assert not errors, errors
+
+def test_secteur_maquettes_et_animations(page, base_url):
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/secteur-restauration-cafe-maroc.html'); page.wait_for_timeout(600)
+    page.evaluate("document.querySelector('.mk-stage').scrollIntoView({block:'center'})"); page.wait_for_timeout(800)
+    tabs = page.locator('.vz-tabs button')
+    tabs.nth(2).click(); page.wait_for_timeout(500)
+    on = page.eval_on_selector_all('.mk.on', 'els => els.map(e => e.dataset.t)')
+    assert on == [tabs.nth(2).get_attribute('data-t')]
+    page.evaluate("document.querySelector('.vz-g').scrollIntoView({block:'center'})")
+    page.wait_for_function("document.querySelector('.vz-g').classList.contains('show')", timeout=8000)
+    page.evaluate("document.querySelector('.vz-chat').scrollIntoView({block:'center'})")
+    page.wait_for_function("document.querySelector('.vz-chat').classList.contains('ans')", timeout=12000)
+
+def test_page_metier_demarrer_avec_le_metier(page, base_url):
+    page.goto(f'{base_url}/site-web-coffee-shop-maroc.html'); page.wait_for_timeout(500)
+    href = page.locator('.hcta a.cta').get_attribute('href')
+    assert href.startswith('demarrer.html?metier=Coffee')
+    page.goto(f'{base_url}/ar/site-web-coffee-shop-maroc.html'); page.wait_for_timeout(500)
+    assert 'demarrer.html?metier=' in page.locator('.hcta a.cta').get_attribute('href')
+
+@pytest.mark.parametrize('lang', ['fr', 'en', 'ar'])
+def test_secteur_telephone_sans_debordement(page, base_url, lang):
+    errors = watch(page)
+    page.set_viewport_size({'width': 390, 'height': 844})
+    pre = '' if lang == 'fr' else lang + '/'
+    for name in ('secteurs.html', 'secteur-sante-medical-maroc.html', 'site-web-pediatre-maroc.html'):
+        page.goto(f'{base_url}/{pre}{name}'); page.wait_for_timeout(900)
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), (lang, name)
+    assert not errors, errors
+
+def test_accueil_cartes_metiers_vers_secteurs():
+    html = open(os.path.join(SITE, 'index.html'), encoding='utf-8').read()
+    links = re.findall(r'<a class="mc2-go" href="([^"]+)"', html)
+    assert len(links) == 12 and all(os.path.exists(os.path.join(SITE, l)) for l in links)
+    assert 'href="secteurs.html"' in html

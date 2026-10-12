@@ -409,3 +409,44 @@ dialog.confirm[open]{animation:cfIn .32s cubic-bezier(.34,1.56,.64,1)}
   .day-l li>.btn{grid-column:2;justify-self:end}
   .day-l b{white-space:normal}
 }
+
+/* ── Demandes : le moment de rappel choisi par le client, et les issues après l'appel ── */
+.pipe{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media screen and (max-width:1200px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media screen and (max-width:640px){.pipe{grid-template-columns:1fr}}
+.cbk{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin:2px 0 4px;padding:7px 10px;border-radius:10px;background:#F3F6FB;font-size:11.5px;line-height:1.3}
+.cbk b{font-size:12px;font-weight:600;color:var(--ink)}
+.cbk em{font-style:normal;margin-left:auto;font-weight:600;color:var(--mut)}
+.cbk-h{padding:2px 7px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.cbk-brulant{background:#FFF0EE}.cbk-brulant .cbk-h{background:#D93025;color:#fff}
+.cbk-chaud{background:#FFF6E6}.cbk-chaud .cbk-h{background:#F29900;color:#fff}
+.cbk-tiede{background:#EEF4FF}.cbk-tiede .cbk-h{background:#1F57C7;color:#fff}
+.cbk-froid .cbk-h{background:#DDE3EE;color:#3A4E72}
+.cbk.late em{color:#D93025}
+.cbk.late{box-shadow:inset 0 0 0 1.5px rgba(217,48,37,.45)}
+.ld .cbk{margin:8px 13px 0}
+.cbk.big{grid-column:1/-1;margin-top:14px;padding:12px 14px;font-size:13px}.cbk.big b{font-size:15px}.cbk.big em{font-size:13px}
+.c360 .cbk.big{width:100%}
+.after .out{display:grid;gap:8px}
+.out-b{display:block;border-radius:12px;background:#F8FAFD;box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);text-decoration:none}
+.out-b>summary,.out-b>a,.out-b>button,a.out-b{display:flex;flex-direction:column;gap:2px;padding:12px 14px;cursor:pointer;list-style:none;background:none;border:0;width:100%;text-align:left;font:inherit;color:inherit}
+.out-b>summary::-webkit-details-marker{display:none}
+.out-b b{font-family:Sora,sans-serif;font-size:14px;font-weight:600}
+.out-b span{font-size:12.5px;color:var(--mut)}
+.out-b.ok{background:linear-gradient(150deg,#EAF8F0,#F3FBF6);box-shadow:inset 0 0 0 1.5px rgba(15,157,88,.45)}.out-b.ok b{color:#0B7A44}
+.out-b.wait{box-shadow:inset 0 0 0 1px rgba(31,87,199,.3)}
+.out-b.no b{color:#8A3A33}
+.out-b:hover{box-shadow:inset 0 0 0 1.5px var(--sky)}
+.out-f{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px;padding:0 14px 14px}
+.out-f label{flex:1;min-width:140px}
+.pipe{grid-template-columns:minmax(0,1.7fr) repeat(5,minmax(0,1fr))}
+@media screen and (max-width:1200px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media screen and (max-width:640px){.pipe{grid-template-columns:1fr}}
+.ld .cbk,.ld-a .cbk{margin:6px 0 2px;padding:6px 8px}
+.ld .cbk b{font-size:12.5px}
+.ld .cbk em{margin-left:0;flex-basis:100%;font-size:11.5px}
+.c360{flex-wrap:wrap}
+.c360 .cbk.big{flex:1 0 100%;order:5;margin:4px 0 0}
+.after .out>*{margin:0}
+.out-b>button{align-items:flex-start;text-align:start}
+@media screen and (max-width:900px){.lead-g>div:last-child{order:-1}}

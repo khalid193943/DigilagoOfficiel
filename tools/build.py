@@ -15,10 +15,12 @@ y compris après avoir régénéré les pages avec l'ancien générateur.
      cta_band      bandeau de fin de page « On vous rappelle » (rappel gratuit, WhatsApp, démarrer)
      contact_page  formulaire de contact simplifié (détails facultatifs repliés)
      gradients     dégradés ciel → nuit entre les sections (src/css/gradients.css)
+     secteurs      pages Secteurs : 18 secteurs, leurs métiers (src/secteurs/), menu « Secteurs »
      titles        titres des pages (onglet, Google et grand titre), sauf l'accueil
   4. fonts         polices hébergées sur le site
   5. inject        JavaScript (src/js) et CSS (src/css) minifiés dans chaque page
-  6. i18n_build    versions anglaise (site/en/) et arabe (site/ar/), sélecteur de langue
+  6. i18n_extract  textes à traduire (src/i18n/strings.json)
+     i18n_build    versions anglaise (site/en/) et arabe (site/ar/), sélecteur de langue
   7. seo           canonique, hreflang, Open Graph, Schema.org, sitemap (3 langues)
   8. set_gestion_url  relie les formulaires à l'espace de gestion (src/gestion_url.txt)
 
@@ -27,7 +29,7 @@ Usage : python3 tools/build.py      (ou : npm run build / make build)
 import os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STEPS = ['simplify_map', 'design_html', 'hero_map', 'metiers', 'story_night', 'dedupe_pages', 'articles', 'services_page', 'cta_band', 'contact_page', 'demarrer', 'titles', 'gradients', 'fonts', 'inject', 'i18n_build', 'seo', 'set_gestion_url']
+STEPS = ['simplify_map', 'design_html', 'hero_map', 'metiers', 'story_night', 'dedupe_pages', 'articles', 'services_page', 'cta_band', 'contact_page', 'demarrer', 'secteurs', 'titles', 'gradients', 'fonts', 'inject', 'i18n_extract', 'i18n_build', 'seo', 'set_gestion_url']
 
 for s in STEPS:
     print('──', s)

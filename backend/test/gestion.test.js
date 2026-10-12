@@ -107,7 +107,7 @@ test('demandes par téléphone et du site : pipeline, suivi, acceptation, refus'
   let r = await post('/demandes', { name: 'Nadia Benali', company: 'Pâtisserie Nadia', phone: '0622334455', city: 'Rabat', kind: 'ecommerce', sector: 'Commerce', source: 'Téléphone', budget: '15 000 DH', next_at: '2026-01-01', need: 'Vendre ses gâteaux en ligne' });
   assert.strictEqual(r.status, 302); const lid = r.headers.get('location').split('/').pop();
   await post(`/demandes/${lid}/note`, { kind: 'appel', text: 'Appelée, veut un devis' });
-  let page = await (await get('/demandes/' + lid)).text(); assert.match(page, /Contactée/); assert.match(page, /Appelée, veut un devis/);
+  let page = await (await get('/demandes/' + lid)).text(); assert.match(page, /Appelées/); assert.match(page, /Appelée, veut un devis/);
   const dash = await (await get('/')).text(); assert.match(dash, /Rappeler Pâtisserie Nadia/);
   const as = await (await get('/assistant?demande=' + lid)).text(); assert.match(as, /Depuis la demande de Pâtisserie Nadia/); assert.match(as, /name="lead_id" value="\d+"/); assert.match(as, /value="Rabat"/);
   const body = new URLSearchParams({ lead_id: lid, client_id: 'new', nc_name: 'Nadia Benali', nc_company: 'Pâtisserie Nadia', nc_phone: '0622334455', nc_city: 'Rabat', sector: 'Commerce', situation: 'rien', kind: 'ecommerce', pages: '4', lang_fr: '1', plan_key: '50-50' });
@@ -116,7 +116,7 @@ test('demandes par téléphone et du site : pipeline, suivi, acceptation, refus'
   const qid = r.headers.get('location').match(/devis\/(\d+)/)[1];
   page = await (await get('/demandes/' + lid)).text(); assert.match(page, /Devis envoyé/);
   await post(`/devis/${qid}/statut`, { status: 'accepte' });
-  page = await (await get('/demandes/' + lid)).text(); assert.match(page, /Gagnées/);
+  page = await (await get('/demandes/' + lid)).text(); assert.match(page, /bdg-green">Projets/);
   r = await post('/demandes', { name: 'Omar', phone: '0600000001', source: 'WhatsApp', need: 'Landing page' }); const l2 = r.headers.get('location').split('/').pop();
   await post(`/demandes/${l2}/etape`, { stage: 'perdu', reason: 'Budget trop serré' });
   const pipe = await (await get('/demandes')).text(); assert.match(pipe, /Budget trop serré/); assert.match(pipe, /transformées en projets/);
@@ -228,5 +228,38 @@ test('demandes à l’instant : compteur, nouvelles arrivées, « contactée » 
   assert.strictEqual(p.n, before);
   assert.strictEqual(p.fresh.length, 0);
   /* classer perdue demande une confirmation */
-  assert.match(await (await get('/demandes/' + id)).text(), /class="lost" data-confirm=/);
+  assert.match(await (await get('/demandes/' + id)).text(), /class="out-f lost-f" data-confirm=/);
+});
+
+test('demande du site avec moment de rappel : chaleur, ordre, pas de réponse, à relancer', async () => {
+  const send = (o) => fetch(base + '/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Forwarded-For': '10.9.9.' + Math.floor(Math.random() * 200) }, body: JSON.stringify(o) }).then((r) => r.json());
+  const later = await send({ name: 'Ali', phone: '0611111111', need: 'Site web', source: 'Démarrer un projet (DG-2026-TEST)', callback: 'day', slot: 'pm', ref: 'DG-2026-TEST', lang: 'ar' });
+  const hot = await send({ name: 'Hiba', company: 'Salon Hiba', phone: '0622222222', need: 'Site web', source: 'Démarrer un projet (DG-2026-HOT1)', callback: 'now' });
+  assert.ok(hot.ok && hot.callback && /Maintenant/.test(hot.callback.label));
+  assert.match(later.callback.label, /après-midi \(14 h – 18 h\)/);
+  /* un moment inconnu est ignoré, la demande est quand même enregistrée */
+  const odd = await send({ name: 'Zed', phone: '0633333333', callback: 'jamais' });
+  assert.ok(odd.ok && odd.callback === null);
+  /* la fiche : le moment demandé, en grand, avec sa chaleur */
+  let page = await (await get('/demandes/' + hot.id)).text();
+  assert.match(page, /cbk-brulant/); assert.match(page, /Très chaud/); assert.match(page, /Maintenant \(sous 15 min\)/);
+  assert.match(page, /Après l’appel/); assert.match(page, /href="\/assistant\?demande=\d+"[^>]*><b>Intéressé/);
+  /* le pipeline : les plus pressés d'abord */
+  const pipe = await (await get('/demandes')).text();
+  const col = pipe.slice(pipe.indexOf('data-stage="nouveau"'), pipe.indexOf('data-stage="contacte"'));
+  assert.ok(col.indexOf('Salon Hiba') < col.indexOf('>Ali<'), 'la demande « maintenant » passe avant « demain »');
+  /* pas de réponse : noté, rappel demain, même étape */
+  let r = await post(`/demandes/${hot.id}/sans-reponse`, {});
+  assert.strictEqual(r.status, 302);
+  page = await (await get('/demandes/' + hot.id)).text();
+  assert.match(page, /Pas de réponse \(appel n° 1\)/); assert.match(page, /1 appel sans réponse/); assert.match(page, /bdg-blue">À appeler/);
+  /* pas maintenant : une date de relance est obligatoire, et la demande reste dans le pipeline */
+  r = await post(`/demandes/${later.id}/etape`, { stage: 'attente', reason: 'Attend son budget' });
+  page = await (await get('/demandes/' + later.id)).text(); assert.match(page, /bdg-blue">À appeler/);
+  await post(`/demandes/${later.id}/etape`, { stage: 'attente', reason: 'Attend son budget', next_at: '2030-01-15' });
+  page = await (await get('/demandes/' + later.id)).text();
+  assert.match(page, /bdg-navy">À relancer/); assert.match(page, /à relancer le 15 janvier 2030 · Attend son budget/);
+  const pipe2 = await (await get('/demandes')).text();
+  const col2 = pipe2.slice(pipe2.indexOf('data-stage="attente"'), pipe2.indexOf('data-stage="gagne"'));
+  assert.match(col2, /Relance 15 janvier 2030/);
 });

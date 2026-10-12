@@ -36,7 +36,7 @@ pip install -r requirements.txt
 python -m playwright install chromium
 
 npm run start      # ou : make serve  → http://localhost:4173
-npm run test       # ou : make test   → 278 tests
+npm run test       # ou : make test   → 300 tests
 ```
 
 Les tests vérifient, sur un vrai navigateur :
@@ -46,7 +46,8 @@ Les tests vérifient, sur un vrai navigateur :
 - l'accueil se parcourt jusqu'en bas sans erreur, les quatre réponses changent au défilement, et la version téléphone s'active ;
 - sur téléphone, le menu plein écran s'ouvre et se ferme ;
 - « Démarrer un projet » va jusqu'au bout et ouvre WhatsApp avec la demande complète ;
-- le formulaire de contact ouvre WhatsApp avec le message.
+- le formulaire de contact ouvre WhatsApp avec le message ;
+- les pages Secteurs : la recherche parmi tous les métiers, les familles, la fenêtre « On le fait pour vous », les maquettes, les animations Google et IA, les données structurées (Service, fil d'Ariane, FAQ) et l'affichage sur téléphone dans les 3 langues.
 
 ---
 
@@ -81,7 +82,7 @@ Après une modification :
 
 ```bash
 npm run build      # ou : make build   (Node.js requis pour la minification)
-npm run test       # 278 tests dans un vrai navigateur
+npm run test       # 300 tests dans un vrai navigateur
 ```
 
 Puis envoyez sur GitHub : le workflow `.github/workflows/deploy.yml` teste et publie tout seul.
@@ -121,6 +122,15 @@ Le métier affiche alors son propre exemple, avec l'étiquette « Idée de site 
 
 Pour un secteur entier, mettez une seule landing dans `src/landings/secteurs/`, nommée comme la clé du secteur : `restauration.webp`, `hotellerie.webp`, `commerce.webp`, `immobilier.webp`, `sport.webp`, `beaute.webp`, `industrie.webp`, `juridique.webp`, `tourisme.webp`, `services.webp`. Tous les types d'entreprise du secteur l'utilisent (sauf ceux qui ont leur propre landing).
 
+## Pages « Secteurs » : un site pour chaque métier
+
+`secteurs.html` présente 18 secteurs et plus de 500 types d'entreprises. Chaque secteur a sa page (`secteur-…-maroc.html`) : toutes ses activités, avec une recherche et des familles à filtrer, une maquette de site à essayer, les recherches Google et les questions aux IA, l'outil de gestion, les villes, les questions fréquentes. Les métiers les plus recherchés ont aussi leur propre page (`site-web-…-maroc.html`, environ 200). Les autres ont une carte « On le fait pour vous » qui ouvre une petite fenêtre avec le bouton Démarrer, le métier déjà rempli.
+
+- **Les contenus** sont dans `src/secteurs/<secteur>.py`, en français, en anglais et en arabe : le secteur, les types qui ont une page, puis les cartes. `restauration.py` sert de modèle.
+- **Avant de construire**, lancez `python3 tools/secteurs_check.py`. Il vérifie les clés, les icônes, les traductions, la longueur des titres pour Google et les noms de fichiers.
+- **Les pages** sont fabriquées par `tools/secteurs.py`, pendant `npm run build`. Ce script range aussi les traductions dans `src/i18n/` et ajoute « Secteurs » au menu de toutes les pages.
+- **Les icônes** sont dans `tools/secteurs_icons.py` et **les styles** dans `src/css/secteurs.src.css`. Dans ce fichier, `12u` veut dire 12 unités d'échelle.
+
 ## À faire avant l'ouverture officielle
 
 - Compléter les zones marquées « [À compléter] » des pages Mentions légales et Confidentialité.
@@ -132,4 +142,4 @@ Pour un secteur entier, mettez une seule landing dans `src/landings/secteurs/`, 
 
 ---
 
-Conçu et codé à El Jadida.
+Conçu et codé au Maroc.

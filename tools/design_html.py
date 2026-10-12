@@ -188,7 +188,7 @@ def showcase(h):
 
 
 STEPS = [  # sur téléphone : ce qui se passe à l'écran, en deux temps (remplace le paragraphe)
-    ('Il tape « dentiste El Jadida » sur Google.', 'Votre site sort en premier : il vous appelle.'),
+    ('Il tape « dentiste Casablanca » sur Google.', 'Votre site sort en premier : il vous appelle.'),
     ('Votre fiche s’affiche sur la carte.', 'Avis, horaires, itinéraire : il vient chez vous.'),
     ('Il découvre vos soins, vos photos, vos avis.', 'Il prend rendez-vous en un clic.'),
     ('23:14 : une demande de devis arrive.', '08:00 : vous ouvrez avec trois nouveaux clients.'),
@@ -253,6 +253,9 @@ def mani_pills(h):
 # Final de l'accueil : « C'est maintenant » devient le grand appel à l'action, juste avant le pied de page
 ARW = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
        'stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>')
+# la flèche des boutons « Démarrer mon projet » du site (en-tête, pied de page)
+HARW = ('<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="#0C1D43" '
+        'stroke-width="1.5" stroke-linecap="square"/></svg>')
 CHK = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" '
        'stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>')
 WAI = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2'
@@ -274,10 +277,11 @@ def finale(h):
            '<div class="fin-in w"><div class="fin-txt"><span class="mom-k rv"><i></i>Le bon moment</span>'
            '<h2 class="rv d1">C’est maintenant, <em>pas quand tout le monde y sera.</em></h2>'
            '<p class="rv d2">Vos clients vous cherchent sur leur téléphone. Soyez le premier qu’ils trouvent.</p>'
-           '<div class="fin-cta rv d3"><a class="fin-go" href="demarrer.html"><span>Démarrer mon projet</span><i>%s</i></a>'
-           '<a class="fin-wa" href="https://wa.me/212649953813" target="_blank" rel="noopener noreferrer">%sWhatsApp</a></div>'
+           '<div class="fin-cta rv d3"><a href="demarrer.html" class="cta mono"><span class="arw">%s</span>'
+           '<span class="lbl">Démarrer mon projet</span></a>'
+           '<a class="ghost fin-wa" href="https://wa.me/212649953813" target="_blank" rel="noopener noreferrer">%sWhatsApp</a></div>'
            '<ul class="fin-trust rv d3"><li>%sPrix écrit avant de commencer</li><li>%sPremière version en 72 h</li><li>%sRéponse le jour même</li></ul>'
-           '</div>%s</div></section>') % (ARW, WAI, CHK, CHK, CHK, vis)
+           '</div>%s</div></section>') % (HARW, WAI, CHK, CHK, CHK, vis)
     h = h.replace(old, '', 1)
     i = h.index('<section class="sec" id="vis"')     # juste avant « La vision »
     h = h[:i] + new + '\n' + h[i:]

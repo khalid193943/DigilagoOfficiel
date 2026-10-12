@@ -11,6 +11,7 @@ const { supervise, findCity } = require('./lib/maroc');
 const { PLANS, planFromBody, planOf, planKey } = require('./lib/plans');
 const assistant = require('./lib/assistant');
 const CP = require('./lib/compta');
+const CB = require('./lib/callback');
 
 const app = express();
 app.disable('x-powered-by');
@@ -234,8 +235,13 @@ app.post('/api/leads', async (req, res) => {
   if (s(b.website) || s(b._hp)) return res.json({ ok: true });
   if (!s(b.name) && !s(b.phone) && !s(b.email)) return res.status(400).json({ ok: false });
   if (await hit('lead:' + String(req.ip || '').slice(0, 64), 15 * 60e3, 6)) return res.status(429).json({ ok: false });
-  const r = await db.prepare("INSERT INTO leads (name, company, phone, email, need, message, source, stage, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'nouveau', datetime('now'))").run(s(b.name, 120), s(b.company, 160), s(b.phone, 40), s(b.email, 160), s(b.need, 300), s(b.message, 3000), s(b.source, 80) || 'site');
-  res.json({ ok: true, id: Number(r.lastInsertRowid) });
+  /* le moment de rappel choisi par le client (page « Démarrer ») : il dit aussi à quel point il est intéressé */
+  const cb = CB.parse(b);
+  const r = await db.prepare("INSERT INTO leads (name, company, phone, email, need, message, source, stage, updated_at, callback, callback_at, callback_label, next_at, ref, lang, city) VALUES (?, ?, ?, ?, ?, ?, ?, 'nouveau', datetime('now'), ?, ?, ?, ?, ?, ?, ?)").run(s(b.name, 120), s(b.company, 160), s(b.phone, 40), s(b.email, 160), s(b.need, 300), s(b.message, 3000), s(b.source, 80) || 'site',
+    cb ? cb.key : null, cb ? cb.at : null, cb ? cb.label : null, cb ? cb.date : null, s(b.ref, 20) || null, ['fr', 'en', 'ar'].includes(b.lang) ? b.lang : null, s(b.city, 80) || null);
+  const id = Number(r.lastInsertRowid);
+  await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(id, 'note', `Demande reçue sur le site${cb ? ` : rappeler ${cb.label.charAt(0).toLowerCase() + cb.label.slice(1)}` : ''}`);
+  res.json({ ok: true, id, callback: cb ? { label: cb.label, at: cb.at } : null });
 });
 
 /* ---------------- Lien client : consulter, télécharger, accepter ---------------- */
@@ -423,7 +429,7 @@ app.get('/', async (req, res) => {
     q3: db.prepare("SELECT COALESCE(SUM(total_ttc),0) s, COUNT(*) n FROM quotes WHERE status IN ('envoye','vu')").get(),
     q4: db.prepare("SELECT substr(date,1,7) m, COALESCE(SUM(amount),0) s FROM payments WHERE date >= date('now','-7 months') GROUP BY m").all(),
     q5: db.prepare("SELECT q.*, c.name cname, c.company ccomp, c.phone cphone FROM quotes q LEFT JOIN clients c ON c.id = q.client_id WHERE q.status IN ('envoye','vu') AND (q.sent_at IS NULL OR q.sent_at <= datetime('now','-3 days')) ORDER BY q.issue_date LIMIT 6").all(),
-    q6: db.prepare("SELECT * FROM leads WHERE COALESCE(stage, 'nouveau') = 'nouveau' ORDER BY id DESC LIMIT 5").all(),
+    q6: db.prepare("SELECT * FROM leads WHERE COALESCE(stage, 'nouveau') = 'nouveau' ORDER BY COALESCE(callback_at, '9999'), id DESC LIMIT 6").all(),
     q7: db.prepare("SELECT p.*, c.name cname, c.company ccomp FROM projects p LEFT JOIN clients c ON c.id = p.client_id WHERE p.status != 'livre' ORDER BY COALESCE(p.due_date, p.created_at) LIMIT 6").all(),
     q8: db.prepare("SELECT COALESCE(SUM(amount_ttc),0) s FROM expenses WHERE substr(date,1,7) = ?").get(m),
     q9: db.prepare("SELECT c.* FROM clients c WHERE EXISTS (SELECT 1 FROM quotes q WHERE q.client_id = c.id AND q.status IN ('accepte','facture')) OR EXISTS (SELECT 1 FROM projects p WHERE p.client_id = c.id)").all(),
@@ -490,7 +496,7 @@ app.get('/', async (req, res) => {
   const todo = [];
   /* une demande : appeler ou écrire sur WhatsApp directement depuis « Ma journée » */
   const quick = (l) => { const ph = digits(l.phone); return ph ? `<a class="qa" href="tel:${esc(l.phone)}" title="Appeler ${esc(l.phone)}">${ICONS.phone}</a><a class="qa wa" href="https://wa.me/${ph}" target="_blank" rel="noopener" title="WhatsApp">${ICONS.wa}</a>` : ''; };
-  for (const l of await P.q6) todo.push(['lead', `Nouvelle demande : ${l.company || l.name || 'sans nom'}`, [srcTag(l)[1], ago(l.created_at), l.need || l.phone || ''].filter(Boolean).join(' · ').slice(0, 90), `/demandes/${l.id}`, 'Traiter', quick(l)]);
+  for (const l of await P.q6) { const d = CB.due(l); todo.push(['lead', `${l.callback ? 'Appeler' : 'Nouvelle demande :'} ${l.company || l.name || 'sans nom'}`, [l.callback_label ? `${l.callback_label}${d ? ' (' + d.text + ')' : ''}` : srcTag(l)[1], ago(l.created_at), l.need || l.phone || ''].filter(Boolean).join(' · ').slice(0, 110), `/demandes/${l.id}`, 'Traiter', quick(l)]); }
   for (const l of await P.q13) todo.push(['relance', `Rappeler ${l.company || l.name || ''}`, `${l.phone || ''}${l.next_at < today() ? ' · prévu le ' + dateFr(l.next_at) : ' · aujourd’hui'}`, `/demandes/${l.id}`, 'Ouvrir', quick(l)]);
   for (const q of follow.slice(0, 5)) todo.push(['relance', `Relancer le devis ${q.number}`, `${q.ccomp || q.cname || ''} · ${money(q.total_ttc)}`, `/devis/${q.id}`, 'Relancer']);
   const openQ = await P.q14;
@@ -529,7 +535,7 @@ app.get('/', async (req, res) => {
 <div class="card"><div class="card-h"><h2>À relancer</h2><span>Devis envoyés depuis plus de 3 jours</span></div>${follow.length ? `<ul class="lst">${follow.map((q) => `<li><a href="/devis/${q.id}"><b>${esc(q.number)}</b><span>${esc(q.ccomp || q.cname || '')}</span></a><em>${money(q.total_ttc)}</em>${q.cphone ? `<a class="mini" target="_blank" rel="noopener" href="https://wa.me/${digits(q.cphone)}?text=${encodeURIComponent(`Bonjour ${q.cname || ''}, avez-vous pu consulter notre devis ${q.number} ? ${baseUrl(req)}/d/${q.token}`)}">Relancer</a>` : ''}</li>`).join('')}</ul>` : '<p class="empty">Rien à relancer pour l’instant.</p>'}</div></section>
 <section class="card"><div class="card-h"><h2>Projets en cours</h2><a href="/projets">Tout voir</a></div>${projs.length ? `<div class="pj-row">${projs.map((p) => { const st = (() => { try { return JSON.parse(p.steps || '[]'); } catch (e) { return []; } })(), d = st.filter((x) => x.d).length; const HL = health(p, CLM[p.client_id]); return `<a class="kb-card hl-${HL.lvl}" href="/projets/${p.id}" title="${esc(HL.why.join(', ') || 'Tout va bien')}"><b><i class="hl-dot"></i>${esc(p.ccomp || p.cname || '')}</b><span>${esc(p.title || '')}</span><div class="prog"><i style="width:${st.length ? Math.round(100 * d / st.length) : 0}%"></i></div><small>${badge(P_STATUS, p.status)} ${p.due_date ? 'livraison ' + dateFr(p.due_date) : ''}</small></a>`; }).join('')}</div>` : '<p class="empty">Aucun projet en cours. Ils s’ouvrent dès qu’un devis est accepté.</p>'}</section>
 <section class="grid2"><div class="card"><div class="card-h"><h2>Factures en retard</h2></div>${late.length ? `<ul class="lst">${late.slice(0, 6).map((i) => `<li><a href="/factures/${i.id}"><b>${esc(i.number)}</b><span>échéance ${dateFr(i.due_date)}</span></a><em class="red">${money(i.rest)}</em></li>`).join('')}</ul>` : '<p class="empty">Aucune facture en retard.</p>'}</div>
-<div class="card"><div class="card-h"><h2>Nouvelles demandes</h2><a href="/demandes">Tout voir</a></div>${leads.length ? `<ul class="lst">${leads.map((l) => `<li><a href="/demandes"><b>${esc(l.company || l.name || 'Demande')}</b><span>${esc(l.need || l.message || '').slice(0, 60)}</span></a><a class="mini" href="/assistant?demande=${l.id}">Préparer le projet</a></li>`).join('')}</ul>` : '<p class="empty">Aucune nouvelle demande.</p>'}</div></section>`;
+<div class="card"><div class="card-h"><h2>À appeler</h2><a href="/demandes">Tout voir</a></div>${leads.length ? `<ul class="lst">${leads.map((l) => `<li><a href="/demandes/${l.id}"><b>${esc(l.company || l.name || 'Demande')}</b><span>${esc(l.callback_label ? 'Rappeler : ' + l.callback_label : (l.need || l.message || '').slice(0, 60))}</span></a><a class="mini" href="/demandes/${l.id}">Ouvrir</a></li>`).join('')}</ul>` : '<p class="empty">Personne à appeler pour l’instant.</p>'}</div></section>`;
   res.send(layout({ title: 'Tableau de bord', active: '/', body, actions: '<a class="btn" href="/devis/nouveau">Nouveau devis</a>' }));
 });
 
@@ -864,17 +870,28 @@ app.post('/clients/:id', async (req, res) => {
 
 /* ---------------- Demandes du site ---------------- */
 /* ---------------- Demandes : site, téléphone, WhatsApp… un seul pipeline, de la prise de contact au projet ---------------- */
-const LSTAGES = [['nouveau', 'Nouvelles', 'blue'], ['contacte', 'Contactées', 'violet'], ['proposition', 'Devis envoyé', 'amber'], ['gagne', 'Gagnées', 'green'], ['perdu', 'Perdues', 'grey']];
+const LSTAGES = [['nouveau', 'À appeler', 'blue'], ['contacte', 'Appelées', 'violet'], ['proposition', 'Devis envoyé', 'amber'], ['attente', 'À relancer', 'navy'], ['gagne', 'Projets', 'green'], ['perdu', 'Perdues', 'grey']];
+/* « Pas maintenant » : la demande reste vivante, avec une date de relance (aucun contact ne se perd) */
+const WAIT = ['Pas le bon moment', 'Veut réfléchir', 'Attend son budget', 'Doit en parler à un associé', 'Injoignable pour l’instant', 'Autre'];
 const LSOURCES = ['Téléphone', 'Site web', 'WhatsApp', 'Recommandation', 'Instagram ou Facebook', 'Google', 'Passage ou rencontre', 'Client existant', 'Autre'];
 const LOST = ['Budget trop serré', 'Délai', 'A choisi un concurrent', 'Pas de réponse', 'Projet reporté', 'Pas sérieux', 'Devis refusé', 'Autre'];
 const LKINDS = [['vitrine', 'Site vitrine'], ['ecommerce', 'Boutique en ligne'], ['landing', 'Landing page'], ['application', 'Application'], ['refonte', 'Refonte d’un site'], ['google', 'Fiche Google / SEO'], ['autre', 'Autre']];
 const srcOf = (l) => (/site|démarrer|contact|rappel/i.test(l.source || '') ? 'Site web' : l.source || 'Autre');
 /* d'où vient la demande, en clair : le formulaire précis du site (rappel, démarrer, contact) ou la source saisie */
-const srcTag = (l) => { const x = String(l.source || ''); return /^rappel/i.test(x) ? ['rappel', 'Rappel demandé'] : /démarrer/i.test(x) ? ['demarrer', 'Démarrer un projet'] : /contact/i.test(x) ? ['contact', 'Formulaire de contact'] : ['autre', x || 'Autre']; };
+const srcTag = (l) => { const x = String(l.source || ''); return /^rappel/i.test(x) ? ['rappel', 'Rappel demandé'] : /démarrer/i.test(x) ? ['demarrer', 'Page Démarrer'] : /contact/i.test(x) ? ['contact', 'Formulaire de contact'] : ['autre', x || 'Autre']; };
 /* « à l'instant », « il y a 12 min », « hier »… (les dates de la base sont en UTC) */
 const ago = (ts) => { if (!ts) return ''; const d = (Date.now() - new Date(String(ts).replace(' ', 'T') + (/Z|[+-]\d\d:?\d\d$/.test(ts) ? '' : 'Z')).getTime()) / 60000; if (!isFinite(d)) return dateFr(ts); if (d < 1.5) return 'à l’instant'; if (d < 60) return `il y a ${Math.round(d)} min`; if (d < 24 * 60) return `il y a ${Math.round(d / 60)} h`; if (d < 48 * 60) return 'hier'; return dateFr(ts); };
 const NOTE_K = { appel: 'Appel', whatsapp: 'WhatsApp', rdv: 'Rendez-vous', note: 'Note', etape: 'Étape' };
 const leadStage = async (id, stage, extra = '') => { await db.prepare("UPDATE leads SET stage = ?, status = CASE WHEN ? = 'nouveau' THEN 'nouveau' ELSE 'traitee' END, updated_at = datetime('now') WHERE id = ?").run(stage, stage, id); await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(id, 'etape', `Passée en « ${(LSTAGES.find((x) => x[0] === stage) || [0, stage])[1]} »${extra ? ' : ' + extra : ''}`); };
+/* le moment où le client veut être appelé : une pastille (chaleur, échéance) sur chaque demande */
+const cbChip = (l, sg = l.stage || 'nouveau', big = false) => {
+  if (!l.callback || !['nouveau', 'contacte'].includes(sg)) return '';
+  const h = CB.heatOf(l), d = sg === 'nouveau' ? CB.due(l) : null;
+  return `<div class="cbk cbk-${h[0]}${d && d.late ? ' late' : ''}${big ? ' big' : ''}"><span class="cbk-h">${h[1]}</span><b>${esc(l.callback_label || '')}</b>${d ? `<em>${esc(d.text)}</em>` : ''}</div>`;
+};
+/* les demandes à appeler : d'abord celles dont le moment est venu (ou passé), puis les autres par date */
+const urgAt = (l) => (l.callback_at ? new Date(l.callback_at).getTime() : l.next_at ? new Date(l.next_at + 'T09:00:00Z').getTime() : 9e15);
+const byUrgency = (a, b) => urgAt(a) - urgAt(b) || b.id - a.id;
 const leadForm = (l = {}, action = '/demandes', submit = 'Enregistrer') => `<form method="post" action="${action}" class="lead-f"><div class="row"><label>Nom et prénom<input name="name" value="${esc(l.name || '')}" required autofocus></label><label>Entreprise<input name="company" value="${esc(l.company || '')}"></label></div>
 <div class="row"><label>Téléphone<input name="phone" value="${esc(l.phone || '')}" inputmode="tel"></label><label>E-mail<input name="email" type="email" value="${esc(l.email || '')}"></label><label>Ville<input name="city" value="${esc(l.city || '')}"></label></div>
 <div class="row"><label>Besoin<select name="kind">${LKINDS.map(([k, t]) => `<option value="${k}"${l.kind === k ? ' selected' : ''}>${t}</option>`).join('')}</select></label><label>Secteur<select name="sector"><option value="">—</option>${assistant.SECTORS.map((x) => `<option${l.sector === x ? ' selected' : ''}>${x}</option>`).join('')}</select></label><label>Source<select name="source">${LSOURCES.map((x) => `<option${(l.id ? srcOf(l) === x : x === 'Téléphone') ? ' selected' : ''}>${x}</option>`).join('')}</select></label></div>
@@ -884,12 +901,12 @@ const leadForm = (l = {}, action = '/demandes', submit = 'Enregistrer') => `<for
 app.get('/demandes', async (req, res) => {
   const vue = req.query.vue === 'liste' ? 'liste' : 'pipeline', m = today().slice(0, 7);
   const rows = await db.prepare('SELECT * FROM leads ORDER BY id DESC LIMIT 500').all();
-  const st = (k) => rows.filter((l) => (l.stage || 'nouveau') === k);
+  const st = (k) => rows.filter((l) => (l.stage || 'nouveau') === k).sort(k === 'nouveau' || k === 'attente' ? byUrgency : () => 0);
   const monthRows = rows.filter((l) => (l.created_at || '').startsWith(m)), won = rows.filter((l) => l.stage === 'gagne').length, closed = rows.filter((l) => ['gagne', 'perdu'].includes(l.stage)).length;
   const bySrc = {}; rows.forEach((l) => { const t = srcTag(l), k = t[0] === 'autre' ? srcOf(l) : t[1]; bySrc[k] = bySrc[k] || [0, 0, t[0]]; bySrc[k][0]++; if (l.stage === 'gagne') bySrc[k][1]++; });
   /* une carte = la demande + les gestes du quotidien (appeler, WhatsApp, « contactée ») sans ouvrir la fiche */
-  const card = (l) => { const sg = l.stage || 'nouveau', late = l.next_at && l.next_at <= today() && !['gagne', 'perdu'].includes(sg), tg = srcTag(l), ph = digits(l.phone);
-    return `<article class="ld ${late ? 'late' : ''}${sg === 'nouveau' ? ' fresh' : ''}" data-id="${l.id}"><a class="ld-a" href="/demandes/${l.id}"><b>${esc(l.company || l.name || 'Sans nom')}</b><span>${esc((l.need || l.message || '').slice(0, 90))}</span><div class="ld-m"><em class="src src-${tg[0]}">${esc(tg[1])}</em>${l.city ? `<em>${esc(l.city)}</em>` : ''}${late ? '<em class="cb">À rappeler</em>' : l.next_at && !['gagne', 'perdu'].includes(sg) ? `<em>Rappel ${dateFr(l.next_at)}</em>` : ''}${sg === 'perdu' && l.lost_reason ? `<em>${esc(l.lost_reason)}</em>` : ''}</div><small>${ago(l.created_at)}</small></a>${ph || sg === 'nouveau' ? `<div class="ld-q">${ph ? `<a href="tel:${esc(l.phone)}" title="Appeler ${esc(l.phone)}">${ICONS.phone}</a><a href="https://wa.me/${ph}" target="_blank" rel="noopener" title="WhatsApp">${ICONS.wa}</a>` : ''}${sg === 'nouveau' ? `<button type="button" data-done="${l.id}" title="Marquer contactée">${ICONS.check}<span>Contactée</span></button>` : ''}</div>` : ''}</article>`; };
+  const card = (l) => { const sg = l.stage || 'nouveau', late = l.callback && ['nouveau', 'contacte'].includes(sg) ? !!(CB.due(l) || {}).late : l.next_at && l.next_at <= today() && !['gagne', 'perdu'].includes(sg), tg = srcTag(l), ph = digits(l.phone);
+    return `<article class="ld ${late ? 'late' : ''}${sg === 'nouveau' ? ' fresh' : ''}" data-id="${l.id}"><a class="ld-a" href="/demandes/${l.id}"><b>${esc(l.company || l.name || 'Sans nom')}</b><span>${esc((l.need || l.message || '').slice(0, 90))}</span>${cbChip(l, sg)}<div class="ld-m"><em class="src src-${tg[0]}">${esc(tg[1])}</em>${l.city ? `<em>${esc(l.city)}</em>` : ''}${l.callback && ['nouveau', 'contacte'].includes(sg) ? '' : late ? '<em class="cb">À rappeler</em>' : l.next_at && !['gagne', 'perdu'].includes(sg) ? `<em>${sg === 'attente' ? 'Relance' : 'Rappel'} ${dateFr(l.next_at)}</em>` : ''}${sg === 'attente' && l.lost_reason ? `<em>${esc(l.lost_reason)}</em>` : ''}${sg === 'perdu' && l.lost_reason ? `<em>${esc(l.lost_reason)}</em>` : ''}</div><small>${ago(l.created_at)}</small></a>${ph || sg === 'nouveau' ? `<div class="ld-q">${ph ? `<a href="tel:${esc(l.phone)}" title="Appeler ${esc(l.phone)}">${ICONS.phone}</a><a href="https://wa.me/${ph}" target="_blank" rel="noopener" title="WhatsApp">${ICONS.wa}</a>` : ''}${sg === 'nouveau' ? `<button type="button" data-done="${l.id}" title="Marquer contactée">${ICONS.check}<span>Appelée</span></button>` : ''}</div>` : ''}</article>`; };
   const pipe = `<div class="pipe">${LSTAGES.map(([k, t, c]) => `<section class="kb-col" data-stage="${k}"><header><span class="bdg bdg-${c}">${t}</span><span class="kb-n">${st(k).length}</span></header>${st(k).slice(0, 40).map(card).join('') || '<p class="empty">—</p>'}</section>`).join('')}</div>`;
   const list = `<div class="card flush"><table class="tbl"><thead><tr><th>Reçue</th><th>Contact</th><th>Besoin</th><th>Source</th><th>Étape</th><th>Rappel</th></tr></thead><tbody>${rows.map((l) => `<tr data-href="/demandes/${l.id}"><td>${dateFr(l.created_at)}</td><td><b>${esc(l.company || l.name || '')}</b><small class="mut"> ${esc(l.phone || '')}</small></td><td class="mut">${esc((l.need || l.message || '').slice(0, 80))}</td><td>${esc(srcOf(l))}</td><td>${(() => { const x = LSTAGES.find((y) => y[0] === (l.stage || 'nouveau')); return `<span class="bdg bdg-${x[2]}">${x[1]}</span>`; })()}</td><td>${l.next_at ? dateFr(l.next_at) : ''}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">Aucune demande.</td></tr>'}</tbody></table></div>`;
   const stats = `<section class="lead-k"><div><b data-pulse-n>${st('nouveau').length}</b><span>à traiter</span></div><div><b data-pulse-late>${rows.filter((l) => l.next_at && l.next_at <= today() && !['gagne', 'perdu'].includes(l.stage)).length}</b><span>à rappeler aujourd’hui</span></div><div><b>${monthRows.length}</b><span>reçues ce mois</span></div><div><b>${closed ? Math.round(100 * won / closed) : 0} %</b><span>transformées en projets</span></div><div class="srcs"><span class="live-p"><i></i>En direct</span>${Object.entries(bySrc).sort((a, b) => b[1][0] - a[1][0]).slice(0, 5).map(([k, [n, w, c]]) => `<span class="src-${c}">${esc(k)} <b>${n}</b>${w ? ` · ${w} gagnée${w > 1 ? 's' : ''}` : ''}</span>`).join('')}</div></section>`;
@@ -910,12 +927,23 @@ app.get('/demandes/:id', async (req, res) => {
   const q = l.quote_id ? await Q.quote.get(l.quote_id) : null, stage = l.stage || 'nouveau', x = LSTAGES.find((y) => y[0] === stage);
   const ph = digits(l.phone), wa = `https://wa.me/${ph}?text=${encodeURIComponent(`Bonjour ${l.name || ''}, ici Khalid de Digilago. Merci pour votre demande${l.need ? ' concernant ' + l.need.slice(0, 60) : ''}. Quand pouvons-nous en parler ?`)}`;
   const head = `<section class="c360"><div class="c360-id"><span class="c360-av">${esc((l.company || l.name || '?').trim().slice(0, 2).toUpperCase())}</span><div><h2>${esc(l.company || l.name || 'Demande')}</h2><p>${esc([l.company ? l.name : '', srcTag(l)[0] === 'autre' ? srcOf(l) : srcTag(l)[1], l.city, 'reçue ' + (/^il y a|^à l|^hier/.test(ago(l.created_at)) ? ago(l.created_at) : 'le ' + dateFr(l.created_at))].filter(Boolean).join(' · '))}</p><div class="c360-a"><a class="btn sm" href="/messagerie/ecrire?type=demande&id=${l.id}">Message</a>${l.phone ? `<a class="btn ghost sm" href="tel:${esc(l.phone)}">Appeler</a><a class="btn wa sm" target="_blank" rel="noopener" href="${wa}">WhatsApp</a>` : ''}${l.email ? `<a class="btn ghost sm" href="mailto:${esc(l.email)}">E-mail</a>` : ''}</div></div></div>
-<div class="lead-act">${badge({ [stage]: [x[1], x[2]] }, stage)}${q ? `<a class="btn sm" href="/devis/${q.id}">Voir le devis ${esc(q.number)}</a>` : ''}${['nouveau', 'contacte'].includes(stage) ? `<a class="btn" href="/assistant?demande=${l.id}">Accepter et préparer le projet</a>` : ''}</div></section>`;
-  const actions = `<div class="card"><div class="card-h"><h2>Décision</h2></div><div class="send">${stage === 'nouveau' ? `<form method="post" action="/demandes/${l.id}/etape" class="inl"><button class="btn ghost sm" name="stage" value="contacte">Marquer contactée</button></form>` : ''}${!['gagne', 'perdu'].includes(stage) ? `<a class="btn sm" href="/assistant?demande=${l.id}">Accepter : préparer le projet</a>` : ''}${stage !== 'nouveau' && !['gagne'].includes(stage) ? `<form method="post" action="/demandes/${l.id}/etape" class="inl"><button class="btn ghost sm" name="stage" value="nouveau">Remettre à traiter</button></form>` : ''}</div>
-${stage !== 'perdu' && stage !== 'gagne' ? `<form method="post" action="/demandes/${l.id}/etape" class="lost" data-confirm="Classer cette demande comme perdue ? Elle quitte le pipeline (vous pourrez la remettre à traiter)." data-ok="Classer perdue"><input type="hidden" name="stage" value="perdu"><label>Refuser ou classer perdue<select name="reason">${LOST.map((r) => `<option>${r}</option>`).join('')}</select></label><button class="btn ghost sm danger">Classer perdue</button></form>` : ''}</div>`;
+<div class="lead-act">${badge({ [stage]: [x[1], x[2]] }, stage)}${stage === 'attente' && l.next_at ? `<span class="mut">à relancer le ${dateFr(l.next_at)}${l.lost_reason ? ' · ' + esc(l.lost_reason) : ''}</span>` : ''}${q ? `<a class="btn sm" href="/devis/${q.id}">Voir le devis ${esc(q.number)}</a>` : ''}${['nouveau', 'contacte', 'attente'].includes(stage) ? `<a class="btn" href="/assistant?demande=${l.id}">Démarrer le projet</a>` : ''}</div>${cbChip(l, stage, true)}</section>`;
+  /* Après l'appel : quatre issues, un geste chacune. Rien ne se perd : « pas maintenant » garde la demande
+     avec une date de relance, « pas de réponse » la remet en tête demain. */
+  const tom = addDays(today(), 1), wk = addDays(today(), 7), open = !['gagne', 'perdu'].includes(stage);
+  const actions = `<div class="card after"><div class="card-h"><h2>${stage === 'nouveau' ? 'Après l’appel' : 'Où en est cette demande ?'}</h2>${l.attempts ? `<span class="mut">${l.attempts} appel${l.attempts > 1 ? 's' : ''} sans réponse</span>` : ''}</div>
+${open ? `<div class="out">
+<a class="out-b ok" href="/assistant?demande=${l.id}"><b>Intéressé</b><span>Démarrer le projet : besoin, pack, devis et fiche projet, pendant l’appel</span></a>
+<details class="out-b wait"${stage === 'attente' ? ' open' : ''}><summary><b>Pas maintenant</b><span>Garder la demande et la relancer à une date</span></summary>
+<form method="post" action="/demandes/${l.id}/etape" class="out-f"><input type="hidden" name="stage" value="attente"><label>Relancer le<input type="date" name="next_at" value="${esc(stage === 'attente' && l.next_at ? l.next_at : wk)}" min="${today()}" required></label><label>Pourquoi<select name="reason">${WAIT.map((r) => `<option${l.lost_reason === r ? ' selected' : ''}>${r}</option>`).join('')}</select></label><button class="btn sm">Programmer la relance</button></form></details>
+${['nouveau', 'contacte', 'attente'].includes(stage) ? `<form method="post" action="/demandes/${l.id}/sans-reponse" class="out-b nr"><button><b>Pas de réponse</b><span>Noter l’appel, réessayer demain (${dateFr(tom)})</span></button></form>` : ''}
+<details class="out-b no"><summary><b>Pas intéressé</b><span>Classer perdue, avec la raison</span></summary>
+<form method="post" action="/demandes/${l.id}/etape" class="out-f lost-f" data-confirm="Classer cette demande comme perdue ? Elle quitte le pipeline (vous pourrez la remettre à appeler)." data-ok="Classer perdue"><input type="hidden" name="stage" value="perdu"><label>Raison<select name="reason">${LOST.map((r) => `<option>${r}</option>`).join('')}</select></label><button class="btn ghost sm danger">Classer perdue</button></form></details>
+</div>` : ''}
+<div class="send">${stage === 'nouveau' ? `<form method="post" action="/demandes/${l.id}/etape" class="inl"><button class="btn ghost sm" name="stage" value="contacte">Marquer appelée</button></form>` : ''}${stage !== 'nouveau' && stage !== 'gagne' ? `<form method="post" action="/demandes/${l.id}/etape" class="inl"><button class="btn ghost sm" name="stage" value="nouveau">Remettre à appeler</button></form>` : ''}</div></div>`;
   const journal = `<div class="card"><div class="card-h"><h2>Suivi des échanges</h2></div><form method="post" action="/demandes/${l.id}/note" class="note-f"><select name="kind">${Object.entries(NOTE_K).filter(([k]) => k !== 'etape').map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select><input name="text" placeholder="Ex. : appelé, il veut un devis avant vendredi" required><input type="date" name="next_at" title="À rappeler le"><button class="btn sm">Ajouter</button></form>
 ${notes.length ? `<ul class="tl">${notes.map((n) => `<li><i class="k-${n.kind}"></i><b>${esc(NOTE_K[n.kind] || 'Note')} : ${esc(n.text)}</b><span>${dateFr(n.created_at)}</span></li>`).join('')}</ul>` : ''}${l.message ? `<p class="lead-msg"><b>Message reçu :</b><br>${esc(l.message).replace(/\n/g, '<br>')}</p>` : ''}</div>`;
-  res.send(layout({ title: l.company || l.name || 'Demande', active: '/demandes', flash: req.query.ok ? 'Demande enregistrée.' : '', body: head + `<div class="grid2"><div class="card"><div class="card-h"><h2>Informations</h2></div>${leadForm(l, `/demandes/${l.id}`, 'Enregistrer')}</div><div>${actions}${journal}</div></div>` }));
+  res.send(layout({ title: l.company || l.name || 'Demande', active: '/demandes', flash: req.query.ok ? 'Demande enregistrée.' : '', body: head + `<div class="grid2 lead-g"><div class="card"><div class="card-h"><h2>Informations</h2></div>${leadForm(l, `/demandes/${l.id}`, 'Enregistrer')}</div><div>${actions}${journal}</div></div>` }));
 });
 app.post('/demandes/:id', async (req, res) => {
   const v = leadVals(req.body);
@@ -933,10 +961,23 @@ app.post('/demandes/:id/note', async (req, res) => {
 app.post('/demandes/:id/etape', async (req, res) => {
   const id = Number(req.params.id), st = String(req.body.stage || '');
   if (!LSTAGES.some((x) => x[0] === st)) return res.redirect(`/demandes/${id}`);
-  await leadStage(id, st, st === 'perdu' ? String(req.body.reason || '') : '');
+  const nx = /^\d{4}-\d{2}-\d{2}$/.test(String(req.body.next_at || '')) ? String(req.body.next_at) : '';
+  if (st === 'attente' && !nx) return res.redirect(`/demandes/${id}`);
+  await leadStage(id, st, ['perdu', 'attente'].includes(st) ? String(req.body.reason || '') + (st === 'attente' ? ` (relance le ${dateFr(nx)})` : '') : '');
   if (st === 'perdu') await db.prepare('UPDATE leads SET lost_reason = ? WHERE id = ?').run(String(req.body.reason || 'Autre'), id);
+  if (st === 'attente') await db.prepare('UPDATE leads SET lost_reason = ?, next_at = ? WHERE id = ?').run(String(req.body.reason || ''), nx, id);
   if (req.get('accept') === 'application/json') return res.json({ ok: true });
   res.redirect(`/demandes/${id}`);
+});
+/* appel sans réponse : noté, et la demande revient en tête demain (sans changer d'étape) */
+app.post('/demandes/:id/sans-reponse', async (req, res) => {
+  const id = Number(req.params.id), l = await db.prepare('SELECT attempts FROM leads WHERE id = ?').get(id);
+  if (!l) return res.sendStatus(404);
+  const n = (Number(l.attempts) || 0) + 1, tom = addDays(today(), 1);
+  await db.prepare("UPDATE leads SET attempts = ?, next_at = ?, callback_at = ?, updated_at = datetime('now') WHERE id = ?").run(n, tom, CB.zoned(tom, 10).toISOString(), id);
+  await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(id, 'appel', `Pas de réponse (appel n° ${n}) : réessayer le ${dateFr(tom)}`);
+  if (req.get('accept') === 'application/json') return res.json({ ok: true });
+  res.redirect(`/demandes/${id}?ok=nr`);
 });
 app.post('/demandes/:id/traitee', async (req, res) => { await leadStage(Number(req.params.id), 'contacte'); res.redirect('/demandes'); });
 

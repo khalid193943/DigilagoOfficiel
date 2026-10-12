@@ -7,7 +7,7 @@ Le projet contient deux choses, hébergées séparément mais envoyées ensemble
 | **Le site** | `site/` | `https://www.digilago.ma` | Pages prêtes à servir (français, anglais, arabe). Aucun serveur. |
 | **La gestion** | `backend/` | `https://gestion.digilago.ma` | Serveur Node.js + base de données : demandes du site, devis, factures, paiements. |
 
-Le site envoie chaque formulaire (« Démarrer », « Contact », « On vous rappelle ») à la gestion, et ouvre WhatsApp en même temps. Si la gestion est hors ligne, WhatsApp fonctionne quand même : aucune demande n'est perdue.
+Le site envoie chaque formulaire (« Démarrer », « Contact », « On vous rappelle ») à la gestion. Sur « Démarrer », le client choisit quand être rappelé et voit une confirmation ; si l'envoi échoue, la page propose de réessayer ou d'envoyer la demande sur WhatsApp : aucune demande n'est perdue.
 
 ---
 
@@ -53,6 +53,7 @@ Vercel n'a pas de disque permanent : la base de données est chez **Turso** (com
    | `SESSION_SECRET` | une longue phrase secrète, au hasard (40 caractères ou plus) |
    | `SITE_ORIGIN` | `https://digilago.ma` (la version avec `www` est acceptée automatiquement) |
    | `NODE_ENV` | `production` |
+   | `BANK_RIB` | le RIB de LAGODIGITAL (24 chiffres, celui de l'attestation du Crédit Agricole). Il s'imprime sur les devis et factures ; il reste hors du dépôt, qui est public |
 
 5. **Deployments → Redeploy**. Les tables se créent toutes seules à la première visite.
 6. **Settings → Domains** : ajoutez `gestion.digilago.ma`, puis l'enregistrement DNS indiqué par Vercel.
@@ -68,8 +69,8 @@ L'adresse de la gestion utilisée par le site est déjà réglée (`src/gestion_
 
 1. Ouvrez `https://www.digilago.ma` sur votre téléphone : la carte du Maroc s'affiche avec ses petits cadres « votre-….ma — En ligne », puis s'éloigne vers le monde en faisant défiler (cadres .fr, .ae, .ca…, reliés à El Jadida par une ligne dorée).
 2. Changez de langue (FR, EN, عربي) : la version arabe se lit de droite à gauche.
-3. Page **Démarrer** : choisissez un besoin, mettez votre prénom et votre numéro, lancez. WhatsApp s'ouvre avec la demande.
-4. Ouvrez `https://gestion.digilago.ma` → **Demandes** : la demande de l'étape 3 y est.
+3. Page **Démarrer** : choisissez un besoin, mettez votre prénom et votre numéro, choisissez quand être rappelé, puis envoyez. L'écran « C'est reçu » s'affiche avec le moment choisi.
+4. Ouvrez `https://gestion.digilago.ma` → **Demandes** : la demande de l'étape 3 est dans « À appeler », avec le moment de rappel et sa chaleur (Très chaud, Chaud…).
 5. Si elle n'y est pas : vérifiez `SITE_ORIGIN` (étape 3.4) et l'adresse de la gestion (étape 3.7).
 
 ---
@@ -87,6 +88,6 @@ Dans la gestion : **Paramètres → Télécharger la sauvegarde complète**, au 
 
 ```bash
 pip install -r requirements.txt && python -m playwright install chromium
-npm run test                     # le site : 278 tests dans un vrai navigateur
-cd backend && npm ci && npm test # la gestion : 24 tests
+npm run test                     # le site : 300 tests dans un vrai navigateur
+cd backend && npm ci && npm test # la gestion : 25 tests
 ```

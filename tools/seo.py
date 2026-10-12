@@ -24,14 +24,18 @@ ORG = {
     '@type': 'ProfessionalService',
     '@id': URL + '/#digilago',
     'name': 'Digilago',
+    'legalName': 'LAGODIGITAL',
+    'foundingDate': '2024-08-28',
+    'taxID': '66041361',
+    'identifier': {'@type': 'PropertyValue', 'propertyID': 'ICE', 'value': '003539032000060'},
     'url': URL + '/',
     'image': URL + OG,
     'logo': URL + OG,
-    'description': 'Agence web à El Jadida : sites web, fiche Google, référencement et visibilité dans les IA '
+    'description': 'Agence web marocaine : sites web, fiche Google, référencement et visibilité dans les IA '
                    'pour les entreprises marocaines, au Maroc comme à l’international.',
     'telephone': '+212649953813',
     'email': 'contact@digilago.ma',
-    'address': {'@type': 'PostalAddress', 'addressLocality': 'El Jadida', 'addressCountry': 'MA'},
+    'address': {'@type': 'PostalAddress', 'addressCountry': 'MA'},
     'areaServed': [{'@type': 'Country', 'name': 'Maroc'}, 'International'],
     'openingHoursSpecification': [{
         '@type': 'OpeningHoursSpecification',
@@ -71,11 +75,41 @@ def faq(h):
 LANGS = {'fr': ('', 'fr_MA'), 'en': ('/en', 'en_US'), 'ar': ('/ar', 'ar_MA')}
 ORG_DESC = {
     'fr': ORG['description'],
-    'en': 'Web agency in El Jadida: websites, Google Business Profile, SEO and visibility in AI assistants '
+    'en': 'Moroccan web agency: websites, Google Business Profile, SEO and visibility in AI assistants '
           'for Moroccan businesses, in Morocco and abroad.',
-    'ar': 'وكالة رقمية في الجديدة: مواقع إلكترونية، ملف Google التجاري، تحسين الظهور في محركات البحث '
+    'ar': 'وكالة رقمية مغربية: مواقع إلكترونية، ملف Google التجاري، تحسين الظهور في محركات البحث '
           'والظهور في أدوات الذكاء الاصطناعي للشركات المغربية، داخل المغرب وخارجه.',
 }
+
+
+def secteur_graph(name, h, lang, title, desc, url):
+    """Pages Secteurs : fil d'Ariane, service proposé (zone desservie : le Maroc et ses villes), liste des métiers."""
+    out = [{'@type': 'WebPage', 'name': title, 'description': desc, 'url': url, 'inLanguage': lang,
+            'isPartOf': {'@type': 'WebSite', 'name': 'Digilago', 'url': URL + '/'}}]
+    nav = re.search(r'<nav class="vz-crumb[^"]*"[^>]*>(.*?)</nav>', h, re.S)
+    if nav:
+        items = []
+        for m in re.finditer(r'<a href="([^"]+)">(.*?)</a>|<span aria-current="page">(.*?)</span>', nav.group(1), re.S):
+            items.append((text(m.group(2) or m.group(3)), page_url(m.group(1), lang) if m.group(1) else url))
+        out.append({'@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': u} for i, (n, u) in enumerate(items)]})
+    kind = re.search(r'data-vz="(\w+)"', h).group(1)
+    cities = [text(c) for c in re.findall(r'<ul class="vz-cities[^"]*">(.*?)</ul>', h, re.S)[:1] for c in re.findall(r'<li>(.*?)</li>', c, re.S)]
+    if kind in ('sector', 'type'):
+        h1 = text(re.search(r'<h1[^>]*>(.*?)</h1>', h, re.S).group(1))
+        eb = re.search(r'<p class="eyebrow in">.*?<span>(.*?)</span>', h, re.S)
+        out.append({'@type': 'Service', 'name': h1, 'serviceType': text(eb.group(1)) if eb else h1, 'description': desc,
+                    'url': url, 'provider': {'@id': ORG['@id']}, 'inLanguage': lang,
+                    'areaServed': [{'@type': 'Country', 'name': 'Maroc'}] + [{'@type': 'City', 'name': c} for c in cities]})
+    links = []
+    if kind == 'sector':
+        links = [(m.group(1), text(m.group(2))) for m in re.finditer(r'<a class="vz-card rv" id="[^"]+" href="([^"#]+)"[^>]*>.*?<b>(.*?)</b>', h, re.S)]
+    elif kind == 'hub':
+        links = [(m.group(1), text(m.group(2))) for m in re.finditer(r'<a class="vz-sec rv" id="[^"]+" href="([^"]+)"[^>]*>.*?<b>(.*?)</b>', h, re.S)]
+    if links:
+        out.append({'@type': 'ItemList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': i + 1, 'name': n, 'url': page_url(f, lang)} for i, (f, n) in enumerate(links)]})
+    return out
 
 
 def page_url(name, lang):
@@ -98,6 +132,8 @@ def block(name, h, lang='fr'):
             {'@type': 'ListItem', 'position': 1, 'name': CRUMB[lang][0], 'item': page_url('index.html', lang)},
             {'@type': 'ListItem', 'position': 2, 'name': CRUMB[lang][1], 'item': page_url('guides.html', lang)},
             {'@type': 'ListItem', 'position': 3, 'name': title.split(' | ')[0], 'item': url}]})
+    elif 'data-vz="' in h:
+        graph += secteur_graph(name, h, lang, title, desc, url)
     elif name != '404.html':
         graph.append({'@type': 'WebPage', 'name': title, 'description': desc, 'url': url,
                       'inLanguage': lang, 'isPartOf': {'@type': 'WebSite', 'name': 'Digilago', 'url': URL + '/'}})
@@ -138,14 +174,16 @@ def llms(names):
         d = html.unescape(re.search(r'<meta name="description" content="([^"]*)"', h).group(1))
         return t, d, h
     out = ['# Digilago', '',
-           '> ' + ORG['description'] + ' Studio à El Jadida, clients dans tout le Maroc et à l’international. '
+           '> ' + ORG['description'] + ' Partout au Maroc (nous nous déplaçons) et en ligne 24 h/24, clients au Maroc et à l’international. '
            'Sites en français, arabe et anglais.', '',
            '- Téléphone et WhatsApp : +212 6 49 95 38 13', '- E-mail : contact@digilago.ma',
            '- Horaires : du lundi au samedi, de 9 h à 19 h', '- Site : ' + URL + '/', '',
            '## Services', '']
     out += ['- ' + o['itemOffered']['name'] for o in ORG['hasOfferCatalog']['itemListElement']]
-    for title, pick in (('Pages principales', lambda n: not (n.startswith('guide-') or n in ARTICLES or n == 'faq.html')),
-                        ('Guides', lambda n: n.startswith('guide-') or n in ARTICLES or n == 'faq.html')):
+    vz = {n for n in names if 'data-vz="' in open(os.path.join(SITE, n), encoding='utf-8').read()}
+    for title, pick in (('Pages principales', lambda n: not (n.startswith('guide-') or n in ARTICLES or n == 'faq.html' or n in vz)),
+                        ('Guides', lambda n: n.startswith('guide-') or n in ARTICLES or n == 'faq.html'),
+                        ('Secteurs et métiers (un site web pour chaque activité au Maroc)', lambda n: n in vz)):
         out += ['', '## ' + title, '']
         for n in names:
             if pick(n) and n not in ('mentions-legales.html', 'confidentialite.html'):
@@ -194,12 +232,15 @@ def main():
     prio = {'index.html': '1.0', 'demarrer.html': '0.9', 'services.html': '0.9', 'realisations.html': '0.8',
             'contact.html': '0.8', 'a-propos.html': '0.7', 'guides.html': '0.7'}
     names = sorted(os.path.basename(f) for f in glob.glob(os.path.join(SITE, '*.html')) if not f.endswith('404.html'))
+    VZ = {n for n in names if 'data-vz="' in open(os.path.join(SITE, n), encoding='utf-8').read()}
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']
     for n in names:
         for lang in LANGS:
             alts = ''.join('<xhtml:link rel="alternate" hreflang="%s" href="%s"/>' % (l, page_url(n, l)) for l in LANGS)
-            p = prio.get(n, '0.6' if n.startswith('guide-') else '0.3')
+            p = prio.get(n, '0.6' if n.startswith('guide-') or n in VZ else '0.3')
+            if n == 'secteurs.html' or n.startswith('secteur-'):
+                p = '0.8'
             out.append('  <url><loc>%s</loc><lastmod>%s</lastmod><priority>%s</priority>%s</url>' % (page_url(n, lang), today, p, alts))
     out.append('</urlset>')
     open(os.path.join(SITE, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(out) + '\n')

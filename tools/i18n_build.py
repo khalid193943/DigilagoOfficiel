@@ -91,6 +91,19 @@ def switchers(h, page, lang):
                'aria-expanded="false" aria-label="%s">%s</a><span class="lsw-m">%s</span></span><!--/dg:lang-->'
                % ({'fr': 'Langue : français', 'en': 'Language: English', 'ar': 'اللغة: العربية'}[lang], LABEL[lang], menu))
         h = h[:m.start()] + btn + h[m.end():]
+    # barre du haut de toutes les pages (et barre flottante de l'accueil) : le même petit menu des langues,
+    # juste avant « Démarrer mon projet »
+    h = re.sub(r'<!--dg:lang2-->.*?<!--/dg:lang2-->', '', h, flags=re.S)
+    m = re.search(r'<nav class="fnav" id="fnav"[^>]*>.*?</nav>', h, re.S)
+    c = m and re.search(r'<a [^>]*class="cta mono"', m.group(0))
+    if c:
+        menu = ''.join(a(l, LABEL[l]) for l in other)
+        sw = ('<!--dg:lang2--><span class="lsw lsw-f"><a href="#" class="lsw-b mono"%s aria-haspopup="true" '
+              'aria-expanded="false" aria-label="%s">%s</a><span class="lsw-m">%s</span></span><!--/dg:lang2-->'
+              % (' lang="ar"' if lang == 'ar' else '',
+                 {'fr': 'Langue : français', 'en': 'Language: English', 'ar': 'اللغة: العربية'}[lang], LABEL[lang], menu))
+        i = m.start() + c.start()
+        h = h[:i] + sw + h[i:]
     return h
 
 

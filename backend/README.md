@@ -84,7 +84,8 @@ Vercel n'a pas de disque permanent : la base de données est donc chez **Turso**
    - `ADMIN_PASSWORD` : votre mot de passe ;
    - `SESSION_SECRET` : une longue phrase secrète au hasard ;
    - `SITE_ORIGIN` : `https://digilago.ma` ;
-   - `NODE_ENV` : `production`.
+   - `NODE_ENV` : `production` ;
+   - `BANK_RIB` : le RIB de la société (24 chiffres). Il apparaît sur les devis et factures, sans être écrit dans le dépôt public.
 4. **Déployer** (**Deployments → Redeploy**). Les tables se créent toutes seules à la première visite.
 5. **Votre adresse** : **Settings → Domains** → `gestion.digilago.ma`, puis l'enregistrement DNS indiqué par Vercel chez votre registrar.
 6. **Dans l'espace** : **Paramètres → Adresse de cet espace en ligne** = `https://gestion.digilago.ma`.

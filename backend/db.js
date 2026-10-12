@@ -40,15 +40,15 @@ const db = {
 
 const DEFAULTS = {
   company_name: 'Digilago', company_tagline: 'Sites web, Google et IA pour les entreprises marocaines',
-  company_address: 'El Jadida, Maroc', company_phone: '+212 6 49 95 38 13', company_email: 'contact@digilago.ma',
-  company_site: 'digilago.ma', company_ice: '', company_if: '', company_rc: '', company_patente: '', company_cnss: '',
-  company_legal: '', bank_name: '', bank_rib: '', bank_swift: '',
+  company_address: '78, bd de la Résistance, Résidence El Marzouki, 5ᵉ étage, appt 68, Casablanca', company_phone: '+212 6 49 95 38 13', company_email: 'contact@digilago.ma',
+  company_site: 'digilago.ma', company_ice: '003539032000060', company_if: '66041361', company_rc: '639275 (Casablanca)', company_patente: '32402195', company_cnss: '',
+  company_legal: 'LAGODIGITAL SARL AU au capital de 100 000 DH', bank_name: 'Crédit Agricole du Maroc', bank_rib: String(process.env.BANK_RIB || '').trim(), bank_swift: 'CNCAMAMR',
   default_tva: '20', default_deposit: '50', default_validity: '30', default_delay: 'Première version en 72 heures',
   default_due_days: '15',
   default_conditions: "Le présent devis, signé ou accepté en ligne, vaut bon de commande.\nUn acompte est exigible à la commande ; les travaux démarrent à sa réception. Le solde est payable à la mise en ligne du site.\nLe nom de domaine est offert la première année ; l’hébergement de la première année est inclus sauf mention contraire.\nLes contenus (textes, photos, logo) fournis par le client restent sa propriété. Le site livré et ses sources sont cédés au client après paiement intégral.\nDeux séries de modifications sont incluses à chaque étape de validation.",
   quote_prefix: 'DG-D', invoice_prefix: 'DG-F', whatsapp: '212649953813', public_url: '',
   signature: 'Khalid, Digilago', google_review_url: '', wa_verify_token: '', wa_app_secret: '',
-  fiscal_regime: '', tva_assujetti: '1', tva_periodicite: 'trimestrielle', tva_regime: 'encaissement', fiscal_year_start: '01',
+  fiscal_regime: 'societe_is', tva_assujetti: '1', tva_periodicite: 'trimestrielle', tva_regime: 'encaissement', fiscal_year_start: '01',
   accountant_name: '', accountant_email: '', accountant_phone: '', accountant_token: '',
   acc_revenue: '71243', acc_revenue_export: '7125', acc_clients: '3421', acc_bank: '5141', acc_cash: '5161', acc_suppliers: '4411', acc_tva_out: '4455', acc_tva_in: '34552', acc_stamp: '4457',
   wa1_label: 'WhatsApp Business', wa1_number: '212649953813', wa1_phone_id: '', wa1_token: '',
@@ -110,7 +110,7 @@ const CATALOGUE = [
 const STEPS = ['Brief et identité', 'Maquette validée', 'Développement', 'Textes SEO et GEO', 'Fiche Google', 'Mise en ligne'];
 
 /* Initialisation : rapide quand la base est à jour (1 requête), complète et groupée sinon (quelques requêtes) */
-const SCHEMA_VERSION = '2026-10-02.1';
+const SCHEMA_VERSION = '2026-10-12.3';
 const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT'],
   ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'], ['quotes', 'prices_ttc', 'INTEGER'], ['invoices', 'prices_ttc', 'INTEGER'],
   ['invoices', 'sched_idx', 'INTEGER'], ['invoices', 'credit_of', 'INTEGER'], ['invoices', 'label', 'TEXT'],
@@ -118,6 +118,7 @@ const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['
   ['projects', 'tech', 'TEXT'], ['projects', 'launch', 'TEXT'], ['projects', 'situation', 'TEXT'], ['projects', 'kind', 'TEXT'], ['projects', 'sector', 'TEXT'],
   ['clients', 'website', 'TEXT'], ['clients', 'sector', 'TEXT'], ['clients', 'source', 'TEXT'], ['clients', 'if_num', 'TEXT'], ['clients', 'is_foreign', 'INTEGER'],
   ['leads', 'stage', 'TEXT'], ['leads', 'lost_reason', 'TEXT'], ['leads', 'next_at', 'TEXT'], ['leads', 'notes', 'TEXT'], ['leads', 'city', 'TEXT'], ['leads', 'sector', 'TEXT'], ['leads', 'budget', 'TEXT'], ['leads', 'kind', 'TEXT'], ['leads', 'updated_at', 'TEXT'],
+  ['leads', 'callback', 'TEXT'], ['leads', 'callback_at', 'TEXT'], ['leads', 'callback_label', 'TEXT'], ['leads', 'ref', 'TEXT'], ['leads', 'lang', 'TEXT'], ['leads', 'attempts', 'INTEGER'],
   ['expenses', 'supplier_ice', 'TEXT'], ['expenses', 'supplier_if', 'TEXT'], ['expenses', 'invoice_ref', 'TEXT'], ['expenses', 'receipt_url', 'TEXT'], ['expenses', 'account', 'TEXT'], ['expenses', 'deductible', 'INTEGER']];
 /* Index : chaque recherche fréquente lit l'index au lieu de parcourir toute la table.
    Créés après les ajouts de colonnes (certaines colonnes n'existent pas dans les anciennes bases). */
@@ -140,17 +141,27 @@ const INDEXES = [
   'CREATE INDEX IF NOT EXISTS i_leads_quote ON leads(quote_id)',
   'CREATE INDEX IF NOT EXISTS i_leads_stage ON leads(stage)',
   'CREATE INDEX IF NOT EXISTS i_leads_next ON leads(next_at)',
+  'CREATE INDEX IF NOT EXISTS i_leads_cb ON leads(callback_at)',
   'CREATE INDEX IF NOT EXISTS i_quotes_status ON quotes(status)',
   'CREATE INDEX IF NOT EXISTS i_rem_inv ON reminders(invoice_id)',
   'CREATE INDEX IF NOT EXISTS i_lnotes ON lead_notes(lead_id)',
   'CREATE INDEX IF NOT EXISTS i_accnotes ON acc_notes(period)',
   'CREATE INDEX IF NOT EXISTS i_activity ON activity(kind, ref_id)',
 ];
+const LEGAL_FILL = ['company_address', 'company_ice', 'company_if', 'company_rc', 'company_patente', 'company_legal', 'bank_name', 'bank_rib', 'bank_swift', 'fiscal_regime'];
+const OLD = { company_address: 'El Jadida, Maroc' };
 let ready = null;
 function init() {
   if (ready) return ready;
   ready = (async () => {
-    try { const v = (await db.prepare("SELECT value FROM settings WHERE key = '_schema'").get()); if (v && v.value === SCHEMA_VERSION) return; } catch (e) { /* première installation */ }
+    try {
+      const v = (await db.prepare("SELECT value FROM settings WHERE key = '_schema'").get());
+      if (v && v.value === SCHEMA_VERSION) {
+        /* le RIB vient d'une variable d'hébergement (BANK_RIB), jamais du dépôt public : posé s'il manque encore */
+        if (DEFAULTS.bank_rib) await db.prepare("UPDATE settings SET value = ? WHERE key = 'bank_rib' AND (value IS NULL OR value = '')").run(DEFAULTS.bank_rib);
+        return;
+      }
+    } catch (e) { /* première installation */ }
     if (!REMOTE) await db.exec('PRAGMA journal_mode = WAL;');
     await db.exec(SCHEMA);
     /* colonnes ajoutées au fil des versions : une lecture par table, puis tous les ajouts en une fois */
@@ -166,6 +177,9 @@ function init() {
     CATALOGUE.forEach(([n, d, u], i) => st.push({ sql: 'INSERT INTO services (name, description, unit, unit_price, sort) SELECT ?, ?, ?, 0, ? WHERE NOT EXISTS (SELECT 1 FROM services WHERE name = ?)', args: [n, d, u, i, n] }));
     for (const t of TPL) st.push({ sql: 'INSERT OR IGNORE INTO templates (key, step, title, subject, fr, ar, sort) VALUES (?,?,?,?,?,?,?)', args: [t.key, t.step, t.title, t.subject, t.fr, t.ar, t.sort] });
     st.push("UPDATE leads SET stage = CASE status WHEN 'devis' THEN 'proposition' WHEN 'traitee' THEN 'contacte' ELSE 'nouveau' END WHERE stage IS NULL");
+    /* identité légale de LAGODIGITAL (bulletin d'identification fiscale et registre du commerce) : complétée dans
+       les espaces déjà installés, seulement là où rien n'a été saisi (une valeur tapée dans Paramètres est gardée) */
+    for (const k of LEGAL_FILL) st.push({ sql: "UPDATE settings SET value = ? WHERE key = ? AND (value IS NULL OR value = '' OR value = ?)", args: [DEFAULTS[k], k, OLD[k] || ''] });
     st.push({ sql: "INSERT INTO settings (key, value) VALUES ('_schema', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", args: [SCHEMA_VERSION] });
     await client.batch(st, 'write');
   })().catch((e) => { ready = null; throw e; });
