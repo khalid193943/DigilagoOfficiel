@@ -205,6 +205,39 @@
       })
       .join("");
   });
+  // Les mots s'allument seuls, l'un après l'autre, dès que le texte arrive à l'écran (pas au fil du
+  // défilement) ; une seule fois. Moins d'animations : le texte est affiché d'emblée.
+  (function () {
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function play(p) {
+      var ws = p.querySelectorAll(".wd"),
+        k = 0;
+      if (still) {
+        ws.forEach(function (w) {
+          w.classList.add("on");
+        });
+        return;
+      }
+      var iv = setInterval(function () {
+        if (k >= ws.length) return clearInterval(iv);
+        ws[k++].classList.add("on");
+      }, Math.max(45, Math.min(110, 2600 / Math.max(1, ws.length))));
+    }
+    if (!("IntersectionObserver" in window)) return wr.forEach(play);
+    var io = new IntersectionObserver(
+      function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          play(e.target);
+        });
+      },
+      { threshold: 0.45 },
+    );
+    wr.forEach(function (p) {
+      io.observe(p);
+    });
+  })();
   if (fine)
     document
       .querySelectorAll(".lab, .chan a, .sv, .pc, .eng > div, .obj > div")
@@ -236,9 +269,6 @@
   // Un seul passage par image : on mesure tout d'abord, puis on écrit.
   // Aucune lecture après écriture, donc aucun recalcul de mise en page forcé.
   var rowW = [],
-    wrW = Array.prototype.map.call(wr, function (p) {
-      return p.querySelectorAll(".wd");
-    }),
     DCL = document.querySelectorAll("#dayclouds .cl"),
     docH = 0;
   function measureStatic() {
@@ -262,9 +292,6 @@
         return c.getBoundingClientRect().top;
       }),
       r4 = st4 ? st4.getBoundingClientRect().top : 0,
-      wrr = Array.prototype.map.call(wr, function (p) {
-        return p.getBoundingClientRect();
-      }),
       hh = hero ? hero.offsetHeight : 0;
     // écritures
     prog.style.transform = "scaleX(" + (doc > 0 ? Math.min(1, sy / doc) : 0) + ")";
@@ -301,19 +328,6 @@
         "--sx",
         Math.max(0, Math.min(1, (H * 0.85 - r4) / (H * 0.5))).toFixed(3),
       );
-    wr.forEach(function (p, j) {
-      var r = wrr[j];
-      if (r.bottom < -H || r.top > H * 2) return;
-      var k = Math.max(
-          0,
-          Math.min(1, (H * 0.85 - r.top) / (r.height + H * 0.35)),
-        ),
-        ws = wrW[j],
-        n = Math.floor(k * ws.length * 1.05);
-      ws.forEach(function (w, i) {
-        w.classList.toggle("on", i < n);
-      });
-    });
     // Nuages du fond : propriété « translate » (composée sur la carte graphique,
     // sans décaler la mise en page, contrairement à « top »).
     var span = H * 1.9;
@@ -433,13 +447,16 @@
         needs: [],
         name: "",
         met: "",
-        city: "El Jadida",
+        city: "",
         when: "",
         has: "",
         first: "",
         tel: "",
         mail: "",
         pref: "WhatsApp",
+        cb: "",
+        slot: "am",
+        date: "",
       };
       var ref =
         "DG-" +
@@ -460,7 +477,7 @@
         var nx = $("wzNext");
         nx.classList.toggle("launch", cur === N - 1);
         nx.firstChild.textContent =
-          cur === N - 1 ? "Lancer mon projet " : "Continuer";
+          cur === N - 1 ? "Envoyer ma demande " : "Continuer";
         dots.forEach(function (d, k) {
           d.classList.toggle("done", k < cur);
           d.classList.toggle("on", k === cur);
@@ -469,6 +486,7 @@
         // en arabe, la route part de la droite
         $("rtPlane").style[RTL ? "right" : "left"] = (cur / (N - 1)) * 100 + "%";
         if (cur === N - 1) recap();
+        if (steps[cur].querySelector("#tCb")) cbSetup();
         var t = steps[cur].querySelector("input");
         if (t && window.matchMedia("(pointer:fine)").matches)
           setTimeout(function () {
@@ -499,6 +517,17 @@
           err("Un numéro de téléphone ou WhatsApp pour vous répondre.");
           $("wTel").focus();
           return false;
+        }
+        if (steps[cur].querySelector("#tCb")) {
+          if (!st.cb) {
+            err("Choisissez quand on vous appelle.");
+            return false;
+          }
+          if (st.cb === "pick" && !st.date) {
+            err("Choisissez le jour.");
+            $("cbDate").focus();
+            return false;
+          }
         }
         return true;
       }
@@ -531,47 +560,116 @@
             });
           });
       }
-      function dgLead(o) {
+      // ——— Quand vous appeler ? Les moments possibles selon l'heure au Maroc (du lundi au samedi, 9 h – 19 h) ———
+      var LANG = document.documentElement.lang || "fr",
+        CB = { open: "", day: "" };
+      function maNow() {
+        var o = {};
         try {
-          var api = (
-            document.documentElement.getAttribute("data-api") || ""
-          ).replace(/\/$/, "");
-          if (!api) return;
-          fetch(api + "/api/leads", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(o),
-            keepalive: true,
-          }).catch(function () {});
-        } catch (e) {}
+          new Intl.DateTimeFormat("en-GB", { timeZone: "Africa/Casablanca", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", weekday: "short", hourCycle: "h23" })
+            .formatToParts(new Date())
+            .forEach(function (p) {
+              o[p.type] = p.value;
+            });
+          return { date: o.year + "-" + o.month + "-" + o.day, h: +o.hour + o.minute / 60, wd: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(o.weekday) };
+        } catch (e) {
+          var d = new Date();
+          return { date: d.toISOString().slice(0, 10), h: d.getHours() + d.getMinutes() / 60, wd: d.getDay() };
+        }
       }
-      function launch() {
-        // seulement ce que le visiteur a vraiment indiqué (le formulaire simplifié ne demande plus la ville,
-        // le délai, le site existant ni la préférence : pas de valeur par défaut présentée comme un choix)
-        var has = function (id) {
-            return !!$(id);
-          },
-          L = ["Bonjour Digilago, je démarre un projet.", "", "Référence : " + ref, "Besoin : " + st.needs.join(", ")];
-        if (st.name.trim()) L.push("Entreprise : " + st.name + (st.met ? " (" + st.met + ")" : ""));
-        if (has("wCity") && st.city) L.push("Ville : " + st.city);
-        if (st.when) L.push("Délai : " + st.when);
-        if (st.has) L.push("Site existant : " + st.has);
-        L.push("", "Contact : " + (st.first ? st.first + ", " : "") + st.tel + (st.mail ? ", " + st.mail : ""));
-        if (has("tPref")) L.push("Préférence : " + st.pref);
-        var url =
-          "https://wa.me/212649953813?text=" + encodeURIComponent(L.join("\n"));
-        dgLead({
-          name: st.first || st.name,
-          company: st.name,
-          phone: st.tel,
-          email: st.mail,
-          need: st.needs.join(", ") + (st.met ? " (" + st.met + ")" : ""),
-          message: L.join("\n"),
-          source: "Démarrer un projet " + ref,
+      function addD(date, n) {
+        var d = new Date(date + "T12:00:00Z");
+        d.setUTCDate(d.getUTCDate() + n);
+        return d.toISOString().slice(0, 10);
+      }
+      // le prochain jour ouvré après `date` (le dimanche est fermé)
+      function nextOpen(date) {
+        var d = addD(date, 1);
+        return new Date(d + "T12:00:00Z").getUTCDay() === 0 ? addD(d, 1) : d;
+      }
+      function dayName(date) {
+        var t = maNow().date;
+        if (date === t) return "Aujourd’hui";
+        if (date === addD(t, 1)) return "Demain";
+        var n = new Intl.DateTimeFormat(LANG, { timeZone: "UTC", weekday: "long", day: "numeric", month: "long" }).format(new Date(date + "T12:00:00Z"));
+        return n.charAt(0).toUpperCase() + n.slice(1);
+      }
+      function cbSetup() {
+        var n = maNow(),
+          open = n.wd > 0 && n.h >= 9 && n.h < 18.75;
+        CB.open = n.wd > 0 && n.h < 9 ? n.date : nextOpen(n.date);
+        CB.day = nextOpen(n.date);
+        var show = { now: open, hour: open && n.h < 18, today: open && n.h < 17, open: !open, day: true, pick: true };
+        document.querySelectorAll("#tCb .cbo").forEach(function (b) {
+          b.hidden = !show[b.dataset.cb];
+          if (b.hidden && st.cb === b.dataset.cb) st.cb = "";
         });
-        $("wzWa").href = url;
-        window.open(url, "_blank", "noopener");
+        var ob = document.querySelector('#tCb [data-cb="open"] small'),
+          db = document.querySelector('#tCb [data-cb="day"] b');
+        if (ob) ob.textContent = dayName(CB.open) + " à 9 h";
+        if (db) db.textContent = dayName(CB.day);
+        var di = $("cbDate");
+        if (di) {
+          di.min = addD(CB.day, 1);
+          di.max = addD(n.date, 60);
+        }
+      }
+      // le moment choisi, en clair (écran de confirmation)
+      function whenText() {
+        var slot = st.slot === "pm" ? "l’après-midi, entre 14 h et 18 h" : "le matin, entre 9 h et 12 h";
+        if (st.cb === "now") return "Dans les 15 minutes";
+        if (st.cb === "hour") return "Dans l’heure";
+        if (st.cb === "today") return "Aujourd’hui, avant 19 h";
+        if (st.cb === "open") return dayName(CB.open) + " à 9 h";
+        return dayName(st.cb === "day" ? CB.day : st.date) + (RTL ? "، " : ", ") + slot;
+      }
+      document.querySelectorAll("#tCb .cbo").forEach(function (b) {
+        b.addEventListener("click", function () {
+          cbSetup();
+          st.cb = b.dataset.cb;
+          document.querySelectorAll("#tCb .cbo").forEach(function (x) {
+            x.setAttribute("aria-checked", x === b ? "true" : "false");
+          });
+          var more = st.cb === "day" || st.cb === "pick";
+          $("cbMore").hidden = !more;
+          $("cbDateW").hidden = st.cb !== "pick";
+          if (st.cb === "pick" && window.matchMedia("(pointer:fine)").matches) $("cbDate").focus();
+          $("wzErr").textContent = "";
+        });
+      });
+      document.querySelectorAll("#cbSlot .wchip").forEach(function (b) {
+        b.addEventListener("click", function () {
+          st.slot = b.dataset.slot;
+          document.querySelectorAll("#cbSlot .wchip").forEach(function (x) {
+            x.classList.toggle("on", x === b);
+            x.setAttribute("aria-checked", x === b ? "true" : "false");
+          });
+        });
+      });
+      if ($("cbDate"))
+        $("cbDate").addEventListener("change", function () {
+          var v = this.value;
+          // le dimanche est fermé : le jour suivant
+          if (v && new Date(v + "T12:00:00Z").getUTCDay() === 0) v = this.value = addD(v, 1);
+          st.date = v;
+        });
+      if ($("tCb")) cbSetup();
+      // ——— L'envoi : la demande part directement dans l'espace de gestion de Digilago ———
+      var busy = false;
+      function waText() {
+        var L = ["Bonjour Digilago, je démarre un projet.", "", "Référence : " + ref, "Besoin : " + st.needs.join(", ")];
+        if (st.name.trim()) L.push("Entreprise : " + st.name);
+        L.push("Contact : " + (st.first ? st.first + ", " : "") + st.tel);
+        if (st.cb) L.push("Me rappeler : " + whenText());
+        return L.join("\n");
+      }
+      function done() {
+        $("wzWhen").textContent = whenText();
+        $("wzTel").textContent = "Sur votre numéro " + "\u2066" + st.tel.trim() + "\u2069";
+        $("wzT2").textContent = whenText();
+        $("wzWa").href = "https://wa.me/212649953813?text=" + encodeURIComponent("Bonjour Digilago, j’ai envoyé ma demande (référence " + ref + ").");
         card.classList.add("sent");
+        wz.classList.add("is-sent");
         $("wzRef").textContent = "Référence " + ref;
         dots.forEach(function (d) {
           d.classList.add("done");
@@ -580,7 +678,67 @@
         $("rtFill").style.width = "100%";
         $("rtPlane").style[RTL ? "right" : "left"] = "100%";
         $("rtPlane").style.transform = "translateY(-26px) rotate(" + (RTL ? 18 : -18) + "deg)";
+        var r = card.getBoundingClientRect();
+        if (r.top < 0 || r.top > innerHeight * 0.4) window.scrollTo({ top: window.scrollY + r.top - 100, behavior: "smooth" });
       }
+      function fail() {
+        busy = false;
+        var nx = $("wzNext");
+        nx.disabled = false;
+        nx.classList.remove("sending");
+        nx.firstChild.textContent = "Envoyer ma demande ";
+        $("wzFailWa").href = "https://wa.me/212649953813?text=" + encodeURIComponent(waText());
+        $("wzFail").hidden = false;
+      }
+      function launch() {
+        if (busy) return;
+        busy = true;
+        $("wzFail").hidden = true;
+        var nx = $("wzNext");
+        nx.disabled = true;
+        nx.classList.add("sending");
+        nx.firstChild.textContent = "Envoi en cours… ";
+        var api = (document.documentElement.getAttribute("data-api") || "").replace(/\/$/, ""),
+          day = st.cb === "day" ? CB.day : st.cb === "open" ? CB.open : st.cb === "pick" ? st.date : "",
+          payload = {
+            name: st.first || st.name,
+            company: st.name,
+            phone: st.tel,
+            need: st.needs.join(", ") + (st.met ? " (" + st.met + ")" : ""),
+            message: waText(),
+            source: "Démarrer un projet (" + ref + ")",
+            ref: ref,
+            lang: LANG.slice(0, 2),
+            callback: st.cb === "pick" ? "day" : st.cb,
+            slot: st.slot,
+            date: day,
+          };
+        if (!api || !window.fetch) return fail();
+        var ctl = window.AbortController ? new AbortController() : null,
+          to = setTimeout(function () {
+            if (ctl) ctl.abort();
+          }, 12000);
+        fetch(api + "/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          signal: ctl ? ctl.signal : undefined,
+        })
+          .then(function (r) {
+            clearTimeout(to);
+            if (!r.ok) throw new Error(r.status);
+            nx.classList.remove("sending");
+            done();
+          })
+          .catch(function () {
+            clearTimeout(to);
+            fail();
+          });
+      }
+      if ($("wzRetry"))
+        $("wzRetry").addEventListener("click", function () {
+          launch();
+        });
       $("wzNext").addEventListener("click", function () {
         if (!valid()) return;
         if (cur === N - 1) launch();
@@ -1674,4 +1832,254 @@
       $("ok2").classList.add("on");
     });
   }
+  // Pages « Secteurs » : recherche des activités, familles, fenêtre « On le fait pour vous », maquettes, Google et IA animés
+  (function () {
+    var main = document.querySelector("main[data-vz]");
+    if (main)
+      document.querySelectorAll('.fnav .fl a[href="secteurs.html"]').forEach(function (a) {
+        a.classList.add("cur-p");
+      });
+    // « Démarrer » : le métier choisi part avec la demande
+    document.querySelectorAll("a[data-met]").forEach(function (a) {
+      var m = a.getAttribute("data-met");
+      if (m) a.href = a.getAttribute("href").split("?")[0] + "?metier=" + encodeURIComponent(m);
+    });
+    var norm = function (s) {
+      return (s || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ًͯ-ْ]/g, "")
+        .replace(/[إأآ]/g, "ا")
+        .replace(/ة/g, "ه")
+        .replace(/ى/g, "ي")
+        .replace(/[’'-]/g, " ");
+    };
+    var words = function (v) {
+      return norm(v).split(/\s+/).filter(Boolean);
+    };
+    var match = function (k, w) {
+      return w.every(function (x) {
+        return k.indexOf(x) >= 0;
+      });
+    };
+    document.querySelectorAll(".vz-find").forEach(function (box) {
+      var q = box.querySelector(".vz-q input"),
+        chips = box.querySelectorAll(".vz-chip"),
+        cards = box.querySelectorAll(".vz-card"),
+        none = box.querySelector(".vz-none"),
+        g = "";
+      cards.forEach(function (c) {
+        c._k = norm((c.getAttribute("data-k") || "") + " " + c.textContent);
+      });
+      function run() {
+        var w = words(q ? q.value : ""),
+          n = 0;
+        cards.forEach(function (c) {
+          var ok = (!g || c.getAttribute("data-g") === g) && match(c._k, w);
+          c.hidden = !ok;
+          if (ok) {
+            n++;
+            c.classList.add("in");
+          }
+        });
+        if (none) none.hidden = n > 0;
+      }
+      chips.forEach(function (ch) {
+        ch.addEventListener("click", function () {
+          g = ch.getAttribute("data-g");
+          chips.forEach(function (x) {
+            x.setAttribute("aria-pressed", x === ch ? "true" : "false");
+          });
+          run();
+        });
+      });
+      if (q) q.addEventListener("input", run);
+      if (location.hash.indexOf("#t-") === 0) {
+        var c = document.getElementById(location.hash.slice(1));
+        if (c && box.contains(c)) {
+          c.classList.add("vz-hl", "in");
+          setTimeout(function () {
+            c.scrollIntoView({ block: "center", behavior: RMZ ? "auto" : "smooth" });
+          }, 500);
+        }
+      }
+    });
+    var dlg = $("vzDlg");
+    if (dlg) {
+      document.querySelectorAll(".vz-c").forEach(function (b) {
+        b.addEventListener("click", function () {
+          dlg.querySelector(".vz-ic").innerHTML = b.querySelector(".vz-ic").innerHTML;
+          dlg.querySelector(".vz-dl-t").textContent = b.querySelector("b").textContent;
+          dlg.querySelector(".vz-dl-d").textContent = b.querySelector(".vz-d").textContent;
+          dlg.querySelector(".vz-dl-tags").innerHTML = b.querySelector(".vz-tags").innerHTML;
+          dlg.querySelector(".vz-dl-go").href =
+            "demarrer.html?metier=" + encodeURIComponent(b.getAttribute("data-met") || "");
+          if (dlg.showModal) dlg.showModal();
+          else dlg.setAttribute("open", "");
+        });
+      });
+      dlg.addEventListener("click", function (e) {
+        if (e.target === dlg || e.target.closest(".vz-dl-x")) {
+          if (dlg.close) dlg.close();
+          else dlg.removeAttribute("open");
+        }
+      });
+    }
+    // une animation ne démarre qu'une fois visible
+    var seen = function (el, fn, th) {
+      if (!("IntersectionObserver" in window)) return fn();
+      var o = new IntersectionObserver(
+        function (es) {
+          es.forEach(function (e) {
+            if (e.isIntersecting) {
+              o.disconnect();
+              fn();
+            }
+          });
+        },
+        { threshold: th || 0.3 },
+      );
+      o.observe(el);
+    };
+    // maquettes : choix de l'exemple, défilement automatique jusqu'au premier clic
+    document.querySelectorAll(".vz-show").forEach(function (sec) {
+      var st = sec.querySelector(".mk-stage"),
+        tb = sec.querySelectorAll(".vz-tabs button"),
+        mks = st.querySelectorAll(".mk"),
+        auto = null;
+      function pick(id) {
+        tb.forEach(function (x) {
+          x.setAttribute("aria-selected", x.getAttribute("data-t") === id ? "true" : "false");
+        });
+        mks.forEach(function (m) {
+          m.classList.toggle("on", m.getAttribute("data-t") === id);
+        });
+      }
+      tb.forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (auto) clearInterval(auto);
+          auto = null;
+          pick(b.getAttribute("data-t"));
+        });
+      });
+      seen(st, function () {
+        mks.forEach(function (m) {
+          m.classList.add("in");
+        });
+        if (tb.length > 1 && !RMZ)
+          auto = setInterval(function () {
+            var i = 0;
+            tb.forEach(function (x, k) {
+              if (x.getAttribute("aria-selected") === "true") i = k;
+            });
+            pick(tb[(i + 1) % tb.length].getAttribute("data-t"));
+          }, 9000);
+      });
+    });
+    // faux Google : les recherches de vos clients s'écrivent, votre établissement sort en premier
+    document.querySelectorAll(".vz-g").forEach(function (g) {
+      var qs = [].map.call(g.querySelectorAll(".vz-qs li"), function (li) {
+          return li.textContent;
+        }),
+        out = g.querySelector(".vz-gq"),
+        i = 0;
+      if (RMZ || !qs.length) return g.classList.add("show");
+      function type(s, k) {
+        out.textContent = s.slice(0, k);
+        if (k < s.length)
+          setTimeout(function () {
+            type(s, k + 1);
+          }, 55 + Math.random() * 40);
+        else {
+          g.classList.add("show");
+          setTimeout(next, 3200);
+        }
+      }
+      function next() {
+        i = (i + 1) % qs.length;
+        g.classList.remove("show");
+        setTimeout(function () {
+          type(qs[i], 0);
+        }, 500);
+      }
+      seen(g, function () {
+        type(qs[0], 0);
+      });
+    });
+    // faux assistant IA : la question s'écrit, il réfléchit, puis cite votre établissement
+    document.querySelectorAll(".vz-chat").forEach(function (c) {
+      var qs = [].map.call(c.querySelectorAll(".vz-qs li"), function (li) {
+          return li.textContent;
+        }),
+        out = c.querySelector(".vz-ch-u span"),
+        i = 0;
+      if (RMZ || !qs.length) return c.classList.add("ans");
+      function type(s, k) {
+        out.textContent = s.slice(0, k);
+        if (k < s.length)
+          setTimeout(function () {
+            type(s, k + 1);
+          }, 38 + Math.random() * 30);
+        else {
+          c.classList.add("think");
+          setTimeout(function () {
+            c.classList.remove("think");
+            c.classList.add("ans");
+            setTimeout(next, 6500);
+          }, 1300);
+        }
+      }
+      function next() {
+        i = (i + 1) % qs.length;
+        c.classList.remove("ans");
+        setTimeout(function () {
+          type(qs[i], 0);
+        }, 700);
+      }
+      seen(c, function () {
+        type(qs[0], 0);
+      });
+    });
+    // page « Secteurs » : la recherche parmi tous les métiers
+    var hq = $("vzHubQ");
+    if (hq) {
+      var res = $("vzHubR"),
+        nn = $("vzHubNone"),
+        items = [].slice.call(document.querySelectorAll(".vz-idx a"));
+      items.forEach(function (a) {
+        a._k = norm(a.getAttribute("data-k") + " " + a.textContent);
+      });
+      hq.addEventListener("input", function () {
+        var w = words(hq.value);
+        res.innerHTML = "";
+        if (!w.length) {
+          res.hidden = true;
+          return;
+        }
+        var m = items
+          .filter(function (a) {
+            return match(a._k, w);
+          })
+          .slice(0, 8);
+        m.forEach(function (a) {
+          res.appendChild(a.cloneNode(true));
+        });
+        var x = nn.cloneNode(true);
+        x.hidden = false;
+        x.removeAttribute("id");
+        x.href = "demarrer.html?metier=" + encodeURIComponent(hq.value.trim());
+        res.appendChild(x);
+        res.hidden = false;
+      });
+      hq.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          var f = res.querySelector("a");
+          if (f) location.href = f.href;
+        }
+      });
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest(".vz-hub")) res.hidden = true;
+      });
+    }
+  })();
 })();

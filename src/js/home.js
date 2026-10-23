@@ -315,14 +315,10 @@
       .sort(function (a, b) {
         return b.r - a.r;
       });
-    // le nom d'El Jadida est porté par l'étiquette du studio (« Digilago · El Jadida »)
-    var hq = G.hq,
-      HQL = "";
+    // au point de départ des arcs, l'étiquette « Digilago » remplace le nom de la ville
+    var hq = G.hq;
     LAB.forEach(function (l) {
-      if (Math.abs(l.x - hq[0]) < 0.2 && Math.abs(l.y - hq[1]) < 0.2) {
-        l.hq = true;
-        HQL = l.t;
-      }
+      if (Math.abs(l.x - hq[0]) < 0.2 && Math.abs(l.y - hq[1]) < 0.2) l.hq = true;
     });
     // Projection de la carte : Mercator, 34,456 px du sol par degré (la même que le Maroc, à < 1 px près)
     function gpt(lon, lat) {
@@ -843,11 +839,11 @@
       im.dy = sea ? -h / 2 : 3 * s - 3;
       return (LBL[k] = im);
     }
-    // l'étiquette du studio : « Digilago · El Jadida »
+    // l'étiquette du studio : « Digilago » (nous travaillons partout au Maroc, sans adresse affichée)
     var HQS = null;
     function hqSprite() {
       if (HQS) return HQS;
-      var t = "Digilago" + (HQL ? " · " + HQL : ""),
+      var t = "Digilago",
         fs = MOB ? 10.5 : 11.5,
         font = "600 " + fs + "px 'Instrument Sans', system-ui, sans-serif",
         c = document.createElement("canvas"),
@@ -1891,7 +1887,7 @@
     story.style.height = Math.round(H * (1 + NS * 0.6)) + "px";
   }
   function typeQuery(sl) {
-    var q = "dentiste el jadida";
+    var q = "dentiste casablanca";
     sl.querySelectorAll(".tq").forEach(function (t) {
       t.textContent = "";
     });
@@ -2154,7 +2150,12 @@
     maniStage = $("maniStage"),
     mw = document.querySelectorAll("#maniT .w, #maniT .ip");
   var cards = document.querySelectorAll("#stack .sc"),
-    cardH = 600;
+    cardH = 600,
+    // un temps d'arrêt après la dernière carte : la pile complète reste un moment à l'écran
+    stackDwell = document.createElement("div");
+  stackDwell.className = "sc-dwell";
+  stackDwell.setAttribute("aria-hidden", "true");
+  if (cards.length) cards[cards.length - 1].parentNode.appendChild(stackDwell);
   var vas = document.querySelectorAll("#vmap .va"),
     vds = document.querySelectorAll("#vmap .vd"),
     vchips = document.querySelectorAll("#vmap .vchip");
@@ -2168,11 +2169,31 @@
       step = (M ? 46 : 58) * u,
       last = top0 + (cards.length - 1) * step;
     cardH = M ? Math.min(H - last - 24 * u, 760 * u) : Math.min(H - last - 24 * u, 640 * u);
+    // En fin de section, les trois cartes repartent ensemble : chacune garde sous elle la place des onglets
+    // suivants (marge du bas), donc elles quittent l'écran au même moment, empilées comme à l'arrêt
+    // (01 et 02 réduites en onglets, 03 ouverte) ; la dernière ne vient jamais recouvrir les deux autres.
+    // Un temps d'arrêt (dwell) laisse voir la pile complète avant qu'elle ne parte.
+    var n = cards.length,
+      mb = (M ? 24 : 40) * u,
+      hmax = 0;
     cards.forEach(function (c, i) {
       c.style.top = top0 + i * step + "px";
       c.style.height = M ? "auto" : cardH + "px";
       c.style.minHeight = M ? cardH * 0.9 + "px" : "";
+      c.style.marginBottom = mb + (n - 1 - i) * step + "px";
+      // marges qui se compensent : l'écart entre deux cartes dans la page reste le même
+      c.style.marginTop = i ? -((n - i) * step) + "px" : "";
     });
+    // téléphone : les cartes prennent toutes la hauteur de la plus haute (elles partent ensemble)
+    if (M) {
+      cards.forEach(function (c) {
+        hmax = Math.max(hmax, c.offsetHeight);
+      });
+      cards.forEach(function (c) {
+        c.style.minHeight = hmax + "px";
+      });
+    }
+    stackDwell.style.height = (M ? 0.2 : 0.38) * H + "px";
     (function () {
       var g = document.getElementById("giant");
       if (!g) return;
@@ -2687,34 +2708,56 @@
       S(col, "transform", "translate3d(0," + (c * +col.dataset.k).toFixed(1) + "px,0)");
     });
   }
+  // Les guides : un carrousel (2 cartes à la fois sur ordinateur, 1 sur téléphone). Un point par position
+  // atteignable (pas un par carte : les dernières cartes arrivent ensemble), flèches dans le sens de lecture
+  // (en arabe, « suivant » va vers la gauche).
   var gdT = $("gdTrack"),
     gdD = document.querySelectorAll("#gdDots .gd-dot");
   if (gdT) {
+    var gdN = 1,
+      gdI = -1;
     var gdStep = function () {
       var c = gdT.querySelector(".gd");
-      return c
-        ? c.offsetWidth + parseFloat(getComputedStyle(gdT).columnGap || 0)
-        : 300;
+      return c ? c.offsetWidth + parseFloat(getComputedStyle(gdT).columnGap || 0) : 300;
+    };
+    var gdPages = function () {
+      var st = gdStep(),
+        cards = gdT.querySelectorAll(".gd").length,
+        per = Math.max(1, Math.round((gdT.clientWidth + 2) / st));
+      gdN = Math.max(1, cards - per + 1);
+      gdD.forEach(function (d, k) {
+        d.hidden = k >= gdN;
+      });
+      gdI = -1;
+      gdSync();
+    };
+    var gdGo = function (k) {
+      k = Math.max(0, Math.min(gdN - 1, k));
+      gdT.scrollTo({ left: (RTL ? -1 : 1) * k * gdStep(), behavior: "smooth" });
     };
     var gdSync = function () {
       var sl = Math.abs(gdT.scrollLeft),
-        i = Math.round(sl / gdStep());
-      gdD.forEach(function (d, k) {
-        d.classList.toggle("on", k === i);
-      });
-      $("gdPrev").disabled = sl < 8;
-      $("gdNext").disabled =
-        sl > gdT.scrollWidth - gdT.clientWidth - 8;
+        max = gdT.scrollWidth - gdT.clientWidth,
+        i = sl >= max - 8 ? gdN - 1 : Math.min(gdN - 1, Math.round(sl / gdStep()));
+      if (i !== gdI) {
+        gdI = i;
+        gdD.forEach(function (d, k) {
+          d.classList.toggle("on", k === i);
+          d.setAttribute("aria-current", k === i ? "true" : "false");
+        });
+      }
+      $("gdPrev").disabled = i <= 0 && sl < 8;
+      $("gdNext").disabled = i >= gdN - 1 || sl >= max - 8;
     };
     $("gdPrev").addEventListener("click", function () {
-      gdT.scrollBy({ left: (RTL ? 1 : -1) * gdStep(), behavior: "smooth" });
+      gdGo(gdI - 1);
     });
     $("gdNext").addEventListener("click", function () {
-      gdT.scrollBy({ left: (RTL ? -1 : 1) * gdStep(), behavior: "smooth" });
+      gdGo(gdI + 1);
     });
     gdD.forEach(function (d, k) {
       d.addEventListener("click", function () {
-        gdT.scrollTo({ left: (RTL ? -1 : 1) * k * gdStep(), behavior: "smooth" });
+        gdGo(k);
       });
     });
     gdT.addEventListener(
@@ -2724,7 +2767,21 @@
       },
       { passive: true },
     );
-    gdSync();
+    // recalculé quand la largeur du carrousel change (y compris quand la page passe en mise en page téléphone)
+    if (window.ResizeObserver)
+      (function (ro) {
+        ro.observe(gdT);
+        if (gdT.firstElementChild) ro.observe(gdT.firstElementChild);
+      })(
+        new ResizeObserver(function () {
+          requestAnimationFrame(gdPages);
+        }),
+      );
+    else
+      window.addEventListener("resize", function () {
+        requestAnimationFrame(gdPages);
+      });
+    gdPages();
   }
   (function () {
     var d = document.getElementById("dock");

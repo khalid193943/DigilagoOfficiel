@@ -1,6 +1,6 @@
 [
  "<div class=\"fc-in\"><div class=\"fc-b\"><b>Personne ici, pour l’instant.</b><small>Et si la prochaine entreprise sur cette carte, c’était la vôtre ?</small><div class=\"fc-f\"><span class=\"fc-on\"><i></i>Place libre</span><a class=\"fc-go\" href=\"demarrer.html\">Me rendre visible</a></div></div></div>",
- "dentiste el jadida",
+ "dentiste casablanca",
  "Invisible",
  "Presque invisible",
  "À moitié visible",
@@ -76,5 +76,20 @@
  "Formulaire de contact",
  "Atlas Dentaire",
  " à ",
- ". Découvrez nos services, nos horaires et contactez-nous en un clic."
+ ". Découvrez nos services, nos horaires et contactez-nous en un clic.",
+ "Envoyer ma demande ",
+ "Envoi en cours… ",
+ "Choisissez quand on vous appelle.",
+ "Choisissez le jour.",
+ "Aujourd’hui",
+ "Demain",
+ " à 9 h",
+ "l’après-midi, entre 14 h et 18 h",
+ "le matin, entre 9 h et 12 h",
+ "Dans les 15 minutes",
+ "Dans l’heure",
+ "Aujourd’hui, avant 19 h",
+ "Sur votre numéro ",
+ "Bonjour Digilago, j’ai envoyé ma demande (référence ",
+ "Me rappeler : "
 ]

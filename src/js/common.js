@@ -21,10 +21,11 @@
       });
   }
 
-  // 2) Menu des langues de la barre du haut : au toucher, il s'ouvre et se ferme.
-  var lsw = document.getElementById("lsw");
-  if (lsw) {
-    var lb = document.getElementById("lang");
+  // 2) Menus des langues (barre du haut de l'accueil, barre de toutes les pages) : au toucher, ils
+  //    s'ouvrent et se ferment ; un toucher ailleurs les referme.
+  document.querySelectorAll(".lsw").forEach(function (lsw) {
+    var lb = lsw.querySelector("#lang, .lsw-b");
+    if (!lb) return;
     lb.addEventListener("click", function (e) {
       e.preventDefault();
       lb.setAttribute("aria-expanded", lsw.classList.toggle("open") ? "true" : "false");
@@ -35,7 +36,7 @@
         lb.setAttribute("aria-expanded", "false");
       }
     });
-  }
+  });
 
   // 3) Carte du monde : chargée seulement quand on s'en approche.
   var wd = document.getElementById("worldDefs");
