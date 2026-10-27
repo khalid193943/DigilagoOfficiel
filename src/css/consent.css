@@ -1,0 +1,16 @@
+/* Bandeau de consentement (cookies de mesure) : mêmes codes que le site, deux boutons de même poids */
+.dgc{position:fixed;z-index:80;left:16px;right:16px;bottom:16px;max-width:780px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:16px 18px 16px 22px;border-radius:20px;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 0 0 1px rgba(14,33,78,.1),0 30px 70px -28px rgba(14,33,78,.55);color:#0E214E;font-size:14px;line-height:1.5;transform:translateY(24px);opacity:0;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .35s}
+.dgc.on{transform:none;opacity:1}
+.dgc[hidden]{display:none}
+.dgc-t{flex:1;min-width:0}
+.dgc b{display:block;margin-bottom:2px;font-family:Sora,sans-serif;font-weight:500;font-size:15px}
+.dgc p{margin:0;color:#44526E}
+.dgc a{color:#1C4FA6;text-decoration:underline}
+.dgc-b{display:flex;gap:8px;flex:none}
+.dgc button,.dgc-edit{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:600;font-size:14px;padding:11px 22px;border-radius:12px;background:#EAF1FD;color:#0E214E;box-shadow:inset 0 0 0 1px rgba(14,33,78,.14);transition:background .25s,transform .25s}
+.dgc button:hover,.dgc-edit:hover{background:#DCE8FC;transform:translateY(-1px)}
+.dgc button[data-c="yes"]{background:#0E214E;color:#fff;box-shadow:none}
+.dgc button[data-c="yes"]:hover{background:#17306E}
+html[dir="rtl"] .dgc{padding:16px 22px 16px 18px;text-align:right}
+@media (max-width:640px){.dgc{flex-direction:column;align-items:stretch;gap:12px;left:10px;right:10px;bottom:10px;padding:16px}.dgc-b button{flex:1}}
+@media (prefers-reduced-motion:reduce){.dgc{transition:none}}

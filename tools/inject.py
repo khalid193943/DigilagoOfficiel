@@ -43,7 +43,7 @@ def main():
     common = read('js/common.js')
     js = {'home': terser(common + '\n' + read('js/home.js')),
           'pages': terser(common + '\n' + read('js/pages.js'))}
-    css = '/*dg:perf*/' + mincss(read('css/perf.css') + read('css/design.css') + read('css/gradients.css') + (read('css/secteurs.css') if os.path.exists(os.path.join(SRC, 'css', 'secteurs.css')) else '')) + '/*dg:end*/'
+    css = '/*dg:perf*/' + mincss(read('css/perf.css') + read('css/design.css') + read('css/gradients.css') + read('css/consent.css') + (read('css/secteurs.css') if os.path.exists(os.path.join(SRC, 'css', 'secteurs.css')) else '')) + '/*dg:end*/'
     for f in sorted(glob.glob(os.path.join(SITE, '*.html'))):
         name = os.path.basename(f)
         h = open(f, encoding='utf-8').read()

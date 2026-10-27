@@ -663,6 +663,22 @@
         if (st.cb) L.push("Me rappeler : " + whenText());
         return L.join("\n");
       }
+      // après l'envoi : la page « Merci » (même langue), avec la référence et le moment du rappel
+      function goMerci(o) {
+        var q = Object.keys(o)
+          .filter(function (k) {
+            return o[k];
+          })
+          .map(function (k) {
+            return k + "=" + encodeURIComponent(String(o[k]).slice(0, 80));
+          })
+          .join("&");
+        try {
+          location.assign("merci.html" + (q ? "?" + q : ""));
+        } catch (e) {
+          done();
+        }
+      }
       function done() {
         $("wzWhen").textContent = whenText();
         $("wzTel").textContent = "Sur votre numéro " + "\u2066" + st.tel.trim() + "\u2069";
@@ -706,7 +722,7 @@
             phone: st.tel,
             need: st.needs.join(", ") + (st.met ? " (" + st.met + ")" : ""),
             message: waText(),
-            source: "Démarrer un projet (" + ref + ")",
+            source: "Démarrer un projet (" + ref + ")" + (window.dgSrc ? window.dgSrc() : ""),
             ref: ref,
             lang: LANG.slice(0, 2),
             callback: st.cb === "pick" ? "day" : st.cb,
@@ -728,7 +744,7 @@
             clearTimeout(to);
             if (!r.ok) throw new Error(r.status);
             nx.classList.remove("sending");
-            done();
+            goMerci({ f: "demarrer", r: ref, n: st.first || "", w: whenText() });
           })
           .catch(function () {
             clearTimeout(to);
@@ -1818,7 +1834,7 @@
               phone: f.tel.value.trim(),
               need: f.met.value + (svs.length ? " : " + svs.join(", ") : ""),
               message: f.msg.value.trim(),
-              source: "Formulaire de contact",
+              source: "Formulaire de contact" + (window.dgSrc ? window.dgSrc() : ""),
             }),
             keepalive: true,
           }).catch(function () {});
@@ -1830,8 +1846,26 @@
         "noopener",
       );
       $("ok2").classList.add("on");
+      setTimeout(function () {
+        location.assign("merci.html?f=contact&n=" + encodeURIComponent(nom.slice(0, 40)));
+      }, 600);
     });
   }
+  // Page « Merci » : prénom, référence et moment du rappel viennent de l'adresse (texte seulement, jamais du HTML)
+  (function () {
+    if (!$("mcStamp")) return;
+    var q = new URLSearchParams(location.search),
+      put = function (id, row, v) {
+        v = (v || "").replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, 80);
+        if (!v) return;
+        $(id).textContent = v;
+        if (row) $(row).hidden = false;
+      };
+    put("mcName", "mcNameRow", q.get("n"));
+    put("mcRef", "mcRefRow", q.get("r"));
+    put("mcWhen", "", q.get("w"));
+    if (window.dgTrack) window.dgTrack("generate_lead", { form: (q.get("f") || "").replace(/[^a-z]/g, "").slice(0, 12) });
+  })();
   // Pages « Secteurs » : recherche des activités, familles, fenêtre « On le fait pour vous », maquettes, Google et IA animés
   (function () {
     var main = document.querySelector("main[data-vz]");

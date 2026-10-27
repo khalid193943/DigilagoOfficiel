@@ -398,22 +398,32 @@ app.get('/brief/:token', async (req, res) => {
 <button class="btn">Envoyer mes informations</button></form></main>`;
   res.send(await publicPage('Votre projet', body));
 });
-app.post('/brief/:token', async (req, res) => {
-  const p = await db.prepare('SELECT * FROM projects WHERE token = ?').get(req.params.token); if (!p) return res.sendStatus(404);
-  const b = req.body, cl = await Q.client.get(p.client_id) || {}, cut = (v, n = 400) => String(v || '').trim().slice(0, n);
+/* enregistre les informations saisies par le client (brief ou espace de suivi) */
+async function saveBrief(p, b) {
+  const cl = await Q.client.get(p.client_id) || {}, cut = (v, n = 400) => String(v || '').trim().slice(0, n);
   const invoiced = !!(await db.prepare('SELECT 1 FROM invoices WHERE client_id = ? LIMIT 1').get(p.client_id));
   const keep = (k, n) => (invoiced && cl[k] ? cl[k] : (cut(b[k], n) || cl[k] || ''));
   await db.prepare('UPDATE clients SET company = ?, city = ?, address = ?, phone = ?, whatsapp = ?, email = ?, ice = ? WHERE id = ?').run(keep('company', 160), keep('city', 80), keep('address', 240), keep('phone', 40), keep('whatsapp', 40), keep('email', 160), keep('ice', 40), p.client_id);
   if (invoiced) for (const k of ['company', 'address', 'ice', 'email']) if (cut(b[k]) && cl[k] && cut(b[k]) !== cl[k]) await log('client', p.client_id, `Le client propose une nouvelle valeur (${k}) : ${cut(b[k], 200)}`);
   const inf = pinfo(p); for (const [k] of INFO_FIELDS) if (('i_' + k) in b) inf[k] = cut(b['i_' + k], 3000);
   await db.prepare('UPDATE projects SET info = ? WHERE id = ?').run(JSON.stringify(inf), p.id);
+}
+app.post('/brief/:token', async (req, res) => {
+  const p = await db.prepare('SELECT * FROM projects WHERE token = ?').get(req.params.token); if (!p) return res.sendStatus(404);
+  await saveBrief(p, req.body);
   res.redirect(`/brief/${p.token}?merci=1`);
 });
+
+/* ---------------- Espace client « Suivi de projet » : lien privé par projet ---------------- */
+const SV = require('./lib/suivi')({ db, settings, esc, token, today, dateFr, publicPage, hit, log, digits, steps: (p) => { try { return JSON.parse(p.steps || '[]'); } catch (e) { return []; } }, pinfo, ptech, completeness, CLIENT_FIELDS, INFO_FIELDS, saveBrief, Q, withPaid, iStatus, I_STATUS, KIND, money, baseUrl });
+SV.mountPublic(app);
 
 /* ---------------- Tout le reste demande d'être connecté ---------------- */
 /* Une fois le mot de passe créé, il existe pour toujours : inutile de relire la base à chaque page. */
 let HAS_PW = false;
 app.use(async (req, res, next) => { if (!HAS_PW) { HAS_PW = !!(await getS('_pw')); if (!HAS_PW) return res.redirect('/installation'); } if (!(await isAuthed(req))) return res.redirect('/connexion'); next(); });
+
+SV.mountAdmin(app);
 
 /* ---------------- Tableau de bord ---------------- */
 app.get('/', async (req, res) => {
@@ -530,7 +540,9 @@ app.get('/', async (req, res) => {
 <ul class="sup-ins">${ins.slice(0, 6).map(([k, t]) => `<li class="${k}"><i></i>${esc(t)}</li>`).join('')}</ul></div>
 <div class="sup-map">${sv.svg}</div></section>
 <section class="card"><div class="card-h"><h2>Le travail fait</h2><a href="${esc(siteUrl)}" target="_blank" rel="noopener">Voir ${esc(siteUrl.replace('https://', ''))}</a></div><div class="sites"><a class="site me" href="${esc(siteUrl)}" target="_blank" rel="noopener"><span class="site-f"><iframe data-src="${esc(siteUrl)}" tabindex="-1" title="Votre site" sandbox></iframe></span><b>Votre site</b><small>${esc(siteUrl.replace('https://', ''))}</small></a>${live.map((p) => `<a class="site" href="${esc(p.site_url)}" target="_blank" rel="noopener"><span class="site-f"><iframe data-src="${esc(p.site_url)}" tabindex="-1" title="${esc(p.ccomp || p.cname || '')}" sandbox></iframe></span><b>${esc(p.ccomp || p.cname || '')}</b><small>${esc(p.ccity || '')}</small></a>`).join('') || '<p class="empty">Les sites livrés apparaîtront ici : ajoutez leur adresse dans chaque projet.</p>'}</div></section>`;
-  const body = dayCard + hero + `<section class="kpis">${kpi('Encaissé ce mois', money(cashMonth), 'paiements reçus', 'hl')}${kpi('Reste à encaisser', money(due), `${late.length} facture${late.length > 1 ? 's' : ''} en retard`, late.length ? 'warn' : '')}${kpi('Devis en attente', money(pipeline.s), `${pipeline.n} devis envoyés`)}${kpi('Taux d’acceptation', rate + ' %', `${qMonth.n} devis ce mois, ${money(qMonth.t)}`)}${kpi('Résultat du mois', money(cashMonth - expMonth), `${money(expMonth)} de dépenses`, cashMonth - expMonth < 0 ? 'warn' : '')}</section>
+  const UNS = await SV.unseen(), unsIds = Object.keys(UNS);
+  const unsCard = unsIds.length ? `<div class="card sv-alert"><div class="card-h"><h2>Vos clients vous ont répondu</h2></div><ul class="lst">${(await db.prepare(`SELECT p.id, p.title, c.company ccomp, c.name cname FROM projects p LEFT JOIN clients c ON c.id = p.client_id WHERE p.id IN (${unsIds.map(() => '?').join(',')})`).all(...unsIds.map(Number))).map((x) => `<li><a href="/projets/${x.id}#suivi"><b>${esc(x.ccomp || x.cname || '')}</b><span>${esc(x.title || '')}</span></a><em class="svt-new">${UNS[x.id]} nouveau${UNS[x.id] > 1 ? 'x' : ''}</em></li>`).join('')}</ul></div>` : '';
+  const body = unsCard + dayCard + hero + `<section class="kpis">${kpi('Encaissé ce mois', money(cashMonth), 'paiements reçus', 'hl')}${kpi('Reste à encaisser', money(due), `${late.length} facture${late.length > 1 ? 's' : ''} en retard`, late.length ? 'warn' : '')}${kpi('Devis en attente', money(pipeline.s), `${pipeline.n} devis envoyés`)}${kpi('Taux d’acceptation', rate + ' %', `${qMonth.n} devis ce mois, ${money(qMonth.t)}`)}${kpi('Résultat du mois', money(cashMonth - expMonth), `${money(expMonth)} de dépenses`, cashMonth - expMonth < 0 ? 'warn' : '')}</section>
 <section class="grid2"><div class="card"><div class="card-h"><h2>Encaissements</h2><span>6 derniers mois</span></div>${chart({ labels: months.map(([k]) => MOIS[Number(k.slice(5)) - 1]), series: [{ name: 'Encaissé', values: months.map(([, v]) => v), color: 'url(#chB)' }], height: 200 })}</div>
 <div class="card"><div class="card-h"><h2>À relancer</h2><span>Devis envoyés depuis plus de 3 jours</span></div>${follow.length ? `<ul class="lst">${follow.map((q) => `<li><a href="/devis/${q.id}"><b>${esc(q.number)}</b><span>${esc(q.ccomp || q.cname || '')}</span></a><em>${money(q.total_ttc)}</em>${q.cphone ? `<a class="mini" target="_blank" rel="noopener" href="https://wa.me/${digits(q.cphone)}?text=${encodeURIComponent(`Bonjour ${q.cname || ''}, avez-vous pu consulter notre devis ${q.number} ? ${baseUrl(req)}/d/${q.token}`)}">Relancer</a>` : ''}</li>`).join('')}</ul>` : '<p class="empty">Rien à relancer pour l’instant.</p>'}</div></section>
 <section class="card"><div class="card-h"><h2>Projets en cours</h2><a href="/projets">Tout voir</a></div>${projs.length ? `<div class="pj-row">${projs.map((p) => { const st = (() => { try { return JSON.parse(p.steps || '[]'); } catch (e) { return []; } })(), d = st.filter((x) => x.d).length; const HL = health(p, CLM[p.client_id]); return `<a class="kb-card hl-${HL.lvl}" href="/projets/${p.id}" title="${esc(HL.why.join(', ') || 'Tout va bien')}"><b><i class="hl-dot"></i>${esc(p.ccomp || p.cname || '')}</b><span>${esc(p.title || '')}</span><div class="prog"><i style="width:${st.length ? Math.round(100 * d / st.length) : 0}%"></i></div><small>${badge(P_STATUS, p.status)} ${p.due_date ? 'livraison ' + dateFr(p.due_date) : ''}</small></a>`; }).join('')}</div>` : '<p class="empty">Aucun projet en cours. Ils s’ouvrent dès qu’un devis est accepté.</p>'}</section>
@@ -1034,8 +1046,8 @@ app.post('/parametres/deconnecter-tout', async (req, res) => { await rotateSessi
 const steps = (p) => { try { return JSON.parse(p.steps || '[]'); } catch (e) { return []; } };
 app.get('/projets', async (req, res) => {
   const rows = await db.prepare('SELECT p.*, c.name cname, c.company ccomp FROM projects p LEFT JOIN clients c ON c.id = p.client_id ORDER BY COALESCE(p.due_date, p.created_at)').all();
-  const CLM = await clientMap();
-  const col = (k) => { const list = rows.filter((p) => p.status === k); return `<section class="kb-col"><header>${badge(P_STATUS, k)}<span>${list.length}</span></header>${list.map((p) => { const st = steps(p), d = st.filter((x) => x.d).length, late = k !== 'livre' && p.due_date && p.due_date < today(); const HL = health(p, CLM[p.client_id]); return `<a class="kb-card hl-${HL.lvl}" href="/projets/${p.id}" title="${esc(HL.why.join(', ') || 'Tout va bien')}"><b><i class="hl-dot"></i>${esc(p.ccomp || p.cname || '')}</b><span>${esc(p.title || '')}</span><div class="prog"><i style="width:${st.length ? Math.round(100 * d / st.length) : 0}%"></i></div><small class="${late ? 'red' : ''}">${d}/${st.length} étapes${p.due_date ? ' · livraison ' + dateFr(p.due_date) : ''}</small>${(() => { const c = completeness(p, CLM[p.client_id]); return `<em class="kb-inf ${c.pct === 100 ? 'ok' : ''}">Infos ${c.pct} %</em>`; })()}</a>`; }).join('') || '<p class="empty">Aucun projet.</p>'}</section>`; };
+  const CLM = await clientMap(), UN = await SV.unseen();
+  const col = (k) => { const list = rows.filter((p) => p.status === k); return `<section class="kb-col"><header>${badge(P_STATUS, k)}<span>${list.length}</span></header>${list.map((p) => { const st = steps(p), d = st.filter((x) => x.d).length, late = k !== 'livre' && p.due_date && p.due_date < today(); const HL = health(p, CLM[p.client_id]); return `<a class="kb-card hl-${HL.lvl}" href="/projets/${p.id}" title="${esc(HL.why.join(', ') || 'Tout va bien')}"><b><i class="hl-dot"></i>${esc(p.ccomp || p.cname || '')}</b><span>${esc(p.title || '')}</span><div class="prog"><i style="width:${st.length ? Math.round(100 * d / st.length) : 0}%"></i></div><small class="${late ? 'red' : ''}">${d}/${st.length} étapes${p.due_date ? ' · livraison ' + dateFr(p.due_date) : ''}</small>${(() => { const c = completeness(p, CLM[p.client_id]); return `<em class="kb-inf ${c.pct === 100 ? 'ok' : ''}">Infos ${c.pct} %</em>`; })()}${UN[p.id] ? `<em class="kb-inf new">● ${UN[p.id]} nouveau${UN[p.id] > 1 ? 'x' : ''} du client</em>` : ''}</a>`; }).join('') || '<p class="empty">Aucun projet.</p>'}</section>`; };
   res.send(layout({ title: 'Projets', active: '/projets', body: `<p class="hint">Chaque devis accepté ouvre un projet. Suivez chaque étape jusqu’à la mise en ligne.</p><div class="kanban">${['proposition', 'a_demarrer', 'en_cours', 'validation', 'livre'].map(col).join('')}</div>` }));
 });
 app.get('/projets/:id', async (req, res) => {
@@ -1043,7 +1055,7 @@ app.get('/projets/:id', async (req, res) => {
   const cl = await Q.client.get(p.client_id) || {}, q = p.quote_id ? await Q.quote.get(p.quote_id) : null, st = steps(p);
   const invs = q ? await withPaid(await Q.quoteInvoices.all(q.id)) : [];
   if (!p.token) { p.token = token(); await db.prepare('UPDATE projects SET token = ? WHERE id = ?').run(p.token, p.id); }
-  const inf = pinfo(p), cp = completeness(p, cl), blink = `${baseUrl(req)}/brief/${p.token}`;
+  const inf = pinfo(p), cp = completeness(p, cl), blink = `${baseUrl(req)}/suivi/${p.token}`;
   const bmsg = `Bonjour ${cl.name || ''}, pour avancer sur votre site, pouvez-vous compléter ces informations (2 minutes) ? ${blink}`;
   const infoCard = `<form method="post" action="/projets/${p.id}/infos" class="card"><div class="card-h"><h2>Informations à réunir</h2><span class="pc ${cp.pct === 100 ? 'ok' : ''}">${cp.pct} %</span></div><div class="prog big"><i style="width:${cp.pct}%"></i></div>
 ${cp.missing.length ? `<p class="miss"><b>Il manque :</b> ${cp.missing.map(esc).join(', ')}.</p>` : '<p class="miss ok">Tout est réuni. Vous avez tout pour livrer.</p>'}
@@ -1058,7 +1070,7 @@ ${T.old_site || T.registrar || T.pages ? `<p class="mut">Avant le projet : ${[T.
 <button class="btn sm">Enregistrer</button></form>
 <form method="post" action="/projets/${p.id}/lancement" class="card"><div class="card-h"><h2>Mise en ligne</h2><span class="pc ${lcDone === LAUNCH.length ? 'ok' : ''}">${lcDone}/${LAUNCH.length}</span></div><div class="prog big"><i style="width:${Math.round(100 * lcDone / LAUNCH.length)}%"></i></div>
 <ul class="steps lc">${LAUNCH.map((x, i) => `<li><label class="chk"><input type="checkbox" name="l${i}" value="1"${LC[i] ? ' checked' : ''}> ${esc(x)}</label></li>`).join('')}</ul><button class="btn sm">Enregistrer</button></form></div>`;
-  const body = infoCard + techCard + `<div class="grid2"><form method="post" class="card"><div class="card-h"><h2>Avancement</h2>${badge(P_STATUS, p.status)}</div>
+  const body = (await SV.adminCard(p, cl, req)) + infoCard + techCard + `<div class="grid2"><form method="post" class="card"><div class="card-h"><h2>Avancement</h2>${badge(P_STATUS, p.status)}</div>
 <ul class="steps">${st.map((x, i) => `<li><label class="chk"><input type="checkbox" name="d${i}" value="1"${x.d ? ' checked' : ''}> ${esc(x.t)}</label></li>`).join('')}</ul>
 <div class="row"><label>Statut<select name="status">${Object.keys(P_STATUS).map((k) => `<option value="${k}"${p.status === k ? ' selected' : ''}>${P_STATUS[k][0]}</option>`).join('')}</select></label><label>Livraison prévue<input type="date" name="due_date" value="${esc(p.due_date || '')}"></label></div>
 <label>Adresse du site livré<input name="site_url" value="${esc(p.site_url || '')}" placeholder="https://…"></label><label>Notes internes<textarea name="notes" rows="4">${esc(p.notes || '')}</textarea></label><button class="btn">Enregistrer</button></form>
@@ -1377,9 +1389,11 @@ app.get('/export/depenses.csv', async (req, res) => {
 });
 app.get('/sauvegarde', async (req, res) => {
   const out = { app: 'Digilago Gestion', date: new Date().toISOString(), tables: {} };
-  const T = ['settings', 'counters', 'clients', 'services', 'leads', 'lead_notes', 'quotes', 'quote_items', 'orders', 'invoices', 'invoice_items', 'payments', 'reminders', 'projects', 'expenses', 'messages', 'templates', 'tax_periods', 'locks', 'acc_notes', 'activity'];
+  const T = ['settings', 'counters', 'clients', 'services', 'leads', 'lead_notes', 'quotes', 'quote_items', 'orders', 'invoices', 'invoice_items', 'payments', 'reminders', 'projects', 'expenses', 'messages', 'templates', 'tax_periods', 'locks', 'acc_notes', 'activity', 'project_tasks', 'project_msgs'];
   const rows = await Promise.all(T.map((t) => db.prepare(`SELECT * FROM ${t}`).all()));
   T.forEach((t, i) => { out.tables[t] = rows[i]; });
+  /* fichiers des clients : la liste seulement (le contenu reste dans la base, il alourdirait la sauvegarde) */
+  out.tables.project_files = await db.prepare('SELECT id, project_id, task_id, author, name, mime, size, shared, created_at FROM project_files').all();
   /* jamais de mot de passe ni de jeton dans un fichier de sauvegarde */
   out.tables.settings = out.tables.settings.filter((r) => !r.key.startsWith('_') && !/(_pass|_token|_secret)$/.test(r.key));
   res.set({ 'Content-Type': 'application/json; charset=utf-8', 'Content-Disposition': `attachment; filename="digilago-sauvegarde-${today()}.json"` }).send(JSON.stringify(out, null, 1));

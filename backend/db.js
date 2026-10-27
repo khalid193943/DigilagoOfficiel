@@ -81,6 +81,12 @@ CREATE TABLE IF NOT EXISTS lead_notes (id INTEGER PRIMARY KEY, lead_id INTEGER R
 CREATE TABLE IF NOT EXISTS activity (id INTEGER PRIMARY KEY, kind TEXT, ref_id INTEGER, text TEXT, created_at TEXT DEFAULT (datetime('now')));
 CREATE TABLE IF NOT EXISTS hits (k TEXT, at INTEGER);
 CREATE INDEX IF NOT EXISTS i_hits ON hits(k, at);
+CREATE TABLE IF NOT EXISTS project_tasks (id INTEGER PRIMARY KEY, project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE, kind TEXT, title TEXT, detail TEXT, link TEXT, step_idx INTEGER, status TEXT DEFAULT 'todo', answer TEXT, feedback TEXT, due_date TEXT, position INTEGER DEFAULT 0, seen INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now')), done_at TEXT);
+CREATE TABLE IF NOT EXISTS project_files (id INTEGER PRIMARY KEY, project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE, task_id INTEGER, author TEXT, name TEXT, mime TEXT, size INTEGER, data BLOB, shared INTEGER DEFAULT 0, seen INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS project_msgs (id INTEGER PRIMARY KEY, project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE, author TEXT, body TEXT, seen INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS i_ptasks ON project_tasks(project_id, position);
+CREATE INDEX IF NOT EXISTS i_pfiles ON project_files(project_id, task_id);
+CREATE INDEX IF NOT EXISTS i_pmsgs ON project_msgs(project_id);
 CREATE INDEX IF NOT EXISTS i_quotes_client ON quotes(client_id);
 CREATE INDEX IF NOT EXISTS i_inv_quote ON invoices(quote_id);
 CREATE INDEX IF NOT EXISTS i_pay_inv ON payments(invoice_id);
@@ -110,7 +116,7 @@ const CATALOGUE = [
 const STEPS = ['Brief et identité', 'Maquette validée', 'Développement', 'Textes SEO et GEO', 'Fiche Google', 'Mise en ligne'];
 
 /* Initialisation : rapide quand la base est à jour (1 requête), complète et groupée sinon (quelques requêtes) */
-const SCHEMA_VERSION = '2026-10-12.3';
+const SCHEMA_VERSION = '2026-10-27.1';
 const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT'],
   ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'], ['quotes', 'prices_ttc', 'INTEGER'], ['invoices', 'prices_ttc', 'INTEGER'],
   ['invoices', 'sched_idx', 'INTEGER'], ['invoices', 'credit_of', 'INTEGER'], ['invoices', 'label', 'TEXT'],

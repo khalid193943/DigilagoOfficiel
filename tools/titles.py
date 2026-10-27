@@ -39,6 +39,8 @@ TITLES = {
                              'Confidentialité :', 'vos données restent les vôtres.'),
     '404.html': ('Page introuvable | Digilago',
                  'Page introuvable :', 'reprenons le bon chemin.'),
+    'merci.html': ('Merci, demande bien reçue | Digilago',
+                   'Merci, c’est bien reçu :', 'on s’occupe du reste.'),
 }
 
 

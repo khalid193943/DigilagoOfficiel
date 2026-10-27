@@ -126,3 +126,15 @@ Ouvrez l'espace de gestion dans Safari (iPhone) ou Chrome (Android), puis **Part
 npm test   # 22 scénarios en 7 s : parcours complet (devis → acompte → paiements → solde), demandes, projets,
            # comptabilité, et garde-fous (échéances dans l'ordre, double-clic, avoirs, centimes, sécurité)
 ```
+
+## Espace client « Suivi de projet »
+
+Chaque projet a un lien privé `/suivi/<jeton>` (affiché et copiable dans la fiche projet, carte « Espace client », avec un bouton WhatsApp). Pas de mot de passe : le jeton est le secret, la page n'est pas indexée et n'est jamais mise en cache.
+
+- **Avancement** : les étapes cochées dans « Avancement » de la fiche projet, la date de livraison et le statut.
+- **À faire de votre côté** : demandes ajoutées depuis la fiche projet (logo, photos, horaires, validation de maquette, confirmation…). Elles n'existent chez le client que pendant les statuts « À démarrer », « En cours » et « En validation ». Une validation de maquette peut cocher automatiquement l'étape liée.
+- **Fichiers** : images, PDF et documents Office, 4 Mo au maximum par fichier, 30 fichiers et 60 Mo par projet. Ils sont gardés dans la base (Turso) : aucune configuration en plus. Contrôle de l'extension et du contenu, jamais exécutés (téléchargement isolé).
+- **Messages** : dans les deux sens ; une pastille « nouveau » apparaît sur la fiche, sur la carte du projet et sur le tableau de bord jusqu'à la consultation.
+- **Livraison** : à « Livré », l'espace montre l'adresse du site, le nom de domaine et les échéances (domaine, hébergement), le lien d'avis Google (Paramètres), les documents remis et les devis et factures.
+
+Tables : `project_tasks`, `project_files`, `project_msgs` (créées au démarrage). La sauvegarde JSON contient la liste des fichiers mais pas leur contenu.

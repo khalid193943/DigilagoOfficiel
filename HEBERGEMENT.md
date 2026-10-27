@@ -91,3 +91,31 @@ pip install -r requirements.txt && python -m playwright install chromium
 npm run test                     # le site : 300 tests dans un vrai navigateur
 cd backend && npm ci && npm test # la gestion : 25 tests
 ```
+
+---
+
+## 5. Mesure d'audience : brancher Google Analytics, Tag Manager, Clarity
+
+Le site est livré **sans aucun outil de mesure** : il ne pose aucun cookie de mesure et n'affiche aucun bandeau. Dès qu'un identifiant est enregistré, un bandeau « Accepter / Refuser » apparaît en trois langues et **rien n'est chargé avant l'accord du visiteur** (loi 09-08 et CNDP). Le choix est gardé 12 mois ; la page Confidentialité se met à jour toute seule et propose « Modifier mon choix ».
+
+Dans un terminal du projet (Codespaces convient), avec vos identifiants :
+
+```
+python3 tools/analytics.py --ga4 G-XXXXXXX --gtm GTM-XXXXXXX --clarity abcd1234ef
+python3 tools/build.py
+```
+
+- `--ga4` : Google Analytics 4, envoyé directement par le site (visites, `generate_lead`, clics).
+- `--gtm` : Tag Manager, chargé en plus pour vos futures balises. **N'y ajoutez pas la balise GA4** : le site l'envoie déjà, les visites seraient comptées deux fois. Le bloc `<noscript>` de GTM n'est volontairement pas installé : il chargerait Google sans l'accord du visiteur.
+- `--gsc` : code de vérification de la Search Console.
+- `--clarity` : Microsoft Clarity (cartes de chaleur et enregistrements anonymisés).
+- `--vercel on` : Vercel Web Analytics et Speed Insights, **sans cookie** (à activer aussi dans le projet Vercel : onglets Analytics et Speed Insights). Aucun bandeau n'est alors nécessaire pour eux.
+- Retirer un outil : `python3 tools/analytics.py --ga4 ""`, puis `python3 tools/build.py`.
+
+Événements envoyés (seulement après accord) : `generate_lead` (page « Merci », avec `form` = demarrer, contact ou rappel), `click_whatsapp`, `click_tel`, `click_email`. Dans GA4, marquez `generate_lead` comme **événement clé**.
+
+**Source de chaque demande** : le site retient `utm_source` (ou le site d'origine) le temps de la visite, sans cookie, et l'ajoute à la demande : elle apparaît dans « Demandes » de la gestion (par exemple « Formulaire de contact · utm:instagram/bio »). Ajoutez `?utm_source=instagram&utm_medium=bio` à vos liens publiés.
+
+### IndexNow (prévenir Bing des pages nouvelles)
+
+La clé est le fichier `site/<clé>.txt` (déjà dans le projet). Une fois le site en ligne : `python3 tools/indexnow.py` envoie les adresses du sitemap (`--dry-run` pour voir sans envoyer). À refaire quand vous ajoutez des pages.

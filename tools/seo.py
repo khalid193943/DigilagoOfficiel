@@ -14,6 +14,8 @@ Usage : python3 tools/seo.py   (SITE_URL=https://www.digilago.ma par défaut : l
 """
 import glob, html, json, os, re
 
+NOINDEX = {'404.html', 'merci.html'}  # pages hors de Google et du sitemap
+
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SITE = os.path.join(ROOT, 'site')
 URL = os.environ.get('SITE_URL', 'https://www.digilago.ma').rstrip('/')
@@ -134,7 +136,7 @@ def block(name, h, lang='fr'):
             {'@type': 'ListItem', 'position': 3, 'name': title.split(' | ')[0], 'item': url}]})
     elif 'data-vz="' in h:
         graph += secteur_graph(name, h, lang, title, desc, url)
-    elif name != '404.html':
+    elif name not in NOINDEX:
         graph.append({'@type': 'WebPage', 'name': title, 'description': desc, 'url': url,
                       'inLanguage': lang, 'isPartOf': {'@type': 'WebSite', 'name': 'Digilago', 'url': URL + '/'}})
     f = faq(h)
@@ -142,7 +144,7 @@ def block(name, h, lang='fr'):
         graph.append(f)
     e = lambda s: html.escape(s, quote=True)
     tags = []
-    if name != '404.html':
+    if name not in NOINDEX:
         tags.append('<link rel="canonical" href="%s">' % url)
         # chaque langue annonce ses équivalents : Google sert la bonne version à chacun
         tags += ['<link rel="alternate" hreflang="%s" href="%s">' % (l, page_url(name, l)) for l in LANGS]
@@ -231,7 +233,7 @@ def main():
     today = datetime.date.today().isoformat()
     prio = {'index.html': '1.0', 'demarrer.html': '0.9', 'services.html': '0.9', 'realisations.html': '0.8',
             'contact.html': '0.8', 'a-propos.html': '0.7', 'guides.html': '0.7'}
-    names = sorted(os.path.basename(f) for f in glob.glob(os.path.join(SITE, '*.html')) if not f.endswith('404.html'))
+    names = sorted(os.path.basename(f) for f in glob.glob(os.path.join(SITE, '*.html')) if os.path.basename(f) not in NOINDEX)
     VZ = {n for n in names if 'data-vz="' in open(os.path.join(SITE, n), encoding='utf-8').read()}
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">']

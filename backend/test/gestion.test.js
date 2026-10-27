@@ -57,7 +57,7 @@ test('projet ouvert à l’acceptation, dépenses et rapports', async () => {
 test('brief client et superviseur', async () => {
   const pr = await (await get('/projets/1')).text();
   assert.match(pr, /Informations à réunir/);
-  const tok = pr.match(/\/brief\/([A-Za-z0-9_-]+)/)[1];
+  const tok = pr.match(/\/suivi\/([A-Za-z0-9_-]+)/)[1];
   const page = await (await fetch(base + '/brief/' + tok)).text(); assert.match(page, /votre site/);
   const r = await fetch(base + '/brief/' + tok, { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ company: 'Clinique Azur', city: 'Casablanca', address: '12 boulevard d’Anfa', phone: '0612345678', i_horaires: '9 h à 19 h' }).toString() });
   assert.match(r.headers.get('location'), /merci=1/);

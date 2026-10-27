@@ -96,14 +96,14 @@ def test_demarrer_un_projet_envoie_a_la_gestion(page, base_url):
     page.click('#wzNext'); page.wait_for_timeout(300)
     assert 'quand' in page.inner_text('#wzErr').lower(), 'le moment de rappel est demandé'
     page.click('#tCb [data-cb="day"]'); page.click('#cbSlot [data-slot="pm"]')
-    page.click('#wzNext'); page.wait_for_timeout(1200)
-    assert page.evaluate("document.getElementById('wzCard').classList.contains('sent')")
-    assert page.evaluate('window.__opened') == [], 'aucune ouverture de WhatsApp'
+    page.click('#wzNext')
+    page.wait_for_url('**/merci.html*', timeout=8000)  # après l'envoi : la page « Merci »
+    page.wait_for_timeout(600)
     assert len(sent) == 1 and sent[0]['phone'] == '0612345678' and sent[0]['callback'] == 'day' and sent[0]['slot'] == 'pm'
     assert sent[0]['date'] and sent[0]['source'].startswith('Démarrer un projet (DG-')
-    assert 'entre 14 h et 18 h' in page.inner_text('#wzWhen')
-    assert '0612345678' in page.inner_text('#wzTel')
-    assert 'wa.me/212649953813' in page.get_attribute('#wzWa', 'href')
+    assert 'entre 14 h et 18 h' in page.inner_text('#mcWhen'), 'le moment du rappel choisi est rappelé'
+    assert page.inner_text('#mcName') == 'Sara'
+    assert page.inner_text('#mcRef').startswith('DG-')
 
 
 def test_demarrer_echec_rien_ne_se_perd(page, base_url):
@@ -129,9 +129,11 @@ def test_demarrer_traduit(page, base_url, lang):
     page.goto(f'{base_url}/{lang}/demarrer.html'); page.wait_for_timeout(800)
     page.locator('#tNeeds .wtile').first.click(); page.click('#wzNext'); page.wait_for_timeout(400)
     page.fill('#wTel', '0612345678'); page.click('#wzNext'); page.wait_for_timeout(400)
-    page.click('#tCb [data-cb="day"]'); page.click('#wzNext'); page.wait_for_timeout(1200)
+    page.click('#tCb [data-cb="day"]'); page.click('#wzNext')
+    page.wait_for_url(f'**/{lang}/merci.html*', timeout=8000)  # la page « Merci » de la même langue
+    page.wait_for_timeout(600)
     assert sent and sent[0]['lang'] == lang and sent[0]['source'].startswith('Démarrer un projet (')
-    txt = page.inner_text('#wzDone')
+    txt = page.inner_text('#mcWhen')
     assert ('Tomorrow' in txt) if lang == 'en' else ('غدًا' in txt), txt
 
 
@@ -821,3 +823,133 @@ def test_accueil_cartes_metiers_vers_secteurs():
     links = re.findall(r'<a class="mc2-go" href="([^"]+)"', html)
     assert len(links) == 12 and all(os.path.exists(os.path.join(SITE, l)) for l in links)
     assert 'href="secteurs.html"' in html
+
+
+def test_page_merci_trois_langues_hors_google():
+    for pre in ('', 'en/', 'ar/'):
+        h = open(os.path.join(SITE, pre + 'merci.html'), encoding='utf-8').read()
+        assert '<meta name="robots" content="noindex">' in h, pre
+        assert 'id="mcStamp"' in h and 'rel="canonical"' not in h
+    sm = open(os.path.join(SITE, 'sitemap.xml'), encoding='utf-8').read()
+    assert 'merci.html' not in sm and '404.html' not in sm, 'ni la page Merci ni la 404 dans le sitemap'
+    ar = open(os.path.join(SITE, 'ar', 'merci.html'), encoding='utf-8').read()
+    assert 'شكراً' in ar and 'dir="rtl"' in ar
+
+
+def test_page_merci_texte_seulement(page, base_url):
+    """Le prénom de l'adresse s'affiche comme du texte : jamais interprété comme du HTML."""
+    page.goto(base_url + '/merci.html?n=%3Cimg%20src%3Dx%20onerror%3Dwindow.__x%3D1%3E&r=DG-1234'); page.wait_for_timeout(700)
+    assert page.evaluate('window.__x') is None and page.locator('#mcName img').count() == 0
+    assert page.inner_text('#mcRef') == 'DG-1234'
+    page.goto(base_url + '/merci.html'); page.wait_for_timeout(500)
+    assert page.locator('#mcNameRow').is_hidden() and page.locator('#mcRefRow').is_hidden()
+    assert 'Le jour même' in page.inner_text('#mcWhen')
+
+
+# ——— Mesure d'audience et consentement (loi 09-08) ———
+def _avec_outils(page, base_url, name, ga4='G-TEST1234', gtm=''):
+    """Sert la page avec des identifiants d’essai (jamais les vrais) ; Google est simulé (aucun accès réel)."""
+    def rewrite(route):
+        r = route.fetch()
+        body = re.sub(r'data-ga4="[^"]*"', f'data-ga4="{ga4}"', r.text())
+        body = re.sub(r'data-gtm="[^"]*"', f'data-gtm="{gtm}"', body)
+        body = re.sub(r'data-clarity="[^"]*"', 'data-clarity=""', body)
+        route.fulfill(response=r, body=body)
+    page.route(f'{base_url}/{name}*', rewrite)
+    page.route('https://www.googletagmanager.com/**', lambda route: route.fulfill(status=200, content_type='application/javascript', body=''))
+    page.route('https://www.clarity.ms/**', lambda route: route.fulfill(status=200, content_type='application/javascript', body=''))
+
+
+def test_rien_ne_part_vers_google_avant_le_choix(page, base_url):
+    """Avec les vrais identifiants : le bandeau s’affiche et aucune requête ne part vers Google ou Clarity."""
+    import json
+    conf = json.load(open(os.path.join(os.path.dirname(SITE), 'src', 'analytics.json'), encoding='utf-8'))
+    on = bool(conf['gtm'] or conf['ga4'] or conf['clarity'])
+    asked = []
+    page.on('request', lambda r: asked.append(r.url) if 'googletagmanager' in r.url or 'clarity.ms' in r.url else None)
+    page.goto(f'{base_url}/index.html'); page.wait_for_timeout(2800)
+    assert not asked, asked
+    assert page.locator('#dgc').is_visible() == on
+    h = open(os.path.join(SITE, 'confidentialite.html'), encoding='utf-8').read()
+    assert ('class="dgc-edit"' in h) == on
+    if not on:
+        assert 'Ce site n’utilise pas de cookies publicitaires' in h
+
+
+@pytest.mark.parametrize('lang', ['fr', 'en', 'ar'])
+def test_bandeau_refuser_ne_charge_rien(page, base_url, lang):
+    name = 'contact.html' if lang == 'fr' else f'{lang}/contact.html'
+    asked = []
+    page.on('request', lambda r: asked.append(r.url) if 'googletagmanager' in r.url else None)
+    _avec_outils(page, base_url, name)
+    page.goto(f'{base_url}/{name}'); page.wait_for_timeout(2200)
+    assert page.locator('#dgc').is_visible(), 'le bandeau s’affiche tant que le visiteur n’a pas choisi'
+    assert not asked, 'rien n’est chargé avant le choix'
+    assert page.locator('#dgc button').count() == 2
+    txt = page.inner_text('#dgc')
+    assert ('Refuser' in txt) if lang == 'fr' else ('Decline' in txt) if lang == 'en' else ('رفض' in txt), txt
+    page.click('#dgc [data-c="no"]'); page.wait_for_timeout(700)
+    assert page.locator('#dgc').is_hidden() and not asked
+    assert page.evaluate("JSON.parse(localStorage.getItem('dg_consent')).a") == 0
+    page.reload(); page.wait_for_timeout(2200)
+    assert page.locator('#dgc').is_hidden() and not asked, 'le refus est mémorisé'
+
+
+def test_bandeau_accepter_charge_google_et_mesure(page, base_url):
+    asked = []
+    page.on('request', lambda r: asked.append(r.url) if 'googletagmanager' in r.url else None)
+    _avec_outils(page, base_url, 'merci.html', gtm='GTM-TEST123')
+    page.goto(f'{base_url}/merci.html?f=demarrer'); page.wait_for_timeout(2200)
+    assert not asked
+    page.click('#dgc [data-c="yes"]'); page.wait_for_timeout(800)
+    assert any('gtag/js?id=G-TEST1234' in u for u in asked), asked
+    assert any('gtm.js?id=GTM-TEST123' in u for u in asked), 'Tag Manager est chargé en plus de GA4'
+    assert page.evaluate("JSON.parse(localStorage.getItem('dg_consent')).a") == 1
+    # le consentement n’autorise que la mesure : ni publicité, ni profilage
+    consent = page.evaluate("window.dataLayer.filter(a => a[0] === 'consent').map(a => [a[1], JSON.stringify(a[2])])")
+    assert consent[0][0] == 'default' and '"ad_storage":"denied"' in consent[0][1], consent
+    # un clic WhatsApp est mesuré
+    page.evaluate("document.querySelector('.hcta a.ghost').addEventListener('click', e => e.preventDefault())")
+    page.locator('.hcta a.ghost').click(); page.wait_for_timeout(300)
+    ev = page.evaluate("window.dataLayer.filter(a => a[0] === 'event').map(a => a[1])")
+    assert 'click_whatsapp' in ev, ev
+    # après un accord déjà donné, la page « Merci » compte la demande envoyée dès son arrivée
+    page.goto(f'{base_url}/merci.html?f=demarrer'); page.wait_for_timeout(1500)
+    ev = page.evaluate("window.dataLayer.filter(a => a[0] === 'event').map(a => a[1] + ':' + a[2].form)")
+    assert 'generate_lead:demarrer' in ev, ev
+
+
+def test_source_de_la_visite_jointe_a_la_demande(page, base_url):
+    sent = []
+    stub_open(page)
+    lead_api(page, sent)
+    page.goto(f'{base_url}/contact.html?utm_source=instagram&utm_medium=bio'); page.wait_for_timeout(1200)
+    assert page.evaluate('window.dgSrc()') == ' · utm:instagram/bio'
+    page.fill('#cform input[name="nom"]', 'Sara Test')
+    page.click('#cform button[type="submit"]'); page.wait_for_timeout(500)
+    assert sent and sent[0]['source'] == 'Formulaire de contact · utm:instagram/bio', sent
+
+
+def test_politique_confidentialite_suit_les_outils():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('analytics_tool', os.path.join(os.path.dirname(SITE), 'tools', 'analytics.py'))
+    m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+    base = {'gtm': '', 'ga4': '', 'clarity': '', 'vercel': False}
+    assert 'dgc-edit' not in m.privacy_block(base)
+    b = m.privacy_block({**base, 'ga4': 'G-TEST1234', 'clarity': 'abcd1234ef'})
+    assert 'Google Analytics' in b and 'Microsoft Clarity' in b and 'dgc-edit' in b and 'hors du Maroc' in b
+    v = m.privacy_block({**base, 'vercel': True})
+    assert 'Vercel Web Analytics' in v and 'dgc-edit' not in v, 'la mesure sans cookie n’exige pas de bandeau'
+    assert m.ID_OK and not __import__('re').match(m.ID_OK['ga4'], 'UA-12345')
+
+
+def test_indexnow_cle_en_ligne():
+    key = open(os.path.join(os.path.dirname(SITE), 'src', 'indexnow_key.txt'), encoding='utf-8').read().strip()
+    assert len(key) == 32 and open(os.path.join(SITE, key + '.txt'), encoding='utf-8').read() == key
+
+
+def test_verification_search_console_dans_toutes_les_pages():
+    for name in ('index.html', 'en/index.html', 'ar/index.html', 'secteurs.html', 'merci.html'):
+        h = open(os.path.join(SITE, name), encoding='utf-8').read()
+        head = h[:h.index('</head>')]
+        assert head.count('<meta name="google-site-verification" content="HYvx4k2Wvut0rmCEfp6kXduTcaeWZMOm7UdS81qsR4s">') == 1, name

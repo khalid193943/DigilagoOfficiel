@@ -8,6 +8,24 @@
   $$('[data-print]').forEach(function(b){ b.addEventListener('click', function(){ window.print(); }); });
   /* copier le lien client */
   $$('[data-copy]').forEach(function(b){ b.addEventListener('click', function(){ var i = $(b.dataset.copy); i.select(); try { navigator.clipboard.writeText(i.value); } catch (e) { document.execCommand('copy'); } b.textContent = 'Copié'; setTimeout(function(){ b.textContent = 'Copier'; }, 1500); }); });
+  /* envoi de fichiers (espace client et fiche projet) : un fichier à la fois, puis la page se recharge */
+  $$('[data-upload]').forEach(function(inp){
+    inp.addEventListener('change', function(){
+      var files = Array.prototype.slice.call(inp.files || []), s = inp.parentNode.querySelector('.up-s'), url = inp.dataset.upload, i = 0;
+      var say = function(t, bad){ if (s) { s.textContent = t; s.classList.toggle('bad', !!bad); } };
+      var next = function(){
+        if (i >= files.length) { say('Envoyé ✓'); location.reload(); return; }
+        var f = files[i];
+        if (f.size > 4 * 1024 * 1024) { say(f.name + ' : fichier trop lourd (4 Mo au maximum).', true); inp.value = ''; return; }
+        say('Envoi de ' + f.name + ' (' + (i + 1) + '/' + files.length + ')…');
+        fetch(url + (url.indexOf('?') > -1 ? '&' : '?') + 'name=' + encodeURIComponent(f.name), { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/octet-stream' }, body: f })
+          .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok) throw new Error(j.error || 'Envoi impossible.'); }); })
+          .then(function(){ i++; next(); })
+          .catch(function(e){ say(f.name + ' : ' + e.message, true); inp.value = ''; });
+      };
+      if (files.length) next();
+    });
+  });
   /* envoyer = marquer le devis comme envoyé */
   $$('[data-mark]').forEach(function(a){ a.addEventListener('click', function(){ try { fetch(a.dataset.mark, { method: 'POST', credentials: 'same-origin' }); } catch (e) {} }); });
   /* un formulaire envoyé une fois ne repart pas au double-clic (doubles factures, doubles paiements…) */
