@@ -435,15 +435,16 @@ def crumbs(items):
     return '<nav class="vz-crumb in" aria-label="%s">%s</nav>' % (A(S['crumb']), '<i aria-hidden="true">/</i>'.join(out))
 
 
-def hero(base, crumb, eyebrow, h1, lead, met, anchors=None, extra=''):
+def hero(base, crumb, eyebrow, h1, lead, met, anchors=None, extra='', icon=None):
     anc = ''
     if anchors:
         anc = '<nav class="anchors in2" aria-label="%s">%s</nav>' % (
             A(('Sur cette page', 'On this page', 'في هذه الصفحة')),
             ''.join('<a href="#%s"><span>%02d</span>%s</a>' % (i, n + 1, T(lbl)) for n, (i, lbl) in enumerate(anchors)))
-    return ('%s<p class="eyebrow in"><i class="live" aria-hidden="true"></i><span>%s</span></p><h1 class="hin"><span class="l">'
+    emb = '<span class="vz-emb" aria-hidden="true"><span class="oct">%s</span></span>' % svg(icon) if icon else ''
+    return ('%s%s<p class="eyebrow in"><i class="live" aria-hidden="true"></i><span>%s</span></p><h1 class="hin"><span class="l">'
             '<span class="lx">%s</span></span><span class="l"><span class="grad">%s</span></span></h1><p class="lead in2 hin">%s</p>'
-            '%s%s%s%s') % (crumb, T(eyebrow), T(h1[0]), T(h1[1]), T(lead), extra, base.cta(met), base.trust, anc)
+            '%s%s%s%s') % (crumb, emb, T(eyebrow), T(h1[0]), T(h1[1]), T(lead), extra, base.cta(met), base.trust, anc)
 
 
 def sband(cities):
@@ -456,7 +457,7 @@ def sband(cities):
 
 
 def card_type(t):
-    return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s"><span class="vz-ic">%s</span>%s<b>%s</b>'
+    return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s"><span class="vz-ic oct">%s</span>%s<b>%s</b>'
             '<span class="vz-d">%s</span><span class="vz-go">%s%s</span></a>') % (
         t['id'], t['file'], t['group'], kw(t['k'], t['name']), svg(t['icon']),
         ('<span class="vz-new">%s</span>' % T(S['trend'])) if t.get('trend') else '', T(t['name']), T(t['short']), T(S['see']), ARR)
@@ -466,10 +467,10 @@ def card_more(c):
     tags = '<span class="vz-tags">%s</span>' % ''.join('<i>%s</i>' % T(x) for x in c['tags'])
     new = ('<span class="vz-new">%s</span>' % T(S['trend'])) if c.get('trend') else ''
     if c.get('href'):
-        return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s"><span class="vz-ic">%s</span>%s<b>%s</b>'
+        return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s"><span class="vz-ic oct">%s</span>%s<b>%s</b>'
                 '<span class="vz-d">%s</span><span class="vz-go">%s%s</span></a>') % (
             c['id'], c['href'], c['group'], kw(c['k'], c['name']), svg(c['icon']), new, T(c['name']), T(c['short']), T(S['see']), ARR)
-    return ('<button type="button" class="vz-card vz-c rv" id="t-%s" data-g="%s" data-k="%s" data-met="%s"><span class="vz-ic">%s</span>%s'
+    return ('<button type="button" class="vz-card vz-c rv" id="t-%s" data-g="%s" data-k="%s" data-met="%s"><span class="vz-ic oct">%s</span>%s'
             '<b>%s</b><span class="vz-d">%s</span><span class="vz-more">%s</span><span class="vz-go">%s%s</span></button>') % (
         c['id'], c['group'], kw(c['k'], c['name']), A(c['name']), svg(c['icon']), new, T(c['name']), T(c['short']), tags, T(S['forU']), ARR)
 
@@ -478,7 +479,7 @@ def dialog():
     x = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">'
          '<path d="M6 6l12 12M18 6 6 18"/></svg>')
     return ('<dialog class="vz-dlg" id="vzDlg" aria-labelledby="vzDlgT"><div class="vz-dl-top"><button type="button" class="vz-dl-x" '
-            'aria-label="%s">%s</button><span class="vz-ic"></span><span class="vz-dl-k">%s</span><b class="vz-dl-t" id="vzDlgT"></b></div>'
+            'aria-label="%s">%s</button><span class="vz-ic oct"></span><span class="vz-dl-k">%s</span><b class="vz-dl-t" id="vzDlgT"></b></div>'
             '<div class="vz-dl-b"><p class="vz-dl-d"></p><span class="vz-tags vz-dl-tags"></span><p class="vz-dl-p">%s</p>'
             '<div class="vz-dl-a"><a class="vz-btn vz-dl-go" href="demarrer.html">%s%s</a><a class="vz-btn wa" href="%s" target="_blank" '
             'rel="noopener noreferrer">%sWhatsApp</a></div></div></dialog>') % (
@@ -596,8 +597,8 @@ def app(mods):
 
 
 def feats(t):
-    cells = ''.join('<div class="rv%s"><span class="n">%02d</span><span class="vz-ic">%s</span><b>%s</b><p>%s</p></div>' % (
-        ' d%d' % (i % 3) if i % 3 else '', i + 1, svg(ic), T(b), T(p)) for i, (ic, b, p) in enumerate(t['feats']))
+    cells = ''.join('<div class="rv%s"><span class="vz-ic oct">%s</span><b>%s</b><p>%s</p></div>' % (
+        ' d%d' % (i % 3) if i % 3 else '', svg(ic), T(b), T(p)) for i, (ic, b, p) in enumerate(t['feats']))
     return '<section class="blk" id="fonctions">%s<div class="vz-ft w">%s</div></section>' % (
         head_sh(S['ft_pill'], S['ft_1'], S['ft_2'], S['ft_p']), cells)
 
@@ -652,7 +653,7 @@ def sector_page(base, m, all_secs):
     anchors = [('activites', S['find_pill']), ('site', S['show_pill']), ('google', S['g_pill']), ('ia', S['ai_pill']),
                ('app', S['app_pill']), ('faq', S['faq_pill'])]
     hr = hero(base, crumbs([(S['home'], 'index.html'), (S['secteurs'], 'secteurs.html'), (sec['name'], None)]),
-              sec['eyebrow'], sec['h1'], sec['lead'], sec['met'], anchors)
+              sec['eyebrow'], sec['h1'], sec['lead'], sec['met'], anchors, icon=sec['icon'])
     body = (sband(CITIES) + find(sec, types, cards) + show(themes) + do_section() + google(sec['search'], 'vzG') +
             ai(sec['ai'], sec['icon']) + app(mods[:6]) + base.steps + base.price + cities() + faq(sec['faq']) + guides(sec['guides']))
     return base.page('sector', sec['title'], sec['desc'], hr, body)
@@ -662,7 +663,7 @@ def type_page(base, m, t):
     sec = m.SECTOR
     hr = hero(base, crumbs([(S['home'], 'index.html'), (S['secteurs'], 'secteurs.html'), (sec['name'], sec['file']), (t['name'], None)]),
               (sec['name'][0] + ' · ' + t['name'][0], sec['name'][1] + ' · ' + t['name'][1], sec['name'][2] + ' · ' + t['name'][2]),
-              t['h1'], t['lead'], t['name'])
+              t['h1'], t['lead'], t['name'], icon=t['icon'])
     shared_faq = [sec['faq'][0]] + ([sec['faq'][2]] if len(sec['faq']) > 2 else [])
     body = (sband(CITIES) + show([t], tabs=False) + feats(t) + google(t['search'], 'vzG') + ai(t['ai'], t['icon']) +
             app(t['app']) + base.incl + base.steps + faq(t['faq'] + shared_faq) + related(sec, m.TYPES, t['id']) + cities() +
@@ -679,25 +680,25 @@ def hub_page(base, mods, photos):
             src, srcset = photos[sec['photo']]
             im = '<img src="%s" srcset="%s" sizes="(max-width: 759px) 92vw, 30vw" alt="" loading="lazy" decoding="async">' % (src, srcset)
         else:
-            im = zellige('zs-' + sec['id']).replace('class="mk-z"', 'class="vz-z"') + '<span class="big">%s</span>' % svg(sec['icon'])
+            im = zellige('zs-' + sec['id']).replace('class="mk-z"', 'class="vz-z"') + '<span class="big oct">%s</span>' % svg(sec['icon'])
         ex = ''.join('<i>%s</i>' % T(t['name']) for t in m.TYPES[:4])
         cnt = ('%d activités' % n, '%d businesses' % n, '%d نشاطاً' % n)
         allk = [sec['name']] + [t['name'] for t in m.TYPES] + [c['name'] for c in m.CARDS]
         secs.append(('<a class="vz-sec rv" id="%s" href="%s" data-k="%s"><span class="vz-sec-im">%s<span class="n">%s</span></span>'
-                     '<span class="vz-sec-b"><b>%s</b><span class="d">%s</span><span class="ex">%s</span><span class="vz-go">%s%s</span></span></a>') % (
-            sec['id'], sec['file'], kw(*allk), im, T(cnt), T(sec['name']), T(tuple(x[:1].upper() + x[1:] for x in sec['h1'][1])), ex, T(S['hub_go']), ARR))
+                     '<span class="vz-sec-b"><span class="vz-sec-ic oct">%s</span><b>%s</b><span class="d">%s</span><span class="ex">%s</span><span class="vz-go">%s%s</span></span></a>') % (
+            sec['id'], sec['file'], kw(*allk), im, T(cnt), svg(sec['icon']), T(sec['name']), T(tuple(x[:1].upper() + x[1:] for x in sec['h1'][1])), ex, T(S['hub_go']), ARR))
         for t in m.TYPES:
-            idx.append('<a href="%s" data-k="%s"><span class="vz-ic">%s</span><span><b>%s</b><small>%s</small></span></a>' % (
+            idx.append('<a href="%s" data-k="%s"><span class="vz-ic oct">%s</span><span><b>%s</b><small>%s</small></span></a>' % (
                 t['file'], kw(t['k'], t['name']), svg(t['icon']), T(t['name']), T(sec['name'])))
         for c in m.CARDS:
             href = c.get('href') or '%s#t-%s' % (sec['file'], c['id'])
-            idx.append('<a href="%s" data-k="%s"><span class="vz-ic">%s</span><span><b>%s</b><small>%s</small></span></a>' % (
+            idx.append('<a href="%s" data-k="%s"><span class="vz-ic oct">%s</span><span><b>%s</b><small>%s</small></span></a>' % (
                 href, kw(c['k'], c['name']), svg(c['icon']), T(c['name']), T(sec['name'])))
-        idx.append('<a href="%s" data-k="%s"><span class="vz-ic">%s</span><span><b>%s</b><small>%s</small></span></a>' % (
+        idx.append('<a href="%s" data-k="%s"><span class="vz-ic oct">%s</span><span><b>%s</b><small>%s</small></span></a>' % (
             sec['file'], kw(sec['name'], sec['met']), svg(sec['icon']), T(sec['name']), T(S['secteurs'])))
     search = ('<div class="vz-hub in2"><label class="vz-q">%s<input type="search" id="vzHubQ" placeholder="%s" aria-label="%s" '
               'autocomplete="off" aria-controls="vzHubR"></label><div class="vz-hres" id="vzHubR" hidden></div>'
-              '<a class="vz-hnone" id="vzHubNone" href="demarrer.html" hidden><span class="vz-ic">%s</span><span><b>%s</b></span></a>'
+              '<a class="vz-hnone" id="vzHubNone" href="demarrer.html" hidden><span class="vz-ic oct">%s</span><span><b>%s</b></span></a>'
               '<div class="vz-idx">%s</div></div>') % (svg('search'), A(S['hub_q']), A(S['q_lbl']), svg('sparkle'), T(S['hub_none']), ''.join(idx))
     hr = hero(base, crumbs([(S['home'], 'index.html'), (S['secteurs'], None)]), S['hub_eb'], (S['hub_1'], S['hub_2']),
               S['hub_lead'], ('Autre activité', 'Other business', 'نشاط آخر'), None, search)

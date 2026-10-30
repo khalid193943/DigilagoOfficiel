@@ -44,7 +44,7 @@ ORG = {
         'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         'opens': '09:00', 'closes': '19:00'}],
     'availableLanguage': ['fr', 'en', 'ar'],
-    'sameAs': ['https://wa.me/212649953813'],
+    'sameAs': ['https://wa.me/212649953813'] + [u for u in json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src', 'social.json'), encoding='utf-8')).values() if u],
     'knowsAbout': ['Création de site web', 'Développement web', 'Site e-commerce', 'Boutique en ligne', 'Shopify',
                    'Application mobile', 'Référencement SEO', 'Fiche Google Business', 'Visibilité dans les IA (GEO)',
                    'Hébergement et maintenance de sites web'],
@@ -188,7 +188,7 @@ def llms(names):
                         ('Secteurs et métiers (un site web pour chaque activité au Maroc)', lambda n: n in vz)):
         out += ['', '## ' + title, '']
         for n in names:
-            if pick(n) and n not in ('mentions-legales.html', 'confidentialite.html'):
+            if pick(n) and n not in ('mentions-legales.html', 'confidentialite.html', 'cgv.html'):
                 t, d, _ = info(n)
                 out.append('- [%s](%s): %s' % (t, page_url(n, 'fr'), d))
     out += ['', '## Autres langues', '', '- English: %s/en/' % URL, '- العربية: %s/ar/' % URL, '', '## Questions fréquentes', '']

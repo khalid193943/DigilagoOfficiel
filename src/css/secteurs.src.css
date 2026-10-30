@@ -327,6 +327,7 @@ html[dir="rtl"] .mk-k{letter-spacing:0;font-family:"Noto Sans Arabic",sans-serif
 
 /* page « Secteurs » : recherche globale et cartes des secteurs */
 .vz-hub{position:relative;width:680u;max-width:100%;margin:34u auto 0;z-index:5}
+.phero .vz-hub.in2{z-index:6} /* la liste des résultats passe au-dessus des boutons qui suivent */
 .vz-hub .vz-q{width:100%;height:68u}
 .vz-hres{position:absolute;top:calc(100% + 10u);left:0;right:0;display:flex;flex-direction:column;padding:8u;border-radius:22u;background:#fff;box-shadow:0 0 0 1px rgba(14,33,78,.06),0 40u 80u -30u rgba(14,33,78,.5);text-align:start;max-height:420u;overflow:auto}
 .vz-hres[hidden]{display:none}
@@ -457,3 +458,63 @@ html[dir="rtl"] .mc-row dt{font-family:"Noto Sans Arabic",sans-serif;font-size:1
 [data-merci] .blk.dk .sh.dark h2 .grad{background:linear-gradient(180deg,#FFFFFF,#C9DEFF)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
 [data-merci] .blk.dk .sh.dark p{color:rgba(255,255,255,.78)!important}
 [data-merci] .blk.dk .sh.dark .pill{color:#BFD8FF!important}
+
+/* ── Étoile zellige : l'icône de chaque métier (deux carrés arrondis croisés à 45°) ── */
+.oct{--s:56u;position:relative;display:grid;place-items:center;flex:none;width:var(--s);height:var(--s);color:#fff;filter:drop-shadow(0 10u 16u rgba(20,52,140,.30))}
+.oct::before,.oct::after{content:"";position:absolute;inset:14.65%;border-radius:9%;background:radial-gradient(circle,#7DB1FF 0,#3B76F6 44%,#1D46B4 100%);transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.oct::after{transform:rotate(45deg)}
+.oct svg,.vz-ic.oct svg{position:relative;z-index:1;width:44%;height:44%;stroke-width:1.5}
+.vz-ic.oct{width:var(--s);height:var(--s);border-radius:0;background:none;box-shadow:none}
+.vz-card:hover .vz-ic.oct,.vz-sec:hover .vz-sec-im .big.oct{transform:none}
+.vz-card:hover .oct::before,.vz-sec:hover .oct::before,.vz-ft>div:hover .oct::before{transform:rotate(22.5deg)}
+.vz-card:hover .oct::after,.vz-sec:hover .oct::after,.vz-ft>div:hover .oct::after{transform:rotate(67.5deg)}
+
+/* grandes cartes métiers */
+.vz-grid{grid-template-columns:repeat(3,1fr);gap:20u}
+.vz-card{min-height:290u;padding:30u 30u 26u;gap:10u;border-radius:26u}
+.vz-card::after{content:"";position:absolute;top:-74u;inset-inline-end:-74u;width:250u;height:250u;z-index:-1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%231C4FA6' stroke-opacity='.07' stroke-width='.6'%3E%3Crect x='14.6' y='14.6' width='70.8' height='70.8' rx='6'/%3E%3Crect x='14.6' y='14.6' width='70.8' height='70.8' rx='6' transform='rotate(45 50 50)'/%3E%3Crect x='28' y='28' width='44' height='44' rx='4' transform='rotate(22.5 50 50)'/%3E%3C/svg%3E") center/contain no-repeat;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.vz-card:hover::after{transform:rotate(22.5deg)}
+.vz-card .vz-ic.oct{--s:88u;margin-block:-6u 8u;margin-inline-start:-8u}
+.vz-card b{font-size:22u;line-height:1.18;letter-spacing:-.025em}
+.vz-card .vz-d{font-size:15u;line-height:1.6}
+.vz-card .vz-go{font-size:14u;padding-top:14u}
+
+/* recherche, fenêtre, cartes de secteurs */
+.vz-hres a .vz-ic.oct{--s:46u;width:46u;height:46u;filter:drop-shadow(0 6u 10u rgba(20,52,140,.25))}
+.vz-dl-top .vz-ic.oct{--s:72u;width:72u;height:72u;background:none}
+.vz-sec-b .vz-sec-ic{--s:68u;align-self:flex-end;margin-block:-62u -8u;margin-inline-end:-6u;z-index:2}
+.vz-sec:has(.big) .vz-sec-ic{display:none}
+.vz-sec-im:has(.big){background:radial-gradient(120% 110% at 50% 30%,#3B76F6 0,#1D46B4 45%,#0E214E 100%)}
+.vz-sec-im:has(.big) .vz-z{opacity:.16}
+.vz-sec-im .big.oct{--s:150u;width:150u;height:150u;margin:-75u 0 0 -75u;border-radius:0;background:none;box-shadow:none;color:#1D46B4;filter:drop-shadow(0 22u 30u rgba(0,8,40,.45))}
+.vz-sec-im .big.oct::before,.vz-sec-im .big.oct::after{background:radial-gradient(circle,#FFFFFF 0,#EEF4FF 55%,#C7D9F6 100%)}
+.vz-sec-im .big.oct svg{stroke-width:1.3}
+
+/* fonctions de la page métier */
+.vz-ft .vz-ic.oct{--s:76u;margin-block:-8u 0;margin-inline-start:-8u}
+.vz-ft b{margin-top:14u}
+
+/* emblème du métier en tête de page : la rosace */
+.vz-emb{position:relative;display:grid;place-items:center;width:156u;height:156u;margin:4u auto 14u;animation:vzOctIn 1.2s cubic-bezier(.16,1,.3,1) .1s both}
+.vz-emb::before,.vz-emb::after{content:"";position:absolute;inset:14.65%;border-radius:9%;background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transform:rotate(22.5deg);z-index:0}
+.vz-emb::after{transform:rotate(67.5deg)}
+.vz-emb .oct{--s:108u;z-index:2;color:#1D46B4;filter:drop-shadow(0 18u 26u rgba(14,33,78,.35))}
+.vz-emb .oct::before,.vz-emb .oct::after{background:radial-gradient(circle,#FFFFFF 0,#F1F6FF 55%,#CFE0FA 100%)}
+.vz-emb .oct svg{stroke-width:1.4}
+@keyframes vzOctIn{from{opacity:0;transform:scale(.7) rotate(-45deg)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.vz-emb{animation:none}.oct::before,.oct::after,.vz-card::after{transition:none}}
+
+/* téléphone : une carte par ligne, l'étoile à côté du titre */
+[data-mode="M"] .vz-grid{grid-template-columns:1fr;gap:12u}
+[data-mode="M"] .vz-card{display:grid;grid-template-columns:auto 1fr;column-gap:16u;row-gap:6u;align-content:start;min-height:0;padding:20u 18u 18u;border-radius:20u}
+[data-mode="M"] .vz-card>*{grid-column:2;justify-self:start}
+[data-mode="M"] .vz-card .vz-ic.oct{grid-column:1;grid-row:1/span 4;--s:66u;width:66u;height:66u;margin:-4u 0 0}
+[data-mode="M"] .vz-card b{font-size:17.5u;margin-top:2u}
+[data-mode="M"] .vz-card .vz-d{font-size:13.5u}
+[data-mode="M"] .vz-card .vz-go{padding-top:6u;font-size:13u}
+[data-mode="M"] .vz-card::after{width:170u;height:170u;top:-56u;inset-inline-end:-56u}
+[data-mode="M"] .vz-sec-b .vz-sec-ic{--s:56u;margin-block:-50u -8u}
+[data-mode="M"] .vz-sec-im .big.oct{--s:120u;width:120u;height:120u;margin:-60u 0 0 -60u}
+[data-mode="M"] .vz-ft .vz-ic.oct{--s:64u}
+[data-mode="M"] .vz-emb{width:124u;height:124u;margin-bottom:10u}
+[data-mode="M"] .vz-emb .oct{--s:86u}

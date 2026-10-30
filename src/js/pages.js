@@ -2082,6 +2082,7 @@
         items = [].slice.call(document.querySelectorAll(".vz-idx a"));
       items.forEach(function (a) {
         a._k = norm(a.getAttribute("data-k") + " " + a.textContent);
+        a._n = norm((a.querySelector("b") || a).textContent);
       });
       hq.addEventListener("input", function () {
         var w = words(hq.value);
@@ -2090,9 +2091,25 @@
           res.hidden = true;
           return;
         }
+        // d'abord les métiers dont le nom correspond, puis les autres ; une seule ligne par page
+        var vu = {};
         var m = items
           .filter(function (a) {
             return match(a._k, w);
+          })
+          .map(function (a, i) {
+            var s = a._n.indexOf(w[0]) === 0 ? 2 : match(a._n, w) ? 1 : 0;
+            return { a: a, s: s, i: i };
+          })
+          .sort(function (p, q) {
+            return q.s - p.s || p.i - q.i;
+          })
+          .filter(function (o) {
+            var h = o.a.getAttribute("href");
+            return vu[h] ? false : (vu[h] = true);
+          })
+          .map(function (o) {
+            return o.a;
           })
           .slice(0, 8);
         m.forEach(function (a) {

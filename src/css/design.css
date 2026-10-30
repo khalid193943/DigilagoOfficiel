@@ -903,3 +903,13 @@ html[lang="ar"] .mv small{font-family:"Noto Sans Arabic",Sora,sans-serif!importa
 [data-mode="M"] .wz-count{display:none}
 [data-mode="M"] .cbo-slot{flex-direction:column}
 [data-mode="M"] .cbo-slot .wchip{justify-content:space-between;width:100%}
+
+/* réseaux sociaux : pied de page et page Contact */
+.foot .f-soc{margin-top:18px}
+.soc-l{display:block;font-size:calc(12 * var(--u));letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.soc-i{display:flex;flex-wrap:wrap;gap:10px}
+.f-soc .soc-i a,.soc-line .soc-i a{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid currentColor;color:inherit;opacity:.85;transition:background .2s,color .2s,opacity .2s,border-color .2s}
+.f-soc .soc-i a svg,.soc-line .soc-i a svg{width:18px;height:18px;display:block}
+.f-soc .soc-i a:hover,.f-soc .soc-i a:focus-visible,.soc-line .soc-i a:hover,.soc-line .soc-i a:focus-visible{opacity:1;background:#5F9FF9;border-color:#5F9FF9;color:#0C1D43}
+.soc-line{margin-top:34px;text-align:center}
+.soc-line .soc-i{justify-content:center}

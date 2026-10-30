@@ -328,6 +328,7 @@ html[dir="rtl"] .mk-k{letter-spacing:0;font-family:"Noto Sans Arabic",sans-serif
 
 /* page « Secteurs » : recherche globale et cartes des secteurs */
 .vz-hub{position:relative;width:calc(680 * var(--u));max-width:100%;margin:calc(34 * var(--u)) auto 0;z-index:5}
+.phero .vz-hub.in2{z-index:6} /* la liste des résultats passe au-dessus des boutons qui suivent */
 .vz-hub .vz-q{width:100%;height:calc(68 * var(--u))}
 .vz-hres{position:absolute;top:calc(100% + calc(10 * var(--u)));left:0;right:0;display:flex;flex-direction:column;padding:calc(8 * var(--u));border-radius:calc(22 * var(--u));background:#fff;box-shadow:0 0 0 1px rgba(14,33,78,.06),0 calc(40 * var(--u)) calc(80 * var(--u)) calc(-30 * var(--u)) rgba(14,33,78,.5);text-align:start;max-height:calc(420 * var(--u));overflow:auto}
 .vz-hres[hidden]{display:none}
@@ -458,3 +459,63 @@ html[dir="rtl"] .mc-row dt{font-family:"Noto Sans Arabic",sans-serif;font-size:c
 [data-merci] .blk.dk .sh.dark h2 .grad{background:linear-gradient(180deg,#FFFFFF,#C9DEFF)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
 [data-merci] .blk.dk .sh.dark p{color:rgba(255,255,255,.78)!important}
 [data-merci] .blk.dk .sh.dark .pill{color:#BFD8FF!important}
+
+/* ── Étoile zellige : l'icône de chaque métier (deux carrés arrondis croisés à 45°) ── */
+.oct{--s:calc(56 * var(--u));position:relative;display:grid;place-items:center;flex:none;width:var(--s);height:var(--s);color:#fff;filter:drop-shadow(0 calc(10 * var(--u)) calc(16 * var(--u)) rgba(20,52,140,.30))}
+.oct::before,.oct::after{content:"";position:absolute;inset:14.65%;border-radius:9%;background:radial-gradient(circle,#7DB1FF 0,#3B76F6 44%,#1D46B4 100%);transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.oct::after{transform:rotate(45deg)}
+.oct svg,.vz-ic.oct svg{position:relative;z-index:1;width:44%;height:44%;stroke-width:1.5}
+.vz-ic.oct{width:var(--s);height:var(--s);border-radius:0;background:none;box-shadow:none}
+.vz-card:hover .vz-ic.oct,.vz-sec:hover .vz-sec-im .big.oct{transform:none}
+.vz-card:hover .oct::before,.vz-sec:hover .oct::before,.vz-ft>div:hover .oct::before{transform:rotate(22.5deg)}
+.vz-card:hover .oct::after,.vz-sec:hover .oct::after,.vz-ft>div:hover .oct::after{transform:rotate(67.5deg)}
+
+/* grandes cartes métiers */
+.vz-grid{grid-template-columns:repeat(3,1fr);gap:calc(20 * var(--u))}
+.vz-card{min-height:calc(290 * var(--u));padding:calc(30 * var(--u)) calc(30 * var(--u)) calc(26 * var(--u));gap:calc(10 * var(--u));border-radius:calc(26 * var(--u))}
+.vz-card::after{content:"";position:absolute;top:calc(-74 * var(--u));inset-inline-end:calc(-74 * var(--u));width:calc(250 * var(--u));height:calc(250 * var(--u));z-index:-1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%231C4FA6' stroke-opacity='.07' stroke-width='.6'%3E%3Crect x='14.6' y='14.6' width='70.8' height='70.8' rx='6'/%3E%3Crect x='14.6' y='14.6' width='70.8' height='70.8' rx='6' transform='rotate(45 50 50)'/%3E%3Crect x='28' y='28' width='44' height='44' rx='4' transform='rotate(22.5 50 50)'/%3E%3C/svg%3E") center/contain no-repeat;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.vz-card:hover::after{transform:rotate(22.5deg)}
+.vz-card .vz-ic.oct{--s:calc(88 * var(--u));margin-block:calc(-6 * var(--u)) calc(8 * var(--u));margin-inline-start:calc(-8 * var(--u))}
+.vz-card b{font-size:calc(22 * var(--u));line-height:1.18;letter-spacing:-.025em}
+.vz-card .vz-d{font-size:calc(15 * var(--u));line-height:1.6}
+.vz-card .vz-go{font-size:calc(14 * var(--u));padding-top:calc(14 * var(--u))}
+
+/* recherche, fenêtre, cartes de secteurs */
+.vz-hres a .vz-ic.oct{--s:calc(46 * var(--u));width:calc(46 * var(--u));height:calc(46 * var(--u));filter:drop-shadow(0 calc(6 * var(--u)) calc(10 * var(--u)) rgba(20,52,140,.25))}
+.vz-dl-top .vz-ic.oct{--s:calc(72 * var(--u));width:calc(72 * var(--u));height:calc(72 * var(--u));background:none}
+.vz-sec-b .vz-sec-ic{--s:calc(68 * var(--u));align-self:flex-end;margin-block:calc(-62 * var(--u)) calc(-8 * var(--u));margin-inline-end:calc(-6 * var(--u));z-index:2}
+.vz-sec:has(.big) .vz-sec-ic{display:none}
+.vz-sec-im:has(.big){background:radial-gradient(120% 110% at 50% 30%,#3B76F6 0,#1D46B4 45%,#0E214E 100%)}
+.vz-sec-im:has(.big) .vz-z{opacity:.16}
+.vz-sec-im .big.oct{--s:calc(150 * var(--u));width:calc(150 * var(--u));height:calc(150 * var(--u));margin:calc(-75 * var(--u)) 0 0 calc(-75 * var(--u));border-radius:0;background:none;box-shadow:none;color:#1D46B4;filter:drop-shadow(0 calc(22 * var(--u)) calc(30 * var(--u)) rgba(0,8,40,.45))}
+.vz-sec-im .big.oct::before,.vz-sec-im .big.oct::after{background:radial-gradient(circle,#FFFFFF 0,#EEF4FF 55%,#C7D9F6 100%)}
+.vz-sec-im .big.oct svg{stroke-width:1.3}
+
+/* fonctions de la page métier */
+.vz-ft .vz-ic.oct{--s:calc(76 * var(--u));margin-block:calc(-8 * var(--u)) 0;margin-inline-start:calc(-8 * var(--u))}
+.vz-ft b{margin-top:calc(14 * var(--u))}
+
+/* emblème du métier en tête de page : la rosace */
+.vz-emb{position:relative;display:grid;place-items:center;width:calc(156 * var(--u));height:calc(156 * var(--u));margin:calc(4 * var(--u)) auto calc(14 * var(--u));animation:vzOctIn 1.2s cubic-bezier(.16,1,.3,1) .1s both}
+.vz-emb::before,.vz-emb::after{content:"";position:absolute;inset:14.65%;border-radius:9%;background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transform:rotate(22.5deg);z-index:0}
+.vz-emb::after{transform:rotate(67.5deg)}
+.vz-emb .oct{--s:calc(108 * var(--u));z-index:2;color:#1D46B4;filter:drop-shadow(0 calc(18 * var(--u)) calc(26 * var(--u)) rgba(14,33,78,.35))}
+.vz-emb .oct::before,.vz-emb .oct::after{background:radial-gradient(circle,#FFFFFF 0,#F1F6FF 55%,#CFE0FA 100%)}
+.vz-emb .oct svg{stroke-width:1.4}
+@keyframes vzOctIn{from{opacity:0;transform:scale(.7) rotate(-45deg)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.vz-emb{animation:none}.oct::before,.oct::after,.vz-card::after{transition:none}}
+
+/* téléphone : une carte par ligne, l'étoile à côté du titre */
+[data-mode="M"] .vz-grid{grid-template-columns:1fr;gap:calc(12 * var(--u))}
+[data-mode="M"] .vz-card{display:grid;grid-template-columns:auto 1fr;column-gap:calc(16 * var(--u));row-gap:calc(6 * var(--u));align-content:start;min-height:0;padding:calc(20 * var(--u)) calc(18 * var(--u)) calc(18 * var(--u));border-radius:calc(20 * var(--u))}
+[data-mode="M"] .vz-card>*{grid-column:2;justify-self:start}
+[data-mode="M"] .vz-card .vz-ic.oct{grid-column:1;grid-row:1/span 4;--s:calc(66 * var(--u));width:calc(66 * var(--u));height:calc(66 * var(--u));margin:calc(-4 * var(--u)) 0 0}
+[data-mode="M"] .vz-card b{font-size:calc(17.5 * var(--u));margin-top:calc(2 * var(--u))}
+[data-mode="M"] .vz-card .vz-d{font-size:calc(13.5 * var(--u))}
+[data-mode="M"] .vz-card .vz-go{padding-top:calc(6 * var(--u));font-size:calc(13 * var(--u))}
+[data-mode="M"] .vz-card::after{width:calc(170 * var(--u));height:calc(170 * var(--u));top:calc(-56 * var(--u));inset-inline-end:calc(-56 * var(--u))}
+[data-mode="M"] .vz-sec-b .vz-sec-ic{--s:calc(56 * var(--u));margin-block:calc(-50 * var(--u)) calc(-8 * var(--u))}
+[data-mode="M"] .vz-sec-im .big.oct{--s:calc(120 * var(--u));width:calc(120 * var(--u));height:calc(120 * var(--u));margin:calc(-60 * var(--u)) 0 0 calc(-60 * var(--u))}
+[data-mode="M"] .vz-ft .vz-ic.oct{--s:calc(64 * var(--u))}
+[data-mode="M"] .vz-emb{width:calc(124 * var(--u));height:calc(124 * var(--u));margin-bottom:calc(10 * var(--u))}
+[data-mode="M"] .vz-emb .oct{--s:calc(86 * var(--u))}

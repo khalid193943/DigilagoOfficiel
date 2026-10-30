@@ -37,6 +37,8 @@ TITLES = {
                               'Mentions légales', 'et informations sur l’éditeur.'),
     'confidentialite.html': ('Politique de confidentialité | Digilago',
                              'Confidentialité :', 'vos données restent les vôtres.'),
+    'cgv.html': ('Conditions générales de vente | Digilago',
+                 'Conditions générales de vente :', 'des règles claires, dès le départ.'),
     '404.html': ('Page introuvable | Digilago',
                  'Page introuvable :', 'reprenons le bon chemin.'),
     'merci.html': ('Merci, demande bien reçue | Digilago',

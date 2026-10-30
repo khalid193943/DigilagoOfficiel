@@ -22,7 +22,7 @@ BLOCKS = {'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'summary', 'dd', 'dt', 
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'}
 LETTERS = re.compile(r'[A-Za-zÀ-ÿ]')
 # Textes identiques dans toutes les langues : marques, adresses, numéros.
-KEEP = re.compile(r'^(d|g|i|lago|digilago|Digilago|Google|WhatsApp|ChatGPT|Gemini|Perplexity|Instagram|Facebook|LinkedIn|'
+KEEP = re.compile(r'^(d|g|i|lago|digilago|Digilago|Google|WhatsApp|ChatGPT|Gemini|Perplexity|Instagram|Facebook|LinkedIn|X|YouTube|'
                   r'TikTok|Meta|Vercel|Cloudflare|GitHub|Stripe|CMI|FR|EN|Next\.js|React|Node\.js|PostgreSQL|'
                   r'Tailwind|Figma|Supabase|Lighthouse|SEO|GEO|[\w.+-]+@[\w.-]+|\+?[\d\s().-]+|[\w-]+\.ma)$')
 

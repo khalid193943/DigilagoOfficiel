@@ -1,12 +1,12 @@
 """Tests du site en conditions réelles : chaque page, chaque lien, les parcours clés."""
-import os, re, pytest
+import json, os, re, pytest
 SITE = os.path.join(os.path.dirname(__file__), '..', 'site')
 PAGES = sorted(p for p in os.listdir(SITE) if p.endswith('.html'))
 # pages Secteurs (plus de 200 pages générées sur le même modèle) : toutes sont vérifiées hors navigateur ;
 # dans le navigateur, la page Secteurs, les 18 pages de secteur et un échantillon de pages métier
 VZ_TYPES = [p for p in PAGES if 'data-vz="type"' in open(os.path.join(SITE, p), encoding='utf-8').read()]
 BROWSER_PAGES = [p for p in PAGES if p not in VZ_TYPES] + VZ_TYPES[::12]
-IGNORED = ('fonts.googleapis', 'fonts.gstatic', 'favicon')
+IGNORED = ('fonts.googleapis', 'fonts.gstatic', 'favicon', '/_vercel/')  # /_vercel/ n’existe que chez Vercel (mesure sans cookie)
 
 def watch(page):
     errors = []
@@ -770,6 +770,22 @@ def test_secteurs_recherche_globale(page, base_url):
     assert page.locator('#vzHubR a').count() >= 2
     assert not errors, errors
 
+
+def test_secteurs_recherche_nom_en_premier_et_liste_au_dessus(page, base_url):
+    """« riad » : la page dont le nom contient le mot sort en premier, une seule ligne par page ;
+    sur téléphone, la liste passe au-dessus des boutons du haut de page."""
+    page.set_viewport_size({'width': 390, 'height': 700})
+    page.goto(f'{base_url}/secteurs.html'); page.wait_for_timeout(800)
+    page.fill('#vzHubQ', 'riad'); page.wait_for_timeout(300)
+    hrefs = page.eval_on_selector_all('#vzHubR a', 'els => els.map(e => e.getAttribute("href"))')
+    assert hrefs[0] == 'site-web-riad-hotel-maroc.html', hrefs
+    assert len(hrefs) == len(set(hrefs)), 'doublon dans les résultats'
+    covered = page.evaluate("""(() => { const r = document.getElementById('vzHubR'); const out = [];
+      r.querySelectorAll('a').forEach(a => { const b = a.getBoundingClientRect();
+        if (b.bottom < innerHeight) { const e = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+          if (e && !r.contains(e)) out.push(e.className || e.tagName); } }); return out; })()""")
+    assert not covered, covered
+
 def test_secteur_filtre_et_fenetre(page, base_url):
     errors = watch(page)
     page.set_viewport_size({'width': 1440, 'height': 900})
@@ -953,3 +969,59 @@ def test_verification_search_console_dans_toutes_les_pages():
         h = open(os.path.join(SITE, name), encoding='utf-8').read()
         head = h[:h.index('</head>')]
         assert head.count('<meta name="google-site-verification" content="HYvx4k2Wvut0rmCEfp6kXduTcaeWZMOm7UdS81qsR4s">') == 1, name
+
+
+def test_reseaux_sociaux_pied_de_page_contact_et_sameas():
+    cfg = json.load(open(os.path.join(os.path.dirname(__file__), '..', 'src', 'social.json'), encoding='utf-8'))
+    urls = [u for u in cfg.values() if u]
+    assert len(urls) >= 4
+    for pre, suivre in (('', 'Suivez-nous'), ('en/', 'Follow us'), ('ar/', 'تابعنا')):
+        for name in ('index.html', 'services.html', 'contact.html', 'cgv.html', 'merci.html'):
+            h = open(os.path.join(SITE, pre + name), encoding='utf-8').read()
+            assert h.count('<div class="f-soc">') == 1, (pre, name)
+            assert suivre in h, (pre, name)
+            for u in urls:
+                assert 'href="%s"' % u in h, (pre, name, u)
+        # liens externes : nouvel onglet, sans transmettre l'origine
+        h = open(os.path.join(SITE, pre + 'contact.html'), encoding='utf-8').read()
+        assert h.count('<div class="soc-line w">') == 1
+        assert 'rel="me noopener noreferrer"' in h
+    # données structurées : mêmes adresses
+    h = open(os.path.join(SITE, 'index.html'), encoding='utf-8').read()
+    for u in urls:
+        assert '"%s"' % u in h, u
+    # une adresse vide n'affiche aucune icône vide
+    assert 'href=""' not in h
+
+
+def test_cgv_trois_langues_lien_pied_de_page_et_sitemap():
+    for pre, titre, mot in (('', 'Conditions générales de vente', 'Première version, sans risque'),
+                            ('en/', 'Terms of sale', 'First version, risk-free'),
+                            ('ar/', 'شروط البيع العامة', 'النسخة الأولى دون مخاطرة')):
+        h = open(os.path.join(SITE, pre + 'cgv.html'), encoding='utf-8').read()
+        assert f'<title>{titre}' in h and mot in h, pre
+        assert f'<link rel="canonical" href="https://www.digilago.ma/{pre}cgv.html">' in h, pre
+        assert 'noindex' not in h[:h.index('</head>')]
+        assert h.count('<h3 class="rv">') >= 12
+        # aucune phrase française restée dans les versions traduites
+        if pre:
+            assert 'Conditions générales' not in h and 'Dernière mise à jour' not in h
+    # le lien existe dans le pied de page de chaque page, dans la bonne langue
+    for pre, label in (('', 'Conditions de vente'), ('en/', 'Terms of sale'), ('ar/', 'شروط البيع')):
+        for name in ('index.html', 'services.html', 'contact.html', 'merci.html', 'cgv.html'):
+            h = open(os.path.join(SITE, pre + name), encoding='utf-8').read()
+            assert h.count('<a href="cgv.html">%s</a>' % label) == 1, (pre, name)
+    sm = open(os.path.join(SITE, 'sitemap.xml'), encoding='utf-8').read()
+    for u in ('https://www.digilago.ma/cgv.html', 'https://www.digilago.ma/en/cgv.html', 'https://www.digilago.ma/ar/cgv.html'):
+        assert '<loc>%s</loc>' % u in sm
+    assert 'cgv.html' not in open(os.path.join(SITE, 'llms.txt'), encoding='utf-8').read()
+
+
+def test_cgv_coherente_avec_la_pratique(page, base_url):
+    """Les chiffres des CGV sont ceux annoncés ailleurs : acompte 50 %, 72 h, devis 30 jours ; le lien du pied de page l’ouvre."""
+    page.goto(base_url + '/index.html'); page.wait_for_timeout(600)
+    page.click('.f-bot a[href="cgv.html"]'); page.wait_for_url('**/cgv.html', timeout=6000)
+    t = page.inner_text('main')
+    for s in ('acompte de 50 %', '72 heures', 'valable 30 jours', '15 jours', 'droit marocain', 'contact@digilago.ma', 'loi n° 09-08'):
+        assert s in t, s
+    assert page.locator('.legal h3').count() >= 12
