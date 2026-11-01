@@ -1,0 +1,27 @@
+# Démarrage complet : base PostgreSQL + Radar.  `docker compose up -d`
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: radar
+      POSTGRES_USER: radar
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}
+    volumes: [radar-db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U radar -d radar"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://radar:${POSTGRES_PASSWORD}@db:5432/radar
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["127.0.0.1:8080:8080"]   # exposé seulement en local : mettre un reverse-proxy HTTPS devant (voir README)
+
+volumes:
+  radar-db:
