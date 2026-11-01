@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { auditSite, segmentOf } from '../src/audit/diagnostic.js';
+import { directDatabaseUrl } from '../src/config.js';
 import { decideMatch } from '../src/dedup/matcher.js';
 import { extractPage } from '../src/enrich/extract.js';
 import { parseRobots } from '../src/enrich/fetcher.js';
@@ -135,4 +136,14 @@ describe('sources (réponses enregistrées, aucun appel réseau)', () => {
     expect(res.estCost).toBeCloseTo(0.105);
   });
   it('les secteurs prioritaires sont définis', () => { expect(sectorById('sante')?.priority).toBe(true); });
+});
+
+describe('adresse de la base', () => {
+  it('Neon « pooled » (via Vercel) devient une connexion directe, le reste est inchangé', () => {
+    expect(directDatabaseUrl('postgresql://u:p%40ss@ep-a1-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require'))
+      .toBe('postgresql://u:p%40ss@ep-a1.eu-central-1.aws.neon.tech/neondb?sslmode=require');
+    expect(directDatabaseUrl('postgresql://u:p@ep-a1.eu-central-1.aws.neon.tech/neondb?sslmode=require'))
+      .toBe('postgresql://u:p@ep-a1.eu-central-1.aws.neon.tech/neondb?sslmode=require');
+    expect(directDatabaseUrl('postgres://radar:x@db:5432/radar')).toBe('postgres://radar:x@db:5432/radar');
+  });
 });

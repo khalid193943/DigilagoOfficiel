@@ -17,12 +17,47 @@ export async function emit(ev: LiveEvent) {
 }
 
 let client: pg.Client | null = null;
+let stopped = false;
+let retry: NodeJS.Timeout | null = null;
+
+/** Écoute permanente ; si la connexion tombe (veille de la base, redémarrage, réseau), elle se rétablit seule. */
 export async function startLiveListener() {
   if (client) return;
-  client = new pg.Client({ connectionString: config.databaseUrl });
-  await client.connect();
-  client.on('notification', (n) => { try { live.emit('event', JSON.parse(n.payload ?? '{}')); } catch { /* ignore */ } });
-  client.on('error', () => { client = null; setTimeout(() => startLiveListener().catch(() => {}), 2000); });
-  await client.query('LISTEN radar');
+  stopped = false;
+  const c = new pg.Client({ connectionString: config.databaseUrl, ssl: config.databaseSsl ? { rejectUnauthorized: false } : undefined });
+  client = c;
+  let lost = false;
+  const onLost = () => {
+    if (lost) return;
+    lost = true;
+    if (client === c) client = null;
+    c.end().catch(() => {});
+    scheduleReconnect(2000);
+  };
+  c.on('notification', (n) => { try { live.emit('event', JSON.parse(n.payload ?? '{}')); } catch { /* ignore */ } });
+  c.on('error', onLost);
+  c.on('end', onLost);
+  try {
+    await c.connect();
+    await c.query('LISTEN radar');
+  } catch (e) {
+    onLost();
+    throw e;
+  }
 }
-export async function stopLiveListener() { await client?.end().catch(() => {}); client = null; }
+
+function scheduleReconnect(ms: number) {
+  if (stopped || retry) return;
+  retry = setTimeout(() => {
+    retry = null;
+    startLiveListener().catch(() => scheduleReconnect(Math.min(ms * 2, 30_000)));
+  }, ms);
+}
+
+export async function stopLiveListener() {
+  stopped = true;
+  if (retry) { clearTimeout(retry); retry = null; }
+  const c = client;
+  client = null;
+  await c?.end().catch(() => {});
+}

@@ -3,6 +3,21 @@ const env = process.env;
 const bool = (v: string | undefined, d = false) => (v == null || v === '' ? d : ['1', 'true', 'yes', 'on'].includes(v.toLowerCase()));
 const num = (v: string | undefined, d: number) => (v == null || v === '' || Number.isNaN(Number(v)) ? d : Number(v));
 
+/**
+ * Neon (y compris via Vercel) fournit une adresse « pooled » (hôte en -pooler) qui ne permet pas LISTEN,
+ * utilisé pour le direct. Le Radar est un serveur permanent : on se connecte directement à la base.
+ */
+export function directDatabaseUrl(raw: string): string {
+  try {
+    const u = new URL(raw);
+    if (/\.neon\.tech$/i.test(u.hostname) && u.hostname.includes('-pooler.')) {
+      u.hostname = u.hostname.replace('-pooler.', '.');
+      return u.toString();
+    }
+  } catch { /* adresse non standard : laissée telle quelle */ }
+  return raw;
+}
+
 export const config = {
   env: env.NODE_ENV ?? 'development',
   isProd: env.NODE_ENV === 'production',
@@ -10,7 +25,9 @@ export const config = {
   /** Adresse publique du serveur (sert aux sites de démonstration). */
   publicBaseUrl: (env.PUBLIC_BASE_URL ?? `http://127.0.0.1:${num(env.PORT, 8080)}`).replace(/\/$/, ''),
   host: env.HOST ?? '0.0.0.0',
-  databaseUrl: env.DATABASE_URL ?? 'postgres://postgres@localhost:5432/leadfinder',
+  databaseUrl: directDatabaseUrl(env.DATABASE_URL_UNPOOLED || env.DATABASE_URL || 'postgres://postgres@localhost:5432/leadfinder'),
+  /** SSL vers la base (bases gérées externes : Neon, Supabase…). Inutile sur le réseau privé Railway. */
+  databaseSsl: bool(env.DATABASE_SSL, false),
   sessionDays: num(env.SESSION_DAYS, 7),
   /** Cookie de session « Secure » (HTTPS obligatoire). Par défaut actif en production. */
   cookieSecure: bool(env.COOKIE_SECURE, env.NODE_ENV === 'production'),

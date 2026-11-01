@@ -18,10 +18,13 @@ export function startWorker(log: (m: string, e?: unknown) => void = () => {}) {
   recoverStale().catch(() => {});
   for (let i = 0; i < config.workerConcurrency; i++) {
     slots.push((async () => {
+      let idle = 700;
       while (running) {
         let t;
         try { t = await claim(); } catch (e) { log('file indisponible', e); await sleep(2000); continue; }
-        if (!t) { await sleep(700); continue; }
+        /* file vide : on espace les vérifications (jusqu'à 3 s) pour ménager la base */
+        if (!t) { await sleep(idle); idle = Math.min(Math.round(idle * 1.5), 3000); continue; }
+        idle = 700;
         try { await handlers[t.type]?.(t.payload); await complete(t.id); }
         catch (e) { log(`tâche ${t.type} #${t.id} en échec`, e); await fail(t, e).catch(() => {}); }
       }

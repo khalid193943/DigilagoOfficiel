@@ -107,6 +107,56 @@ C’est la source la plus complète au Maroc. Le Radar utilise **l’API officie
 
 ## 6. Mise en ligne (HTTPS)
 
+> Dans le dépôt **DigilagoOfficiel**, le Radar vit dans le dossier `radar-digilago/` (à côté de `site/` et `backend/`). Sur Render, indiquer **Root Directory : `radar-digilago`**. Les projets Vercel du site et de la gestion ne sont pas concernés.
+
+### Gratuit, pour tester : Render (Free) + base Neon (Free)
+
+1. Base Neon gratuite, au choix :
+   - depuis **Vercel** : onglet *Storage › Create Database › Neon* › plan **Free** › région Frankfurt › puis *Show secret* et copier `DATABASE_URL` ;
+   - ou sur <https://neon.com> : créer un projet (région Frankfurt) et copier la *connection string*.
+
+   Les deux adresses Neon (« pooled » ou directe) conviennent : le Radar passe tout seul en connexion directe, et il se reconnecte quand la base gratuite sort de veille.
+2. <https://render.com> : *New › Web Service* › dépôt `DigilagoOfficiel` › **Root Directory : `radar-digilago`** › région Frankfurt › instance **Free**.
+3. Variables : `DATABASE_URL` (Neon), `DATABASE_SSL=true`, `NODE_ENV=production`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME`.
+4. Ouvrir l’adresse `https://….onrender.com`, se connecter, puis retirer `ADMIN_PASSWORD`.
+
+Limites du gratuit : le service s’endort après 15 min sans visite (≈ 1 min pour se réveiller) et les balayages n’avancent que lorsqu’il est réveillé. Pour un usage quotidien, passer l’instance en payant (7 $/mois) : la base Neon reste la même.
+
+### Payant, tout en un : Render (fichier `render.yaml`)
+
+`render.yaml` décrit tout : le Radar, sa base PostgreSQL (région Frankfurt), les variables et le domaine. Environ 13 $/mois (7 $ pour le Radar + 6 $ pour la base), prix fixe.
+
+1. Mettre ce dossier dans un dépôt GitHub privé.
+2. Sur <https://render.com> : *New › Blueprint* › connecter GitHub › choisir le dépôt.
+3. Remplir `ADMIN_EMAIL`, `ADMIN_PASSWORD` (10 caractères minimum) et `ADMIN_NAME`, puis *Deploy Blueprint*.
+4. Service `radar-digilago` › *Settings › Custom Domains* : `radar.digilago.ma` doit y figurer (sinon l’ajouter). Noter l’adresse en `.onrender.com` du service.
+5. Sur Vercel : *Domains › digilago.ma › DNS Records › Add* : type **CNAME**, nom **radar**, valeur = l’adresse `.onrender.com`. Puis *Verify* sur Render : le HTTPS s’active tout seul.
+
+### Autre option : `radar.digilago.ma` sur Railway, DNS chez Vercel
+
+Le Radar a besoin d’un serveur toujours allumé (balayages et analyses en arrière-plan) et de PostgreSQL : il ne peut pas tourner dans les fonctions Vercel (coupées après quelques minutes). Les domaines restent gérés chez Vercel ; seul `radar` pointe vers Railway.
+
+1. Mettre ce dossier dans un dépôt GitHub **privé**.
+2. Sur <https://railway.com> : *New Project › Deploy from GitHub repo* › choisir le dépôt. Railway lit `railway.json` et construit le `Dockerfile`.
+3. Dans le projet : *+ New › Database › PostgreSQL*.
+4. Service Radar › *Variables* :
+   ```
+   DATABASE_URL=${{Postgres.DATABASE_URL}}
+   NODE_ENV=production
+   PUBLIC_BASE_URL=https://radar.digilago.ma
+   ADMIN_EMAIL=vous@digilago.ma
+   ADMIN_PASSWORD=un-mot-de-passe-long
+   ADMIN_NAME=Votre Nom
+   ```
+   (+ les variables Google de la section 4 quand la clé est prête.) Au premier démarrage, la base se crée et le premier administrateur aussi ; retirez ensuite `ADMIN_PASSWORD`.
+5. Service Radar › *Settings › Networking › Custom Domain* : `radar.digilago.ma`. Railway affiche deux enregistrements : un **CNAME** et un **TXT** de vérification (les deux sont obligatoires).
+6. Sur Vercel : *Domains › digilago.ma › DNS Records › Add* : type **CNAME**, nom **radar**, valeur = la cible donnée par Railway puis ajouter aussi le **TXT** avec le nom et la valeur donnés par Railway.
+7. Après propagation (quelques minutes), Railway active le HTTPS : le Radar répond sur `https://radar.digilago.ma`.
+
+Chaque `git push` sur le dépôt redéploie automatiquement.
+
+### Alternative : serveur privé (VPS)
+
 Exemple avec **Caddy** (certificat HTTPS automatique) sur le même serveur :
 
 ```
