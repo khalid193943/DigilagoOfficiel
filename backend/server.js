@@ -12,6 +12,7 @@ const { PLANS, planFromBody, planOf, planKey } = require('./lib/plans');
 const assistant = require('./lib/assistant');
 const CP = require('./lib/compta');
 const CB = require('./lib/callback');
+const RADAR = require('./lib/radar');
 
 const app = express();
 app.disable('x-powered-by');
@@ -64,7 +65,13 @@ function boot() {
     await init();
     if (!SECRET) { if (!(await getS('_secret'))) await setS('_secret', crypto.randomBytes(32).toString('hex')); SECRET = await getS('_secret'); }
     PUBLIC_URL = (await getS('public_url')) || '';
-    if (process.env.ADMIN_PASSWORD && !(await getS('_pw_env_applied'))) { await setS('_pw', hashPw(process.env.ADMIN_PASSWORD)); await setS('_pw_env_applied', '1'); }
+    /* ADMIN_PASSWORD (variable d'hébergement) : appliqué à la première installation, puis à chaque fois que sa valeur change.
+       C'est la façon de retrouver l'accès en cas d'oubli (seul celui qui a accès à l'hébergement peut le faire). */
+    if (process.env.ADMIN_PASSWORD) {
+      const fp = crypto.createHash('sha256').update('dg-admin:' + process.env.ADMIN_PASSWORD).digest('hex').slice(0, 24), flag = await getS('_pw_env_applied');
+      if (flag === '1') await setS('_pw_env_applied', fp); /* ancienne version : le mot de passe actuel est gardé */
+      else if (flag !== fp) { await setS('_pw', hashPw(process.env.ADMIN_PASSWORD)); await setS('_pw_env_applied', fp); if (flag) await setS('_sv', crypto.randomBytes(8).toString('hex')); }
+    }
     bootDone = true;
   })().catch((e) => { booted = null; throw e; });
   return booted;
@@ -77,17 +84,39 @@ const rotateSessions = async () => { await setS('_sv', crypto.randomBytes(8).toS
 function readCookie(req, name) { const m = (req.headers.cookie || '').split(/;\s*/).find((c) => c.startsWith(name + '=')); return m ? decodeURIComponent(m.slice(name.length + 1)) : ''; }
 async function isAuthed(req) { const c = readCookie(req, 'dg'); const [exp, sig] = c.split('.'); return !!(exp && sig && Number(exp) > Date.now() && sameStr(sign(exp + '.' + await sessVer()), sig)); }
 async function setSession(res) { const exp = String(Date.now() + 1000 * 60 * 60 * 24 * 14); res.setHeader('Set-Cookie', `dg=${exp}.${sign(exp + '.' + await sessVer())}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${60 * 60 * 24 * 14}${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`); }
-function authPage(title, inner) {
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} | Digilago Gestion</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"></head><body class="auth"><form method="post" class="auth-card"><span class="auth-logo">${LOGO}</span><h1>${title}</h1>${inner}</form></body></html>`;
+/* Connexion et installation : le ciel de digilago.ma (nuages dessinés comme sur le site), un seul champ, la tuile « flèche » du site. */
+const CLOUDS = [['-18%', '6%', 560, 290, .92, '40px', '90s'], ['78%', '30%', 440, 230, .72, '-30px', '110s'], ['62%', '2%', 240, 130, .5, '20px', '80s'], ['-6%', '64%', 420, 200, .6, '30px', '70s']];
+const BLOB = [['-13.1%', '12.4%', '51.5%', '99.5%'], ['-8%', '.9%', '70.3%', '135.8%'], ['21.9%', '14.6%', '53.8%', '103.9%'], ['43.3%', '11.4%', '59.2%', '114.3%'], ['66.1%', '16.2%', '49.2%', '95.1%']];
+const cloudsHtml = () => `<svg class="sky-f" aria-hidden="true" focusable="false"><defs><filter id="skyF1" x="-40%" y="-40%" width="180%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="0.013" numOctaves="5" seed="4"/><feDisplacementMap in="SourceGraphic" scale="90"/><feGaussianBlur stdDeviation="2.5"/></filter><filter id="skyF2" x="-40%" y="-40%" width="180%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="0.013" numOctaves="4" seed="9"/><feDisplacementMap in="SourceGraphic" scale="80"/><feGaussianBlur stdDeviation="8"/></filter></defs></svg>
+<div class="sky" aria-hidden="true">${CLOUDS.map(([l, t, w, h, o, dx, dd]) => { const ps = BLOB.map(([a, b, c, d]) => `<p style="left:${a};top:${b};width:${c};height:${d}"></p>`).join(''); return `<div class="cl" style="left:${l};top:${t};width:${w}px;height:${h}px;opacity:${o};--dx:${dx};--dd:${dd}"><div class="sh">${ps}</div><div class="wh">${ps}</div></div>`; }).join('')}</div>`;
+/* page demandée avant la connexion (lien du Radar, d'une notification…) : seulement une adresse de cette gestion */
+const safeNext = (u) => { const x = String(u || ''); return /^\/(?!\/)[^\s\\]*$/.test(x) && !/^\/(connexion|installation|deconnexion)/.test(x) ? x : '/'; };
+function authPage(mode, err = '', suite = '') {
+  const inst = mode === 'installation';
+  const field = (name, label, ac, extra = '') => `<label>${label}<span class="auth-pass"><input type="password" name="${name}" ${inst ? 'minlength="8" ' : ''}required autocomplete="${ac}"${extra}><button type="button" class="auth-eye" aria-pressed="false">Afficher</button></span></label>`;
+  const form = err && /Trop de tentatives/.test(err) ? '' : (inst ? field('pw', 'Choisissez un mot de passe (8 caractères au moins)', 'new-password', ' autofocus') + field('pw2', 'Confirmez-le', 'new-password') : field('pw', 'Mot de passe', 'current-password', ' autofocus'))
+    + `<small class="auth-caps" hidden>Majuscules activées</small><button class="auth-cta"><i aria-hidden="true"></i><span>${inst ? 'Créer mon espace' : 'Se connecter'}</span></button>`;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex"><meta name="theme-color" content="#1C64D8"><title>${inst ? 'Bienvenue' : 'Connexion'} | Digilago Gestion</title>
+<link rel="icon" href="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 8 38 48"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="#1F57C7"/><path d="M28 10 A22 22 0 0 1 28 54 Z" fill="#1F57C7"/></svg>')}">
+<link rel="preload" href="/static/fonts/sora-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/static/fonts/playfair-display-latin-500-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/brand.css?v=${ver('brand.css')}"></head><body class="auth2">${cloudsHtml()}
+<header class="auth-top"><a class="auth-brand" href="/">${LOGO}<b>digilago</b><em>Gestion</em></a><a class="auth-site" href="https://digilago.ma" target="_blank" rel="noopener">digilago.ma</a></header>
+<main class="auth-hero"><span class="auth-pill"><i></i>Espace de gestion privé</span>
+<h1>${inst ? 'Bienvenue.' : 'Bon retour.'}<em>${inst ? 'Votre agence, prête en une minute.' : 'Tout Digilago, au même endroit.'}</em></h1>
+<p>${inst ? 'Choisissez le mot de passe de cet espace : demandes, devis, projets, factures et comptabilité, reliés au site et au Radar.' : 'Demandes, devis, projets, factures et comptabilité, reliés au site et au Radar.'}</p>
+<form method="post" class="auth-form">${suite && suite !== '/' ? `<input type="hidden" name="suite" value="${esc(suite)}">` : ''}${err ? `<p class="auth-err" role="alert">${esc(err)}</p>` : ''}${form}
+${inst ? '' : '<p class="auth-note">Mot de passe oublié : changez la variable ADMIN_PASSWORD dans l’hébergement (Vercel), puis redéployez. Le nouveau mot de passe s’applique au démarrage.</p>'}</form></main>
+<script>document.querySelectorAll('.auth-eye').forEach(function(b){b.addEventListener('click',function(){var i=b.previousElementSibling,s=i.type==='password';i.type=s?'text':'password';b.textContent=s?'Masquer':'Afficher';b.setAttribute('aria-pressed',String(s));i.focus();});});
+var c=document.querySelector('.auth-caps');document.querySelectorAll('.auth-form input').forEach(function(i){['keydown','keyup'].forEach(function(e){i.addEventListener(e,function(ev){if(c&&ev.getModifierState)c.hidden=!ev.getModifierState('CapsLock');});});});</script></body></html>`;
 }
-app.get('/installation', async (req, res) => { if (await getS('_pw')) return res.redirect('/connexion'); res.send(authPage('Bienvenue', '<p>Choisissez le mot de passe de votre espace de gestion.</p><label>Mot de passe<input type="password" name="pw" minlength="8" required autofocus></label><label>Confirmer<input type="password" name="pw2" minlength="8" required></label><button>Créer mon espace</button>')); });
+app.get('/installation', async (req, res) => { if (await getS('_pw')) return res.redirect('/connexion'); res.send(authPage('installation')); });
 app.post('/installation', async (req, res) => {
   if (await getS('_pw')) return res.redirect('/connexion');
   const { pw = '', pw2 = '' } = req.body;
-  if (pw.length < 8 || pw !== pw2) return res.send(authPage('Bienvenue', '<p class="err">Les mots de passe doivent être identiques et faire au moins 8 caractères.</p><label>Mot de passe<input type="password" name="pw" minlength="8" required></label><label>Confirmer<input type="password" name="pw2" minlength="8" required></label><button>Créer mon espace</button>'));
+  if (pw.length < 8 || pw !== pw2) return res.send(authPage('installation', 'Les mots de passe doivent être identiques et faire au moins 8 caractères.'));
   await setS('_pw', hashPw(pw)); await setSession(res); res.redirect('/parametres?bienvenue=1');
 });
-app.get('/connexion', async (req, res) => { if (!await getS('_pw')) return res.redirect('/installation'); res.send(authPage('Connexion', '<label>Mot de passe<input type="password" name="pw" required autofocus></label><button>Se connecter</button>')); });
+app.get('/connexion', async (req, res) => { if (!await getS('_pw')) return res.redirect('/installation'); res.send(authPage('connexion', '', safeNext(req.query.suite))); });
 /* Compteur d'événements par clé sur une fenêtre de temps (tentatives de connexion, demandes du site) */
 async function hit(k, windowMs, max, record = true) {
   const now = Date.now();
@@ -99,10 +128,10 @@ async function hit(k, windowMs, max, record = true) {
 app.post('/connexion', async (req, res) => {
   const ip = String(req.ip || '').slice(0, 64), W = 15 * 60e3;
   /* 8 essais par adresse et 40 au total par quart d'heure : l'en-tête X-Forwarded-For ne suffit plus à contourner */
-  if (await hit('login:' + ip, W, 8, false) || await hit('login:*', W, 40, false)) return res.status(429).send(authPage('Connexion', '<p class="err">Trop de tentatives. Réessayez dans 15 minutes.</p>'));
-  if (checkPw(String(req.body.pw || ''), await getS('_pw'))) { await db.prepare("DELETE FROM hits WHERE k = ?").run('login:' + ip); await setSession(res); return res.redirect('/'); }
+  if (await hit('login:' + ip, W, 8, false) || await hit('login:*', W, 40, false)) return res.status(429).send(authPage('connexion', 'Trop de tentatives. Réessayez dans 15 minutes.'));
+  if (checkPw(String(req.body.pw || ''), await getS('_pw'))) { await db.prepare("DELETE FROM hits WHERE k = ?").run('login:' + ip); await setSession(res); return res.redirect(safeNext(req.body.suite)); }
   await hit('login:' + ip, W, 1e9); await hit('login:*', W, 1e9);
-  res.status(401).send(authPage('Connexion', '<p class="err">Mot de passe incorrect.</p><label>Mot de passe<input type="password" name="pw" required autofocus></label><button>Se connecter</button>'));
+  res.status(401).send(authPage('connexion', 'Mot de passe incorrect.', safeNext(req.body.suite)));
 });
 app.post('/deconnexion', async (req, res) => { res.setHeader('Set-Cookie', 'dg=; Path=/; Max-Age=0'); res.redirect('/connexion'); });
 
@@ -247,7 +276,7 @@ app.post('/api/leads', async (req, res) => {
 /* ---------------- Lien client : consulter, télécharger, accepter ---------------- */
 async function publicPage(title, body) {
   const s = (await settings());
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)} | ${esc(s.company_name)}</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet"><link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"></head><body class="pub">${body}<script src="/static/app.js?v=${ver('app.js')}" defer></script></body></html>`;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)} | ${esc(s.company_name)}</title><link rel="preload" href="/static/fonts/instrument-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"><link rel="stylesheet" href="/static/brand.css?v=${ver('brand.css')}"></head><body class="pub">${body}<script src="/static/app.js?v=${ver('app.js')}" defer></script></body></html>`;
 }
 app.get('/d/:token', async (req, res) => {
   const q = await Q.quoteByToken.get(req.params.token); if (!q) return res.status(404).send(await publicPage('Introuvable', '<div class="pub-msg"><h1>Ce lien n’est plus valide.</h1></div>'));
@@ -360,6 +389,39 @@ app.post('/webhooks/whatsapp', async (req, res) => {
 
 /* ---------------- Espace du comptable : lien privé, lecture seule ---------------- */
 async function accGuard(req, res) { const s = await settings(); if (!s.accountant_token || req.params.token !== s.accountant_token) { res.status(404).send(await publicPage('Lien expiré', '<div class="pub-msg"><h1>Ce lien n’est plus valide.</h1></div>')); return null; } return s; }
+/* ---------------- Radar Digilago : appels signés du Radar ---------------- */
+const radarGuard = (req, res) => {
+  if (!RADAR.ready()) { res.status(503).json({ ok: false, error: 'Radar non relié dans la gestion (RADAR_URL, RADAR_SECRET)' }); return false; }
+  if (!RADAR.verify(req.rawBody ? req.rawBody.toString('utf8') : '', req.get('x-digilago-timestamp'), req.get('x-digilago-signature'))) { res.status(401).json({ ok: false, error: 'Signature invalide ou expirée' }); return false; }
+  return true;
+};
+app.post('/webhooks/radar/ping', (req, res) => { if (radarGuard(req, res)) res.json({ ok: true, app: 'gestion' }); });
+/* « Préparer le devis » (ou client gagné) depuis le Radar : la demande est créée, ou mise à jour si elle existe déjà
+   (même fiche du Radar, ou même téléphone qu'une demande déjà reçue du site). Réponse : son adresse et celle de l'assistant. */
+app.post('/webhooks/radar/demande', async (req, res) => {
+  if (!radarGuard(req, res)) return;
+  const b = req.body || {}, c = b.company || {};
+  if (!c.radarId || !c.name) return res.status(400).json({ ok: false, error: 'Fiche incomplète' });
+  if (c.isDemo) return res.status(400).json({ ok: false, error: 'Fiche fictive : refusée' });
+  const phone = (c.whatsapp || [])[0] || (c.phones || [])[0] || '', email = (c.emails || [])[0] || '', d9 = digits(phone).slice(-9);
+  let l = await db.prepare('SELECT * FROM leads WHERE radar_id = ? ORDER BY id DESC LIMIT 1').get(c.radarId);
+  if (!l && d9.length === 9) l = (await db.prepare("SELECT * FROM leads WHERE radar_id IS NULL AND phone IS NOT NULL AND COALESCE(stage, 'nouveau') NOT IN ('gagne', 'perdu') ORDER BY id DESC LIMIT 300").all()).find((x) => digits(x.phone).slice(-9) === d9);
+  const why = [c.segmentLabel, c.score != null ? `score ${c.score}/100` : ''].filter(Boolean).join(', '), data = JSON.stringify(c);
+  let created = false;
+  if (l) {
+    await db.prepare("UPDATE leads SET radar_id = ?, radar_data = ?, radar_matches = NULL, radar_at = datetime('now'), company = COALESCE(NULLIF(company, ''), ?), phone = COALESCE(NULLIF(phone, ''), ?), email = COALESCE(NULLIF(email, ''), ?), city = COALESCE(NULLIF(city, ''), ?), sector = COALESCE(NULLIF(sector, ''), ?), kind = COALESCE(NULLIF(kind, ''), ?), updated_at = datetime('now') WHERE id = ?")
+      .run(c.radarId, data, c.name, phone || null, email || null, c.city || null, RADAR.sectorFor(c.sector), RADAR.KIND_FOR[c.segment] || null, l.id);
+    if (l.stage === 'perdu') await leadStage0(l.id, 'contacte', 'renvoyée par le Radar');
+  } else {
+    const r = await db.prepare("INSERT INTO leads (name, company, phone, email, city, kind, sector, source, need, stage, status, updated_at, radar_id, radar_data, radar_at) VALUES ('', ?, ?, ?, ?, ?, ?, 'Radar', ?, 'contacte', 'traitee', datetime('now'), ?, ?, datetime('now'))")
+      .run(c.name, phone || null, email || null, c.city || null, RADAR.KIND_FOR[c.segment] || null, RADAR.sectorFor(c.sector), [RADAR.NEED_FOR[c.segment], c.pitch].filter(Boolean).join(' : ') || null, c.radarId, data);
+    l = { id: Number(r.lastInsertRowid) }; created = true;
+  }
+  await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(l.id, 'note', b.event === 'won' ? `Client gagné dans le Radar (${why}) : préparer le devis et le projet.` : `Envoyée par le Radar pour préparer le devis (${why}).`);
+  await log('demande', l.id, created ? `Demande reçue du Radar : ${c.name}` : `Demande mise à jour par le Radar : ${c.name}`);
+  res.json({ ok: true, id: l.id, path: `/demandes/${l.id}`, assistant: `/assistant?demande=${l.id}`, created });
+});
+
 app.get('/comptable/:token', async (req, res) => {
   const s = await accGuard(req, res); if (!s) return;
   const y = Number(req.query.annee) || Number(today().slice(0, 4)), reg = CP.REGIMES[s.fiscal_regime] || {}, per = reg.ae ? 'trimestrielle' : s.tva_periodicite === 'mensuelle' ? 'mensuelle' : 'trimestrielle';
@@ -421,7 +483,7 @@ SV.mountPublic(app);
 /* ---------------- Tout le reste demande d'être connecté ---------------- */
 /* Une fois le mot de passe créé, il existe pour toujours : inutile de relire la base à chaque page. */
 let HAS_PW = false;
-app.use(async (req, res, next) => { if (!HAS_PW) { HAS_PW = !!(await getS('_pw')); if (!HAS_PW) return res.redirect('/installation'); } if (!(await isAuthed(req))) return res.redirect('/connexion'); next(); });
+app.use(async (req, res, next) => { if (!HAS_PW) { HAS_PW = !!(await getS('_pw')); if (!HAS_PW) return res.redirect('/installation'); } if (!(await isAuthed(req))) return res.redirect(req.method === 'GET' && req.originalUrl !== '/' && !req.originalUrl.startsWith('/api/') ? '/connexion?suite=' + encodeURIComponent(req.originalUrl.slice(0, 300)) : '/connexion'); next(); });
 
 SV.mountAdmin(app);
 
@@ -542,7 +604,15 @@ app.get('/', async (req, res) => {
 <section class="card"><div class="card-h"><h2>Le travail fait</h2><a href="${esc(siteUrl)}" target="_blank" rel="noopener">Voir ${esc(siteUrl.replace('https://', ''))}</a></div><div class="sites"><a class="site me" href="${esc(siteUrl)}" target="_blank" rel="noopener"><span class="site-f"><iframe data-src="${esc(siteUrl)}" tabindex="-1" title="Votre site" sandbox></iframe></span><b>Votre site</b><small>${esc(siteUrl.replace('https://', ''))}</small></a>${live.map((p) => `<a class="site" href="${esc(p.site_url)}" target="_blank" rel="noopener"><span class="site-f"><iframe data-src="${esc(p.site_url)}" tabindex="-1" title="${esc(p.ccomp || p.cname || '')}" sandbox></iframe></span><b>${esc(p.ccomp || p.cname || '')}</b><small>${esc(p.ccity || '')}</small></a>`).join('') || '<p class="empty">Les sites livrés apparaîtront ici : ajoutez leur adresse dans chaque projet.</p>'}</div></section>`;
   const UNS = await SV.unseen(), unsIds = Object.keys(UNS);
   const unsCard = unsIds.length ? `<div class="card sv-alert"><div class="card-h"><h2>Vos clients vous ont répondu</h2></div><ul class="lst">${(await db.prepare(`SELECT p.id, p.title, c.company ccomp, c.name cname FROM projects p LEFT JOIN clients c ON c.id = p.client_id WHERE p.id IN (${unsIds.map(() => '?').join(',')})`).all(...unsIds.map(Number))).map((x) => `<li><a href="/projets/${x.id}#suivi"><b>${esc(x.ccomp || x.cname || '')}</b><span>${esc(x.title || '')}</span></a><em class="svt-new">${UNS[x.id]} nouveau${UNS[x.id] > 1 ? 'x' : ''}</em></li>`).join('')}</ul></div>` : '';
-  const body = unsCard + dayCard + hero + `<section class="kpis">${kpi('Encaissé ce mois', money(cashMonth), 'paiements reçus', 'hl')}${kpi('Reste à encaisser', money(due), `${late.length} facture${late.length > 1 ? 's' : ''} en retard`, late.length ? 'warn' : '')}${kpi('Devis en attente', money(pipeline.s), `${pipeline.n} devis envoyés`)}${kpi('Taux d’acceptation', rate + ' %', `${qMonth.n} devis ce mois, ${money(qMonth.t)}`)}${kpi('Résultat du mois', money(cashMonth - expMonth), `${money(expMonth)} de dépenses`, cashMonth - expMonth < 0 ? 'warn' : '')}</section>
+  /* ---- Radar : la prospection en cours, à côté de la gestion ---- */
+  const rs = await radarSummary(), nf = (n) => Number(n || 0).toLocaleString('fr-FR');
+  const radarCard = rs && !rs.error ? `<section class="card rd-dash"><div class="card-h"><h2>Radar <em>prospection</em></h2><a href="${esc(rs.links.home)}" target="_blank" rel="noopener">Ouvrir le Radar</a></div><div class="rd-k">
+<a href="${esc(rs.links.today)}" target="_blank" rel="noopener"><b>${nf(rs.today)}</b><span>prospects à appeler aujourd’hui</span></a>
+<a href="${esc(rs.links.pipeline)}" target="_blank" rel="noopener"><b>${nf(rs.replies)}</b><span>réponse${rs.replies > 1 ? 's' : ''} à traiter</span></a>
+<a href="${esc(rs.links.pipeline)}" target="_blank" rel="noopener"><b>${nf(rs.meetings)}</b><span>rendez-vous</span></a>
+<a href="${esc(rs.links.pipeline)}" target="_blank" rel="noopener"><b>${money(rs.proposals.value || 0)}</b><span>${rs.proposals.n} proposition${rs.proposals.n > 1 ? 's' : ''} en cours</span></a></div></section>`
+    : rs && rs.error ? `<div class="flash warn">Radar : ${esc(rs.error)}. Les demandes et devis continuent normalement ; la synchronisation reprendra seule.</div>` : '';
+  const body = unsCard + dayCard + radarCard + hero + `<section class="kpis">${kpi('Encaissé ce mois', money(cashMonth), 'paiements reçus', 'hl')}${kpi('Reste à encaisser', money(due), `${late.length} facture${late.length > 1 ? 's' : ''} en retard`, late.length ? 'warn' : '')}${kpi('Devis en attente', money(pipeline.s), `${pipeline.n} devis envoyés`)}${kpi('Taux d’acceptation', rate + ' %', `${qMonth.n} devis ce mois, ${money(qMonth.t)}`)}${kpi('Résultat du mois', money(cashMonth - expMonth), `${money(expMonth)} de dépenses`, cashMonth - expMonth < 0 ? 'warn' : '')}</section>
 <section class="grid2"><div class="card"><div class="card-h"><h2>Encaissements</h2><span>6 derniers mois</span></div>${chart({ labels: months.map(([k]) => MOIS[Number(k.slice(5)) - 1]), series: [{ name: 'Encaissé', values: months.map(([, v]) => v), color: 'url(#chB)' }], height: 200 })}</div>
 <div class="card"><div class="card-h"><h2>À relancer</h2><span>Devis envoyés depuis plus de 3 jours</span></div>${follow.length ? `<ul class="lst">${follow.map((q) => `<li><a href="/devis/${q.id}"><b>${esc(q.number)}</b><span>${esc(q.ccomp || q.cname || '')}</span></a><em>${money(q.total_ttc)}</em>${q.cphone ? `<a class="mini" target="_blank" rel="noopener" href="https://wa.me/${digits(q.cphone)}?text=${encodeURIComponent(`Bonjour ${q.cname || ''}, avez-vous pu consulter notre devis ${q.number} ? ${baseUrl(req)}/d/${q.token}`)}">Relancer</a>` : ''}</li>`).join('')}</ul>` : '<p class="empty">Rien à relancer pour l’instant.</p>'}</div></section>
 <section class="card"><div class="card-h"><h2>Projets en cours</h2><a href="/projets">Tout voir</a></div>${projs.length ? `<div class="pj-row">${projs.map((p) => { const st = (() => { try { return JSON.parse(p.steps || '[]'); } catch (e) { return []; } })(), d = st.filter((x) => x.d).length; const HL = health(p, CLM[p.client_id]); return `<a class="kb-card hl-${HL.lvl}" href="/projets/${p.id}" title="${esc(HL.why.join(', ') || 'Tout va bien')}"><b><i class="hl-dot"></i>${esc(p.ccomp || p.cname || '')}</b><span>${esc(p.title || '')}</span><div class="prog"><i style="width:${st.length ? Math.round(100 * d / st.length) : 0}%"></i></div><small>${badge(P_STATUS, p.status)} ${p.due_date ? 'livraison ' + dateFr(p.due_date) : ''}</small></a>`; }).join('')}</div>` : '<p class="empty">Aucun projet en cours. Ils s’ouvrent dès qu’un devis est accepté.</p>'}</section>
@@ -709,11 +779,11 @@ ${invs.filter((f) => f.kind === 'avoir' || f.cancelled).length ? `<p class="mut"
   const flash = req.query.err ? String(req.query.err) : req.query.assistant ? 'Tout est prêt : le client, le projet (en proposition) et ce devis. Vérifiez les prix, puis envoyez-le.' : req.query.envoyer ? 'Devis enregistré. Envoyez-le maintenant par WhatsApp ou par e-mail.' : '';
   res.send(layout({ title: `Devis ${q.number}`, active: '/devis', flash, actions, body: `<div class="docview"><div class="paper">${renderDoc({ type: 'devis', doc: q, items: await Q.qItems.all(q.id), client: cl, s })}</div><aside class="dv-side">${side}</aside></div>` }));
 });
-app.post('/devis/:id/envoye', async (req, res) => { await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = COALESCE(sent_at, datetime('now')) WHERE id = ? AND status = 'brouillon'").run(Number(req.params.id)); res.sendStatus(204); });
+app.post('/devis/:id/envoye', async (req, res) => { const r = await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = COALESCE(sent_at, datetime('now')) WHERE id = ? AND status = 'brouillon'").run(Number(req.params.id)); if (r.changes) await radarQuoteSent(Number(req.params.id)); res.sendStatus(204); });
 app.post('/devis/:id/statut', async (req, res) => {
   const id = Number(req.params.id), st = String(req.body.status), cur = await Q.quote.get(id); if (!cur) return res.sendStatus(404);
   if (['envoye', 'refuse'].includes(st) && quoteLocked(cur)) return res.redirect(`/devis/${id}?err=` + encodeURIComponent('Ce devis est déjà accepté.'));
-  if (st === 'envoye') await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = COALESCE(sent_at, datetime('now')) WHERE id = ?").run(id);
+  if (st === 'envoye') { await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = COALESCE(sent_at, datetime('now')) WHERE id = ?").run(id); if (!['envoye', 'vu'].includes(cur.status)) await radarQuoteSent(id); }
   else if (st === 'accepte') { await db.prepare("UPDATE quotes SET status = 'accepte', accepted_at = COALESCE(accepted_at, datetime('now')), accepted_name = COALESCE(accepted_name, '') WHERE id = ?").run(id); await ensureProject(id); await ensureOrder(id); await log('devis', id, 'Devis marqué accepté'); await leadFromQuote(id, 'gagne'); }
   else if (st === 'refuse') { await db.prepare("UPDATE quotes SET status = 'refuse' WHERE id = ?").run(id); await leadFromQuote(id, 'perdu', 'Devis refusé'); }
   res.redirect('/devis/' + id);
@@ -885,7 +955,7 @@ app.post('/clients/:id', async (req, res) => {
 const LSTAGES = [['nouveau', 'À appeler', 'blue'], ['contacte', 'Appelées', 'violet'], ['proposition', 'Devis envoyé', 'amber'], ['attente', 'À relancer', 'navy'], ['gagne', 'Projets', 'green'], ['perdu', 'Perdues', 'grey']];
 /* « Pas maintenant » : la demande reste vivante, avec une date de relance (aucun contact ne se perd) */
 const WAIT = ['Pas le bon moment', 'Veut réfléchir', 'Attend son budget', 'Doit en parler à un associé', 'Injoignable pour l’instant', 'Autre'];
-const LSOURCES = ['Téléphone', 'Site web', 'WhatsApp', 'Recommandation', 'Instagram ou Facebook', 'Google', 'Passage ou rencontre', 'Client existant', 'Autre'];
+const LSOURCES = ['Téléphone', 'Site web', 'WhatsApp', 'Radar', 'Recommandation', 'Instagram ou Facebook', 'Google', 'Passage ou rencontre', 'Client existant', 'Autre'];
 const LOST = ['Budget trop serré', 'Délai', 'A choisi un concurrent', 'Pas de réponse', 'Projet reporté', 'Pas sérieux', 'Devis refusé', 'Autre'];
 const LKINDS = [['vitrine', 'Site vitrine'], ['ecommerce', 'Boutique en ligne'], ['landing', 'Landing page'], ['application', 'Application'], ['refonte', 'Refonte d’un site'], ['google', 'Fiche Google / SEO'], ['autre', 'Autre']];
 const srcOf = (l) => (/site|démarrer|contact|rappel/i.test(l.source || '') ? 'Site web' : l.source || 'Autre');
@@ -894,7 +964,79 @@ const srcTag = (l) => { const x = String(l.source || ''); return /^rappel/i.test
 /* « à l'instant », « il y a 12 min », « hier »… (les dates de la base sont en UTC) */
 const ago = (ts) => { if (!ts) return ''; const d = (Date.now() - new Date(String(ts).replace(' ', 'T') + (/Z|[+-]\d\d:?\d\d$/.test(ts) ? '' : 'Z')).getTime()) / 60000; if (!isFinite(d)) return dateFr(ts); if (d < 1.5) return 'à l’instant'; if (d < 60) return `il y a ${Math.round(d)} min`; if (d < 24 * 60) return `il y a ${Math.round(d / 60)} h`; if (d < 48 * 60) return 'hier'; return dateFr(ts); };
 const NOTE_K = { appel: 'Appel', whatsapp: 'WhatsApp', rdv: 'Rendez-vous', note: 'Note', etape: 'Étape' };
-const leadStage = async (id, stage, extra = '') => { await db.prepare("UPDATE leads SET stage = ?, status = CASE WHEN ? = 'nouveau' THEN 'nouveau' ELSE 'traitee' END, updated_at = datetime('now') WHERE id = ?").run(stage, stage, id); await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(id, 'etape', `Passée en « ${(LSTAGES.find((x) => x[0] === stage) || [0, stage])[1]} »${extra ? ' : ' + extra : ''}`); };
+const leadStage0 = async (id, stage, extra = '') => { await db.prepare("UPDATE leads SET stage = ?, status = CASE WHEN ? = 'nouveau' THEN 'nouveau' ELSE 'traitee' END, updated_at = datetime('now') WHERE id = ?").run(stage, stage, id); await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(id, 'etape', `Passée en « ${(LSTAGES.find((x) => x[0] === stage) || [0, stage])[1]} »${extra ? ' : ' + extra : ''}`); };
+/* chaque issue d'une demande reliée au Radar y est reportée : gagnée (devis accepté), perdue (devis refusé ou autre raison) */
+const leadStage = async (id, stage, extra = '') => {
+  await leadStage0(id, stage, extra);
+  if (stage === 'gagne' || stage === 'perdu') {
+    const l = await db.prepare('SELECT quote_id, lost_reason FROM leads WHERE id = ?').get(id);
+    const ev = stage === 'gagne' ? (l && l.quote_id ? 'devis_accepte' : 'demande_gagnee') : (l && l.quote_id && /refus/i.test(extra) ? 'devis_refuse' : 'demande_perdue');
+    await radarEvent(id, ev, stage === 'perdu' ? { reason: String(extra || (l && l.lost_reason) || '').slice(0, 300) || null } : {}).catch(() => {});
+  }
+};
+/* ---------------- Radar Digilago : envois vers le Radar ---------------- */
+/* une demande arrivée d'ailleurs que le Radar (site, téléphone, WhatsApp…) : l'entreprise nous a contactés */
+const radarInbound = (l) => !/^radar$/i.test(String(l.source || ''));
+async function radarSend(id, payload) {
+  try {
+    await RADAR.call('event', payload, { timeout: 3500 });
+    await db.prepare("UPDATE radar_outbox SET sent_at = datetime('now'), tries = tries + 1, last_error = NULL WHERE id = ?").run(id);
+    return true;
+  } catch (e) {
+    const row = await db.prepare('SELECT tries FROM radar_outbox WHERE id = ?').get(id), n = ((row && row.tries) || 0) + 1;
+    /* nouvel essai de plus en plus espacé : 2, 4, 8… minutes, une heure au plus */
+    await db.prepare("UPDATE radar_outbox SET tries = ?, last_error = ?, next_at = datetime('now', ?) WHERE id = ?").run(n, String(e.message || e).slice(0, 200), `+${Math.min(60, 2 ** Math.min(n, 6))} minutes`, id);
+    return false;
+  }
+}
+/* étape d'une demande reliée au Radar : gardée (en cas d'échec réseau), puis envoyée tout de suite */
+async function radarEvent(leadId, event, extra = {}) {
+  if (!RADAR.ready()) return;
+  const l = await db.prepare('SELECT id, radar_id, quote_id FROM leads WHERE id = ?').get(leadId);
+  if (!l || !l.radar_id) return;
+  const q = l.quote_id ? await db.prepare('SELECT number, total_ttc FROM quotes WHERE id = ?').get(l.quote_id) : null;
+  const payload = { event, radarId: l.radar_id, leadId: l.id, path: `/demandes/${l.id}`, amount: q ? Number(q.total_ttc) || null : null, number: q ? q.number : null, ...extra };
+  const id = Number((await db.prepare('INSERT INTO radar_outbox (lead_id, event, payload) VALUES (?, ?, ?)').run(l.id, event, JSON.stringify(payload))).lastInsertRowid);
+  await radarSend(id, payload);
+}
+/* envois en attente (Radar injoignable un moment) : repris à chaque battement de l'admin */
+async function radarFlush(limit = 2) {
+  if (!RADAR.ready()) return;
+  const rows = await db.prepare("SELECT id, payload FROM radar_outbox WHERE sent_at IS NULL AND tries < 10 AND (next_at IS NULL OR next_at <= datetime('now')) ORDER BY id LIMIT ?").all(limit);
+  for (const r of rows) await radarSend(r.id, JSON.parse(r.payload));
+}
+/* devis envoyé au client : le Radar passe en « Proposition envoyée », avec le montant */
+async function radarQuoteSent(qid) {
+  for (const l of await db.prepare('SELECT id FROM leads WHERE quote_id = ? AND radar_id IS NOT NULL').all(qid)) await radarEvent(l.id, 'devis_envoye').catch(() => {});
+}
+/* une demande reçue est cherchée dans le Radar : une seule correspondance sûre (même téléphone, e-mail ou site) est
+   reliée d'office ; un nom proche est proposé, à confirmer. */
+async function radarLookup(l) {
+  const r = await RADAR.call('lookup', { name: l.name || '', company: l.company || '', phone: l.phone || '', email: l.email || '', city: l.city || '' }, { timeout: 3500 });
+  const matches = r.matches || [], strong = matches.filter((m) => m.strong);
+  if (strong.length === 1) return radarLink(l, strong[0].company.radarId, strong[0].match);
+  await db.prepare("UPDATE leads SET radar_matches = ?, radar_at = datetime('now') WHERE id = ?").run(JSON.stringify(matches), l.id);
+  return matches.length ? 'matches' : 'none';
+}
+const MATCH_TXT = { telephone: 'même téléphone', email: 'même e-mail', site: 'même site', nom: 'confirmée à la main', ajout: 'ajoutée au Radar' };
+async function radarLink(l, radarId, how) {
+  const r = await RADAR.call('link', { radarId, leadId: l.id, path: `/demandes/${l.id}`, inbound: radarInbound(l) }, { timeout: 4000 });
+  await radarSaved(l.id, r.company, `Reliée au Radar (${MATCH_TXT[how] || how}) : ${r.company.segmentLabel}${r.company.score != null ? `, score ${r.company.score}/100` : ''}.`);
+  return 'linked';
+}
+async function radarSaved(leadId, company, noteText) {
+  await db.prepare("UPDATE leads SET radar_id = ?, radar_data = ?, radar_matches = NULL, radar_at = datetime('now') WHERE id = ?").run(company.radarId, JSON.stringify(company), leadId);
+  if (noteText) await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(leadId, 'note', noteText);
+}
+/* le Radar en un coup d'œil (tableau de bord) : gardé 5 minutes en mémoire */
+let RADAR_SUM = null, RADAR_SUM_AT = 0;
+async function radarSummary() {
+  if (!RADAR.ready()) return null;
+  if (RADAR_SUM && Date.now() - RADAR_SUM_AT < 5 * 60e3) return RADAR_SUM;
+  try { RADAR_SUM = await RADAR.call('summary', {}, { timeout: 2500 }); } catch (e) { RADAR_SUM = { error: e.message }; }
+  RADAR_SUM_AT = Date.now();
+  return RADAR_SUM;
+}
 /* le moment où le client veut être appelé : une pastille (chaleur, échéance) sur chaque demande */
 const cbChip = (l, sg = l.stage || 'nouveau', big = false) => {
   if (!l.callback || !['nouveau', 'contacte'].includes(sg)) return '';
@@ -924,7 +1066,7 @@ app.get('/demandes', async (req, res) => {
   const stats = `<section class="lead-k"><div><b data-pulse-n>${st('nouveau').length}</b><span>à traiter</span></div><div><b data-pulse-late>${rows.filter((l) => l.next_at && l.next_at <= today() && !['gagne', 'perdu'].includes(l.stage)).length}</b><span>à rappeler aujourd’hui</span></div><div><b>${monthRows.length}</b><span>reçues ce mois</span></div><div><b>${closed ? Math.round(100 * won / closed) : 0} %</b><span>transformées en projets</span></div><div class="srcs"><span class="live-p"><i></i>En direct</span>${Object.entries(bySrc).sort((a, b) => b[1][0] - a[1][0]).slice(0, 5).map(([k, [n, w, c]]) => `<span class="src-${c}">${esc(k)} <b>${n}</b>${w ? ` · ${w} gagnée${w > 1 ? 's' : ''}` : ''}</span>`).join('')}</div></section>`;
   const body = `${stats}<details class="card quick" ${req.query.nouvelle ? 'open' : ''}><summary><b>+ Nouvelle demande</b><span>reçue par téléphone, WhatsApp, en rendez-vous…</span></summary>${leadForm()}</details>
 <div class="tools"><nav class="tabs"><a href="/demandes" class="${vue === 'pipeline' ? 'on' : ''}">Pipeline</a><a href="/demandes?vue=liste" class="${vue === 'liste' ? 'on' : ''}">Liste</a></nav></div>${vue === 'pipeline' ? pipe : list}`;
-  res.send(layout({ title: 'Demandes', active: '/demandes', body, actions: '<a class="btn" href="/demandes?nouvelle=1">+ Demande par téléphone</a>' }));
+  res.send(layout({ title: 'Demandes', active: '/demandes', body, actions: '<a class="btn" href="/demandes?nouvelle=1">Demande par téléphone</a>' }));
 });
 const leadVals = (b) => ['name', 'company', 'phone', 'email', 'city', 'kind', 'sector', 'source', 'budget', 'next_at', 'need'].map((k) => String(b[k] || '').trim().slice(0, k === 'need' ? 2000 : 160));
 app.post('/demandes', async (req, res) => {
@@ -934,7 +1076,12 @@ app.post('/demandes', async (req, res) => {
   res.redirect(req.body.then === 'assistant' ? `/assistant?demande=${id}` : `/demandes/${id}`);
 });
 app.get('/demandes/:id', async (req, res) => {
-  const l = await db.prepare('SELECT * FROM leads WHERE id = ?').get(Number(req.params.id)); if (!l) return res.sendStatus(404);
+  let l = await db.prepare('SELECT * FROM leads WHERE id = ?').get(Number(req.params.id)); if (!l) return res.sendStatus(404);
+  /* première ouverture : la demande est cherchée dans le Radar (diagnostic de son site, de sa fiche Google, de ses réseaux) */
+  if (RADAR.ready() && !l.radar_id && !l.radar_at && (l.phone || l.email || l.company)) {
+    try { await radarLookup(l); } catch (e) { await db.prepare("UPDATE leads SET radar_matches = ?, radar_at = datetime('now') WHERE id = ?").run(JSON.stringify({ error: e.message }), l.id); }
+    l = await db.prepare('SELECT * FROM leads WHERE id = ?').get(l.id);
+  }
   const notes = await db.prepare('SELECT * FROM lead_notes WHERE lead_id = ? ORDER BY id DESC').all(l.id);
   const q = l.quote_id ? await Q.quote.get(l.quote_id) : null, stage = l.stage || 'nouveau', x = LSTAGES.find((y) => y[0] === stage);
   const ph = digits(l.phone), wa = `https://wa.me/${ph}?text=${encodeURIComponent(`Bonjour ${l.name || ''}, ici Khalid de Digilago. Merci pour votre demande${l.need ? ' concernant ' + l.need.slice(0, 60) : ''}. Quand pouvons-nous en parler ?`)}`;
@@ -955,7 +1102,45 @@ ${['nouveau', 'contacte', 'attente'].includes(stage) ? `<form method="post" acti
 <div class="send">${stage === 'nouveau' ? `<form method="post" action="/demandes/${l.id}/etape" class="inl"><button class="btn ghost sm" name="stage" value="contacte">Marquer appelée</button></form>` : ''}${stage !== 'nouveau' && stage !== 'gagne' ? `<form method="post" action="/demandes/${l.id}/etape" class="inl"><button class="btn ghost sm" name="stage" value="nouveau">Remettre à appeler</button></form>` : ''}</div></div>`;
   const journal = `<div class="card"><div class="card-h"><h2>Suivi des échanges</h2></div><form method="post" action="/demandes/${l.id}/note" class="note-f"><select name="kind">${Object.entries(NOTE_K).filter(([k]) => k !== 'etape').map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select><input name="text" placeholder="Ex. : appelé, il veut un devis avant vendredi" required><input type="date" name="next_at" title="À rappeler le"><button class="btn sm">Ajouter</button></form>
 ${notes.length ? `<ul class="tl">${notes.map((n) => `<li><i class="k-${n.kind}"></i><b>${esc(NOTE_K[n.kind] || 'Note')} : ${esc(n.text)}</b><span>${dateFr(n.created_at)}</span></li>`).join('')}</ul>` : ''}${l.message ? `<p class="lead-msg"><b>Message reçu :</b><br>${esc(l.message).replace(/\n/g, '<br>')}</p>` : ''}</div>`;
-  res.send(layout({ title: l.company || l.name || 'Demande', active: '/demandes', flash: req.query.ok ? 'Demande enregistrée.' : '', body: head + `<div class="grid2 lead-g"><div class="card"><div class="card-h"><h2>Informations</h2></div>${leadForm(l, `/demandes/${l.id}`, 'Enregistrer')}</div><div>${actions}${journal}</div></div>` }));
+  const flash = req.query.ok ? 'Demande enregistrée.' : String(req.query.radar_ok || req.query.radar_err || '').slice(0, 200);
+  res.send(layout({ title: l.company || l.name || 'Demande', active: '/demandes', flash, body: head + `<div class="grid2 lead-g"><div>${RADAR.leadCard(l)}<div class="card"><div class="card-h"><h2>Informations</h2></div>${leadForm(l, `/demandes/${l.id}`, 'Enregistrer')}</div></div><div>${actions}${journal}</div></div>` }));
+});
+/* Radar : chercher, relier, ajouter (et analyser), actualiser, ou ne pas relier */
+app.post('/demandes/:id/radar/:act', async (req, res) => {
+  const l = await db.prepare('SELECT * FROM leads WHERE id = ?').get(Number(req.params.id)); if (!l) return res.sendStatus(404);
+  const back = (msg, err) => res.redirect(`/demandes/${l.id}` + (msg ? `?${err ? 'radar_err' : 'radar_ok'}=${encodeURIComponent(msg)}` : ''));
+  if (!RADAR.ready()) return back('Le Radar n’est pas relié (RADAR_URL, RADAR_SECRET).', true);
+  try {
+    switch (req.params.act) {
+      case 'chercher': {
+        await db.prepare('UPDATE leads SET radar_at = NULL, radar_matches = NULL WHERE id = ?').run(l.id);
+        const r = await radarLookup(l);
+        return back(r === 'linked' ? 'Reliée au Radar : son diagnostic est affiché.' : r === 'matches' ? 'Le Radar propose une ou plusieurs fiches : confirmez la bonne.' : 'Le Radar ne connaît pas encore cette entreprise.');
+      }
+      case 'relier': {
+        const id = String(req.body.radar_id || ''), ms = RADAR.parse(l.radar_matches), m = Array.isArray(ms) ? ms.find((x) => x.company && x.company.radarId === id) : null;
+        if (!m) return back('Cette fiche ne fait plus partie des propositions : cherchez à nouveau.', true);
+        await radarLink(l, id, m.strong ? m.match : 'nom');
+        return back('Reliée au Radar : son diagnostic est affiché et le Radar suivra le devis.');
+      }
+      case 'ajouter': {
+        if (!String(l.company || '').trim()) return back('Indiquez d’abord le nom de l’entreprise (Informations).', true);
+        const r = await RADAR.call('create', { company: l.company, name: l.name || '', phone: l.phone || '', email: l.email || '', city: l.city || '', need: l.need || l.message || '', leadId: l.id, path: `/demandes/${l.id}` }, { timeout: 8000 });
+        await radarSaved(l.id, r.company, r.created ? 'Ajoutée au Radar : analyse de son site, de sa fiche Google et de ses réseaux en cours.' : `Reliée au Radar (déjà connue) : ${r.company.segmentLabel}.`);
+        return back(r.created ? 'Ajoutée au Radar. Le diagnostic arrive dans quelques minutes : cliquez sur « Actualiser ».' : 'Le Radar connaissait déjà cette entreprise : reliée.');
+      }
+      case 'actualiser': {
+        if (!l.radar_id) return back('');
+        const r = await RADAR.call('snapshot', { radarId: l.radar_id });
+        await radarSaved(l.id, r.company, '');
+        return back('Diagnostic du Radar actualisé.');
+      }
+      case 'ignorer':
+        await db.prepare("UPDATE leads SET radar_matches = '[]', radar_at = datetime('now') WHERE id = ?").run(l.id);
+        return back('Cette demande ne sera pas reliée au Radar.');
+      default: return back('');
+    }
+  } catch (e) { return back(`Radar : ${e.message}.`, true); }
 });
 app.post('/demandes/:id', async (req, res) => {
   const v = leadVals(req.body);
@@ -1027,6 +1212,7 @@ ${['mail1', 'mail2'].map((c) => `<div class="chan"><b>${c === 'mail1' ? 'E-mail 
 <section class="card"><div class="card-h"><h2>Valeurs par défaut</h2></div><div class="row r4">${f('default_tva', 'TVA (%)')}${f('default_deposit', 'Acompte (%)')}${f('default_validity', 'Validité des devis (jours)')}${f('default_due_days', 'Échéance des factures (jours)')}</div><div class="row">${f('default_delay', 'Délai affiché')}${f('quote_prefix', 'Préfixe des devis')}${f('invoice_prefix', 'Préfixe des factures')}</div><label>Conditions par défaut<textarea name="default_conditions" rows="4">${esc(s.default_conditions)}</textarea></label></section>
 <button class="btn">Enregistrer les paramètres</button></form>
 <form method="post" action="/parametres/mot-de-passe" class="card"><div class="card-h"><h2>Mot de passe</h2></div><div class="row"><label>Mot de passe actuel<input type="password" name="cur" required autocomplete="current-password"></label></div><div class="row"><label>Nouveau mot de passe<input type="password" name="pw" minlength="8" required autocomplete="new-password"></label><label>Confirmer<input type="password" name="pw2" minlength="8" required autocomplete="new-password"></label></div><button class="btn ghost">Changer le mot de passe</button></form>
+${radarSettings(req.query)}
 <form method="post" action="/parametres/deconnecter-tout" class="card" data-confirm="Fermer toutes les sessions ouvertes (ordinateur, téléphone…) ?"><div class="card-h"><h2>Sécurité</h2></div><p class="mut">Un téléphone perdu ou un ordinateur partagé ? Fermez toutes les sessions ouvertes, sur tous les appareils.</p><button class="btn ghost">Déconnecter tous les appareils</button></form>
 <div class="card"><div class="card-h"><h2>Sauvegarde et export</h2></div><div class="send"><a class="btn ghost" href="/sauvegarde">Télécharger la sauvegarde complète</a><a class="btn ghost" href="/export/factures.csv">Factures (CSV)</a><a class="btn ghost" href="/export/paiements.csv">Paiements (CSV)</a></div></div>`;
   const flash = req.query.bienvenue ? 'Bienvenue ! Complétez vos informations : elles apparaîtront sur vos devis et factures.' : req.query.ok ? 'Paramètres enregistrés.' : req.query.pwerr ? String(req.query.pwerr) : req.query.pw ? 'Mot de passe changé.' : '';
@@ -1038,6 +1224,19 @@ app.post('/parametres/mot-de-passe', async (req, res) => {
   if (!checkPw(String(cur), await getS('_pw'))) return res.redirect('/parametres?pwerr=' + encodeURIComponent('Mot de passe actuel incorrect.'));
   if (String(pw).length < 8 || pw !== pw2) return res.redirect('/parametres?pwerr=' + encodeURIComponent('Le nouveau mot de passe doit faire 8 caractères au moins, deux fois le même.'));
   await setS('_pw', hashPw(String(pw))); await rotateSessions(); await setSession(res); res.redirect('/parametres?pw=1');
+});
+/* Liaison avec le Radar : état, test, et ce qu'elle fait. Le secret ne s'affiche jamais. */
+function radarSettings(qs = {}) {
+  const c = RADAR.conf(), ok = RADAR.ready();
+  return `<section class="card rd-set"><div class="card-h"><h2>Radar Digilago</h2><span class="bdg bdg-${ok ? 'green' : 'amber'}">${ok ? 'Relié' : 'Non relié'}</span></div>
+${ok ? `<p class="mut">Relié à <b>${esc(c.url)}</b>. « Préparer le devis » dans le Radar crée la demande ici ; chaque devis envoyé, accepté ou refusé met à jour le Radar (statut et montant) ; chaque demande reçue est reconnue par le Radar, qui en fait le diagnostic.</p>
+<form method="post" action="/parametres/radar/tester" class="inl"><button class="btn ghost sm">Tester la liaison</button></form>${qs.radar ? ` <span class="${qs.radar === 'ok' ? 'ok' : 'err'}">${esc(qs.radar === 'ok' ? 'Liaison vérifiée : le Radar répond.' : String(qs.radar))}</span>` : ''}`
+  : `<p class="mut">Pour relier le Radar : dans les variables d’hébergement de la gestion (Vercel), ajoutez <code>RADAR_URL</code> = https://radar.digilago.ma et <code>RADAR_SECRET</code> = une longue phrase au hasard (24 caractères au moins). Dans celles du Radar, <code>GESTION_URL</code> = l’adresse de cette gestion et <code>GESTION_SECRET</code> = la même phrase. Puis redéployez les deux.</p>`}</section>`;
+}
+app.post('/parametres/radar/tester', async (req, res) => {
+  let r = 'ok';
+  try { await RADAR.call('ping', {}, { timeout: 6000 }); } catch (e) { r = `Le Radar ne répond pas : ${e.message}.`; }
+  res.redirect('/parametres?radar=' + encodeURIComponent(r));
 });
 app.post('/parametres/deconnecter-tout', async (req, res) => { await rotateSessions(); res.setHeader('Set-Cookie', 'dg=; Path=/; Max-Age=0'); res.redirect('/connexion'); });
 
@@ -1104,6 +1303,7 @@ app.post('/projets/:id/lancement', async (req, res) => {
    nouvelles arrivées depuis la dernière vue, pour une alerte immédiate (avec appel et WhatsApp en un geste). */
 app.get('/api/pulse', async (req, res) => {
   const since = Math.max(0, Number(req.query.since) || 0);
+  await radarFlush(2).catch(() => {});
   const [a, b, c, fresh] = await Promise.all([
     db.prepare("SELECT COUNT(*) n FROM leads WHERE COALESCE(stage, 'nouveau') = 'nouveau'").get(),
     db.prepare("SELECT COUNT(*) n FROM leads WHERE next_at IS NOT NULL AND next_at <= ? AND COALESCE(stage, 'nouveau') NOT IN ('gagne','perdu')").get(today()),

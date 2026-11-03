@@ -35,7 +35,8 @@ test('le lien privé : avancement, rien d’autre pour un lien inconnu ou sans m
   assert.match((await pub('/suivi/' + tok)).headers.get('x-robots-tag'), /noindex/);
   // les actions de la gestion exigent la connexion
   for (const p of ['/projets/1/suivi/tache', '/projets/1/suivi/message']) assert.strictEqual((await pubPost(p, { preset: 'logo' })).headers.get('location'), '/connexion');
-  assert.strictEqual((await pub('/projets/1/suivi/fichier/1')).headers.get('location'), '/connexion');
+  // un lien ouvert sans être connecté : connexion, puis retour à ce lien
+  assert.strictEqual((await pub('/projets/1/suivi/fichier/1')).headers.get('location'), '/connexion?suite=%2Fprojets%2F1%2Fsuivi%2Ffichier%2F1');
 });
 
 test('Digilago ajoute des demandes, le client y répond', async () => {

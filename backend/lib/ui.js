@@ -51,20 +51,28 @@ const P_STATUS = { proposition: ['Proposition', 'amber'], a_demarrer: ['À déma
 const I_STATUS = { impayee: ['À payer', 'amber'], partielle: ['Partiellement payée', 'blue'], payee: ['Payée', 'green'], retard: ['En retard', 'red'], annulee: ['Annulée par avoir', 'grey'], avoir: ['Avoir', 'violet'] };
 const badge = (map, k) => { const [t, c] = map[k] || [k, 'grey']; return `<span class="bdg bdg-${c}">${esc(t)}</span>`; };
 
+/* La ligne en Playfair italique des pages principales, comme les titres de digilago.ma */
+const LEAD = {
+  '/': ['Tableau de bord', 'votre journée, en un coup d’œil.'], '/demandes': ['Demandes', 'du premier appel au projet.'],
+  '/devis': ['Devis', 'envoyés, consultés, acceptés.'], '/factures': ['Factures', 'et ce qui reste à encaisser.'],
+  '/clients': ['Clients', 'tout leur historique.'], '/projets': ['Projets', 'de la maquette à la mise en ligne.'],
+  '/messagerie': ['Messagerie', 'WhatsApp et e-mails, réunis.'], '/depenses': ['Dépenses', 'et la TVA récupérable.'],
+  '/rapports': ['Rapports', 'mois par mois.'], '/prestations': ['Prestations', 'votre catalogue et vos prix.'],
+};
 function layout({ title, active = '', body, flash = '', actions = '' }) {
   const nav = NAV_GROUPS.map(([g, items]) => `<span class="ng">${g}</span>` + items.map(([h, t, i]) => `<a href="${h}" class="${active === h ? 'on' : ''}"${active === h ? ' aria-current="page"' : ''}>${ICONS[i]}<span>${t}</span></a>`).join('')).join('');
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>${esc(title)} | Digilago Gestion</title>
 <meta name="theme-color" content="#0E214E"><link rel="manifest" href="/static/manifest.webmanifest"><link rel="apple-touch-icon" href="/static/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Digilago">
 <link rel="icon" href="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 8 38 48"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="#1F57C7"/><path d="M28 10 A22 22 0 0 1 28 54 Z" fill="#1F57C7"/></svg>')}">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}">
+<link rel="preload" href="/static/fonts/instrument-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/static/fonts/sora-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"><link rel="stylesheet" href="/static/brand.css?v=${ver('brand.css')}">
 ${SPEC}</head><body class="admin">
 <aside class="side"><a class="brand" href="/"><span>${LOGO}</span><b>digilago</b><em>Gestion</em></a>
 <a class="new${active === '/assistant' ? ' on' : ''}" href="/assistant">${ICONS.spark}<span>Nouveau projet</span></a><button type="button" class="kbar" data-cmdk>${ICONS.search || ""}<span>Rechercher</span><kbd>⌘K</kbd></button><nav>${nav}</nav>
 <button type="button" class="alerts" data-alerts hidden>${ICONS.bell}<span>Activer les alertes</span></button>
 <form method="post" action="/deconnexion" class="out"><button type="submit">${ICONS.out}Déconnexion</button></form></aside>
-<main class="main"><header class="top"><h1>${esc(title)}</h1><div class="top-a">${actions}</div></header>${flash ? `<div class="flash">${esc(flash)}</div>` : ''}${body}</main>
+<main class="main"><header class="top"><h1>${esc(title)}${LEAD[active] && LEAD[active][0] === title ? ` <em>${esc(LEAD[active][1])}</em>` : ''}</h1><div class="top-a">${actions}</div></header>${flash ? `<div class="flash">${esc(flash)}</div>` : ''}${body}</main>
 <nav class="tabbar" aria-label="Navigation rapide">${TABS.map(([h, t, i]) => `<a href="${h}" class="${active === h ? 'on' : ''}${h === '/assistant' ? ' tb-new' : ''}">${ICONS[i]}<span>${t}</span></a>`).join('')}<button type="button" data-menu aria-expanded="false">${ICONS.menu}<span>Menu</span></button></nav>
 <script src="/static/app.js?v=${ver('app.js')}" defer></script></body></html>`;
 }

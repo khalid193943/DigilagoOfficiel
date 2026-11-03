@@ -2,7 +2,7 @@
 /* Assistant « Nouveau projet » : pensé pour un appel ou un rendez-vous avec un client. */
 const { esc } = require('./fmt');
 const SECTORS = ['Santé et médical', 'Éducation', 'Restauration', 'Hôtellerie', 'Commerce', 'Immobilier', 'Sport et loisirs', 'Beauté et bien-être', 'Industrie', 'Juridique et conseil', 'Tourisme', 'Services', 'Autre'];
-const SOURCES = ['Téléphone', 'Site web', 'WhatsApp', 'Recommandation', 'Instagram ou Facebook', 'Google', 'Salon ou rencontre', 'Client existant', 'Autre'];
+const SOURCES = ['Téléphone', 'Site web', 'WhatsApp', 'Radar', 'Recommandation', 'Instagram ou Facebook', 'Google', 'Salon ou rencontre', 'Client existant', 'Autre'];
 const CITIES = ['Casablanca', 'Rabat', 'El Jadida', 'Marrakech', 'Tanger', 'Fès', 'Agadir', 'Meknès', 'Kénitra', 'Oujda', 'Tétouan', 'Safi', 'Mohammedia', 'Témara', 'Salé', 'Béni Mellal', 'Nador', 'Essaouira', 'Laâyoune', 'Dakhla'];
 const card = (name, val, t, s, ic, checked) => `<label class="ac-card"><input type="radio" name="${name}" value="${val}"${checked ? ' checked' : ''}><span class="ac-ic">${ic}</span><b>${t}</b><small>${s}</small></label>`;
 const I = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
