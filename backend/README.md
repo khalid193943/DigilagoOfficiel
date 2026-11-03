@@ -111,6 +111,26 @@ Le Radar trouve et qualifie les prospects ; la gestion fait les devis, les factu
 
 Variables (Vercel), jamais dans le code : `RADAR_URL` = `https://radar.digilago.ma` et `RADAR_SECRET` = une longue phrase au hasard (24 caractères au moins). Dans le Radar : `GESTION_URL` = l'adresse de la gestion et `GESTION_SECRET` = **la même phrase**. Chaque appel est signé (HMAC-SHA256) et refusé s'il a plus de 5 minutes ; les fiches fictives du Radar ne sont jamais acceptées.
 
+## Signature électronique des devis
+
+Le client signe le devis **depuis le lien reçu**, sur téléphone ou ordinateur, en une minute :
+
+1. **Qui signe** : nom et prénom, fonction (facultatif).
+2. **Code de vérification** à 6 chiffres envoyé par e-mail (adresse d'envoi réglée dans **Paramètres → Canaux de communication**) ou par WhatsApp (mode API). Valable 10 minutes, 5 essais, 5 codes par heure au plus. Sans e-mail ni API WhatsApp réglés, la signature se fait sans code, sur le lien personnel du devis.
+3. **Signature** tracée au doigt, au stylet ou à la souris, ou nom tapé ; puis le texte d'engagement à cocher.
+
+À la signature : le devis passe « Accepté », le projet et le **bon de commande** sont créés, la demande passe « Gagné » (et le Radar, s'il est relié). La signature apparaît sur le devis et sur le bon de commande ; le client et vous avez le **certificat de signature** (lien privé, imprimable en PDF), avec le dossier de preuve : identité déclarée, moyen de vérification et heure, horodatage (heure du Maroc et UTC), adresse IP, appareil, image de la signature, texte accepté, journal (envoi, consultation, codes, signature) et **empreinte SHA-256 du devis signé**. Si le devis est modifié après coup, le certificat l'indique.
+
+Cadre : signature électronique simple avec dossier de preuve (loi 43-20 sur les services de confiance, loi 53-05 et art. 417-1 du DOC : l'écrit électronique vaut l'écrit papier si son auteur est identifié et son intégrité garantie). C'est la pratique des outils de signature en ligne pour les devis et bons de commande. Pour un acte qui exige une signature électronique **qualifiée** (certificat d'un prestataire agréé), passez par un prestataire de confiance agréé.
+
+## Publicité (Meta, Instagram, Google Ads)
+
+- **Provenance de chaque demande** : le site joint la visite (utm, identifiants de clic Google et Meta, page d'arrivée). La demande affiche son canal (Meta Ads, Google Ads, réseaux, Google naturel, assistants IA…) et sa campagne ; les clics « Envoyer un message WhatsApp » des publicités Meta arrivent aussi avec leur publicité.
+- **Page Publicité** : demandes, devis, clients signés et chiffre par canal et par campagne, coût par demande et par client à partir des dépenses de catégorie « Publicité » (factures Meta et Google saisies dans Dépenses), modèles de liens utm à coller dans vos publicités.
+- **Meta (API Conversions)** : « Lead » à la demande et « Purchase » au devis accepté, avec le même identifiant que le pixel du site (comptés une fois). Seulement pour les visiteurs qui ont accepté la publicité. Variables Vercel : `META_PIXEL_ID`, `META_CAPI_TOKEN` (secret), et `META_TEST_EVENT_CODE` pour essayer dans le gestionnaire d'événements.
+- **Google Ads** : fichier des clients signés venus d'un clic Google (Publicité → carte Google Ads → « Télécharger le fichier »), à importer dans Google Ads (Outils → Conversions → Importer).
+- Côté site, les identifiants publics (pixel Meta, Google Ads et étiquettes de conversion) se règlent avec `python3 tools/analytics.py`, puis le site est reconstruit.
+
 ## Sécurité
 
 - **Mot de passe** : changer de mot de passe demande l'actuel et ferme toutes les autres sessions. **Paramètres → Sécurité → Déconnecter tous les appareils** en cas de téléphone perdu.

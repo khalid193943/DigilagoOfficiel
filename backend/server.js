@@ -13,6 +13,8 @@ const assistant = require('./lib/assistant');
 const CP = require('./lib/compta');
 const CB = require('./lib/callback');
 const RADAR = require('./lib/radar');
+const ADS = require('./lib/ads');
+const SIG = require('./lib/sign');
 
 const app = express();
 app.disable('x-powered-by');
@@ -266,10 +268,18 @@ app.post('/api/leads', async (req, res) => {
   if (await hit('lead:' + String(req.ip || '').slice(0, 64), 15 * 60e3, 6)) return res.status(429).json({ ok: false });
   /* le moment de rappel choisi par le client (page « Démarrer ») : il dit aussi à quel point il est intéressé */
   const cb = CB.parse(b);
-  const r = await db.prepare("INSERT INTO leads (name, company, phone, email, need, message, source, stage, updated_at, callback, callback_at, callback_label, next_at, ref, lang, city) VALUES (?, ?, ?, ?, ?, ?, ?, 'nouveau', datetime('now'), ?, ?, ?, ?, ?, ?, ?)").run(s(b.name, 120), s(b.company, 160), s(b.phone, 40), s(b.email, 160), s(b.need, 300), s(b.message, 3000), s(b.source, 80) || 'site',
-    cb ? cb.key : null, cb ? cb.at : null, cb ? cb.label : null, cb ? cb.date : null, s(b.ref, 20) || null, ['fr', 'en', 'ar'].includes(b.lang) ? b.lang : null, s(b.city, 80) || null);
+  /* provenance de la visite (campagne, identifiants de clic) et choix du visiteur sur la publicité (bandeau des cookies) */
+  const att = ADS.attFrom(b), adsOk = b.consent_ads === true;
+  if (adsOk) { if (s(b.fbp, 120)) att.fbp = s(b.fbp, 120); if (s(b.fbc, 300)) att.fbc = s(b.fbc, 300); att.ip = String(req.ip || '').slice(0, 64); att.ua = String(req.get('user-agent') || '').slice(0, 300); }
+  if (s(b.event_id, 100)) att.event_id = s(b.event_id, 100);
+  const channel = ADS.channelOf(att), campaign = ADS.campaignOf(att);
+  const r = await db.prepare("INSERT INTO leads (name, company, phone, email, need, message, source, stage, updated_at, callback, callback_at, callback_label, next_at, ref, lang, city, att, channel, campaign, gclid, ads_ok) VALUES (?, ?, ?, ?, ?, ?, ?, 'nouveau', datetime('now'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").run(s(b.name, 120), s(b.company, 160), s(b.phone, 40), s(b.email, 160), s(b.need, 300), s(b.message, 3000), s(b.source, 80) || 'site',
+    cb ? cb.key : null, cb ? cb.at : null, cb ? cb.label : null, cb ? cb.date : null, s(b.ref, 20) || null, ['fr', 'en', 'ar'].includes(b.lang) ? b.lang : null, s(b.city, 80) || null,
+    Object.keys(att).length ? JSON.stringify(att) : null, channel, campaign, att.gclid || null, adsOk ? 1 : 0);
   const id = Number(r.lastInsertRowid);
-  await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(id, 'note', `Demande reçue sur le site${cb ? ` : rappeler ${cb.label.charAt(0).toLowerCase() + cb.label.slice(1)}` : ''}`);
+  await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(id, 'note', `Demande reçue sur le site${channel ? ` (${ADS.channelLabel(channel)}${campaign ? ', campagne « ' + campaign + ' »' : ''})` : ''}${cb ? ` : rappeler ${cb.label.charAt(0).toLowerCase() + cb.label.slice(1)}` : ''}`);
+  /* Meta (API Conversions) : la même demande que le pixel du navigateur (même identifiant), seulement avec l'accord publicité */
+  if (adsOk && ADS.metaReady()) { const m = await ADS.sendMeta('Lead', { eventId: att.event_id, url: att.page, phone: b.phone, email: b.email, att }); if (!m.ok) await log('demande', id, `Meta (conversion « Lead ») non envoyée : ${m.error}`); }
   res.json({ ok: true, id, callback: cb ? { label: cb.label, at: cb.at } : null });
 });
 
@@ -285,15 +295,138 @@ app.get('/d/:token', async (req, res) => {
   const canAccept = ['envoye', 'vu', 'brouillon'].includes(st) && !q.accepted_at;
   const wa = `https://wa.me/${s.whatsapp}?text=${encodeURIComponent(`Bonjour ${s.company_name}, j’ai une question sur le devis ${q.number}.`)}`;
   const deposit = round2(q.total_ttc * num(q.deposit_pct) / 100);
+  const sig = await sigOf('devis', q.id), ch = codeChannels(s);
   const bar = `<div class="pub-bar"><div class="pub-in"><div><span class="pub-k">Devis ${esc(q.number)}</span><b>${money(q.total_ttc)} TTC</b></div><div class="pub-a">
 <button type="button" class="btn ghost" data-print>Télécharger en PDF</button><a class="btn ghost" href="${wa}" target="_blank" rel="noopener">Une question ?</a>
-${canAccept ? '<a class="btn" href="#accepter">Accepter le devis</a>' : q.accepted_at ? '<span class="bdg bdg-green">Devis accepté</span>' : st === 'expire' ? '<span class="bdg bdg-amber">Devis expiré</span>' : ''}</div></div></div>`;
-  const accept = canAccept ? `<form method="post" action="/d/${esc(q.token)}/accepter" class="pub-accept" id="accepter"><h2>Accepter ce devis</h2><p>En acceptant, vous validez la commande. Nous vous contactons pour l’acompte de <b>${money(deposit)}</b> et le démarrage.</p><label>Votre nom complet<input name="name" required maxlength="120" value="${esc(cl.name || '')}"></label><label class="chk"><input type="checkbox" name="ok" value="1" required> J’accepte le devis ${esc(q.number)} et ses conditions.</label><button class="btn">Je confirme et j’accepte</button></form>` : '';
-  const thanks = req.query.merci ? `<div class="pub-thanks"><b>Merci, votre devis est accepté.</b><p>Nous vous contactons très vite pour l’acompte et le démarrage.${s.bank_rib ? ` Vous pouvez aussi régler l’acompte par virement (RIB ci-dessous, référence ${esc(q.number)}).` : ''}</p><a class="btn" href="${wa}" target="_blank" rel="noopener">Nous écrire sur WhatsApp</a></div>` : '';
-  res.send(await publicPage('Devis ' + q.number, bar + `<main class="pub-main">${thanks}${renderDoc({ type: 'devis', doc: q, items: await Q.qItems.all(q.id), client: cl, s })}${accept}</main>`));
+${canAccept ? '<a class="btn" href="#accepter">Signer le devis</a>' : sig ? `<a class="bdg bdg-green" href="/signature/${esc(sig.token)}">Devis signé · certificat</a>` : q.accepted_at ? '<span class="bdg bdg-green">Devis accepté</span>' : st === 'expire' ? '<span class="bdg bdg-amber">Devis expiré</span>' : ''}</div></div></div>`;
+  const accept = canAccept ? signPanel(q, cl, { deposit, mail: !!ch.mail, wa: !!ch.wa, hash: await quoteHash(q), wa_link: wa }) : '';
+  const thanks = req.query.merci ? `<div class="pub-thanks"><b>${sig ? 'Merci, votre devis est signé.' : 'Merci, votre devis est accepté.'}</b>${sig ? `<p><a href="/signature/${esc(sig.token)}">Voir le certificat de signature électronique</a></p>` : ''}<p>Nous vous contactons très vite pour l’acompte et le démarrage.${s.bank_rib ? ` Vous pouvez aussi régler l’acompte par virement (RIB ci-dessous, référence ${esc(q.number)}).` : ''}</p><a class="btn" href="${wa}" target="_blank" rel="noopener">Nous écrire sur WhatsApp</a></div>` : '';
+  res.send(await publicPage('Devis ' + q.number, bar + `<main class="pub-main">${thanks}${renderDoc({ type: 'devis', doc: q, items: await Q.qItems.all(q.id), client: cl, s, sig })}${accept}</main>${canAccept ? `<script src="/static/sign.js?v=${ver('sign.js')}" defer></script>` : ''}`));
+});
+/* ---------------- Signature électronique d'un devis (et du bon de commande qui en découle) ---------------- */
+/* heure du Maroc (la base garde l'UTC) ; avec les secondes pour le journal de preuve */
+const atMa = (ts, sec = false) => { const d = new Date(String(ts || '').replace(' ', 'T') + (/Z|[+-]\d\d:?\d\d$/.test(String(ts)) ? '' : 'Z')); return isNaN(d) ? '' : d.toLocaleString('fr-FR', { timeZone: 'Africa/Casablanca', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', ...(sec ? { second: '2-digit' } : {}) }).replace(' ', ' à ') + (sec ? '' : ' (heure du Maroc)'); };
+async function sigOf(type, id) { const x = await db.prepare('SELECT * FROM signatures WHERE doc_type = ? AND doc_id = ? ORDER BY id DESC LIMIT 1').get(type, id); if (x) x.when = atMa(x.signed_at); return x || null; }
+async function quoteHash(q) { return SIG.hashOf(SIG.canonicalQuote(q, await Q.qItems.all(q.id), (await Q.client.get(q.client_id)) || {})); }
+/* moyens d'envoyer le code de vérification : e-mail (SMTP réglé dans Paramètres), ou WhatsApp (API reliée) */
+function codeChannels(s) { const chs = MSG.channels(s); return { mail: chs.find((c) => !c.wa && c.smtp) || null, wa: chs.find((c) => c.wa && c.api) || null }; }
+/* coordonnées du dossier client où envoyer le code (le signataire ne choisit pas l'adresse : c'est la preuve qu'il est bien le client) */
+function knownContacts(cl, ch) {
+  const out = [], ph = cl.whatsapp || cl.phone;
+  if (ch.mail && SIG.isEmail(cl.email)) out.push({ via: 'mail', to: String(cl.email).trim(), label: 'Par e-mail' });
+  if (ch.wa && SIG.phoneDigits(ph)) out.push({ via: 'wa', to: String(ph).trim(), label: 'Par WhatsApp' });
+  return out;
+}
+const signable = (q) => !q.accepted_at && ['brouillon', 'envoye', 'vu'].includes(q.status) && qStatus(q) !== 'expire';
+function signPanel(q, cl, { deposit, mail, wa, hash, wa_link }) {
+  const canCode = mail || wa, n = canCode ? [1, 2, 3] : [1, 0, 2], known = knownContacts(cl, { mail, wa });
+  let codeStep = '';
+  if (canCode) {
+    const send = known.length
+      ? `<p class="sg-p">Pour confirmer que c’est bien vous, nous envoyons un code à usage unique aux coordonnées de votre dossier.</p><div class="sg-via">${known.map((k) => `<button type="button" class="btn ghost" data-send data-via="${k.via}"><span>${known.length > 1 ? k.label : 'Recevoir le code'}</span><small>${esc(SIG.mask(k.to))}</small></button>`).join('')}</div><p class="sg-alt">Ces coordonnées ne sont plus les bonnes ? <a href="${wa_link}" target="_blank" rel="noopener">Écrivez-nous</a> et nous les corrigeons.</p>`
+      : `<p class="sg-p">Pour confirmer que c’est bien vous, nous envoyons un code à usage unique ${mail && wa ? 'par e-mail ou sur WhatsApp' : mail ? 'à votre adresse e-mail' : 'sur WhatsApp'}.</p><div class="sg-row sg-send"><label>${mail && wa ? 'E-mail ou numéro WhatsApp' : mail ? 'Adresse e-mail' : 'Numéro WhatsApp'}<input name="contact" maxlength="160" ${mail && !wa ? 'type="email" autocomplete="email"' : wa && !mail ? 'type="tel" autocomplete="tel"' : 'autocomplete="email"'}></label><button type="button" class="btn ghost" data-send>Recevoir le code</button></div>`;
+    codeStep = `<div class="sg-step" data-step="code"><span class="sg-n">${n[1]}</span><div><b>Code de vérification</b>${send}<label class="sg-c" hidden>Code reçu (6 chiffres)<input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}"></label><p class="sg-msg" role="status" aria-live="polite"></p></div></div>`;
+  }
+  return `<section class="pub-accept sg" id="accepter" data-token="${esc(q.token)}" data-code="${canCode ? '1' : ''}" data-hash="${hash}" aria-labelledby="sg-t"><h2 id="sg-t">Signer le devis</h2>
+<p>En signant, vous validez la commande. Nous vous contactons ensuite pour l’acompte de <b>${money(deposit)}</b> et le démarrage. Tout se fait ici, sur téléphone ou ordinateur.</p>
+<noscript><p class="sg-err">La signature en ligne a besoin de JavaScript. Activez-le, ou écrivez-nous sur WhatsApp pour valider le devis.</p></noscript>
+<div class="sg-step" data-step="who"><span class="sg-n">${n[0]}</span><div><b>Qui signe ?</b><div class="sg-row"><label>Nom et prénom<input name="name" required maxlength="120" autocomplete="name" value="${esc(cl.name || '')}"></label><label>Fonction (facultatif)<input name="role" maxlength="80" autocomplete="organization-title" placeholder="Gérant, directrice…"></label></div></div></div>
+${codeStep}
+<div class="sg-step" data-step="ink"><span class="sg-n">${n[2]}</span><div><b>Votre signature</b><div class="sg-tabs" role="tablist" aria-label="Façon de signer"><button type="button" role="tab" aria-selected="true" class="on" data-mode="draw">Tracer</button><button type="button" role="tab" aria-selected="false" data-mode="type">Taper mon nom</button></div>
+<div class="sg-pad"><canvas aria-label="Zone de signature : tracez votre signature avec le doigt, un stylet ou la souris"></canvas><span class="sg-hint" aria-hidden="true">Signez ici</span><button type="button" class="sg-clear">Effacer</button></div></div></div>
+<label class="chk sg-ok"><input type="checkbox" name="ok" value="1"> <span>${esc(SIG.CONSENT)}</span></label>
+<p class="sg-err" role="alert" hidden></p>
+<button type="button" class="btn sg-go" data-sign>Signer le devis ${esc(q.number)}</button>
+<p class="sg-legal">Signature électronique avec dossier de preuve : horodatage, ${canCode ? 'code de vérification, ' : ''}adresse IP, appareil et empreinte SHA-256 du document (lois 53-05 et 43-20). Un certificat de signature est disponible juste après.</p></section>`;
+}
+app.post('/d/:token/code', async (req, res) => {
+  const q = await Q.quoteByToken.get(req.params.token); if (!q) return res.status(404).json({ ok: false });
+  if (!signable(q)) return res.status(409).json({ ok: false, error: 'Ce devis ne peut plus être signé.' });
+  const b = req.body || {}, s = await settings(), ch = codeChannels(s), known = knownContacts((await Q.client.get(q.client_id)) || {}, ch);
+  let contact, via;
+  if (known.length) { const k = known.find((x) => x.via === b.via) || known[0]; contact = k.to; via = k.via; }
+  else {
+    contact = String(b.contact || '').trim().slice(0, 160);
+    const email = SIG.isEmail(contact), ph = SIG.phoneDigits(contact);
+    via = email && ch.mail ? 'mail' : ph && ch.wa ? 'wa' : null;
+    if (!email && !ph) return res.status(400).json({ ok: false, error: 'Indiquez une adresse e-mail (ou un numéro de téléphone) valide.' });
+    if (!via) return res.status(400).json({ ok: false, error: email ? 'L’envoi par e-mail n’est pas disponible : indiquez votre numéro WhatsApp.' : 'L’envoi par WhatsApp n’est pas disponible : indiquez votre adresse e-mail.' });
+  }
+  if (await hit('sigcode:' + q.id, 3600e3, SIG.CODES_PER_HOUR)) return res.status(429).json({ ok: false, error: 'Trop de codes demandés : réessayez dans une heure.' });
+  const code = SIG.newCode(), salt = crypto.randomBytes(8).toString('hex');
+  const text = `Votre code pour signer le devis ${q.number} de ${s.company_name} : ${code}\nValable ${SIG.CODE_TTL_MIN} minutes. Ne le communiquez à personne.`;
+  const r = via === 'mail' ? await MSG.sendMail(ch.mail, contact, `Code de signature : ${code}`, text, s.company_name) : await MSG.sendWhatsApp(ch.wa, contact, text);
+  if (r.status !== 'envoye') return res.status(502).json({ ok: false, error: via === 'wa' && ch.mail ? 'Le code n’a pas pu être envoyé sur WhatsApp. Choisissez l’e-mail, ou réessayez dans un instant.' : 'Le code n’a pas pu être envoyé. Réessayez dans un instant.' });
+  await db.prepare("INSERT INTO sign_codes (doc_type, doc_id, contact, salt, code_hash, channel, expires_at) VALUES ('devis', ?, ?, ?, ?, ?, datetime('now', ?))").run(q.id, contact, salt, SIG.codeHash(code, salt), via, `+${SIG.CODE_TTL_MIN} minutes`);
+  await log('devis', q.id, `Code de signature envoyé par ${via === 'mail' ? 'e-mail' : 'WhatsApp'} à ${SIG.mask(contact)}`);
+  res.json({ ok: true, via: via === 'mail' ? 'e-mail' : 'WhatsApp', to: SIG.mask(contact) });
+});
+app.post('/d/:token/signer', async (req, res) => {
+  const q = await Q.quoteByToken.get(req.params.token); if (!q) return res.status(404).json({ ok: false });
+  if (!signable(q)) return res.status(409).json({ ok: false, error: 'Ce devis est déjà signé, ou il n’est plus valable.' });
+  const b = req.body || {}, cleanS = (v, n) => String(v || '').replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, n);
+  const name = cleanS(b.name, 120), role = cleanS(b.role, 80);
+  if (name.length < 3) return res.status(400).json({ ok: false, error: 'Indiquez votre nom et prénom.' });
+  if (!SIG.validImage(b.image)) return res.status(400).json({ ok: false, error: 'Tracez votre signature (ou tapez votre nom).' });
+  if (b.ok !== true) return res.status(400).json({ ok: false, error: 'Cochez la case d’engagement pour signer.' });
+  if (await hit('sign:' + q.id, 3600e3, 20)) return res.status(429).json({ ok: false, error: 'Trop d’essais : réessayez dans une heure.' });
+  /* le client signe la version qu'il a sous les yeux : si le devis a changé depuis l'ouverture de la page, il la recharge d'abord (le code n'est pas consommé) */
+  const hash = await quoteHash(q);
+  if (b.hash && b.hash !== hash) return res.status(409).json({ ok: false, error: 'Le devis vient d’être mis à jour. La page se recharge pour vous montrer la nouvelle version avant de signer.' });
+  /* code envoyé pour ce devis : obligatoire, valable 10 minutes, 5 essais */
+  const s = await settings(), ch = codeChannels(s);
+  let verified = null;
+  if (ch.mail || ch.wa) {
+    const c = await db.prepare("SELECT *, expires_at > datetime('now') alive FROM sign_codes WHERE doc_type = 'devis' AND doc_id = ? AND used_at IS NULL ORDER BY id DESC LIMIT 1").get(q.id);
+    if (!c) return res.status(400).json({ ok: false, error: 'Demandez d’abord votre code de vérification.' });
+    if (!c.alive) return res.status(400).json({ ok: false, error: 'Ce code a expiré : demandez-en un nouveau.' });
+    if (c.tries >= SIG.CODE_MAX_TRIES) return res.status(400).json({ ok: false, error: 'Trop d’essais : demandez un nouveau code.' });
+    if (!/^\d{6}$/.test(String(b.code || '').trim()) || SIG.codeHash(String(b.code).trim(), c.salt) !== c.code_hash) {
+      await db.prepare('UPDATE sign_codes SET tries = tries + 1 WHERE id = ?').run(c.id);
+      return res.status(400).json({ ok: false, error: `Code incorrect (${SIG.CODE_MAX_TRIES - c.tries - 1} essai${SIG.CODE_MAX_TRIES - c.tries - 1 > 1 ? 's' : ''} restant${SIG.CODE_MAX_TRIES - c.tries - 1 > 1 ? 's' : ''}).` });
+    }
+    await db.prepare("UPDATE sign_codes SET used_at = datetime('now') WHERE id = ?").run(c.id);
+    verified = { by: c.channel === 'mail' ? 'e-mail' : 'WhatsApp', contact: c.contact };
+  }
+  const cl = (await Q.client.get(q.client_id)) || {}, tok = token();
+  const done = await db.tx(async (t) => {
+    const u = await t.prepare("UPDATE quotes SET status = 'accepte', accepted_at = datetime('now'), accepted_name = ? WHERE id = ? AND accepted_at IS NULL").run(name, q.id);
+    if (!u.changes) return false;
+    await t.prepare("INSERT INTO signatures (token, doc_type, doc_id, number, amount, signer_name, signer_role, signer_company, contact, verified_by, verified_at, method, image, ip, ua, consent, doc_hash) VALUES (?, 'devis', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+      .run(tok, q.id, q.number, q.total_ttc, name, role || null, cl.company || null, verified ? verified.contact : null, verified ? verified.by : null, verified ? new Date().toISOString().slice(0, 19).replace('T', ' ') : null,
+        b.method === 'type' ? 'nom tapé' : 'signature tracée', b.image, String(req.ip || '').slice(0, 64), String(req.get('user-agent') || '').slice(0, 300), SIG.CONSENT, hash);
+    return true;
+  });
+  if (!done) return res.status(409).json({ ok: false, error: 'Ce devis vient d’être signé.' });
+  await ensureProject(q.id); await ensureOrder(q.id);
+  await log('devis', q.id, `Devis ${q.number} signé électroniquement par ${name}${verified ? ` (code vérifié par ${verified.by})` : ''}`);
+  await leadFromQuote(q.id, 'gagne');
+  res.json({ ok: true, redirect: `/d/${q.token}?merci=1`, certificate: `/signature/${tok}` });
+});
+/* Certificat de signature : la preuve, lisible et imprimable (lien privé) */
+app.get('/signature/:token', async (req, res) => {
+  const x = await db.prepare('SELECT * FROM signatures WHERE token = ?').get(req.params.token);
+  if (!x) return res.status(404).send(await publicPage('Introuvable', '<div class="pub-msg"><h1>Ce lien n’est plus valide.</h1></div>'));
+  const q = await Q.quote.get(x.doc_id), s = await settings(), intact = q ? (await quoteHash(q)) === x.doc_hash : false;
+  const codes = await db.prepare("SELECT channel, contact, created_at, used_at FROM sign_codes WHERE doc_type = 'devis' AND doc_id = ? ORDER BY id").all(x.doc_id);
+  const ip = String(x.ip || '').replace(/(\d+\.\d+\.\d+)\.\d+$/, '$1.x').replace(/(:[0-9a-f]*){3}$/i, ':…');
+  const ev = [[q && q.sent_at, 'Devis envoyé au client'], [q && q.viewed_at, 'Devis consulté en ligne'], ...codes.map((c) => [c.created_at, `Code de vérification envoyé par ${c.channel === 'mail' ? 'e-mail' : 'WhatsApp'} à ${SIG.mask(c.contact)}`]),
+    ...codes.filter((c) => c.used_at).map((c) => [c.used_at, 'Code vérifié']), [x.signed_at, `Signature par ${x.signer_name}`]].filter((e) => e[0]).sort((a, b) => String(a[0]).localeCompare(String(b[0])));
+  const row = (k, v) => (v ? `<div><dt>${k}</dt><dd>${v}</dd></div>` : '');
+  const body = `<div class="pub-bar"><div class="pub-in"><div><span class="pub-k">Certificat de signature</span><b>Devis ${esc(x.number || '')}</b></div><div class="pub-a"><button type="button" class="btn ghost" data-print>Télécharger en PDF</button>${q ? `<a class="btn ghost" href="/d/${esc(q.token)}">Voir le devis</a>` : ''}</div></div></div>
+<main class="pub-main"><article class="cert"><header><span class="cert-k">${esc(s.company_name)} · signature électronique</span><h1>Certificat de signature</h1><p>Le devis <b>${esc(x.number || '')}</b>${x.amount != null ? ` d’un montant de <b>${money(x.amount)} TTC</b>` : ''} a été signé électroniquement le <b>${esc(atMa(x.signed_at))}</b>.</p></header>
+<div class="cert-g"><section><h2>Signataire</h2><dl>${row('Nom', `<b>${esc(x.signer_name)}</b>`)}${row('Fonction', esc(x.signer_role || ''))}${row('Entreprise', esc(x.signer_company || ''))}${row('Vérification', x.verified_by ? `code à usage unique envoyé par ${esc(x.verified_by)} à ${esc(SIG.mask(x.contact))}, vérifié le ${esc(atMa(x.verified_at))}` : 'lien personnel du devis (sans code)')}${row('Méthode', esc(x.method || ''))}</dl>
+<figure class="cert-sig"><img src="${x.image}" alt="Signature de ${esc(x.signer_name)}"><figcaption>Signature de ${esc(x.signer_name)}</figcaption></figure></section>
+<section><h2>Preuves techniques</h2><dl>${row('Horodatage', `${esc(atMa(x.signed_at, true))} (heure du Maroc)<br><small class="cert-utc">UTC ${esc(String(x.signed_at || '').replace(' ', 'T'))}Z</small>`)}${row('Adresse IP', esc(ip))}${row('Appareil', esc(SIG.device(x.ua)))}${row('Empreinte SHA-256 du document', `<code>${esc(x.doc_hash || '')}</code>`)}${row('Intégrité', intact ? '<span class="cert-ok">Le devis est identique à celui qui a été signé.</span>' : '<span class="cert-ko">Le devis a été modifié depuis la signature : seule la version signée fait foi.</span>')}</dl></section></div>
+<section><h2>Texte accepté</h2><blockquote>${esc(x.consent || '')}</blockquote></section>
+<section><h2>Journal <small>heure du Maroc</small></h2><ul class="cert-tl">${ev.map(([t, l]) => `<li><b>${esc(atMa(t, true))}</b><span>${esc(l)}</span></li>`).join('')}</ul></section>
+<p class="cert-legal">Signature électronique simple, avec dossier de preuve, au sens de la loi n° 43-20 relative aux services de confiance pour les transactions électroniques et de la loi n° 53-05 relative à l’échange électronique de données juridiques (art. 417-1 et suivants du Dahir des obligations et des contrats) : l’écrit électronique a la même force probante que l’écrit papier dès lors que son auteur peut être identifié et que son intégrité est garantie. ${esc(s.company_name)} conserve ce dossier pendant toute la durée légale de conservation des documents commerciaux.</p></article></main>`;
+  res.send(await publicPage('Certificat de signature ' + (x.number || ''), body));
 });
 app.post('/d/:token/accepter', async (req, res) => {
   const q = await Q.quoteByToken.get(req.params.token); if (!q) return res.sendStatus(404);
+  /* ancien bouton « J'accepte » (pages ouvertes avant la signature en ligne) : seulement si aucun code ne peut être envoyé */
+  { const ch = codeChannels(await settings()); if (ch.mail || ch.wa) return res.redirect(`/d/${q.token}#accepter`); }
   const name = String(req.body.name || '').trim().slice(0, 120);
   if (name && req.body.ok && !q.accepted_at && ['brouillon', 'envoye', 'vu'].includes(q.status) && qStatus(q) !== 'expire') { await db.prepare("UPDATE quotes SET status = 'accepte', accepted_at = datetime('now'), accepted_name = ? WHERE id = ?").run(name, q.id); await ensureProject(q.id); await ensureOrder(q.id); await log('devis', q.id, `Devis ${q.number} accepté en ligne par ${name}`); await leadFromQuote(q.id, 'gagne'); }
   res.redirect(`/d/${q.token}?merci=1`);
@@ -311,7 +444,7 @@ app.get('/bc/:token', async (req, res) => {
   const o = await db.prepare('SELECT * FROM orders WHERE token = ?').get(req.params.token); if (!o) return res.status(404).send(await publicPage('Introuvable', '<div class="pub-msg"><h1>Ce lien n’est plus valide.</h1></div>'));
   const q = await Q.quote.get(o.quote_id), s = await settings();
   const bar = `<div class="pub-bar"><div class="pub-in"><div><span class="pub-k">Bon de commande ${esc(o.number)}</span><b>${money(o.total_ttc)} TTC</b></div><div class="pub-a"><button type="button" class="btn ghost" data-print>Télécharger en PDF</button></div></div></div>`;
-  res.send(await publicPage('Bon de commande ' + o.number, bar + `<main class="pub-main">${renderDoc({ type: 'bdc', doc: { ...q, order_number: o.number, order_date: o.issue_date, quote_number: q.number }, items: await Q.qItems.all(q.id), client: await Q.client.get(q.client_id), s })}</main>`));
+  res.send(await publicPage('Bon de commande ' + o.number, bar + `<main class="pub-main">${renderDoc({ type: 'bdc', doc: { ...q, order_number: o.number, order_date: o.issue_date, quote_number: q.number }, items: await Q.qItems.all(q.id), client: await Q.client.get(q.client_id), s, sig: await sigOf('devis', q.id) })}</main>`));
 });
 app.get('/recu/:token', async (req, res) => {
   const p = await db.prepare('SELECT * FROM payments WHERE token = ?').get(req.params.token); if (!p) return res.sendStatus(404);
@@ -378,7 +511,9 @@ app.post('/webhooks/whatsapp', async (req, res) => {
     const f = await storeMsg({ channel: ch.id, direction: 'in', contact: m.from, name: m.name, body: m.body, status: 'recu', ext_id: m.id, at: m.ts ? new Date(m.ts * 1000).toISOString().slice(0, 19).replace('T', ' ') : null });
     /* un numéro inconnu devient automatiquement une nouvelle demande */
     if (!f.client && !f.lead) {
-      const lid = (await db.prepare("INSERT INTO leads (name, phone, need, message, source, stage, status, updated_at) VALUES (?, ?, ?, ?, 'WhatsApp', 'nouveau', 'nouveau', datetime('now'))").run(m.name || '', '+' + m.from, String(m.body).slice(0, 140), m.body)).lastInsertRowid;
+      /* message venu d'une publicité « Cliquer pour WhatsApp » (Meta) : l'annonce et son identifiant de clic sont gardés */
+      const rf = m.referral || null, att = rf ? { utm_source: 'meta', utm_medium: 'whatsapp-ad', ctwa_clid: String(rf.ctwa_clid || '').slice(0, 200), ad_id: String(rf.source_id || '').slice(0, 60), headline: String(rf.headline || '').slice(0, 120), referrer: String(rf.source_url || '').slice(0, 200) } : null;
+      const lid = (await db.prepare("INSERT INTO leads (name, phone, need, message, source, stage, status, updated_at, att, channel, campaign) VALUES (?, ?, ?, ?, ?, 'nouveau', 'nouveau', datetime('now'), ?, ?, ?)").run(m.name || '', '+' + m.from, String(m.body).slice(0, 140), m.body, rf ? 'WhatsApp (publicité Meta)' : 'WhatsApp', att ? JSON.stringify(att) : null, att ? 'meta-ads' : null, att ? ADS.campaignOf(att) : null)).lastInsertRowid;
       await db.prepare('UPDATE messages SET lead_id = ? WHERE ext_id = ?').run(lid, m.id);
       await db.prepare('INSERT INTO lead_notes (lead_id, kind, text) VALUES (?, ?, ?)').run(lid, 'whatsapp', `Premier message reçu sur ${ch.label}`);
     }
@@ -766,9 +901,10 @@ app.get('/devis/:id', async (req, res) => {
   const msg = `Bonjour ${cl.name || ''}, voici votre devis ${q.number} de ${money(q.total_ttc)} TTC : ${link}\nVous pouvez le consulter, le télécharger et l’accepter en ligne.`;
   const wa = cl.phone ? `https://wa.me/${digits(cl.phone)}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
   const mail = `mailto:${esc(cl.email || '')}?subject=${encodeURIComponent('Devis ' + q.number + ' - ' + s.company_name)}&body=${encodeURIComponent(msg)}`;
-  const timeline = [['Créé', q.created_at], ['Envoyé', q.sent_at], ['Consulté par le client', q.viewed_at], ['Accepté' + (q.accepted_name ? ' par ' + q.accepted_name : ''), q.accepted_at]].filter((x) => x[1]).map(([t, d]) => `<li><i></i><b>${esc(t)}</b><span>${dateFr(d)}</span></li>`).join('');
+  const SG = await sigOf('devis', q.id);
+  const timeline = [['Créé', q.created_at], ['Envoyé', q.sent_at], ['Consulté par le client', q.viewed_at], [(SG ? 'Signé électroniquement par ' + SG.signer_name : 'Accepté' + (q.accepted_name ? ' par ' + q.accepted_name : '')), q.accepted_at]].filter((x) => x[1]).map(([t, d]) => `<li><i></i><b>${esc(t)}</b><span>${dateFr(d)}</span></li>`).join('');
   const NEXT = PLAN.findIndex((x, k) => !invs.find((f) => Number(f.sched_idx) === k && f.kind !== 'avoir' && !f.cancelled));
-  const side = `<div class="card"><div class="card-h"><h2>Statut</h2>${badge(Q_STATUS, st)}</div><ul class="tl">${timeline}</ul>
+  const side = `<div class="card"><div class="card-h"><h2>Statut</h2>${badge(Q_STATUS, st)}</div><ul class="tl">${timeline}</ul>${SG ? `<p class="mut"><a href="/signature/${esc(SG.token)}" target="_blank" rel="noopener">Certificat de signature</a>${SG.verified_by ? ` · code vérifié par ${esc(SG.verified_by)}` : ''}</p>` : !q.accepted_at && (() => { const c = codeChannels(s); return !c.mail && !c.wa; })() ? '<p class="mut">Le client signe en ligne depuis le lien du devis. Pour ajouter un code de vérification à la signature, réglez l’envoi d’e-mails dans <a href="/parametres#canaux">Paramètres</a>.</p>' : ''}
 <form method="post" action="/devis/${q.id}/statut" class="st-btns">${['envoye', 'accepte', 'refuse'].filter((k) => k !== q.status && q.status !== 'facture').map((k) => `<button class="btn ghost sm" name="status" value="${k}"${k === 'refuse' ? ' data-confirm="Marquer ce devis comme refusé par le client ?" data-ok="Marquer refusé"' : ''}>${k === 'envoye' ? 'Marquer envoyé' : k === 'accepte' ? 'Marquer accepté' : 'Marquer refusé'}</button>`).join('')}</form></div>
 <div class="card"><div class="card-h"><h2>Envoyer au client</h2></div><div class="copy"><input readonly value="${esc(link)}" id="lnk"><button type="button" class="btn ghost sm" data-copy="#lnk">Copier</button></div>
 <div class="send"><a class="btn wa" href="${wa}" target="_blank" rel="noopener" data-mark="/devis/${q.id}/envoye">WhatsApp</a><a class="btn ghost" href="${mail}" data-mark="/devis/${q.id}/envoye">E-mail</a><a class="btn ghost" href="/d/${q.token}" target="_blank" rel="noopener">Voir comme le client</a></div></div>
@@ -777,7 +913,7 @@ ${(() => { const pr = PRJ; return pr ? `<div class="card"><div class="card-h"><h
 ${invs.filter((f) => f.kind === 'avoir' || f.cancelled).length ? `<p class="mut">Annulations : ${invs.filter((f) => f.kind === 'avoir').map((f) => `<a href="/factures/${f.id}">${esc(f.number)}</a>`).join(', ')}</p>` : ''}</div>`;
   const actions = `<a class="btn" href="/messagerie/ecrire?type=devis&id=${q.id}">Message</a>${q.status !== 'facture' ? `<a class="btn ghost" href="/devis/${q.id}/modifier">Modifier</a>` : ''}<form method="post" action="/devis/${q.id}/dupliquer" class="inl"><button class="btn ghost">Dupliquer</button></form><button type="button" class="btn ghost" data-print>PDF</button>`;
   const flash = req.query.err ? String(req.query.err) : req.query.assistant ? 'Tout est prêt : le client, le projet (en proposition) et ce devis. Vérifiez les prix, puis envoyez-le.' : req.query.envoyer ? 'Devis enregistré. Envoyez-le maintenant par WhatsApp ou par e-mail.' : '';
-  res.send(layout({ title: `Devis ${q.number}`, active: '/devis', flash, actions, body: `<div class="docview"><div class="paper">${renderDoc({ type: 'devis', doc: q, items: await Q.qItems.all(q.id), client: cl, s })}</div><aside class="dv-side">${side}</aside></div>` }));
+  res.send(layout({ title: `Devis ${q.number}`, active: '/devis', flash, actions, body: `<div class="docview"><div class="paper">${renderDoc({ type: 'devis', doc: q, items: await Q.qItems.all(q.id), client: cl, s, sig: SG })}</div><aside class="dv-side">${side}</aside></div>` }));
 });
 app.post('/devis/:id/envoye', async (req, res) => { const r = await db.prepare("UPDATE quotes SET status = 'envoye', sent_at = COALESCE(sent_at, datetime('now')) WHERE id = ? AND status = 'brouillon'").run(Number(req.params.id)); if (r.changes) await radarQuoteSent(Number(req.params.id)); res.sendStatus(204); });
 app.post('/devis/:id/statut', async (req, res) => {
@@ -968,12 +1104,24 @@ const leadStage0 = async (id, stage, extra = '') => { await db.prepare("UPDATE l
 /* chaque issue d'une demande reliée au Radar y est reportée : gagnée (devis accepté), perdue (devis refusé ou autre raison) */
 const leadStage = async (id, stage, extra = '') => {
   await leadStage0(id, stage, extra);
+  if (stage === 'gagne') await adsPurchase(id).catch(() => {});
   if (stage === 'gagne' || stage === 'perdu') {
     const l = await db.prepare('SELECT quote_id, lost_reason FROM leads WHERE id = ?').get(id);
     const ev = stage === 'gagne' ? (l && l.quote_id ? 'devis_accepte' : 'demande_gagnee') : (l && l.quote_id && /refus/i.test(extra) ? 'devis_refuse' : 'demande_perdue');
     await radarEvent(id, ev, stage === 'perdu' ? { reason: String(extra || (l && l.lost_reason) || '').slice(0, 300) || null } : {}).catch(() => {});
   }
 };
+/* ---------------- Publicité : client signé renvoyé à Meta (API Conversions) ---------------- */
+/* seulement pour une demande venue du site avec l'accord « Publicité » du visiteur ; montant TTC du devis accepté */
+async function adsPurchase(leadId) {
+  if (!ADS.metaReady()) return;
+  const l = await db.prepare('SELECT id, phone, email, att, ads_ok, quote_id FROM leads WHERE id = ?').get(leadId);
+  if (!l || !l.ads_ok || !l.quote_id) return;
+  const q = await db.prepare('SELECT id, number, total_ttc FROM quotes WHERE id = ?').get(l.quote_id);
+  if (!q) return;
+  const m = await ADS.sendMeta('Purchase', { eventId: `devis-${q.id}`, phone: l.phone, email: l.email, att: ADS.parse(l.att) || {}, value: q.total_ttc, source: 'system_generated' });
+  await log('demande', l.id, m.ok ? `Meta : client signé transmis (devis ${q.number}, ${money(q.total_ttc)})` : `Meta (conversion « Purchase ») non envoyée : ${m.error}`);
+}
 /* ---------------- Radar Digilago : envois vers le Radar ---------------- */
 /* une demande arrivée d'ailleurs que le Radar (site, téléphone, WhatsApp…) : l'entreprise nous a contactés */
 const radarInbound = (l) => !/^radar$/i.test(String(l.source || ''));
@@ -1060,9 +1208,9 @@ app.get('/demandes', async (req, res) => {
   const bySrc = {}; rows.forEach((l) => { const t = srcTag(l), k = t[0] === 'autre' ? srcOf(l) : t[1]; bySrc[k] = bySrc[k] || [0, 0, t[0]]; bySrc[k][0]++; if (l.stage === 'gagne') bySrc[k][1]++; });
   /* une carte = la demande + les gestes du quotidien (appeler, WhatsApp, « contactée ») sans ouvrir la fiche */
   const card = (l) => { const sg = l.stage || 'nouveau', late = l.callback && ['nouveau', 'contacte'].includes(sg) ? !!(CB.due(l) || {}).late : l.next_at && l.next_at <= today() && !['gagne', 'perdu'].includes(sg), tg = srcTag(l), ph = digits(l.phone);
-    return `<article class="ld ${late ? 'late' : ''}${sg === 'nouveau' ? ' fresh' : ''}" data-id="${l.id}"><a class="ld-a" href="/demandes/${l.id}"><b>${esc(l.company || l.name || 'Sans nom')}</b><span>${esc((l.need || l.message || '').slice(0, 90))}</span>${cbChip(l, sg)}<div class="ld-m"><em class="src src-${tg[0]}">${esc(tg[1])}</em>${l.city ? `<em>${esc(l.city)}</em>` : ''}${l.callback && ['nouveau', 'contacte'].includes(sg) ? '' : late ? '<em class="cb">À rappeler</em>' : l.next_at && !['gagne', 'perdu'].includes(sg) ? `<em>${sg === 'attente' ? 'Relance' : 'Rappel'} ${dateFr(l.next_at)}</em>` : ''}${sg === 'attente' && l.lost_reason ? `<em>${esc(l.lost_reason)}</em>` : ''}${sg === 'perdu' && l.lost_reason ? `<em>${esc(l.lost_reason)}</em>` : ''}</div><small>${ago(l.created_at)}</small></a>${ph || sg === 'nouveau' ? `<div class="ld-q">${ph ? `<a href="tel:${esc(l.phone)}" title="Appeler ${esc(l.phone)}">${ICONS.phone}</a><a href="https://wa.me/${ph}" target="_blank" rel="noopener" title="WhatsApp">${ICONS.wa}</a>` : ''}${sg === 'nouveau' ? `<button type="button" data-done="${l.id}" title="Marquer contactée">${ICONS.check}<span>Appelée</span></button>` : ''}</div>` : ''}</article>`; };
+    return `<article class="ld ${late ? 'late' : ''}${sg === 'nouveau' ? ' fresh' : ''}" data-id="${l.id}"><a class="ld-a" href="/demandes/${l.id}"><b>${esc(l.company || l.name || 'Sans nom')}</b><span>${esc((l.need || l.message || '').slice(0, 90))}</span>${cbChip(l, sg)}<div class="ld-m"><em class="src src-${tg[0]}">${esc(tg[1])}</em>${l.channel && /ads|pub/.test(l.channel) ? `<em class="src src-pub">${esc(ADS.channelLabel(l.channel).replace(/ \(.*\)$/, ''))}</em>` : ''}${l.city ? `<em>${esc(l.city)}</em>` : ''}${l.callback && ['nouveau', 'contacte'].includes(sg) ? '' : late ? '<em class="cb">À rappeler</em>' : l.next_at && !['gagne', 'perdu'].includes(sg) ? `<em>${sg === 'attente' ? 'Relance' : 'Rappel'} ${dateFr(l.next_at)}</em>` : ''}${sg === 'attente' && l.lost_reason ? `<em>${esc(l.lost_reason)}</em>` : ''}${sg === 'perdu' && l.lost_reason ? `<em>${esc(l.lost_reason)}</em>` : ''}</div><small>${ago(l.created_at)}</small></a>${ph || sg === 'nouveau' ? `<div class="ld-q">${ph ? `<a href="tel:${esc(l.phone)}" title="Appeler ${esc(l.phone)}">${ICONS.phone}</a><a href="https://wa.me/${ph}" target="_blank" rel="noopener" title="WhatsApp">${ICONS.wa}</a>` : ''}${sg === 'nouveau' ? `<button type="button" data-done="${l.id}" title="Marquer contactée">${ICONS.check}<span>Appelée</span></button>` : ''}</div>` : ''}</article>`; };
   const pipe = `<div class="pipe">${LSTAGES.map(([k, t, c]) => `<section class="kb-col" data-stage="${k}"><header><span class="bdg bdg-${c}">${t}</span><span class="kb-n">${st(k).length}</span></header>${st(k).slice(0, 40).map(card).join('') || '<p class="empty">—</p>'}</section>`).join('')}</div>`;
-  const list = `<div class="card flush"><table class="tbl"><thead><tr><th>Reçue</th><th>Contact</th><th>Besoin</th><th>Source</th><th>Étape</th><th>Rappel</th></tr></thead><tbody>${rows.map((l) => `<tr data-href="/demandes/${l.id}"><td>${dateFr(l.created_at)}</td><td><b>${esc(l.company || l.name || '')}</b><small class="mut"> ${esc(l.phone || '')}</small></td><td class="mut">${esc((l.need || l.message || '').slice(0, 80))}</td><td>${esc(srcOf(l))}</td><td>${(() => { const x = LSTAGES.find((y) => y[0] === (l.stage || 'nouveau')); return `<span class="bdg bdg-${x[2]}">${x[1]}</span>`; })()}</td><td>${l.next_at ? dateFr(l.next_at) : ''}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">Aucune demande.</td></tr>'}</tbody></table></div>`;
+  const list = `<div class="card flush"><table class="tbl"><thead><tr><th>Reçue</th><th>Contact</th><th>Besoin</th><th>Source</th><th>Étape</th><th>Rappel</th></tr></thead><tbody>${rows.map((l) => `<tr data-href="/demandes/${l.id}"><td>${dateFr(l.created_at)}</td><td><b>${esc(l.company || l.name || '')}</b><small class="mut"> ${esc(l.phone || '')}</small></td><td class="mut">${esc((l.need || l.message || '').slice(0, 80))}</td><td>${esc(srcOf(l))}${l.channel ? ` ${ADS.channelChip(l, esc)}` : ''}</td><td>${(() => { const x = LSTAGES.find((y) => y[0] === (l.stage || 'nouveau')); return `<span class="bdg bdg-${x[2]}">${x[1]}</span>`; })()}</td><td>${l.next_at ? dateFr(l.next_at) : ''}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">Aucune demande.</td></tr>'}</tbody></table></div>`;
   const stats = `<section class="lead-k"><div><b data-pulse-n>${st('nouveau').length}</b><span>à traiter</span></div><div><b data-pulse-late>${rows.filter((l) => l.next_at && l.next_at <= today() && !['gagne', 'perdu'].includes(l.stage)).length}</b><span>à rappeler aujourd’hui</span></div><div><b>${monthRows.length}</b><span>reçues ce mois</span></div><div><b>${closed ? Math.round(100 * won / closed) : 0} %</b><span>transformées en projets</span></div><div class="srcs"><span class="live-p"><i></i>En direct</span>${Object.entries(bySrc).sort((a, b) => b[1][0] - a[1][0]).slice(0, 5).map(([k, [n, w, c]]) => `<span class="src-${c}">${esc(k)} <b>${n}</b>${w ? ` · ${w} gagnée${w > 1 ? 's' : ''}` : ''}</span>`).join('')}</div></section>`;
   const body = `${stats}<details class="card quick" ${req.query.nouvelle ? 'open' : ''}><summary><b>+ Nouvelle demande</b><span>reçue par téléphone, WhatsApp, en rendez-vous…</span></summary>${leadForm()}</details>
 <div class="tools"><nav class="tabs"><a href="/demandes" class="${vue === 'pipeline' ? 'on' : ''}">Pipeline</a><a href="/demandes?vue=liste" class="${vue === 'liste' ? 'on' : ''}">Liste</a></nav></div>${vue === 'pipeline' ? pipe : list}`;
@@ -1103,8 +1251,19 @@ ${['nouveau', 'contacte', 'attente'].includes(stage) ? `<form method="post" acti
   const journal = `<div class="card"><div class="card-h"><h2>Suivi des échanges</h2></div><form method="post" action="/demandes/${l.id}/note" class="note-f"><select name="kind">${Object.entries(NOTE_K).filter(([k]) => k !== 'etape').map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select><input name="text" placeholder="Ex. : appelé, il veut un devis avant vendredi" required><input type="date" name="next_at" title="À rappeler le"><button class="btn sm">Ajouter</button></form>
 ${notes.length ? `<ul class="tl">${notes.map((n) => `<li><i class="k-${n.kind}"></i><b>${esc(NOTE_K[n.kind] || 'Note')} : ${esc(n.text)}</b><span>${dateFr(n.created_at)}</span></li>`).join('')}</ul>` : ''}${l.message ? `<p class="lead-msg"><b>Message reçu :</b><br>${esc(l.message).replace(/\n/g, '<br>')}</p>` : ''}</div>`;
   const flash = req.query.ok ? 'Demande enregistrée.' : String(req.query.radar_ok || req.query.radar_err || '').slice(0, 200);
-  res.send(layout({ title: l.company || l.name || 'Demande', active: '/demandes', flash, body: head + `<div class="grid2 lead-g"><div>${RADAR.leadCard(l)}<div class="card"><div class="card-h"><h2>Informations</h2></div>${leadForm(l, `/demandes/${l.id}`, 'Enregistrer')}</div></div><div>${actions}${journal}</div></div>` }));
+  res.send(layout({ title: l.company || l.name || 'Demande', active: '/demandes', flash, body: head + `<div class="grid2 lead-g"><div>${provenance(l)}${RADAR.leadCard(l)}<div class="card"><div class="card-h"><h2>Informations</h2></div>${leadForm(l, `/demandes/${l.id}`, 'Enregistrer')}</div></div><div>${actions}${journal}</div></div>` }));
 });
+/* D'où vient la demande : canal, campagne, annonce, mot-clé, page d'arrivée (utile pendant l'appel : « vous avez vu notre annonce… ») */
+function provenance(l) {
+  const a = ADS.parse(l.att) || {};
+  if (!l.channel && !Object.keys(a).length) return '';
+  const row = (k, v) => (v ? `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>` : '');
+  const h = (u) => String(u || '').replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?#].*$/, '');
+  return `<div class="card prov"><div class="card-h"><h2>Provenance</h2>${l.channel ? ADS.channelChip(l, esc) : ''}</div><dl class="prov-l">
+${row('Campagne', l.campaign || a.utm_campaign)}${row('Annonce', a.utm_content || a.headline)}${row('Mot-clé', a.utm_term)}${row('Source / support', [a.utm_source, a.utm_medium].filter(Boolean).join(' / '))}
+${row('Page d’arrivée', a.landing)}${row('Venue de', h(a.referrer))}${row('Clic publicitaire', [a.gclid || a.gbraid || a.wbraid ? 'Google Ads' : '', a.fbclid ? 'Meta' : '', a.ctwa_clid ? 'WhatsApp (Meta)' : ''].filter(Boolean).join(', '))}
+${row('Accord publicité', l.ads_ok ? 'oui : la conversion est transmise à Meta' : a.event_id ? 'non : rien n’est transmis aux régies' : '')}</dl></div>`;
+}
 /* Radar : chercher, relier, ajouter (et analyser), actualiser, ou ne pas relier */
 app.post('/demandes/:id/radar/:act', async (req, res) => {
   const l = await db.prepare('SELECT * FROM leads WHERE id = ?').get(Number(req.params.id)); if (!l) return res.sendStatus(404);
@@ -1202,7 +1361,7 @@ app.get('/parametres', async (req, res) => {
   const f = (k, l, ph = '') => `<label>${l}<input name="${k}" value="${esc(s[k])}" placeholder="${esc(ph)}"></label>`;
   const body = `<form method="post" class="settings">
 <section class="card"><div class="card-h"><h2>Votre entreprise</h2><span>Apparaît sur tous les devis et factures</span></div><div class="row">${f('company_name', 'Nom')}${f('company_tagline', 'Activité')}</div><div class="row">${f('company_address', 'Adresse')}${f('company_site', 'Site web')}</div><div class="row">${f('company_phone', 'Téléphone')}${f('company_email', 'E-mail')}</div><div class="row">${f('whatsapp', 'WhatsApp (format international, sans +)', '2126…')}${f('public_url', 'Adresse de cet espace en ligne', 'https://gestion.digilago.ma')}</div></section>
-<section class="card"><div class="card-h"><h2>Canaux de communication</h2><span>Vos deux WhatsApp et vos deux e-mails, réunis dans la Messagerie</span></div>
+<section class="card" id="canaux"><div class="card-h"><h2>Canaux de communication</h2><span>Vos deux WhatsApp et vos deux e-mails, réunis dans la Messagerie</span></div>
 ${['wa1', 'wa2'].map((c) => `<div class="chan"><b>${c === 'wa1' ? 'WhatsApp 1' : 'WhatsApp 2'}</b><div class="row">${f(c + '_label', 'Nom affiché', 'WhatsApp Business')}${f(c + '_number', 'Numéro (format international)', '2126…')}</div><div class="row">${f(c + '_phone_id', 'Phone number ID (API Meta, facultatif)', 'Pour envoyer et recevoir automatiquement')}<label>Jeton d’accès (API Meta)<input type="password" name="${c}_token" placeholder="${s[c + '_token'] ? '••••••• enregistré' : 'Facultatif'}" autocomplete="off"></label></div></div>`).join('')}
 ${['mail1', 'mail2'].map((c) => `<div class="chan"><b>${c === 'mail1' ? 'E-mail 1' : 'E-mail 2'}</b><div class="row">${f(c + '_label', 'Nom affiché', 'contact@digilago.ma')}${f(c + '_address', 'Adresse e-mail', 'contact@digilago.ma')}</div><div class="row r4">${f(c + '_smtp_host', 'Serveur d’envoi (SMTP)', 'smtp.gmail.com')}${f(c + '_smtp_port', 'Port SMTP', '465')}${f(c + '_imap_host', 'Serveur de réception (IMAP)', 'imap.gmail.com')}${f(c + '_imap_port', 'Port IMAP', '993')}</div><div class="row">${f(c + '_user', 'Identifiant (souvent l’adresse)', '')}<label>Mot de passe (ou mot de passe d’application)<input type="password" name="${c}_pass" placeholder="${s[c + '_pass'] ? '••••••• enregistré' : ''}" autocomplete="new-password"></label></div></div>`).join('')}
 <div class="row">${f('signature', 'Signature des messages', 'Khalid, Digilago')}${f('google_review_url', 'Lien pour laisser un avis Google', 'https://g.page/r/…/review')}${f('wa_verify_token', 'Jeton de vérification du webhook WhatsApp', 'une phrase secrète')}${f('wa_app_secret', 'Clé secrète de l’app Meta (signature des messages reçus)', 'App secret, dans Meta for Developers → Paramètres → Général')}</div>
@@ -1363,6 +1522,59 @@ app.post('/depenses', async (req, res) => {
 app.post('/depenses/:id/supprimer', async (req, res) => { const e = await db.prepare('SELECT date FROM expenses WHERE id = ?').get(Number(req.params.id)); if (e && await isLocked(e.date)) return res.redirect('/depenses?mois=' + e.date.slice(0, 7) + '&err=' + encodeURIComponent(lockedMsg(e.date))); await db.prepare('DELETE FROM expenses WHERE id = ?').run(Number(req.params.id)); res.redirect('/depenses' + (e ? '?mois=' + e.date.slice(0, 7) : '')); });
 
 /* ---------------- Rapports : chiffre d'affaires, encaissements, dépenses, TVA ---------------- */
+/* ---------------- Publicité : ce que rapporte chaque canal, chaque campagne ---------------- */
+const PERIODES = { 30: '30 derniers jours', 90: '90 derniers jours', 365: '12 derniers mois' };
+const adsPeriod = (q) => { const d = PERIODES[q] ? Number(q) : 90; return { d, from: addDays(today(), -d + 1) }; };
+/* dépense publicitaire : catégorie « Publicité », canal reconnu au fournisseur ou au libellé */
+const spendChannel = (e) => (/meta|facebook|instagram|whatsapp/i.test(`${e.supplier} ${e.label}`) ? 'meta-ads' : /google|youtube/i.test(`${e.supplier} ${e.label}`) ? 'google-ads' : 'autre-pub');
+async function adsData(from) {
+  const leads = await db.prepare("SELECT l.id, l.channel, l.campaign, l.gclid, l.stage, l.created_at, l.ads_ok, q.status qstatus, q.total_ttc, q.accepted_at, q.number FROM leads l LEFT JOIN quotes q ON q.id = l.quote_id WHERE date(l.created_at) >= ?").all(from);
+  const spend = await db.prepare("SELECT supplier, label, amount_ttc, date FROM expenses WHERE category = 'Publicité' AND date >= ?").all(from);
+  const by = {}, camp = {}, add = (o, k) => (o[k] = o[k] || { leads: 0, sent: 0, won: 0, ca: 0, spend: 0 });
+  for (const l of leads) {
+    const k = l.channel || 'direct', o = add(by, k), won = l.stage === 'gagne' || ['accepte', 'facture'].includes(l.qstatus);
+    o.leads++; if (['envoye', 'vu', 'accepte', 'facture', 'refuse'].includes(l.qstatus)) o.sent++; if (won) { o.won++; o.ca += Number(l.total_ttc) || 0; }
+    if (l.campaign && /ads|pub/.test(k)) { const c = add(camp, k + '|' + l.campaign); c.leads++; if (won) { c.won++; c.ca += Number(l.total_ttc) || 0; } }
+  }
+  for (const e of spend) add(by, spendChannel(e)).spend += Number(e.amount_ttc) || 0;
+  return { leads, spend, by, camp };
+}
+app.get('/publicite', async (req, res) => {
+  const { d, from } = adsPeriod(req.query.periode), s = await settings(), { leads, by, camp } = await adsData(from);
+  const ORDER = ['meta-ads', 'google-ads', 'autre-pub', 'reseaux', 'google', 'ia', 'site', 'direct'];
+  const lab = (k) => (k === 'direct' ? 'Direct ou inconnu' : ADS.channelLabel(k));
+  const paid = ['meta-ads', 'google-ads', 'autre-pub'].map((k) => by[k] || { leads: 0, won: 0, ca: 0, spend: 0 });
+  const tot = paid.reduce((a, o) => ({ leads: a.leads + o.leads, won: a.won + o.won, ca: a.ca + o.ca, spend: a.spend + o.spend }), { leads: 0, won: 0, ca: 0, spend: 0 });
+  const per = (x, n) => (n ? money(x / n) : '–'), roas = (ca, sp) => (sp ? (ca / sp).toFixed(1).replace('.', ',') + ' ×' : '–');
+  const kpi = (l, v, sub, cls = '') => `<div class="kpi ${cls}"><span>${l}</span><b>${v}</b><small>${sub}</small></div>`;
+  const rows = ORDER.filter((k) => by[k]).map((k) => { const o = by[k]; return `<tr><td><b>${esc(lab(k))}</b></td><td>${o.leads}</td><td>${o.sent}</td><td>${o.won}</td><td>${money(o.ca)}</td><td>${o.spend ? money(o.spend) : '–'}</td><td>${o.spend ? per(o.spend, o.leads) : '–'}</td><td>${o.spend ? per(o.spend, o.won) : '–'}</td><td>${roas(o.ca, o.spend)}</td></tr>`; }).join('');
+  const crows = Object.entries(camp).sort((a, b) => b[1].leads - a[1].leads).slice(0, 25).map(([k, o]) => { const [ch, name] = k.split('|'); return `<tr><td><b>${esc(name)}</b></td><td>${esc(lab(ch))}</td><td>${o.leads}</td><td>${o.won}</td><td>${money(o.ca)}</td></tr>`; }).join('');
+  const gcl = leads.filter((l) => l.gclid && (l.stage === 'gagne' || ['accepte', 'facture'].includes(l.qstatus))).length;
+  const metaOn = ADS.metaReady();
+  const tabs = `<div class="seg-tabs">${Object.entries(PERIODES).map(([k, t]) => `<a class="${Number(k) === d ? 'on' : ''}" href="/publicite?periode=${k}">${t}</a>`).join('')}</div>`;
+  const body = `${tabs}<section class="kpis">${kpi('Dépensé en publicité', money(tot.spend), 'dépenses « Publicité »', 'hl')}${kpi('Demandes venues des pubs', String(tot.leads), `${per(tot.spend, tot.leads)} par demande`)}${kpi('Clients signés', String(tot.won), `${per(tot.spend, tot.won)} par client`)}${kpi('Chiffre signé', money(tot.ca), 'devis acceptés, TTC')}${kpi('Retour', roas(tot.ca, tot.spend), 'chiffre signé ÷ dépense')}</section>
+<div class="card flush"><div class="card-h pad"><h2>Par canal</h2><span>Une dépense se range dans son canal d’après le fournisseur (Meta, Facebook, Instagram, Google)</span></div><table class="tbl"><thead><tr><th>Canal</th><th>Demandes</th><th>Devis envoyés</th><th>Clients signés</th><th>Chiffre signé</th><th>Dépensé</th><th>Coût / demande</th><th>Coût / client</th><th>Retour</th></tr></thead><tbody>${rows || '<tr><td colspan="9" class="empty">Aucune demande sur la période.</td></tr>'}</tbody></table></div>
+${crows ? `<div class="card flush"><div class="card-h pad"><h2>Par campagne</h2><span>D’après le paramètre utm_campaign des liens de vos annonces</span></div><table class="tbl"><thead><tr><th>Campagne</th><th>Canal</th><th>Demandes</th><th>Clients signés</th><th>Chiffre signé</th></tr></thead><tbody>${crows}</tbody></table></div>` : ''}
+<div class="grid2">
+<div class="card"><div class="card-h"><h2>Google Ads : clients signés</h2></div><p class="mut">Google Ads apprend à trouver des clients comme ceux qui signent. Téléchargez le fichier, puis dans Google Ads : <b>Objectifs › Conversions › Importer</b> (« Clics Google Ads »). ${gcl} client${gcl > 1 ? 's' : ''} signé${gcl > 1 ? 's' : ''} venu${gcl > 1 ? 's' : ''} d’un clic Google sur la période.</p>
+<form method="post" action="/publicite/reglages" class="row"><label>Nom de la conversion (le même que dans Google Ads)<input name="gads_conversion_name" value="${esc(s.gads_conversion_name || '')}" maxlength="80"></label><button class="btn ghost sm">Enregistrer</button></form>
+<div class="send"><a class="btn sm" href="/export/google-ads.csv?periode=${d}">Télécharger le fichier (${gcl})</a></div></div>
+<div class="card"><div class="card-h"><h2>Meta : API Conversions</h2><span class="bdg bdg-${metaOn ? 'green' : 'amber'}">${metaOn ? 'Activée' : 'Non configurée'}</span></div><p class="mut">${metaOn ? 'Chaque demande venue du site (avec l’accord « Publicité » du visiteur) et chaque client signé sont transmis à Meta, en plus du pixel : la même demande n’est comptée qu’une fois. Les campagnes peuvent ainsi viser des « clients signés », pas seulement des clics.' : 'Ajoutez META_PIXEL_ID et META_CAPI_TOKEN dans les variables Vercel de la gestion (Gestionnaire d’événements Meta › votre pixel › Paramètres › API Conversions › Générer un jeton d’accès), puis redéployez.'}</p></div>
+</div>
+<div class="card"><div class="card-h"><h2>Liens à mettre dans vos annonces</h2><span>Pour savoir quelle campagne amène chaque client</span></div>
+<p class="mut"><b>Meta (Facebook, Instagram)</b> : dans l’annonce, « Paramètres d’URL » :</p><p><code class="cp">utm_source={{site_source_name}}&amp;utm_medium=paid&amp;utm_campaign={{campaign.name}}&amp;utm_content={{ad.name}}</code></p>
+<p class="mut"><b>Google Ads</b> : laissez le marquage automatique (gclid) activé, et dans « Suffixe de l’URL finale » :</p><p><code class="cp">utm_source=google&amp;utm_medium=cpc&amp;utm_campaign={campaignid}&amp;utm_term={keyword}&amp;utm_content={creative}</code></p>
+<p class="mut">Annonces « Cliquer pour WhatsApp » : avec l’API WhatsApp (Paramètres › Canaux), l’annonce d’origine est reconnue toute seule sur chaque nouvelle conversation.</p></div>`;
+  res.send(layout({ title: 'Publicité', active: '/publicite', body }));
+});
+app.post('/publicite/reglages', async (req, res) => { await saveSettings({ gads_conversion_name: String(req.body.gads_conversion_name || '').trim().slice(0, 80) || 'Client signé (Digilago)' }); res.redirect('/publicite'); });
+/* Google Ads : conversions hors ligne (clients signés venus d'un clic Google), au format d'import de Google Ads */
+app.get('/export/google-ads.csv', async (req, res) => {
+  const { from } = adsPeriod(req.query.periode), s = await settings();
+  const rows = (await db.prepare("SELECT l.gclid, l.stage, q.status qstatus, q.total_ttc value, COALESCE(q.accepted_at, l.updated_at) at FROM leads l LEFT JOIN quotes q ON q.id = l.quote_id WHERE l.gclid IS NOT NULL AND date(l.created_at) >= ?").all(from))
+    .filter((r) => r.stage === 'gagne' || ['accepte', 'facture'].includes(r.qstatus));
+  res.set({ 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': 'attachment; filename="google-ads-conversions.csv"' }).send(ADS.googleCsv(rows, s.gads_conversion_name || 'Client signé (Digilago)'));
+});
 app.get('/rapports', async (req, res) => {
   const y = String(Number(req.query.annee) || Number(today().slice(0, 4)));
   const MOIS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];

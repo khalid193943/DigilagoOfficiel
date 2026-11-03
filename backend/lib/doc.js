@@ -17,7 +17,7 @@ function legal(s) {
 }
 
 /* type : 'devis' ou 'facture' */
-function renderDoc({ type, doc, items, client, s, paid = 0, quote = null }) {
+function renderDoc({ type, doc, items, client, s, paid = 0, quote = null, sig = null }) {
   const isBC = type === 'bdc';
   const isQ = type === 'devis' || isBC;
   const t = { ht: num(doc.total_ht), tva: num(doc.total_tva), ttc: num(doc.total_ttc) };
@@ -53,7 +53,7 @@ ${!isQ && doc.kind !== 'avoir' ? `<p class="d-delay"><b>Conditions de paiement :
 ${doc.notes ? `<section class="d-notes"><span class="d-lab">Notes</span><p>${esc(doc.notes).replace(/\n/g, '<br>')}</p></section>` : ''}
 ${isQ && doc.conditions ? `<section class="d-notes"><span class="d-lab">Conditions</span><p>${esc(doc.conditions).replace(/\n/g, '<br>')}</p></section>` : ''}
 <section class="d-foot-grid">${s.bank_rib ? `<div class="d-bank"><span class="d-lab">Règlement par virement</span><p>${s.bank_name ? esc(s.bank_name) + '<br>' : ''}RIB ${esc(s.bank_rib)}${s.bank_swift ? '<br>SWIFT ' + esc(s.bank_swift) : ''}<br>Référence : ${esc(doc.number || '')}</p></div>` : '<div></div>'}
-${isQ ? (doc.accepted_at ? `<div class="d-sign ok"><span class="d-lab">${isBC ? 'Commande validée' : 'Bon pour accord'}</span><p>${doc.accepted_name ? `Accepté en ligne le ${dateFr(doc.accepted_at)}<br>par <b>${esc(doc.accepted_name)}</b>` : `Accord du client confirmé le ${dateFr(doc.accepted_at)}`}</p></div>` : '<div class="d-sign"><span class="d-lab">Bon pour accord</span><p>Date, nom et signature du client</p></div>') : ''}</section>
+${isQ && sig ? `<div class="d-sign ok d-esig"><span class="d-lab">${isBC ? 'Commande signée' : 'Bon pour accord'} · signature électronique</span><img src="${sig.image}" alt="Signature de ${esc(sig.signer_name)}"><p>Signé par <b>${esc(sig.signer_name)}</b>${sig.signer_role ? `, ${esc(sig.signer_role)}` : ''}${sig.signer_company ? ` (${esc(sig.signer_company)})` : ''}<br>le ${esc(sig.when || dateFr(sig.signed_at))}${sig.verified_by ? ` · code vérifié par ${esc(sig.verified_by)}` : ''}<br><small>Empreinte du document : ${esc(String(sig.doc_hash || '').slice(0, 16))}…</small></p></div>` : ''}${isQ && !sig ? (doc.accepted_at ? `<div class="d-sign ok"><span class="d-lab">${isBC ? 'Commande validée' : 'Bon pour accord'}</span><p>${doc.accepted_name ? `Accepté en ligne le ${dateFr(doc.accepted_at)}<br>par <b>${esc(doc.accepted_name)}</b>` : `Accord du client confirmé le ${dateFr(doc.accepted_at)}`}</p></div>` : '<div class="d-sign"><span class="d-lab">Bon pour accord</span><p>Date, nom et signature du client</p></div>') : ''}</section>
 <footer class="d-legal">${esc(s.company_name)} · ${esc(s.company_address)} · ${esc(s.company_site)}${legal(s) ? '<br>' + legal(s) : ''}</footer>
 </article>`;
 }

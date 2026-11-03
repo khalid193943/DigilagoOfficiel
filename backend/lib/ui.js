@@ -23,6 +23,7 @@ const ICONS = {
   project: I('<rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="13" rx="1.5"/>'),
   expense: I('<path d="M4 7h16v12H4z"/><path d="M4 7l2-3h12l2 3M12 11v5M9.5 13.5h5"/>'),
   report: I('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+  ads: I('<path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z"/><path d="M16 8.5a5 5 0 010 7M18.8 6a8.5 8.5 0 010 12"/>'),
   out: I('<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'),
   menu: I('<path d="M4 7h16M4 12h16M4 17h10"/>'),
   phone: I('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/>'),
@@ -36,7 +37,7 @@ const TABS = [['/', 'Accueil', 'home'], ['/demandes', 'Demandes', 'lead'], ['/as
 const NAV_GROUPS = [
   ['Au quotidien', [['/', 'Tableau de bord', 'home'], ['/demandes', 'Demandes', 'lead'], ['/messagerie', 'Messagerie', 'chat']]],
   ['Ventes', [['/devis', 'Devis', 'quote'], ['/projets', 'Projets', 'project'], ['/factures', 'Factures', 'invoice'], ['/clients', 'Clients', 'client']]],
-  ['Gestion', [['/depenses', 'Dépenses', 'expense'], ['/comptabilite', 'Comptabilité', 'ledger'], ['/rapports', 'Rapports', 'report']]],
+  ['Gestion', [['/depenses', 'Dépenses', 'expense'], ['/comptabilite', 'Comptabilité', 'ledger'], ['/rapports', 'Rapports', 'report'], ['/publicite', 'Publicité', 'ads']]],
   ['Réglages', [['/prestations', 'Prestations', 'catalog'], ['/parametres', 'Paramètres', 'settings']]],
 ];
 const NAV = NAV_GROUPS.flatMap((g) => g[1]);
@@ -57,7 +58,7 @@ const LEAD = {
   '/devis': ['Devis', 'envoyés, consultés, acceptés.'], '/factures': ['Factures', 'et ce qui reste à encaisser.'],
   '/clients': ['Clients', 'tout leur historique.'], '/projets': ['Projets', 'de la maquette à la mise en ligne.'],
   '/messagerie': ['Messagerie', 'WhatsApp et e-mails, réunis.'], '/depenses': ['Dépenses', 'et la TVA récupérable.'],
-  '/rapports': ['Rapports', 'mois par mois.'], '/prestations': ['Prestations', 'votre catalogue et vos prix.'],
+  '/rapports': ['Rapports', 'mois par mois.'], '/publicite': ['Publicité', 'ce que rapporte chaque dirham.'], '/prestations': ['Prestations', 'votre catalogue et vos prix.'],
 };
 function layout({ title, active = '', body, flash = '', actions = '' }) {
   const nav = NAV_GROUPS.map(([g, items]) => `<span class="ng">${g}</span>` + items.map(([h, t, i]) => `<a href="${h}" class="${active === h ? 'on' : ''}"${active === h ? ' aria-current="page"' : ''}>${ICONS[i]}<span>${t}</span></a>`).join('')).join('');
