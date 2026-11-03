@@ -20,16 +20,35 @@
 ## Pages principales
 
 - [À propos de Digilago : agence web marocaine](https://www.digilago.ma/a-propos.html): Onze ans de terrain devenus Digilago : notre histoire, notre mission et nos valeurs.
-- [Avis Google au Maroc : en obtenir plus sans tricher](https://www.digilago.ma/avis-google-maroc.html): Avis Google au Maroc : obtenir plus d’avis clients, y répondre et améliorer votre note Google Maps, sans enfreindre les règles de Google.
 - [Contactez Digilago : réponse le jour même](https://www.digilago.ma/contact.html): Parlons de votre projet : WhatsApp, téléphone ou e-mail. Réponse le jour même.
 - [Démarrer votre projet : première version en 72 h](https://www.digilago.ma/demarrer.html): Lancez votre projet en deux minutes : site web, fiche Google, visibilité IA. Première version en 72 heures.
 - [Guides pratiques : site web, Google et IA au Maroc](https://www.digilago.ma/guides.html): Des guides clairs pour les entreprises marocaines : prix d’un site web, référencement local, fiche Google, visibilité dans ChatGPT et les IA.
 - [Digilago](https://www.digilago.ma/): Site web, fiche Google et visibilité dans les IA pour les entreprises marocaines. Première version en 72 h.
-- [Nom de domaine .ma : bien le choisir et l’acheter](https://www.digilago.ma/nom-de-domaine-ma.html): Nom de domaine .ma ou .com ? Choisir le bon nom, l’acheter auprès d’un bureau d’enregistrement, le protéger, l’héberger et créer un e-mail pro.
-- [Paiement en ligne au Maroc : CMI ou à la livraison](https://www.digilago.ma/paiement-en-ligne-maroc.html): Paiement en ligne au Maroc : encaisser par carte via le CMI, organiser le paiement à la livraison, liens de paiement, sécurité et démarches.
-- [Publicité Google et Meta au Maroc : petit budget](https://www.digilago.ma/publicite-google-maroc.html): Publicité Google, Facebook et Instagram au Maroc : budget, enchères, ciblage par ville, erreurs à éviter. Bien démarrer avec un petit budget.
 - [Exemples de sites web par métier au Maroc](https://www.digilago.ma/realisations.html): Choisissez votre domaine et découvrez un exemple de site : santé, éducation, restauration, commerce… Le vôtre sera adapté à votre logo et à vos couleurs.
 - [Services : site web, fiche Google, SEO et IA au Maroc](https://www.digilago.ma/services.html): Sites web sur mesure, fiche Google, référencement, visibilité dans les IA, applications et automatisations pour les entreprises marocaines.
+
+## Guides
+
+- [Agence web au Maroc : comment bien la choisir](https://www.digilago.ma/agence-web-maroc.html): Agence web au Maroc : ce qu’elle fait, les questions à poser, les signaux d’alerte et le contenu d’un bon devis. Le guide pour choisir sans vous tromper.
+- [Création d’application mobile au Maroc : le guide](https://www.digilago.ma/application-mobile-maroc.html): Créer une application mobile au Maroc : Android, iOS ou PWA, étapes, prix indicatifs, arabe, paiement, back-office et erreurs à éviter.
+- [Avis Google au Maroc : en obtenir plus sans tricher](https://www.digilago.ma/avis-google-maroc.html): Avis Google au Maroc : obtenir plus d’avis clients, y répondre et améliorer votre note Google Maps, sans enfreindre les règles de Google.
+- [Création de site web au Maroc : le guide complet](https://www.digilago.ma/creation-site-web-maroc.html): Création de site web au Maroc : types de sites, étapes, prix indicatifs, délais, domaine .ma, FR/AR/EN et SEO. Tout pour lancer un site qui rapporte.
+- [Créer une boutique en ligne au Maroc : guide 2026](https://www.digilago.ma/creer-boutique-en-ligne-maroc.html): Créer une boutique en ligne au Maroc : plateforme, paiement CMI ou à la livraison, transport, cadre légal, coûts et check-list pour vendre en ligne.
+- [FAQ site web, e-commerce, Shopify et SEO au Maroc](https://www.digilago.ma/faq.html): Prix d’un site web, délais, boutique en ligne, Shopify, application, SEO, ChatGPT : 60 réponses claires avant de vous lancer au Maroc.
+- [Mettre son entreprise en ligne au Maroc : pourquoi maintenant](https://www.digilago.ma/guide-bon-moment-maroc.html): Vos futurs clients vous cherchent déjà sur leur téléphone. Ailleurs, la première place coûte cher. Au Maroc, elle est encore à prendre.
+- [Fiche Google Business au Maroc : apparaître sur Maps](https://www.digilago.ma/guide-fiche-google-business-maroc.html): Créer, vérifier et optimiser votre fiche Google Business : les étapes, les informations qui comptent et les erreurs à éviter pour apparaître sur la carte.
+- [Être trouvé sur Google et recommandé par ChatGPT au Maroc](https://www.digilago.ma/guide-google-chatgpt-maroc.html): Fiche Google, SEO local, GEO : le guide pratique pour qu’une entreprise marocaine soit trouvée sur Google, sur Maps et recommandée par les assistants d’IA.
+- [Prix d’un site web au Maroc en 2026 : le guide complet](https://www.digilago.ma/guide-prix-site-web-maroc.html): Site vitrine, boutique en ligne, application : les fourchettes de prix au Maroc, ce qui fait varier le budget et comment éviter les mauvaises surprises.
+- [Site web entreprise BTP au Maroc : chantiers et devis](https://www.digilago.ma/guide-site-btp-construction-maroc.html): Site web pour entreprise du BTP au Maroc : réalisations, références, demandes de devis, marchés publics, Marocains du monde et Google. Prix indicatifs.
+- [Site web location de voitures au Maroc : réservations](https://www.digilago.ma/guide-site-location-voiture-maroc.html): Site web pour agence de location de voitures au Maroc : réservation en ligne, flotte, tarifs, livraison à l’aéroport, WhatsApp, Google et prix indicatifs.
+- [Site web mariage et événementiel au Maroc : le guide](https://www.digilago.ma/guide-site-mariage-evenementiel-maroc.html): Site web pour salle des fêtes, négafa, traiteur, photographe ou wedding planner au Maroc : galerie, dates libres, devis, WhatsApp et Instagram.
+- [Site vitrine, boutique en ligne ou application : que choisir ?](https://www.digilago.ma/guide-site-vitrine-boutique-application.html): Trois outils, trois usages. Comment savoir ce dont votre entreprise a vraiment besoin, et dans quel ordre le construire.
+- [Nom de domaine .ma : bien le choisir et l’acheter](https://www.digilago.ma/nom-de-domaine-ma.html): Nom de domaine .ma ou .com ? Choisir le bon nom, l’acheter auprès d’un bureau d’enregistrement, le protéger, l’héberger et créer un e-mail pro.
+- [Paiement en ligne au Maroc : CMI ou à la livraison](https://www.digilago.ma/paiement-en-ligne-maroc.html): Paiement en ligne au Maroc : encaisser par carte via le CMI, organiser le paiement à la livraison, liens de paiement, sécurité et démarches.
+- [Publicité Facebook et Instagram au Maroc : le guide](https://www.digilago.ma/publicite-facebook-instagram-maroc.html): Publicité Facebook et Instagram au Maroc : budget en dirhams, ciblage, publicités vers WhatsApp, pixel Meta, API Conversions et coût par client.
+- [Publicité Google et Meta au Maroc : petit budget](https://www.digilago.ma/publicite-google-maroc.html): Publicité Google, Facebook et Instagram au Maroc : budget, enchères, ciblage par ville, erreurs à éviter. Bien démarrer avec un petit budget.
+- [Référencement SEO au Maroc : le guide complet](https://www.digilago.ma/referencement-seo-maroc.html): Référencement SEO au Maroc : SEO local, mots-clés en français, arabe et darija, technique, liens, Search Console et IA. La méthode pas à pas.
+- [Shopify Maroc : boutique, thème et paiement](https://www.digilago.ma/shopify-maroc.html): Shopify Maroc : créer sa boutique, choisir ou personnaliser un thème, gérer le paiement à la livraison et le transport. Avantages, limites, alternatives.
 - [Site web agence immobilière et promoteur au Maroc](https://www.digilago.ma/site-web-agence-immobiliere-maroc.html): Site web d’agence immobilière ou de promoteur au Maroc : annonces filtrables, projets neufs, visites, acheteurs MRE, WhatsApp, Google. Conseils et pièges.
 - [Site web auto-école au Maroc : plus d’inscriptions](https://www.digilago.ma/site-web-auto-ecole-maroc.html): Site web d’auto-école au Maroc : pré-inscription au permis en ligne, formules, planning, WhatsApp et Google. Exemples, erreurs à éviter, prix indicatifs.
 - [Site web dentiste au Maroc : attirer des patients](https://www.digilago.ma/site-web-dentiste-maroc.html): Site web pour dentiste au Maroc : pages de soins, rendez-vous en ligne, WhatsApp, Google Maps et règles de l’Ordre. Le guide pour attirer des patients.
@@ -40,21 +59,6 @@
 - [Site web riad et hôtel Maroc : réservation directe](https://www.digilago.ma/site-web-riad-hotel-maroc.html): Site web pour riad, maison d’hôtes ou hôtel au Maroc : réservation directe, site multilingue pour touristes, Google. Pour moins dépendre des plateformes.
 - [Vendre sur Instagram et WhatsApp au Maroc](https://www.digilago.ma/vendre-instagram-whatsapp-maroc.html): Vendre sur Instagram et WhatsApp au Maroc : ce qui marche, les limites, WhatsApp Business, et comment passer à un site e-commerce sans perdre vos clients.
 - [WordPress ou sur mesure au Maroc : que choisir ?](https://www.digilago.ma/wordpress-ou-sur-mesure-maroc.html): WordPress, Wix ou site sur mesure au Maroc ? Comparatif honnête : prix, vitesse, arabe, SEO, maintenance, refonte. Le bon choix selon votre activité.
-
-## Guides
-
-- [Agence web au Maroc : comment bien la choisir](https://www.digilago.ma/agence-web-maroc.html): Agence web au Maroc : ce qu’elle fait, les questions à poser, les signaux d’alerte et le contenu d’un bon devis. Le guide pour choisir sans vous tromper.
-- [Création d’application mobile au Maroc : le guide](https://www.digilago.ma/application-mobile-maroc.html): Créer une application mobile au Maroc : Android, iOS ou PWA, étapes, prix indicatifs, arabe, paiement, back-office et erreurs à éviter.
-- [Création de site web au Maroc : le guide complet](https://www.digilago.ma/creation-site-web-maroc.html): Création de site web au Maroc : types de sites, étapes, prix indicatifs, délais, domaine .ma, FR/AR/EN et SEO. Tout pour lancer un site qui rapporte.
-- [Créer une boutique en ligne au Maroc : guide 2026](https://www.digilago.ma/creer-boutique-en-ligne-maroc.html): Créer une boutique en ligne au Maroc : plateforme, paiement CMI ou à la livraison, transport, cadre légal, coûts et check-list pour vendre en ligne.
-- [FAQ site web, e-commerce, Shopify et SEO au Maroc](https://www.digilago.ma/faq.html): Prix d’un site web, délais, boutique en ligne, Shopify, application, SEO, ChatGPT : 60 réponses claires avant de vous lancer au Maroc.
-- [Mettre son entreprise en ligne au Maroc : pourquoi maintenant](https://www.digilago.ma/guide-bon-moment-maroc.html): Vos futurs clients vous cherchent déjà sur leur téléphone. Ailleurs, la première place coûte cher. Au Maroc, elle est encore à prendre.
-- [Fiche Google Business au Maroc : apparaître sur Maps](https://www.digilago.ma/guide-fiche-google-business-maroc.html): Créer, vérifier et optimiser votre fiche Google Business : les étapes, les informations qui comptent et les erreurs à éviter pour apparaître sur la carte.
-- [Être trouvé sur Google et recommandé par ChatGPT au Maroc](https://www.digilago.ma/guide-google-chatgpt-maroc.html): Fiche Google, SEO local, GEO : le guide pratique pour qu’une entreprise marocaine soit trouvée sur Google, sur Maps et recommandée par les assistants d’IA.
-- [Prix d’un site web au Maroc en 2026 : le guide complet](https://www.digilago.ma/guide-prix-site-web-maroc.html): Site vitrine, boutique en ligne, application : les fourchettes de prix au Maroc, ce qui fait varier le budget et comment éviter les mauvaises surprises.
-- [Site vitrine, boutique en ligne ou application : que choisir ?](https://www.digilago.ma/guide-site-vitrine-boutique-application.html): Trois outils, trois usages. Comment savoir ce dont votre entreprise a vraiment besoin, et dans quel ordre le construire.
-- [Référencement SEO au Maroc : le guide complet](https://www.digilago.ma/referencement-seo-maroc.html): Référencement SEO au Maroc : SEO local, mots-clés en français, arabe et darija, technique, liens, Search Console et IA. La méthode pas à pas.
-- [Shopify Maroc : boutique, thème et paiement](https://www.digilago.ma/shopify-maroc.html): Shopify Maroc : créer sa boutique, choisir ou personnaliser un thème, gérer le paiement à la livraison et le transport. Avantages, limites, alternatives.
 
 ## Secteurs et métiers (un site web pour chaque activité au Maroc)
 
@@ -699,6 +703,90 @@ Non, la fiche Google Business est gratuite. Ce qui demande du temps, c’est de 
 
 Le Generative Engine Optimization rend une entreprise compréhensible et crédible pour les assistants d’IA comme ChatGPT, Gemini ou Perplexity, afin qu’ils la recommandent.
 
+### Combien coûte un site web pour une entreprise du BTP au Maroc ?
+
+À titre indicatif, 8 000 à 25 000 MAD pour un site vitrine avec réalisations et formulaire de devis, 15 000 à 40 000 MAD avec un espace client de suivi de chantier, et à partir de 40 000 MAD pour un outil de gestion complet.
+
+### Quelles photos de chantier publier ?
+
+Des photos réelles, prises à chaque étape et classées par projet, avec la ville, la surface et le délai. Évitez les images de banques d’images et demandez l’accord du client avant de montrer sa maison.
+
+### Un site aide-t-il à gagner des marchés publics ?
+
+Le site ne remplace pas le dossier de candidature, mais il rassure les acheteurs et les partenaires : références, moyens, qualifications et attestations y sont présentés clairement et toujours à jour.
+
+### Comment rassurer un client qui fait construire depuis l’étranger ?
+
+Montrez des chantiers complets, proposez un appel vidéo, partagez un suivi en photos chaque semaine et un échéancier lié aux étapes. Un espace client en ligne réunit les plans, les photos et les factures.
+
+### Le devis peut-il être signé en ligne ?
+
+Oui. Le client reçoit un lien, lit le devis, confirme son identité par un code et signe sur son téléphone. Un certificat garde la preuve de la signature et de la version signée.
+
+### Faut-il une page par ville ?
+
+Oui pour les villes où vous travaillez vraiment, avec des chantiers réels dans chacune. Des pages vides, copiées pour chaque ville, n’aident ni Google ni vos clients.
+
+### En combien de temps le site peut-il être en ligne ?
+
+Une première version peut être en ligne en quelques jours, puis s’enrichir chantier après chantier. Le plus long est souvent de rassembler de bonnes photos : commencez dès maintenant sur vos chantiers en cours.
+
+### Combien coûte un site web pour une agence de location de voitures au Maroc ?
+
+À titre indicatif, 8 000 à 25 000 MAD pour un site vitrine avec demande de réservation, 12 000 à 35 000 MAD avec réservation en ligne et disponibilités, et à partir de 40 000 MAD pour une plateforme avec paiement et gestion de flotte.
+
+### Peut-on encaisser un acompte en ligne au Maroc ?
+
+Oui, par carte bancaire via une solution de paiement marocaine comme le CMI, ou un prestataire international pour les clients étrangers. Le montant de l’acompte et les conditions d’annulation doivent être écrits avant le paiement.
+
+### Faut-il être sur les comparateurs de location ?
+
+Ils peuvent remplir les creux, mais prennent une commission et gardent le contact du client. Votre site sert à transformer chaque client satisfait en réservation directe la fois suivante.
+
+### Quelles langues prévoir sur le site ?
+
+Le français et l’anglais au minimum, l’arabe pour la clientèle locale, et l’espagnol dans le Nord. Chaque langue a ses propres pages, pour que Google les montre aux bonnes personnes.
+
+### Comment éviter les doubles réservations ?
+
+Avec un seul calendrier de disponibilité, relié au site et utilisé par toute l’équipe : une voiture réservée quelque part disparaît partout.
+
+### Le client peut-il signer le contrat en ligne ?
+
+Oui : le récapitulatif et les conditions peuvent être acceptés et signés électroniquement avant l’arrivée, ce qui raccourcit la remise des clés. L’état des lieux se fait ensuite sur place, photos datées à l’appui.
+
+### En combien de temps un site de location peut-il être en ligne ?
+
+Une première version peut être en ligne en quelques jours ; la réservation en ligne avec disponibilités demande en général deux à quatre semaines, selon la taille de la flotte.
+
+### Combien coûte un site web pour une salle des fêtes au Maroc ?
+
+À titre indicatif, 8 000 à 25 000 MAD pour un site vitrine avec galerie et demande de devis, et 12 000 à 35 000 MAD avec un calendrier des dates libres et l’acompte en ligne.
+
+### Instagram ne suffit-il pas pour un métier du mariage ?
+
+Instagram fait découvrir, mais les familles veulent vérifier : prix, capacité, dates, adresse, avis. Le site rassemble ces réponses et reçoit des demandes complètes, même la nuit.
+
+### Faut-il afficher ses prix ?
+
+Au moins des prix « à partir de » ou des formules types. Les familles comparent beaucoup : sans repère, elles passent au prestataire suivant.
+
+### Peut-on publier les photos des mariés ?
+
+Seulement avec leur accord écrit, prévu dans le contrat. Sans accord, montrez les lieux, la décoration et les détails, sans visages.
+
+### Comment bloquer une date à distance ?
+
+Avec un devis envoyé par lien, signé en ligne, et un acompte payé par carte ou par virement. La date est confirmée dès réception, avec un récapitulatif écrit.
+
+### Faut-il un site en anglais ?
+
+Oui si vous visez les mariages destination à Marrakech, Essaouira ou Agafay, ou les Marocains du monde. Chaque langue a ses propres pages, pour Google comme pour les visiteurs.
+
+### Quand lancer son site avant la saison des mariages ?
+
+Plusieurs mois avant l’été : beaucoup de familles réservent dès l’hiver et le printemps. Un site lancé en juin arrive souvent trop tard pour la saison.
+
 ### Peut-on commencer par un site vitrine et ajouter une boutique plus tard ?
 
 Oui. Un site bien construit accueille ensuite une boutique ou un espace de réservation sans tout refaire.
@@ -758,6 +846,34 @@ En partie : certaines banques et établissements de paiement proposent des liens
 ### Combien coûte une boutique en ligne avec paiement par carte au Maroc ?
 
 À titre indicatif, une boutique en ligne avec catalogue, paiement CMI ou à la livraison et gestion des commandes coûte environ 15 000 à 60 000 MAD au Maroc. S’ajoutent les frais du contrat de paiement, la livraison, l’hébergement et la maintenance. Demandez toujours un devis écrit et détaillé.
+
+### Combien coûte la publicité Facebook au Maroc ?
+
+Il n’y a pas de tarif fixe : vous choisissez votre budget quotidien. Pour un test sérieux, prévoyez par exemple 50 à 150 DH par jour pendant deux semaines, puis jugez sur le coût par client. Les coûts varient selon le secteur, la ville et la saison.
+
+### Faut-il un site web pour faire de la publicité sur Instagram ?
+
+Non, une publicité peut ouvrir WhatsApp ou un formulaire Meta. Mais un site rapide rassure, présente vos prix et vos réalisations, et permet de mesurer précisément les demandes et les ventes avec le pixel et l’API Conversions.
+
+### Qu’est-ce que l’API Conversions de Meta ?
+
+C’est l’envoi des événements importants (demande, vente) directement depuis votre serveur vers Meta. Elle complète le pixel du navigateur : un identifiant commun évite de compter deux fois le même événement.
+
+### Peut-on cibler une seule ville au Maroc ?
+
+Oui : une ville, une région ou un rayon autour d’une adresse. Pour un commerce de proximité, un rayon de quelques kilomètres autour du lieu donne des demandes plus faciles à convertir.
+
+### Comment fonctionnent les publicités qui ouvrent WhatsApp ?
+
+Le bouton de la publicité ouvre une conversation avec votre numéro WhatsApp Business et un message déjà rédigé. Avec l’API WhatsApp, chaque conversation peut être rattachée à la publicité qui l’a déclenchée.
+
+### Faut-il l’accord des visiteurs pour le pixel Meta ?
+
+Le plus sûr est de le charger seulement après leur accord, via le bandeau des cookies, et de l’expliquer dans la politique de confidentialité. La loi 09-08 impose d’informer les personnes, et l’accord est obligatoire pour les visiteurs européens.
+
+### En combien de temps voit-on des résultats ?
+
+Les premières demandes arrivent souvent en quelques jours. Comptez deux à quatre semaines pour que la campagne apprenne et pour connaître votre vrai coût par client.
 
 ### Quel budget minimum pour faire de la publicité Google au Maroc ?
 
@@ -1178,10 +1294,6 @@ Oui : un acheteur vérifie toujours un prestataire en ligne avant de l’appeler
 ### Peut-on recevoir des candidatures sur le site ?
 
 Oui : une page carrières avec vos offres par ville et par métier, une candidature rapide depuis le téléphone, et des données protégées selon la loi 09-08.
-
-### Faut-il un site en anglais ?
-
-Si vous visez des clients étrangers, oui. L’offshoring marocain a exporté 26,2 milliards de dirhams de services en 2024 : une version anglaise soignée ouvre ces marchés, et chaque langue est trouvée sur Google.
 
 ### Les demandes de devis peuvent-elles arriver sur WhatsApp ?
 
@@ -3522,10 +3634,6 @@ C’est l’outil intégré au site qui affiche les chambres disponibles et leur
 ### En quelles langues faire le site d’un riad au Maroc ?
 
 Au minimum en français et en anglais pour les touristes, et en arabe pour la clientèle marocaine et arabophone. L’espagnol, l’italien ou l’allemand se justifient selon l’origine de vos voyageurs. Chaque version doit être rédigée par un humain et avoir sa propre adresse pour Google.
-
-### Peut-on encaisser un acompte en ligne au Maroc ?
-
-Oui. Le paiement par carte passe en général par le CMI, après un contrat signé avec votre banque. Vous pouvez encaisser un acompte à la réservation et le solde sur place, à condition d’afficher clairement ces conditions et votre politique d’annulation.
 
 ### Combien coûte un site web pour riad ou maison d’hôtes ?
 

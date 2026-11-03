@@ -1,0 +1,221 @@
+{
+ "file": "guide-site-location-voiture-maroc.html",
+ "date": "2026-11-03",
+ "title": "Site web location de voitures au Maroc : réservations | Digilago",
+ "description": "Site web pour agence de location de voitures au Maroc : réservation en ligne, flotte, tarifs, livraison à l’aéroport, WhatsApp, Google et prix indicatifs.",
+ "eyebrow": "Guide métier, 9 min de lecture",
+ "h1": [
+  "Site web pour location de voitures au Maroc :",
+  "des réservations, même la nuit."
+ ],
+ "lead": "Touristes, Marocains du monde, clients d’affaires : tous comparent sur leur téléphone avant d’atterrir. Voici ce que doit contenir le site d’une agence de location de voitures pour recevoir des réservations directes, sans commission, à Casablanca, Marrakech, Agadir, Tanger ou ailleurs.",
+ "headline": "Site web pour agence de location de voitures au Maroc : réservation en ligne, flotte, livraison à l’aéroport et visibilité sur Google (2026)",
+ "keywords": [
+  "site location voiture Maroc",
+  "site web agence de location de voitures",
+  "réservation voiture en ligne Maroc",
+  "location voiture aéroport Casablanca",
+  "location voiture Marrakech",
+  "location voiture Agadir",
+  "location voiture Tanger",
+  "logiciel réservation location voiture",
+  "création site location voiture"
+ ],
+ "sections": [
+  {
+   "h2": "Pourquoi une agence de location de voitures a-t-elle besoin d’un site web ?",
+   "blocks": [
+    {
+     "p": "Pour une agence, le <strong>site web de location de voitures</strong> est le seul guichet ouvert jour et nuit : le client y voit la flotte, les prix et les conditions, puis réserve directement, sans passer par une plateforme qui prélève une commission sur chaque location."
+    },
+    {
+     "p": "Karim vit à Lyon et rentre à Agadir pour l’été. Un soir, il cherche « location voiture aéroport Agadir ». La première agence n’a qu’une page Facebook sans prix. La deuxième affiche ses modèles, ses tarifs d’août, la caution et un bouton « Réserver ». Il choisit une citadine, laisse ses dates et reçoit une confirmation sur WhatsApp. Trois semaines plus tard, la voiture l’attend au parking de l’aéroport."
+    }
+   ]
+  },
+  {
+   "h2": "Que doit contenir le site d’une agence de location ?",
+   "blocks": [
+    {
+     "ul": [
+      "<strong>La flotte</strong> avec de vraies photos : catégorie, boîte manuelle ou automatique, carburant, places, climatisation.",
+      "<strong>Les tarifs</strong> par jour, par semaine et par saison, avec ce qui est inclus.",
+      "<strong>Les conditions</strong> en clair : âge minimum, ancienneté du permis, caution, franchise, kilométrage, carburant.",
+      "<strong>La livraison</strong> à l’aéroport, à la gare ou à l’hôtel, avec ses frais éventuels.",
+      "<strong>Plusieurs langues</strong> : français, anglais, arabe, et espagnol si vous servez le Nord."
+     ]
+    },
+    {
+     "p": "Ajoutez vos informations légales (raison sociale, ICE, adresse), une page de questions fréquentes et un bouton WhatsApp visible sur chaque page : beaucoup de clients veulent une réponse humaine avant de payer."
+    }
+   ]
+  },
+  {
+   "h2": "Comment fonctionne la réservation en ligne ?",
+   "blocks": [
+    {
+     "ol": [
+      "Le client choisit ses dates, son lieu de prise en charge et son lieu de retour.",
+      "Le site affiche les voitures libres et le prix total, options comprises.",
+      "Il ajoute ses options : siège enfant, conducteur supplémentaire, assurance renforcée.",
+      "Il confirme avec un acompte en ligne, ou une simple demande que vous validez.",
+      "Il reçoit un récapitulatif par e-mail et sur WhatsApp, avec l’adresse ou le point de rendez-vous."
+     ]
+    },
+    {
+     "note": "Le calendrier de disponibilité est le cœur du système : une voiture réservée sur le site doit disparaître aussitôt des autres canaux, sinon vous vendez deux fois la même voiture."
+    }
+   ]
+  },
+  {
+   "h2": "Quels outils ajouter, et quand ?",
+   "blocks": [
+    {
+     "table": {
+      "head": [
+       "Outil",
+       "Ce qu’il change",
+       "Quand l’ajouter"
+      ],
+      "rows": [
+       [
+        "Demande de réservation",
+        "Les demandes arrivent complètes, même la nuit",
+        "Dès le lancement"
+       ],
+       [
+        "Disponibilités en temps réel",
+        "Fini les doubles réservations",
+        "Plus de dix voitures"
+       ],
+       [
+        "Paiement en ligne",
+        "Acompte encaissé, moins d’annulations",
+        "Quand les clients étrangers dominent"
+       ],
+       [
+        "Contrat et état des lieux numériques",
+        "Départ plus rapide, preuves datées",
+        "Plusieurs agences ou beaucoup de rotations"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Digilago relie ces briques à votre activité : <a href=\"paiement-en-ligne-maroc.html\">paiement en ligne</a>, agenda partagé, messages WhatsApp automatiques et tableau de bord de la flotte."
+    }
+   ]
+  },
+  {
+   "h2": "Comment apparaître sur Google près des aéroports ?",
+   "blocks": [
+    {
+     "p": "Les recherches les plus rentables combinent la ville et le lieu de prise en charge : « location voiture aéroport Mohammed V », « location voiture Marrakech Menara », « location voiture gare Tanger ». Créez une page par lieu desservi, avec les vrais délais et les frais de livraison."
+    },
+    {
+     "ul": [
+      "Une fiche Google Business complète, avec photos de la flotte et horaires réels.",
+      "Des avis demandés après chaque retour de voiture, par un lien simple.",
+      "Des réponses claires aux questions que posent aussi ChatGPT et Gemini : caution, assurance, permis étranger."
+     ]
+    },
+    {
+     "p": "Pour aller plus loin, lisez notre guide de la <a href=\"guide-fiche-google-business-maroc.html\">fiche Google Business</a>."
+    }
+   ]
+  },
+  {
+   "h2": "Les erreurs qui font perdre des réservations",
+   "blocks": [
+    {
+     "ul": [
+      "Des photos de catalogue au lieu de vos vraies voitures.",
+      "Des prix cachés, ou une caution découverte au comptoir.",
+      "Un site qui ne s’affiche bien que sur ordinateur, alors que les réservations se font sur téléphone.",
+      "Aucune réponse le soir et le week-end, quand les voyageurs préparent leur départ."
+     ]
+    },
+    {
+     "note": "Affichez des avis réels uniquement. Inventer des avis trompe vos clients et peut faire suspendre votre fiche Google."
+    }
+   ]
+  },
+  {
+   "h2": "Combien coûte un site pour une agence de location de voitures ?",
+   "blocks": [
+    {
+     "table": {
+      "head": [
+       "Formule",
+       "Contenu",
+       "Prix indicatif"
+      ],
+      "rows": [
+       [
+        "Site vitrine",
+        "Flotte, tarifs, conditions, demande de réservation",
+        "8 000 à 25 000 MAD"
+       ],
+       [
+        "Réservation en ligne",
+        "Disponibilités, options, confirmations automatiques",
+        "12 000 à 35 000 MAD"
+       ],
+       [
+        "Plateforme complète",
+        "Paiement, contrats, gestion de flotte, plusieurs agences",
+        "À partir de 40 000 MAD"
+       ]
+      ]
+     }
+    },
+    {
+     "p": "Ces montants sont des ordres de grandeur observés sur le marché marocain : demandez toujours un devis écrit et détaillé."
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago peut aider votre agence",
+   "blocks": [
+    {
+     "p": "Digilago crée des sites de location de voitures rapides, en plusieurs langues, avec réservation, WhatsApp et fiche Google, puis suit chaque demande dans votre espace de gestion. Voyez notre offre de <a href=\"site-web-location-voiture-maroc.html\">site pour agence de location</a> ou <a href=\"demarrer.html\">démarrez votre projet</a>."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "Combien coûte un site web pour une agence de location de voitures au Maroc ?",
+   "a": "À titre indicatif, 8 000 à 25 000 MAD pour un site vitrine avec demande de réservation, 12 000 à 35 000 MAD avec réservation en ligne et disponibilités, et à partir de 40 000 MAD pour une plateforme avec paiement et gestion de flotte."
+  },
+  {
+   "q": "Peut-on encaisser un acompte en ligne au Maroc ?",
+   "a": "Oui, par carte bancaire via une solution de paiement marocaine comme le CMI, ou un prestataire international pour les clients étrangers. Le montant de l’acompte et les conditions d’annulation doivent être écrits avant le paiement."
+  },
+  {
+   "q": "Faut-il être sur les comparateurs de location ?",
+   "a": "Ils peuvent remplir les creux, mais prennent une commission et gardent le contact du client. Votre site sert à transformer chaque client satisfait en réservation directe la fois suivante."
+  },
+  {
+   "q": "Quelles langues prévoir sur le site ?",
+   "a": "Le français et l’anglais au minimum, l’arabe pour la clientèle locale, et l’espagnol dans le Nord. Chaque langue a ses propres pages, pour que Google les montre aux bonnes personnes."
+  },
+  {
+   "q": "Comment éviter les doubles réservations ?",
+   "a": "Avec un seul calendrier de disponibilité, relié au site et utilisé par toute l’équipe : une voiture réservée quelque part disparaît partout."
+  },
+  {
+   "q": "Le client peut-il signer le contrat en ligne ?",
+   "a": "Oui : le récapitulatif et les conditions peuvent être acceptés et signés électroniquement avant l’arrivée, ce qui raccourcit la remise des clés. L’état des lieux se fait ensuite sur place, photos datées à l’appui."
+  },
+  {
+   "q": "En combien de temps un site de location peut-il être en ligne ?",
+   "a": "Une première version peut être en ligne en quelques jours ; la réservation en ligne avec disponibilités demande en général deux à quatre semaines, selon la taille de la flotte."
+  }
+ ],
+ "related": [
+  "paiement-en-ligne-maroc.html",
+  "guide-fiche-google-business-maroc.html",
+  "publicite-facebook-instagram-maroc.html"
+ ]
+}
