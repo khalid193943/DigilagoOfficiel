@@ -99,14 +99,32 @@ Si les noms des variables Turso sont différents chez vous, `LIBSQL_URL` et `LIB
 
 Côté gestion, l'adresse du site est autorisée par défaut (`https://digilago.ma`, `https://www.digilago.ma`). Pour une autre adresse, ajoutez la variable `SITE_ORIGIN` (plusieurs adresses séparées par des virgules).
 
+## Relier le Radar (radar.digilago.ma)
+
+Le Radar trouve et qualifie les prospects ; la gestion fait les devis, les factures et les projets. Reliés :
+
+- **Dans le Radar**, « Préparer le devis » sur la fiche d'un prospect crée la demande ici (source « Radar », coordonnées, constat) et ouvre l'**assistant déjà rempli**. Si une demande existe déjà pour le même numéro (reçue du site, par exemple), elle est complétée au lieu d'être créée en double.
+- **Chaque demande reçue** (site, téléphone, WhatsApp) est cherchée dans le Radar à sa première ouverture : même téléphone, même e-mail ou même site, elle est reliée d'office ; un nom proche est proposé et se confirme d'un clic. La carte **Radar** de la demande affiche alors son diagnostic : case (aucun site, réseaux seulement, site faible, bon site), score, constat, site, fiche Google, réseaux. Entreprise inconnue : **« Ajouter au Radar et analyser »**.
+- **Chaque étape du devis** d'une demande reliée met le Radar à jour : envoyé (« Proposition envoyée » et montant TTC), accepté (« Gagné »), refusé ou demande perdue (« Perdu » et la raison). Si le Radar ne répond pas, l'envoi est gardé et repris tout seul (de plus en plus espacé).
+- **Tableau de bord** : le Radar en un coup d'œil (prospects à appeler aujourd'hui, réponses à traiter, rendez-vous, propositions en cours).
+- **Paramètres → Radar Digilago** : état de la liaison et bouton « Tester la liaison ».
+
+Variables (Vercel), jamais dans le code : `RADAR_URL` = `https://radar.digilago.ma` et `RADAR_SECRET` = une longue phrase au hasard (24 caractères au moins). Dans le Radar : `GESTION_URL` = l'adresse de la gestion et `GESTION_SECRET` = **la même phrase**. Chaque appel est signé (HMAC-SHA256) et refusé s'il a plus de 5 minutes ; les fiches fictives du Radar ne sont jamais acceptées.
+
 ## Sécurité
 
 - **Mot de passe** : changer de mot de passe demande l'actuel et ferme toutes les autres sessions. **Paramètres → Sécurité → Déconnecter tous les appareils** en cas de téléphone perdu.
+- **Mot de passe oublié** : changez la variable `ADMIN_PASSWORD` dans Vercel puis redéployez : la nouvelle valeur s'applique au démarrage (une seule fois par valeur) et ferme les sessions ouvertes.
+- **Lien ouvert sans être connecté** (depuis le Radar, une notification) : après la connexion, vous arrivez sur la page demandée (adresses de la gestion uniquement).
 - **Connexion** : 8 essais par adresse et 40 au total par quart d'heure, comptés dans la base (efficace aussi sur Vercel).
 - **WhatsApp (mode API)** : renseignez la **clé secrète de l'app Meta** (Paramètres → Canaux) : chaque message reçu est alors vérifié, personne ne peut se faire passer pour un client.
 - **Demandes du site** : origine du site vérifiée, piège à robots, 6 demandes par quart d'heure et par adresse.
 - **Sauvegarde** : complète (toutes les tables) et sans aucun mot de passe ni jeton.
 - Après la mise à jour, reconnectez-vous une fois (les sessions sont désormais signées différemment).
+
+## Au design de digilago.ma
+
+Les mêmes polices que le site (Sora, Instrument Sans, Playfair Display italique, JetBrains Mono), **servies par la gestion elle-même** (dossier `public/fonts`, aucun appel à Google Fonts : plus rapide, et rien ne part chez un tiers). Titres avec leur ligne en italique, boutons « flèche + libellé » du site, pastilles à point, page de connexion sous le ciel et les nuages du site. Les confirmations (« Enregistré », messages du Radar) s'affichent quelques secondes en haut à droite. Tout est dans `public/brand.css`, chargé après `app.css`.
 
 ## Sur téléphone
 
