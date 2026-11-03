@@ -3,8 +3,13 @@
 Rien n'est chargé tant que le visiteur n'a pas accepté : ni Google Analytics, ni Tag Manager, ni Clarity.
 Sans aucun identifiant dans src/analytics.json, le bandeau reste caché et le site ne pose aucun cookie de mesure.
 
+Publicité (Meta, Google Ads) : un second choix dans le bandeau (« Publicité »). Le pixel Meta et la balise Google Ads ne se
+chargent qu'avec cet accord ; la mesure d'audience peut être acceptée seule.
+
 Usage :
   python3 tools/analytics.py                                  # applique la configuration enregistrée (utilisé par build.py)
+  python3 tools/analytics.py --meta 123456789012345 --aw AW-123456789 --aw_lead AbCdEf --aw_wa GhIjKl --aw_tel MnOpQr
+  python3 tools/analytics.py --fbdv code_de_verification_du_domaine_meta
   python3 tools/analytics.py --gsc CODE_SEARCH_CONSOLE        # balise de vérification de Google Search Console
   python3 tools/analytics.py --ga4 G-XXXXXXX --gtm GTM-XXXXXXX --clarity abcd1234ef --vercel on
   python3 tools/analytics.py --ga4 ""                         # retire un identifiant
@@ -57,6 +62,15 @@ BAN = {
     'text': ('Avec votre accord, nous mesurons l’audience du site (pages vues, demandes envoyées) pour l’améliorer. Aucune publicité, aucune revente de vos données.',
              'With your consent, we measure site traffic (page views, requests sent) to improve it. No advertising, and we never sell your data.',
              'بموافقتك، نقيس زيارات الموقع (الصفحات المعروضة والطلبات المرسلة) لتحسينه. لا إعلانات ولا نبيع بياناتك.'),
+    'text_ads': ('Avec votre accord, nous mesurons l’audience du site et l’efficacité de nos annonces (Meta, Google). Aucune revente de vos données.',
+                 'With your consent, we measure site traffic and how well our ads work (Meta, Google). We never sell your data.',
+                 'بموافقتك، نقيس زيارات الموقع وفعالية إعلاناتنا (ميتا، غوغل). لا نبيع بياناتك أبداً.'),
+    'pick': ('Choisir', 'Choose', 'اختيار'),
+    'save': ('Enregistrer mon choix', 'Save my choice', 'حفظ اختياري'),
+    'c_a': ('Mesure d’audience', 'Audience measurement', 'قياس الزيارات'),
+    'c_a2': ('pages lues, demandes envoyées', 'pages read, requests sent', 'الصفحات المقروءة والطلبات المرسلة'),
+    'c_m': ('Publicité', 'Advertising', 'الإعلانات'),
+    'c_m2': ('efficacité de nos annonces Meta et Google', 'how well our Meta and Google ads work', 'فعالية إعلاناتنا على ميتا وغوغل'),
     'more': ('En savoir plus', 'Learn more', 'اعرف المزيد'),
     'no': ('Refuser', 'Decline', 'رفض'),
     'yes': ('Accepter', 'Accept', 'قبول'),
@@ -80,12 +94,24 @@ PRIV_ABROAD = ('Ces services sont exploités par des sociétés étrangères : d
                'These services are run by foreign companies: technical data may be processed outside Morocco.',
                'تُدير هذه الخدمات شركات أجنبية: قد تُعالج بيانات تقنية خارج المغرب.')
 PRIV_BTN = ('Modifier mon choix', 'Change my choice', 'تغيير اختياري')
+PRIV_INTRO_ADS = ('Seuls des réglages techniques sont enregistrés sans votre accord. Avec votre accord, nous utilisons des outils de mesure d’audience pour savoir quelles pages sont lues et combien de demandes sont envoyées ; si vous acceptez aussi la publicité, des outils publicitaires mesurent l’efficacité de nos annonces. Les deux choix sont séparés, conservés 12 mois et modifiables à tout moment.',
+                  'Only technical settings are stored without your consent. With your consent, we use audience measurement tools to see which pages are read and how many requests are sent; if you also accept advertising, advertising tools measure how well our ads work. The two choices are separate, kept for 12 months and can be changed at any time.',
+                  'تُحفظ الإعدادات التقنية فقط دون موافقتك. وبموافقتك نستخدم أدوات لقياس الزيارات لمعرفة الصفحات المقروءة وعدد الطلبات المرسلة، وإذا قبلت الإعلانات أيضاً تقيس أدوات إعلانية فعالية إعلاناتنا. الاختياران منفصلان، ويُحفظان 12 شهراً ويمكن تغييرهما في أي وقت.')
+PRIV_META = ('Le pixel Meta (Facebook, Instagram) indique si une visite venue de nos annonces a abouti à une demande. Si vous avez accepté la publicité, le téléphone et l’e-mail que vous nous envoyez peuvent être transmis à Meta sous forme chiffrée (hachage), uniquement pour mesurer nos annonces.',
+             'The Meta pixel (Facebook, Instagram) shows whether a visit from our ads led to a request. If you accepted advertising, the phone number and e-mail you send us may be passed to Meta in encrypted form (hashed), only to measure our ads.',
+             'يبيّن بكسل ميتا (فيسبوك، إنستغرام) ما إذا كانت زيارة قادمة من إعلاناتنا قد أدت إلى طلب. وإذا قبلت الإعلانات، فقد يُرسَل رقم الهاتف والبريد الإلكتروني اللذان ترسلهما إلينا إلى ميتا بشكل مشفّر (تجزئة)، فقط لقياس إعلاناتنا.')
+PRIV_GADS = ('Google Ads (Google) mesure de la même façon les demandes venues de nos annonces Google.',
+             'Google Ads (Google) measures, in the same way, the requests that come from our Google ads.',
+             'يقيس Google Ads (من Google) بالطريقة نفسها الطلبات القادمة من إعلاناتنا على غوغل.')
 
-ID_OK = {'gsc': r'^[A-Za-z0-9_-]{30,64}$', 'gtm': r'^GTM-[A-Z0-9]{4,12}$', 'ga4': r'^G-[A-Z0-9]{4,14}$', 'clarity': r'^[a-z0-9]{6,16}$'}
+ID_OK = {'gsc': r'^[A-Za-z0-9_-]{30,64}$', 'gtm': r'^GTM-[A-Z0-9]{4,12}$', 'ga4': r'^G-[A-Z0-9]{4,14}$', 'clarity': r'^[a-z0-9]{6,16}$',
+         'meta': r'^\d{10,20}$', 'aw': r'^AW-\d{6,14}$', 'aw_lead': r'^[A-Za-z0-9_-]{6,40}$', 'aw_wa': r'^[A-Za-z0-9_-]{6,40}$', 'aw_tel': r'^[A-Za-z0-9_-]{6,40}$',
+         'fbdv': r'^[a-z0-9]{20,40}$'}
+ADS = ('meta', 'aw', 'aw_lead', 'aw_wa', 'aw_tel')
 
 
 def load_conf():
-    c = {'gsc': '', 'gtm': '', 'ga4': '', 'clarity': '', 'vercel': False}
+    c = {'gsc': '', 'gtm': '', 'ga4': '', 'clarity': '', 'vercel': False, 'meta': '', 'aw': '', 'aw_lead': '', 'aw_wa': '', 'aw_tel': '', 'fbdv': ''}
     if os.path.exists(CONF):
         c.update(json.load(open(CONF, encoding='utf-8')))
     return c
@@ -112,13 +138,27 @@ def cli(c):
     return c
 
 
+def ads_on(c):
+    return bool(c.get('meta') or c.get('aw'))
+
+
 def banner(c):
-    attrs = ''.join(' data-%s="%s"' % (k, html.escape(c.get(k, ''), quote=True)) for k in ('gtm', 'ga4', 'clarity'))
-    return ('<!--dg:consent--><div id="dgc" class="dgc" role="dialog" aria-live="polite" aria-label="%s"%s hidden>'
-            '<div class="dgc-t"><b>%s</b><p>%s <a href="confidentialite.html">%s</a></p></div>'
-            '<div class="dgc-b"><button type="button" data-c="no">%s</button><button type="button" data-c="yes">%s</button></div></div>'
+    attrs = ''.join(' data-%s="%s"' % (k, html.escape(c.get(k, ''), quote=True)) for k in ('gtm', 'ga4', 'clarity') + ADS)
+    if not ads_on(c):
+        return ('<!--dg:consent--><div id="dgc" class="dgc" role="dialog" aria-live="polite" aria-label="%s"%s hidden>'
+                '<div class="dgc-t"><b>%s</b><p>%s <a href="confidentialite.html">%s</a></p></div>'
+                '<div class="dgc-b"><button type="button" data-c="no">%s</button><button type="button" data-c="yes">%s</button></div></div>'
+                '%s<!--/dg:consent-->') % (
+            html.escape(BAN['label'][0]), attrs, T(BAN['title']), T(BAN['text']), T(BAN['more']), T(BAN['no']), T(BAN['yes']), vercel_tags(c))
+    # avec la publicité : deux choix séparés (mesure d'audience, publicité), « Choisir » les montre
+    ch = ('<div class="dgc-ch" hidden>'
+          '<label><input type="checkbox" data-k="a" checked><span><b>%s</b>%s</span></label>'
+          '<label><input type="checkbox" data-k="m"><span><b>%s</b>%s</span></label></div>') % (T(BAN['c_a']), T(BAN['c_a2']), T(BAN['c_m']), T(BAN['c_m2']))
+    return ('<!--dg:consent--><div id="dgc" class="dgc dgc-ads" role="dialog" aria-live="polite" aria-label="%s"%s hidden>'
+            '<div class="dgc-t"><b>%s</b><p>%s <a href="confidentialite.html">%s</a></p>%s</div>'
+            '<div class="dgc-b"><button type="button" data-c="no">%s</button><button type="button" data-c="pick" data-save="%s">%s</button><button type="button" data-c="yes">%s</button></div></div>'
             '%s<!--/dg:consent-->') % (
-        html.escape(BAN['label'][0]), attrs, T(BAN['title']), T(BAN['text']), T(BAN['more']), T(BAN['no']), T(BAN['yes']), vercel_tags(c))
+        html.escape(BAN['label'][0]), attrs, T(BAN['title']), T(BAN['text_ads']), T(BAN['more']), ch, T(BAN['no']), T(BAN['save']), T(BAN['pick']), T(BAN['yes']), vercel_tags(c))
 
 
 def vercel_tags(c):
@@ -129,9 +169,26 @@ def vercel_tags(c):
 
 def privacy_block(c):
     google = bool(c.get('gtm') or c.get('ga4'))
-    on = google or c.get('clarity') or c.get('vercel')
+    on = google or c.get('clarity') or c.get('vercel') or ads_on(c)
     if not on:
         return '<p class="rv d1">%s</p>' % T(PRIV_BASE)
+    if ads_on(c):
+        ps = []
+        if google:
+            ps.append(PRIV_GOOGLE)
+        if c.get('clarity'):
+            ps.append(PRIV_CLARITY)
+        if c.get('vercel'):
+            ps.append(PRIV_VERCEL)
+        if c.get('meta'):
+            ps.append(PRIV_META)
+        if c.get('aw'):
+            ps.append(PRIV_GADS)
+        out = '<p class="rv d1">%s</p>' % T(PRIV_INTRO_ADS)
+        out += '<p class="rv d1">%s</p>' % T(tuple(' '.join(x[i] for x in ps) for i in range(3)))
+        out += '<p class="rv d1">%s</p>' % T(PRIV_ABROAD)
+        out += '<p class="rv d1"><button type="button" class="dgc-edit" data-cookies>%s</button></p>' % T(PRIV_BTN)
+        return out
     ps = []
     if google:
         ps.append(PRIV_GOOGLE)
@@ -170,6 +227,9 @@ def main():
         h = open(f, encoding='utf-8').read()
         h2 = re.sub(r'<!--dg:consent-->.*?<!--/dg:consent-->', '', h, flags=re.S)
         h2 = re.sub(r'<!--dg:gsc-->.*?<!--/dg:gsc-->', '', h2, flags=re.S)
+        h2 = re.sub(r'<!--dg:fbdv-->.*?<!--/dg:fbdv-->', '', h2, flags=re.S)
+        if c.get('fbdv'):  # vérification du domaine dans le Business Manager de Meta (nécessaire pour les conversions)
+            h2 = h2.replace('<meta charset="utf-8">', '<meta charset="utf-8"><!--dg:fbdv--><meta name="facebook-domain-verification" content="%s"><!--/dg:fbdv-->' % html.escape(c['fbdv'], quote=True), 1)
         if c.get('gsc'):  # vérification de la propriété dans la Search Console (balise HTML, juste après le jeu de caractères)
             h2 = h2.replace('<meta charset="utf-8">', '<meta charset="utf-8"><!--dg:gsc--><meta name="google-site-verification" content="%s"><!--/dg:gsc-->' % html.escape(c['gsc'], quote=True), 1)
         i = h2.rindex('</body>')
@@ -189,6 +249,7 @@ def main():
     kp = os.path.join(SITE, key + '.txt')
     open(kp, 'w', encoding='utf-8').write(key)
     print('mesure :', 'Search Console ' + c['gsc'][:6] + '…' if c['gsc'] else '', 'GTM ' + c['gtm'] if c['gtm'] else '', 'GA4 ' + c['ga4'] if c['ga4'] else '', 'Clarity ' + c['clarity'] if c['clarity'] else '',
+          'Meta ' + c['meta'] if c.get('meta') else '', 'Google Ads ' + c['aw'] if c.get('aw') else '',
           'Vercel' if c['vercel'] else '', '' if (c['gsc'] or c['gtm'] or c['ga4'] or c['clarity'] or c['vercel']) else '(aucun outil : bandeau caché)',
           '— %d pages, %d traductions ajoutées, clé IndexNow %s' % (n, save_tr(), key[:6] + '…'))
 

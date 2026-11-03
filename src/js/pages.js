@@ -737,7 +737,7 @@
         fetch(api + "/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(window.dgLeadExtra ? window.dgLeadExtra(payload) : payload),
           signal: ctl ? ctl.signal : undefined,
         })
           .then(function (r) {
@@ -1828,14 +1828,16 @@
           fetch(api + "/api/leads", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name: nom,
-              company: f.ent.value.trim(),
-              phone: f.tel.value.trim(),
-              need: f.met.value + (svs.length ? " : " + svs.join(", ") : ""),
-              message: f.msg.value.trim(),
-              source: "Formulaire de contact" + (window.dgSrc ? window.dgSrc() : ""),
-            }),
+            body: JSON.stringify(
+              (window.dgLeadExtra || Object)({
+                name: nom,
+                company: f.ent.value.trim(),
+                phone: f.tel.value.trim(),
+                need: f.met.value + (svs.length ? " : " + svs.join(", ") : ""),
+                message: f.msg.value.trim(),
+                source: "Formulaire de contact" + (window.dgSrc ? window.dgSrc() : ""),
+              }),
+            ),
             keepalive: true,
           }).catch(function () {});
       } catch (e) {}
@@ -1864,7 +1866,8 @@
     put("mcName", "mcNameRow", q.get("n"));
     put("mcRef", "mcRefRow", q.get("r"));
     put("mcWhen", "", q.get("w"));
-    if (window.dgTrack) window.dgTrack("generate_lead", { form: (q.get("f") || "").replace(/[^a-z]/g, "").slice(0, 12) });
+    // l'identifiant de la demande (le même que celui reçu par la gestion) : Meta et Google ne la comptent qu'une fois
+    if (window.dgTrack) window.dgTrack("generate_lead", { form: (q.get("f") || "").replace(/[^a-z]/g, "").slice(0, 12), event_id: window.dgEventId ? window.dgEventId() : "" });
   })();
   // Pages « Secteurs » : recherche des activités, familles, fenêtre « On le fait pour vous », maquettes, Google et IA animés
   (function () {

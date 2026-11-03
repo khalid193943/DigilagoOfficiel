@@ -23,7 +23,7 @@ test('installation, devis, acompte, paiements, solde', async () => {
   assert.match(html, /12\u202f960,00/);       // (12 000 − 10 %) × 1,2
   assert.match(html, /Douze-mille-neuf-cent-soixante dirhams/);
   const tok = html.match(/\/d\/([A-Za-z0-9_-]+)/)[1];
-  const pub = await (await fetch(base + '/d/' + tok)).text(); assert.match(pub, /Accepter ce devis/);
+  const pub = await (await fetch(base + '/d/' + tok)).text(); assert.match(pub, /Signer le devis/);
   r = await fetch(base + '/d/' + tok + '/accepter', { method: 'POST', redirect: 'manual', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'name=Sara+Alami&ok=1' });
   assert.match(r.headers.get('location'), /merci=1/);
   r = await post(`/devis/${qid}/facturer`, { kind: 'acompte' }); const a = r.headers.get('location').split('/').pop();

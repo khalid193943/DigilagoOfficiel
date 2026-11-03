@@ -61,7 +61,7 @@ function parseWebhook(body) {
   for (const e of body.entry || []) for (const c of e.changes || []) {
     const v = c.value || {}, pid = v.metadata && v.metadata.phone_number_id, names = {};
     for (const ct of v.contacts || []) names[ct.wa_id] = ct.profile && ct.profile.name;
-    for (const m of v.messages || []) out.push({ phone_id: pid, from: m.from, name: names[m.from] || '', id: m.id, body: m.text ? m.text.body : m.type === 'button' ? m.button.text : `[${m.type}]`, ts: Number(m.timestamp || 0) });
+    for (const m of v.messages || []) out.push({ phone_id: pid, from: m.from, name: names[m.from] || '', id: m.id, body: m.text ? m.text.body : m.type === 'button' ? m.button.text : `[${m.type}]`, ts: Number(m.timestamp || 0), referral: m.referral || null });
   }
   return out;
 }
