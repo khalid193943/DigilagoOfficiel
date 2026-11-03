@@ -39,6 +39,7 @@ const db = {
 };
 
 const DEFAULTS = {
+  gads_conversion_name: 'Client signé (Digilago)',
   company_name: 'Digilago', company_tagline: 'Sites web, Google et IA pour les entreprises marocaines',
   company_address: '78, bd de la Résistance, Résidence El Marzouki, 5ᵉ étage, appt 68, Casablanca', company_phone: '+212 6 49 95 38 13', company_email: 'contact@digilago.ma',
   company_site: 'digilago.ma', company_ice: '003539032000060', company_if: '66041361', company_rc: '639275 (Casablanca)', company_patente: '32402195', company_cnss: '',
@@ -62,6 +63,9 @@ CREATE TABLE IF NOT EXISTS counters (scope TEXT, year INTEGER, value INTEGER, PR
 CREATE TABLE IF NOT EXISTS clients (id INTEGER PRIMARY KEY, name TEXT NOT NULL, company TEXT, ice TEXT, phone TEXT, email TEXT, address TEXT, city TEXT, notes TEXT, whatsapp TEXT, created_at TEXT DEFAULT (datetime('now')));
 CREATE TABLE IF NOT EXISTS services (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT, unit TEXT DEFAULT 'forfait', unit_price REAL DEFAULT 0, active INTEGER DEFAULT 1, sort INTEGER DEFAULT 0);
 /* liaison avec le Radar : chaque étape d'un devis lui est envoyée ; en cas d'échec, réessayée plus tard */
+/* signature électronique : dossier de preuve de chaque document signé, et codes de vérification envoyés */
+CREATE TABLE IF NOT EXISTS signatures (id INTEGER PRIMARY KEY, token TEXT UNIQUE, doc_type TEXT, doc_id INTEGER, number TEXT, amount REAL, signer_name TEXT, signer_role TEXT, signer_company TEXT, contact TEXT, verified_by TEXT, verified_at TEXT, method TEXT, image TEXT, ip TEXT, ua TEXT, consent TEXT, doc_hash TEXT, signed_at TEXT DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS sign_codes (id INTEGER PRIMARY KEY, doc_type TEXT, doc_id INTEGER, contact TEXT, salt TEXT, code_hash TEXT, channel TEXT, tries INTEGER DEFAULT 0, expires_at TEXT, used_at TEXT, created_at TEXT DEFAULT (datetime('now')));
 CREATE TABLE IF NOT EXISTS radar_outbox (id INTEGER PRIMARY KEY, lead_id INTEGER, event TEXT, payload TEXT, tries INTEGER DEFAULT 0, last_error TEXT, next_at TEXT, created_at TEXT DEFAULT (datetime('now')), sent_at TEXT);
 CREATE TABLE IF NOT EXISTS leads (id INTEGER PRIMARY KEY, name TEXT, company TEXT, phone TEXT, email TEXT, need TEXT, message TEXT, source TEXT, status TEXT DEFAULT 'nouveau', quote_id INTEGER, created_at TEXT DEFAULT (datetime('now')));
 CREATE TABLE IF NOT EXISTS quotes (id INTEGER PRIMARY KEY, number TEXT UNIQUE, client_id INTEGER REFERENCES clients(id), title TEXT, status TEXT DEFAULT 'brouillon', issue_date TEXT, valid_until TEXT, tva_rate REAL DEFAULT 20, discount_pct REAL DEFAULT 0, deposit_pct REAL DEFAULT 50, delay TEXT, notes TEXT, conditions TEXT, token TEXT UNIQUE, sent_at TEXT, viewed_at TEXT, accepted_at TEXT, accepted_name TEXT, total_ht REAL DEFAULT 0, total_tva REAL DEFAULT 0, total_ttc REAL DEFAULT 0, created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now')));
@@ -118,7 +122,7 @@ const CATALOGUE = [
 const STEPS = ['Brief et identité', 'Maquette validée', 'Développement', 'Textes SEO et GEO', 'Fiche Google', 'Mise en ligne'];
 
 /* Initialisation : rapide quand la base est à jour (1 requête), complète et groupée sinon (quelques requêtes) */
-const SCHEMA_VERSION = '2026-11-03.1';
+const SCHEMA_VERSION = '2026-11-03.3';
 const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['clients', 'whatsapp', 'TEXT'],
   ['quotes', 'plan', 'TEXT'], ['quotes', 'pack', 'TEXT'], ['quotes', 'prices_ttc', 'INTEGER'], ['invoices', 'prices_ttc', 'INTEGER'],
   ['invoices', 'sched_idx', 'INTEGER'], ['invoices', 'credit_of', 'INTEGER'], ['invoices', 'label', 'TEXT'],
@@ -127,6 +131,7 @@ const COLUMNS = [['projects', 'info', 'TEXT'], ['projects', 'token', 'TEXT'], ['
   ['clients', 'website', 'TEXT'], ['clients', 'sector', 'TEXT'], ['clients', 'source', 'TEXT'], ['clients', 'if_num', 'TEXT'], ['clients', 'is_foreign', 'INTEGER'],
   ['leads', 'stage', 'TEXT'], ['leads', 'lost_reason', 'TEXT'], ['leads', 'next_at', 'TEXT'], ['leads', 'notes', 'TEXT'], ['leads', 'city', 'TEXT'], ['leads', 'sector', 'TEXT'], ['leads', 'budget', 'TEXT'], ['leads', 'kind', 'TEXT'], ['leads', 'updated_at', 'TEXT'],
   ['leads', 'callback', 'TEXT'], ['leads', 'callback_at', 'TEXT'], ['leads', 'callback_label', 'TEXT'], ['leads', 'ref', 'TEXT'], ['leads', 'lang', 'TEXT'], ['leads', 'attempts', 'INTEGER'],
+  ['leads', 'att', 'TEXT'], ['leads', 'channel', 'TEXT'], ['leads', 'campaign', 'TEXT'], ['leads', 'gclid', 'TEXT'], ['leads', 'ads_ok', 'INTEGER'],
   ['leads', 'radar_id', 'TEXT'], ['leads', 'radar_data', 'TEXT'], ['leads', 'radar_at', 'TEXT'], ['leads', 'radar_matches', 'TEXT'],
   ['expenses', 'supplier_ice', 'TEXT'], ['expenses', 'supplier_if', 'TEXT'], ['expenses', 'invoice_ref', 'TEXT'], ['expenses', 'receipt_url', 'TEXT'], ['expenses', 'account', 'TEXT'], ['expenses', 'deductible', 'INTEGER']];
 /* Index : chaque recherche fréquente lit l'index au lieu de parcourir toute la table.
@@ -157,6 +162,9 @@ const INDEXES = [
   'CREATE INDEX IF NOT EXISTS i_accnotes ON acc_notes(period)',
   'CREATE INDEX IF NOT EXISTS i_activity ON activity(kind, ref_id)',
   'CREATE INDEX IF NOT EXISTS i_leads_radar ON leads(radar_id)',
+  'CREATE INDEX IF NOT EXISTS i_sign_doc ON signatures(doc_type, doc_id)',
+  'CREATE INDEX IF NOT EXISTS i_sign_codes ON sign_codes(doc_type, doc_id)',
+  'CREATE INDEX IF NOT EXISTS i_leads_channel ON leads(channel, created_at)',
   'CREATE INDEX IF NOT EXISTS i_radar_out ON radar_outbox(sent_at, next_at)',
 ];
 const LEGAL_FILL = ['company_address', 'company_ice', 'company_if', 'company_rc', 'company_patente', 'company_legal', 'bank_name', 'bank_rib', 'bank_swift', 'fiscal_regime'];

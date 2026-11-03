@@ -1,0 +1,219 @@
+{
+ "file": "publicite-facebook-instagram-maroc.html",
+ "date": "2026-11-03",
+ "title": "Publicité Facebook et Instagram au Maroc : le guide | Digilago",
+ "description": "Publicité Facebook et Instagram au Maroc : budget en dirhams, ciblage, publicités vers WhatsApp, pixel Meta, API Conversions et coût par client.",
+ "eyebrow": "Guide, 9 min de lecture",
+ "h1": [
+  "Publicité Facebook et Instagram au Maroc :",
+  "des clients, pas seulement des likes."
+ ],
+ "lead": "Budget, ciblage, publicités qui ouvrent WhatsApp, pixel et API Conversions de Meta, coût par client : comment une entreprise marocaine fait de Facebook et Instagram une source de demandes rentable, sans brûler son budget.",
+ "headline": "Publicité Facebook et Instagram au Maroc : budget, ciblage, campagnes WhatsApp et mesure des résultats (2026)",
+ "keywords": [
+  "publicité Facebook Maroc",
+  "publicité Instagram Maroc",
+  "Meta Ads Maroc",
+  "sponsoriser une publication Maroc",
+  "budget publicité Facebook dirhams",
+  "publicité WhatsApp Maroc",
+  "pixel Meta",
+  "API Conversions Meta",
+  "agence Meta Ads Casablanca",
+  "coût par client publicité"
+ ],
+ "sections": [
+  {
+   "h2": "Pourquoi faire de la publicité sur Facebook et Instagram au Maroc ?",
+   "blocks": [
+    {
+     "p": "Faire de la <strong>publicité Facebook et Instagram au Maroc</strong>, c’est montrer votre offre aux bonnes personnes, dans votre ville, au moment où elles font défiler leur téléphone : c’est là que vos futurs clients passent chaque jour du temps, bien avant de chercher un prestataire sur Google."
+    },
+    {
+     "p": "Salma tient un institut de beauté à El Jadida. Pendant des mois, elle « booste » ses publications au hasard. Puis elle lance une vraie campagne : une vidéo de 20 secondes, une offre claire, un bouton qui ouvre WhatsApp, des femmes de 25 à 45 ans à moins de 10 km. En deux semaines, 41 conversations, 12 rendez-vous et un coût par cliente qu’elle connaît au dirham près. La différence ne vient pas du budget : elle vient de la méthode."
+    },
+    {
+     "p": "Les exemples chiffrés de ce guide sont des illustrations : les coûts réels dépendent de votre secteur, de votre ville, de la saison et de la qualité de vos publicités."
+    }
+   ]
+  },
+  {
+   "h2": "Quel objectif choisir : WhatsApp, formulaire ou site web ?",
+   "blocks": [
+    {
+     "p": "Le bon objectif est celui qui ressemble à la façon dont vos clients achètent déjà. Au Maroc, beaucoup préfèrent écrire sur WhatsApp ; d’autres veulent d’abord voir vos prix et vos réalisations sur un site."
+    },
+    {
+     "table": {
+      "head": [
+       "Objectif",
+       "Idéal pour",
+       "Ce que vous mesurez"
+      ],
+      "rows": [
+       [
+        "Messages WhatsApp",
+        "Services locaux : beauté, santé, restaurants, auto-écoles",
+        "Conversations, rendez-vous, clients"
+       ],
+       [
+        "Formulaire Meta",
+        "Demandes simples à rappeler : immobilier, formation, assurance",
+        "Demandes, taux de contact réussi"
+       ],
+       [
+        "Visites du site (conversions)",
+        "Offres à comparer : devis, boutique en ligne, réservations",
+        "Demandes envoyées, ventes, coût par client"
+       ]
+      ]
+     }
+    },
+    {
+     "note": "Évitez l’objectif « interactions » ou « mentions J’aime » si vous cherchez des clients : Meta vous apportera exactement ce que vous demandez, des likes."
+    }
+   ]
+  },
+  {
+   "h2": "Quel budget prévoir en dirhams ?",
+   "blocks": [
+    {
+     "p": "Commencez par un budget de test, assez long pour apprendre : deux semaines, avec un montant quotidien que vous pouvez tenir sans stress. Le calcul qui compte n’est pas le prix d’un clic, mais le <strong>coût par client</strong>."
+    },
+    {
+     "ul": [
+      "Exemple : 100 DH par jour pendant 14 jours, soit 1 400 DH.",
+      "35 demandes reçues : 40 DH par demande.",
+      "5 deviennent clients : 280 DH par client.",
+      "Si un client vous rapporte 2 000 DH de marge, la campagne est rentable : vous pouvez augmenter le budget par paliers."
+     ]
+    },
+    {
+     "p": "Augmentez par paliers de 20 à 30 % tous les quelques jours plutôt que de doubler d’un coup : l’algorithme a besoin d’environ 50 résultats par semaine et par ensemble de publicités pour bien apprendre."
+    }
+   ]
+  },
+  {
+   "h2": "Comment cibler les bons clients au Maroc ?",
+   "blocks": [
+    {
+     "ul": [
+      "<strong>La zone</strong> : une ville, une région, ou un rayon autour de votre adresse pour un commerce de proximité.",
+      "<strong>Les langues</strong> : des publicités en français et en arabe (ou en darija) testées côte à côte.",
+      "<strong>Un ciblage large</strong> avec une bonne publicité donne souvent de meilleurs résultats qu’une longue liste de centres d’intérêt.",
+      "<strong>Vos clients actuels</strong> : excluez-les des offres de bienvenue, et servez-vous de leurs profils pour trouver des personnes proches."
+     ]
+    },
+    {
+     "note": "Une liste de clients ne s’utilise qu’avec leur accord et dans le respect de la loi 09-08 sur les données personnelles."
+    }
+   ]
+  },
+  {
+   "h2": "Quelles publicités donnent envie d’écrire ?",
+   "blocks": [
+    {
+     "p": "Sur Instagram comme sur Facebook, tout se joue dans les trois premières secondes. Les publicités qui fonctionnent montrent le vrai lieu, les vraies personnes et un bénéfice clair."
+    },
+    {
+     "ul": [
+      "Une vidéo verticale, courte, sous-titrée : beaucoup regardent sans le son.",
+      "Une offre précise : un prix « à partir de », un créneau, un avantage limité dans le temps.",
+      "Des avis et des avant/après réels, publiés avec l’accord des clients.",
+      "Un appel à l’action unique : « Écrivez-nous sur WhatsApp » ou « Demandez votre devis »."
+     ]
+    },
+    {
+     "p": "Préparez trois ou quatre versions et laissez Meta montrer davantage celle qui marche. Remplacez les publicités qui s’essoufflent toutes les deux à quatre semaines."
+    }
+   ]
+  },
+  {
+   "h2": "Pixel Meta et API Conversions : mesurer ce qui rapporte",
+   "blocks": [
+    {
+     "p": "Placé sur votre site, le <strong>pixel Meta</strong> est un petit code qui dit à Meta qu’un visiteur venu d’une publicité a envoyé une demande. L’API Conversions envoie la même information depuis votre serveur, ce qui la rend fiable même quand le navigateur bloque le pixel."
+    },
+    {
+     "ol": [
+      "Le visiteur accepte la publicité dans le bandeau des cookies.",
+      "Il envoie une demande : le pixel et le serveur signalent le même événement, avec le même identifiant, compté une seule fois.",
+      "Le devis est accepté : la vente est signalée à son tour, avec son montant.",
+      "Meta apprend à trouver des personnes qui ressemblent à vos vrais clients, pas seulement à ceux qui cliquent."
+     ]
+    },
+    {
+     "note": "Chargez le pixel seulement après l’accord du visiteur et dites-le dans votre politique de confidentialité : c’est la pratique sûre au regard de la loi 09-08, et une obligation pour les visiteurs européens."
+    }
+   ]
+  },
+  {
+   "h2": "Après le clic : la page, WhatsApp et la vitesse de réponse",
+   "blocks": [
+    {
+     "p": "Une publicité réussie peut être gâchée en une minute : page lente, formulaire trop long, message WhatsApp resté sans réponse. Répondez en moins de cinq minutes aux heures d’ouverture, et le soir avec un message d’accueil qui dit quand vous rappelez."
+    },
+    {
+     "p": "Ajoutez des paramètres <strong>utm</strong> à chaque lien de publicité, puis notez la provenance de chaque demande : vous saurez quelle campagne a apporté des clients, et pas seulement des clics."
+    }
+   ]
+  },
+  {
+   "h2": "Les erreurs qui coûtent cher",
+   "blocks": [
+    {
+     "ul": [
+      "« Booster » une publication sans objectif ni mesure.",
+      "Changer la campagne tous les jours : elle n’a jamais le temps d’apprendre.",
+      "Juger sur le prix du clic plutôt que sur le coût par client.",
+      "Envoyer les visiteurs vers une page d’accueil générale au lieu d’une page faite pour l’offre.",
+      "Promettre ce que vous ne pouvez pas tenir : Meta refuse les publicités trompeuses, et vos clients aussi."
+     ]
+    }
+   ]
+  },
+  {
+   "h2": "Comment Digilago prépare vos publicités",
+   "blocks": [
+    {
+     "p": "Digilago prépare le terrain avant le premier dirham dépensé : une page rapide faite pour l’offre, le bandeau des cookies conforme, le pixel et l’API Conversions reliés, des liens utm prêts à coller et, dans votre espace de gestion, la provenance et le coût par client de chaque campagne. Voyez nos <a href=\"services.html\">services</a> ou <a href=\"demarrer.html\">démarrez votre projet</a>."
+    }
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "q": "Combien coûte la publicité Facebook au Maroc ?",
+   "a": "Il n’y a pas de tarif fixe : vous choisissez votre budget quotidien. Pour un test sérieux, prévoyez par exemple 50 à 150 DH par jour pendant deux semaines, puis jugez sur le coût par client. Les coûts varient selon le secteur, la ville et la saison."
+  },
+  {
+   "q": "Faut-il un site web pour faire de la publicité sur Instagram ?",
+   "a": "Non, une publicité peut ouvrir WhatsApp ou un formulaire Meta. Mais un site rapide rassure, présente vos prix et vos réalisations, et permet de mesurer précisément les demandes et les ventes avec le pixel et l’API Conversions."
+  },
+  {
+   "q": "Qu’est-ce que l’API Conversions de Meta ?",
+   "a": "C’est l’envoi des événements importants (demande, vente) directement depuis votre serveur vers Meta. Elle complète le pixel du navigateur : un identifiant commun évite de compter deux fois le même événement."
+  },
+  {
+   "q": "Peut-on cibler une seule ville au Maroc ?",
+   "a": "Oui : une ville, une région ou un rayon autour d’une adresse. Pour un commerce de proximité, un rayon de quelques kilomètres autour du lieu donne des demandes plus faciles à convertir."
+  },
+  {
+   "q": "Comment fonctionnent les publicités qui ouvrent WhatsApp ?",
+   "a": "Le bouton de la publicité ouvre une conversation avec votre numéro WhatsApp Business et un message déjà rédigé. Avec l’API WhatsApp, chaque conversation peut être rattachée à la publicité qui l’a déclenchée."
+  },
+  {
+   "q": "Faut-il l’accord des visiteurs pour le pixel Meta ?",
+   "a": "Le plus sûr est de le charger seulement après leur accord, via le bandeau des cookies, et de l’expliquer dans la politique de confidentialité. La loi 09-08 impose d’informer les personnes, et l’accord est obligatoire pour les visiteurs européens."
+  },
+  {
+   "q": "En combien de temps voit-on des résultats ?",
+   "a": "Les premières demandes arrivent souvent en quelques jours. Comptez deux à quatre semaines pour que la campagne apprenne et pour connaître votre vrai coût par client."
+  }
+ ],
+ "related": [
+  "publicite-google-maroc.html",
+  "vendre-instagram-whatsapp-maroc.html",
+  "guide-google-chatgpt-maroc.html"
+ ]
+}

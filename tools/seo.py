@@ -58,6 +58,11 @@ ORG = {
 ARTICLES = {'creation-site-web-maroc.html': '2026-10-01', 'creer-boutique-en-ligne-maroc.html': '2026-10-01',
             'shopify-maroc.html': '2026-10-01', 'application-mobile-maroc.html': '2026-10-01',
             'agence-web-maroc.html': '2026-10-01', 'referencement-seo-maroc.html': '2026-10-01'}
+# tous les articles de src/articles/ sont des articles (données structurées Article + fil d'Ariane), datés s'ils le disent
+for _f in glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src', 'articles', '*.json')):
+    _d = json.load(open(_f, encoding='utf-8'))
+    if _d.get('file') and _d['file'] != 'faq.html':
+        ARTICLES.setdefault(_d['file'], _d.get('date', '2026-10-01'))
 CRUMB = {'fr': ('Accueil', 'Guides'), 'en': ('Home', 'Guides'), 'ar': ('الرئيسية', 'أدلّة')}
 
 
@@ -128,7 +133,7 @@ def block(name, h, lang='fr'):
         day = ARTICLES.get(name, '2026-09-27')
         graph.append({'@type': 'Article', 'headline': title.split(' | ')[0], 'description': desc,
                       'inLanguage': lang, 'mainEntityOfPage': url, 'image': URL + OG,
-                      'datePublished': day, 'dateModified': '2026-10-01',
+                      'datePublished': day, 'dateModified': max(day, '2026-10-01'),
                       'author': {'@id': ORG['@id']}, 'publisher': {'@id': ORG['@id']}})
         graph.append({'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': CRUMB[lang][0], 'item': page_url('index.html', lang)},

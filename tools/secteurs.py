@@ -23,6 +23,7 @@ SRC = os.path.join(ROOT, 'src', 'secteurs')
 I18N = os.path.join(ROOT, 'src', 'i18n')
 sys.path.insert(0, HERE)
 from secteurs_icons import svg  # noqa: E402
+from secteurs_art import DEFS, art  # noqa: E402
 
 ORDER = ['restauration', 'education', 'sante', 'hotellerie', 'commerce', 'industrie', 'conseil', 'immobilier', 'sport',
          'beaute', 'tourisme', 'btp', 'automobile', 'evenementiel', 'artisanat', 'transport', 'services', 'agriculture']
@@ -456,23 +457,24 @@ def sband(cities):
     return '<div class="sband" aria-hidden="true">%s%s</div>' % (row(lambda i: 'it' if i % 2 else '', -1, a), row(lambda i: 'o', 1, b))
 
 
-def card_type(t):
-    return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s"><span class="vz-ic oct">%s</span>%s<b>%s</b>'
+def card_type(t, sec_id=''):
+    new = ('<span class="vz-new">%s</span>' % T(S['trend'])) if t.get('trend') else ''
+    return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s">%s<span class="vz-ic oct" hidden>%s</span><b>%s</b>'
             '<span class="vz-d">%s</span><span class="vz-go">%s%s</span></a>') % (
-        t['id'], t['file'], t['group'], kw(t['k'], t['name']), svg(t['icon']),
-        ('<span class="vz-new">%s</span>' % T(S['trend'])) if t.get('trend') else '', T(t['name']), T(t['short']), T(S['see']), ARR)
+        t['id'], t['file'], t['group'], kw(t['k'], t['name']), art(t['icon'], sec_id, new), svg(t['icon']),
+        T(t['name']), T(t['short']), T(S['see']), ARR)
 
 
-def card_more(c):
+def card_more(c, sec_id=''):
     tags = '<span class="vz-tags">%s</span>' % ''.join('<i>%s</i>' % T(x) for x in c['tags'])
     new = ('<span class="vz-new">%s</span>' % T(S['trend'])) if c.get('trend') else ''
     if c.get('href'):
-        return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s"><span class="vz-ic oct">%s</span>%s<b>%s</b>'
+        return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s">%s<span class="vz-ic oct" hidden>%s</span><b>%s</b>'
                 '<span class="vz-d">%s</span><span class="vz-go">%s%s</span></a>') % (
-            c['id'], c['href'], c['group'], kw(c['k'], c['name']), svg(c['icon']), new, T(c['name']), T(c['short']), T(S['see']), ARR)
-    return ('<button type="button" class="vz-card vz-c rv" id="t-%s" data-g="%s" data-k="%s" data-met="%s"><span class="vz-ic oct">%s</span>%s'
+            c['id'], c['href'], c['group'], kw(c['k'], c['name']), art(c['icon'], sec_id, new), svg(c['icon']), T(c['name']), T(c['short']), T(S['see']), ARR)
+    return ('<button type="button" class="vz-card vz-c rv" id="t-%s" data-g="%s" data-k="%s" data-met="%s">%s<span class="vz-ic oct" hidden>%s</span>'
             '<b>%s</b><span class="vz-d">%s</span><span class="vz-more">%s</span><span class="vz-go">%s%s</span></button>') % (
-        c['id'], c['group'], kw(c['k'], c['name']), A(c['name']), svg(c['icon']), new, T(c['name']), T(c['short']), tags, T(S['forU']), ARR)
+        c['id'], c['group'], kw(c['k'], c['name']), A(c['name']), art(c['icon'], sec_id, new), svg(c['icon']), T(c['name']), T(c['short']), tags, T(S['forU']), ARR)
 
 
 def dialog():
@@ -492,12 +494,12 @@ def find(sec, types, cards):
         '<button type="button" class="vz-chip" data-g="%s" aria-pressed="false">%s</button>' % (g, T(n)) for g, n in groups)
     items = []
     for g, _ in groups:  # par famille : d'abord les pages, puis les cartes
-        items += [card_type(t) for t in types if t['group'] == g]
-        items += [card_more(c) for c in cards if c['group'] == g]
+        items += [card_type(t, sec['id']) for t in types if t['group'] == g]
+        items += [card_more(c, sec['id']) for c in cards if c['group'] == g]
     return ('<section class="blk vz-find" id="activites">%s<div class="vz-tools w rv"><label class="vz-q">%s<input type="search" '
-            'placeholder="%s" aria-label="%s" autocomplete="off"></label><div class="vz-chips">%s</div></div><div class="vz-grid w">%s</div>'
+            'placeholder="%s" aria-label="%s" autocomplete="off"></label><div class="vz-chips">%s</div></div>%s<div class="vz-grid w">%s</div>'
             '<div class="vz-none w" hidden><p>%s</p><a class="vz-btn" href="demarrer.html" data-met="%s">%s%s</a></div>%s</section>') % (
-        head_sh(S['find_pill'], S['find_1'], S['find_2'], S['find_p']), svg('search'), A(S['q_ph']), A(S['q_lbl']), chips,
+        head_sh(S['find_pill'], S['find_1'], S['find_2'], S['find_p']), svg('search'), A(S['q_ph']), A(S['q_lbl']), chips, DEFS,
         ''.join(items), T(S['none']), A(sec['met']), T(S['start']), ARR, dialog())
 
 

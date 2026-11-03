@@ -25,10 +25,11 @@ GROUPS = [
     ('Par métier', 'Un guide', 'pour votre activité.',
      ['site-web-dentiste-maroc.html', 'site-web-medecin-clinique-maroc.html', 'site-web-ecole-privee-maroc.html',
       'site-web-institut-beaute-maroc.html', 'site-web-restaurant-maroc.html', 'site-web-riad-hotel-maroc.html',
-      'site-web-auto-ecole-maroc.html', 'site-web-agence-immobiliere-maroc.html']),
+      'site-web-auto-ecole-maroc.html', 'site-web-agence-immobiliere-maroc.html', 'guide-site-location-voiture-maroc.html',
+      'guide-site-btp-construction-maroc.html', 'guide-site-mariage-evenementiel-maroc.html']),
     ('Visibilité et ventes', 'Être trouvé,', 'et choisi.',
      ['referencement-seo-maroc.html', 'guide-google-chatgpt-maroc.html', 'guide-fiche-google-business-maroc.html',
-      'avis-google-maroc.html', 'publicite-google-maroc.html', 'vendre-instagram-whatsapp-maroc.html',
+      'avis-google-maroc.html', 'publicite-google-maroc.html', 'publicite-facebook-instagram-maroc.html', 'vendre-instagram-whatsapp-maroc.html',
       'paiement-en-ligne-maroc.html', 'faq.html']),
 ]
 FOOT = [('creation-site-web-maroc.html', 'Création de site web'), ('creer-boutique-en-ligne-maroc.html', 'Boutique en ligne'),

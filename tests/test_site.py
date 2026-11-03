@@ -258,7 +258,9 @@ def test_selecteur_de_langue(page, base_url):
 
 # ─── SEO / GEO, carte du hero, arabe ───────────────────────────────────
 ARTICLES = ['creation-site-web-maroc.html', 'creer-boutique-en-ligne-maroc.html', 'shopify-maroc.html',
-            'application-mobile-maroc.html', 'agence-web-maroc.html', 'referencement-seo-maroc.html', 'faq.html']
+            'application-mobile-maroc.html', 'agence-web-maroc.html', 'referencement-seo-maroc.html', 'faq.html',
+            'publicite-facebook-instagram-maroc.html', 'guide-site-location-voiture-maroc.html', 'guide-site-btp-construction-maroc.html',
+            'guide-site-mariage-evenementiel-maroc.html', 'site-web-dentiste-maroc.html']
 
 @pytest.mark.parametrize('name', ARTICLES)
 def test_article_seo(name):
