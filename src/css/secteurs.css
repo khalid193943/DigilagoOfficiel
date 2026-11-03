@@ -519,3 +519,68 @@ html[dir="rtl"] .mc-row dt{font-family:"Noto Sans Arabic",sans-serif;font-size:c
 [data-mode="M"] .vz-ft .vz-ic.oct{--s:calc(64 * var(--u))}
 [data-mode="M"] .vz-emb{width:calc(124 * var(--u));height:calc(124 * var(--u));margin-bottom:calc(10 * var(--u))}
 [data-mode="M"] .vz-emb .oct{--s:calc(86 * var(--u))}
+/* ─── illustrations animées des cartes métier (tools/secteurs_art.py) ─── */
+.vz-defs{position:absolute;width:0;height:0;overflow:hidden}
+.vz-art{position:relative;display:block;flex:none;order:-2;align-self:stretch;width:auto;aspect-ratio:320/120;max-height:calc(190 * var(--u));margin:calc(-30 * var(--u)) calc(-30 * var(--u)) calc(4 * var(--u));overflow:hidden;border-radius:calc(26 * var(--u)) calc(26 * var(--u)) 0 0}
+.vz-card:has(>.vz-art){min-height:0}
+.vz-card>.vz-ic[hidden]{display:none!important}
+.vz-art .vz-new{top:auto;bottom:calc(10 * var(--u));right:calc(14 * var(--u));left:auto;inset-inline-end:auto}
+.vz-stage{display:block;width:100%;height:100%}
+.vz-art .a{transform-box:fill-box;transform-origin:center}
+.vz-art .s-lift{transform-box:fill-box;transform-origin:center;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.vz-card:is(:hover,:focus-visible,.live) .vz-art .s-lift{transform:translateY(-5px)}
+.vz-art .s-ring{animation:vaDash 3s linear infinite}
+.vz-art .s-draw{stroke-dasharray:100;stroke-dashoffset:0}
+.vz-card.in .vz-art .s-draw{animation:vaDraw 1.6s .25s cubic-bezier(.65,0,.35,1) both}
+.vz-card.in .vz-art .s-pop{transform-box:fill-box;transform-origin:50% 85%;animation:vaPop .9s cubic-bezier(.2,1.25,.4,1) both}
+.vz-card.in .vz-art .s-acc{animation:vaIn .9s .3s cubic-bezier(.16,1,.3,1) both}
+.vz-art .a-float{animation:vaFloat 3.2s ease-in-out infinite}
+.vz-art .a-twinkle{animation:vaTwinkle 2.2s ease-in-out infinite}
+.vz-art .a-spin{animation:vaSpin 10s linear infinite}
+.vz-art .a-spin-r{animation:vaSpin 8s linear infinite reverse}
+.vz-art .a-swing{transform-origin:50% 0;animation:vaSwing 2.6s ease-in-out infinite}
+.vz-art .a-flow{animation:vaFlow 2.2s linear infinite}
+.vz-art .a-flow-r{animation:vaFlowR 1.1s linear infinite}
+.vz-art .a-pulse{stroke-dasharray:.24 .76;stroke-dashoffset:.7;animation:vaPulse 2.2s linear infinite}
+.vz-art .a-rise{animation:vaRise 2.4s ease-in-out infinite}
+.vz-art .a-glide{animation:vaGlide 3.4s ease-in-out infinite}
+.vz-art .a-blink{animation:vaBlink 1.6s ease-in-out infinite}
+.vz-art .a-fall{animation:vaFall 2.6s ease-in-out infinite}
+.vz-art .a-bob{animation:vaBob .9s ease-in-out infinite}
+.vz-art .a-bounce{animation:vaBounce 1.3s cubic-bezier(.45,0,.55,1) infinite}
+.vz-art .a-squash{animation:vaSquash 1.3s cubic-bezier(.45,0,.55,1) infinite}
+.vz-art .a-drift{animation:vaDrift 6s ease-in-out infinite}
+.vz-art .a-grow{transform-origin:50% 100%;animation:vaGrow 2.4s ease-in-out infinite}
+.vz-art .a-sway{transform-origin:50% 100%;animation:vaSway 2.8s ease-in-out infinite}
+.vz-art .a-type{transform-origin:0 50%;animation:vaType 2.8s steps(7) infinite}
+.vz-art .a-slide{animation:vaSlide 2.7s linear infinite}
+@keyframes vaDraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes vaPop{from{opacity:0;transform:translateY(10px) scale(.86)}to{opacity:1;transform:none}}
+@keyframes vaIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+@keyframes vaSpin{to{transform:rotate(360deg)}}
+@keyframes vaDash{to{stroke-dashoffset:-34}}
+@keyframes vaFloat{50%{transform:translateY(-6px)}}
+@keyframes vaTwinkle{50%{transform:scale(.55) rotate(25deg);opacity:.45}}
+@keyframes vaSwing{0%,100%{transform:rotate(0)}25%{transform:rotate(7deg)}75%{transform:rotate(-7deg)}}
+@keyframes vaFlow{to{stroke-dashoffset:-32}}
+@keyframes vaFlowR{to{stroke-dashoffset:38}}
+@keyframes vaPulse{from{stroke-dashoffset:.7}to{stroke-dashoffset:-.3}}
+@keyframes vaRise{0%,100%{transform:none;opacity:1}55%{transform:translateY(-10px);opacity:0}56%{transform:translateY(6px);opacity:0}}
+@keyframes vaGlide{50%{transform:translate(-8px,6px) rotate(-6deg)}}
+@keyframes vaBlink{50%{opacity:.25}}
+@keyframes vaFall{50%{transform:translateY(7px) rotate(70deg)}}
+@keyframes vaBob{50%{transform:translateY(-2.5px)}}
+@keyframes vaBounce{0%,100%{transform:none}50%{transform:translateY(42px) scale(1.06,.94)}}
+@keyframes vaSquash{0%,100%{transform:scale(.55);opacity:.5}50%{transform:scale(1.15);opacity:1}}
+@keyframes vaDrift{50%{transform:translateX(14px)}}
+@keyframes vaGrow{50%{transform:scaleY(.55)}}
+@keyframes vaSway{0%,100%{transform:rotate(0)}25%{transform:rotate(5deg)}75%{transform:rotate(-5deg)}}
+@keyframes vaType{0%,100%{transform:none}12%{transform:scaleX(0)}}
+@keyframes vaSlide{0%,100%{transform:none;opacity:1}70%{transform:translateX(32px);opacity:1}85%{transform:translateX(40px);opacity:0}86%{transform:translateX(-6px);opacity:0}}
+/* au repos, rien ne bouge ; la scène s'anime quand la carte a le focus (après les raccourcis « animation » ci-dessus) */
+.vz-card .vz-art .a{animation-play-state:paused}
+.vz-card:is(:hover,:focus-visible,.live) .vz-art .a{animation-play-state:running}
+[data-mode="M"] .vz-card:has(>.vz-art){display:flex;flex-direction:column;align-items:flex-start}
+[data-mode="M"] .vz-card .vz-art{margin:calc(-20 * var(--u)) calc(-18 * var(--u)) calc(2 * var(--u));border-radius:calc(20 * var(--u)) calc(20 * var(--u)) 0 0}
+[data-mode="M"] .vz-art .vz-new{position:absolute;bottom:calc(8 * var(--u));right:calc(10 * var(--u));left:auto;margin:0}
+@media (prefers-reduced-motion:reduce){.vz-art *{animation:none!important;transition:none!important}}

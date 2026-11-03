@@ -2136,4 +2136,13 @@
       });
     }
   })();
+  /* Illustrations des métiers (pages Secteurs) : sur téléphone, la carte au centre de l'écran s'anime. */
+  (function () {
+    var arts = document.querySelectorAll(".vz-card .vz-art");
+    if (!arts.length || !("IntersectionObserver" in window) || !matchMedia("(hover: none)").matches) return;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.target.classList.toggle("live", e.isIntersecting); });
+    }, { rootMargin: "-38% 0px -38% 0px" });
+    arts.forEach(function (a) { io.observe(a.closest(".vz-card")); });
+  })();
 })();
