@@ -1,0 +1,18 @@
+/* ===== Champs sur écran tactile =====
+   Safari (iPhone) agrandit la page dès qu'on touche un champ écrit en dessous de 16 px, et la page reste ensuite
+   agrandie et décalée. Sur un iPhone de 375 px (mini, SE), les champs en calc(16 * --u) tombaient à 15,4 px.
+   Ici, chaque champ garde sa taille habituelle (mêmes règles que design.css et les pages), avec 16 px minimum.
+   Le zoom à deux doigts reste possible. Nouveau champ ? Ajoutez-le ici ; tests/test_site.py le vérifie. */
+@media (hover:none) and (pointer:coarse){
+  .fld input,.fld select,.cb-form input,.cform input,.cform select,.cform textarea{font-size:max(16px,calc(16 * var(--u)))!important}
+  html body #sim .fld select{font-size:max(16px,calc(19 * var(--u)))!important}
+  html body #sim .fld input{font-size:max(16px,calc(21 * var(--u)))!important}
+  [data-mode="M"] body #sim .fld input,[data-mode="M"] body #sim .fld select{font-size:max(16px,calc(16 * var(--u)))!important}
+  .vz-q input{font-size:max(16px,calc(17 * var(--u)))!important}
+  [data-mode="M"] .vz-q input{font-size:16px!important}
+  .smq-in input{font-size:max(16px,calc(21 * var(--u)))!important}
+  .smq2 .smq-in input{font-size:max(16px,calc(17 * var(--u)))!important}
+  [data-mode="M"] .smq-in input,[data-mode="M"] .smq2 .smq-in input{font-size:max(16px,calc(15 * var(--u)))!important}
+  .st-try input{font-size:max(16px,calc(14 * var(--u)))!important}
+  .cbo-more input[type="date"]{font-size:max(16px,calc(20 * var(--u)))!important}
+}
