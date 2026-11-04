@@ -1,0 +1,29 @@
+/* Encart « Digilago Lab » en bas de Services, Secteurs et À propos (tools/lab.py) : un morceau de nuit dans la page de jour.
+   « 12u » veut dire 12 unités d'échelle (calc(12 * var(--u))). */
+.lband{position:relative;display:grid;grid-template-columns:5fr 6fr;gap:52u;align-items:center;box-sizing:border-box;padding:56u;border-radius:32u;overflow:hidden;color:rgba(221,235,255,.84);background:radial-gradient(70% 90% at 100% 0%,rgba(95,159,249,.4),rgba(95,159,249,0) 60%),linear-gradient(140deg,#123A86 0%,#0B1F52 55%,#071433 100%);box-shadow:0 40u 80u -40u rgba(9,31,82,.6)}
+.lband::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 63% 9%,#DDEBFF,transparent),radial-gradient(1.4px 1.4px at 82% 41%,#fff,transparent),radial-gradient(1px 1px at 37% 66%,#9FC8FF,transparent),radial-gradient(1px 1px at 91% 83%,#fff,transparent);background-size:300px 300px}
+.lband>*{position:relative}
+.lband-k{display:inline-flex;align-items:center;gap:10u;margin:0 0 18u;font:400 13u/1 "JetBrains Mono",monospace;letter-spacing:.06em;color:#9FC8FF}
+.lband-k i{width:8u;height:8u;border-radius:50%;background:#3DDC97;box-shadow:0 0 0 4u rgba(61,220,151,.18)}
+.lband h2{margin:0;font:500 46u/1.08 Sora,sans-serif;letter-spacing:-.045em;color:#fff}
+.lband h2 em{display:block;padding-bottom:.08em;font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:500;letter-spacing:-.015em;background:linear-gradient(100deg,#DDEBFF 10%,#9FC8FF 55%,#5F9FF9 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lband-txt>p:not(.lband-k){max-width:480u;margin:20u 0 0;font-size:16.5u;line-height:1.6}
+.lband-btn{display:inline-flex;align-items:center;gap:12u;height:52u;margin-top:28u;padding:0 22u;border-radius:14u;background:#fff;color:#0E214E!important;font:500 15.5u/1 Sora,sans-serif;letter-spacing:-.01em;text-decoration:none;transition:transform .3s,box-shadow .3s}
+.lband-btn:hover{transform:translateY(-2px);box-shadow:0 14u 30u -14u rgba(95,159,249,.8)}
+.lband-btn svg{width:18u;height:18u}
+.lband-cards{display:grid;grid-template-columns:1fr 1fr;gap:16u}
+.lband-card{display:flex;flex-direction:column;gap:8u;padding:10u 10u 18u;border-radius:20u;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(159,200,255,.2);text-decoration:none;transition:transform .35s cubic-bezier(.16,1,.3,1),background .35s}
+.lband-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.1)}
+.lband-card img{display:block;width:100%;height:auto;aspect-ratio:16/10;margin-bottom:6u;border-radius:12u;object-fit:cover;object-position:top left}
+.lband-card small{padding:0 6u;font:400 12u/1 "JetBrains Mono",monospace;letter-spacing:.08em;color:#9FC8FF}
+.lband-card b{padding:0 6u;font:500 22u/1.15 Sora,sans-serif;letter-spacing:-.025em;color:#fff}
+.lband-card span{padding:0 6u;font-size:13.5u;line-height:1.45;color:rgba(221,235,255,.75)}
+.lband-btn:focus-visible,.lband-card:focus-visible{outline:2px solid #9FC8FF;outline-offset:3px}
+[data-mode="M"] .lband{grid-template-columns:1fr;gap:28u;padding:30u 18u 20u;border-radius:24u}
+[data-mode="M"] .lband h2{font-size:32u}
+[data-mode="M"] .lband-cards{gap:10u}
+[data-mode="M"] .lband-card b{font-size:18u}
+[data-mode="M"] .lband-card span{display:none}
+html[dir="rtl"] .lband-btn svg.ar{transform:scaleX(-1)}
+html[lang="ar"] .lband h2{letter-spacing:0;line-height:1.3}
+@media (prefers-reduced-motion:reduce){.lband-btn,.lband-card{transition:none}}

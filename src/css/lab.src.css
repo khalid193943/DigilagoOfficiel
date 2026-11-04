@@ -81,7 +81,7 @@
 .lab-hero.prj h1 .l+.l{font-size:.5em;margin-top:.06em}
 .lab-show{position:relative;margin-top:16u;padding-bottom:40u;animation:labFade 1.4s .3s cubic-bezier(.16,1,.3,1) both}
 .lab-show::before{content:"";position:absolute;left:8%;right:8%;top:12%;bottom:0;border-radius:50%;background:radial-gradient(closest-side,rgba(47,132,236,.38),rgba(47,132,236,0));filter:blur(30px);z-index:-1}
-.lab-show .lab-ph{position:absolute;inset-inline-end:3%;bottom:0;width:236u}
+.lab-show .lab-ph{position:absolute;inset-inline-end:3%;bottom:-10u;width:290u}
 
 /* cadres d'écran */
 .lab-br{position:relative;border-radius:18u;background:#0A142E;box-shadow:0 0 0 1px rgba(159,200,255,.16),0 50u 100u -40u rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.04) inset;overflow:hidden}
@@ -89,9 +89,14 @@
 .lab-br>b i{width:10u;height:10u;border-radius:50%;background:#26365F}
 .lab-br>b span{margin-inline-start:14u;padding:5u 12u;border-radius:7u;background:rgba(159,200,255,.07);font:400 11.5u/1 "JetBrains Mono",monospace;font-weight:400;color:rgba(159,200,255,.7);letter-spacing:.04em}
 .lab-br img{display:block;width:100%;height:auto;aspect-ratio:16/10}
-.lab-ph{position:relative;padding:9u;border-radius:42u;background:linear-gradient(150deg,#56638A,#1A2340 18%,#0A1022 48%,#1A2340 78%,#56638A);box-shadow:0 40u 80u -30u rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.08)}
-.lab-ph::before{content:"";position:absolute;left:50%;top:17u;width:64u;height:19u;margin-left:-32u;border-radius:12u;background:#05080F;z-index:2}
-.lab-ph img{display:block;width:100%;height:auto;aspect-ratio:600/1007;border-radius:33u}
+/* un vrai téléphone : proportions d'un iPhone (393 × 852), cadre en titane, îlot, boutons, barre d'état */
+.lab-ph{position:relative;box-sizing:border-box;container-type:inline-size;padding:3.6%;border-radius:15.5%/7.3%;background:linear-gradient(140deg,#8A919E 0%,#3B3F48 7%,#17191E 22%,#1D2027 60%,#3B3F48 92%,#8A919E 100%);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.28),inset 0 0 0 5px #0A0B0E,0 60u 100u -40u rgba(0,0,0,.95),0 0 0 1px rgba(0,0,0,.55)}
+.lab-ph::before{content:"";position:absolute;right:100%;top:17%;width:1%;height:25%;border-radius:3px 0 0 3px;background:linear-gradient(90deg,#2E3239,#717885) top/100% 11% no-repeat,linear-gradient(90deg,#2E3239,#717885) 0 45%/100% 23% no-repeat,linear-gradient(90deg,#2E3239,#717885) bottom/100% 23% no-repeat}
+.lab-ph::after{content:"";position:absolute;left:100%;top:27%;width:1%;height:11.5%;border-radius:0 3px 3px 0;background:linear-gradient(270deg,#2E3239,#717885)}
+.lab-ph-s{position:relative;overflow:hidden;padding-top:13.7cqw;border-radius:12.6cqw;background:#E6EFFC}
+.lab-ph-s::before{content:"";position:absolute;z-index:2;top:3cqw;left:50%;width:31cqw;height:9.2cqw;margin-left:-15.5cqw;border-radius:9cqw;background:#000}
+.lab-ph-s::after{content:"9:41";position:absolute;z-index:1;top:0;left:0;right:0;height:13.7cqw;box-sizing:border-box;display:flex;align-items:center;padding-left:10.5cqw;font:600 4.1cqw/1 -apple-system,"SF Pro Text","Instrument Sans",system-ui,sans-serif;letter-spacing:-.01em;color:#0B1020;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2068%2012%27%20fill%3D%27%230B1020%27%3E%3Crect%20x%3D%270%27%20y%3D%277%27%20width%3D%273%27%20height%3D%274%27%20rx%3D%27.8%27%2F%3E%3Crect%20x%3D%274.5%27%20y%3D%275%27%20width%3D%273%27%20height%3D%276%27%20rx%3D%27.8%27%2F%3E%3Crect%20x%3D%279%27%20y%3D%273%27%20width%3D%273%27%20height%3D%278%27%20rx%3D%27.8%27%2F%3E%3Crect%20x%3D%2713.5%27%20y%3D%271%27%20width%3D%273%27%20height%3D%2710%27%20rx%3D%27.8%27%2F%3E%3Cpath%20d%3D%27M28.5%203.2a8.6%208.6%200%200%201%2011.6%200l-1.3%201.4a6.7%206.7%200%200%200-9%200zM30.6%205.6a5.6%205.6%200%200%201%207.4%200l-1.3%201.4a3.7%203.7%200%200%200-4.8%200zM34.3%2010.6l-1.9-2a2.6%202.6%200%200%201%203.8%200z%27%2F%3E%3Crect%20x%3D%2745.5%27%20y%3D%271%27%20width%3D%2719%27%20height%3D%2710%27%20rx%3D%273%27%20fill%3D%27none%27%20stroke%3D%27%230B1020%27%20stroke-opacity%3D%27.4%27%2F%3E%3Crect%20x%3D%2747%27%20y%3D%272.5%27%20width%3D%2714%27%20height%3D%277%27%20rx%3D%271.8%27%2F%3E%3Cpath%20d%3D%27M65.8%204.3v3.4a1.8%201.8%200%200%200%200-3.4z%27%20fill-opacity%3D%27.45%27%2F%3E%3C%2Fsvg%3E") no-repeat right 7cqw center/17.5cqw auto;direction:ltr}
+.lab-ph img{display:block;width:100%;height:auto;aspect-ratio:600/1218}
 .lab-fig{margin:0}
 .lab-fig figcaption{margin-top:14u;font-size:13.5u;color:rgba(159,200,255,.7)}
 
@@ -145,7 +150,7 @@
 .lab-feat.rev{grid-template-columns:7fr 4fr}
 .lab-feat.rev>.lab-ft{order:2}
 .lab-feat.mob{grid-template-columns:6fr 5fr}
-.lab-feat.mob .lab-ph{width:300u;margin:0 auto}
+.lab-feat.mob .lab-ph{width:330u;margin:0 auto}
 .lab-ft h3{margin:0;font:500 40u/1.06 Sora,sans-serif;letter-spacing:-.04em;color:#fff}
 .lab-ft p{margin:18u 0 0;font-size:17.5u;line-height:1.62}
 .lab-n{display:block;margin-bottom:20u;font:400 13u/1 "JetBrains Mono",monospace;letter-spacing:.06em;color:#9FC8FF}
@@ -153,7 +158,7 @@
 .lab-facts li{position:relative;padding-inline-start:28u;font-size:15.5u;line-height:1.5;color:rgba(221,235,255,.86)}
 .lab-facts li::before{content:"";position:absolute;inset-inline-start:0;top:.32em;width:16u;height:16u;border-radius:50%;background:rgba(95,159,249,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%239FC8FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4.5 8.2 2.2 2.2L11.5 5.6'/%3E%3C/svg%3E") center/12u no-repeat}
 .lab-duo{position:relative}
-.lab-duo .lab-ph{position:absolute;inset-inline-end:-24u;bottom:-40u;width:200u}
+.lab-duo .lab-ph{position:absolute;inset-inline-end:-24u;bottom:-40u;width:230u}
 
 /* fiche technique */
 .lab-spec{display:grid;grid-template-columns:1fr 1fr;gap:0 56u;margin:48u 0 0}
@@ -223,6 +228,10 @@
 .lab-ok b{font:500 28u/1.2 Sora,sans-serif;letter-spacing:-.025em;color:#fff}
 .lab-ok p{margin:0 0 10u;font-size:16.5u;line-height:1.55;color:rgba(221,235,255,.82)}
 
+/* « Et aussi » : les fonctions sans capture */
+.lab-more{margin-top:72u}
+.lab-more .lab-rules{margin-top:20u}
+
 /* projets voisins */
 .lab-next{display:grid;grid-template-columns:1fr 1fr;gap:16u;margin-top:24u}
 .lab-next a{display:flex;flex-direction:column;gap:12u;padding:26u 28u;border-radius:24u;text-decoration:none;background:rgba(255,255,255,.035);box-shadow:inset 0 0 0 1px rgba(159,200,255,.14);transition:background .3s}
@@ -268,14 +277,10 @@
 [data-mode="M"] .lab-feat.rev>.lab-ft{order:0}
 [data-mode="M"] .lab-ft h3{font-size:30u}
 [data-mode="M"] .lab-ft p{font-size:16u}
-[data-mode="M"] .lab-feat.mob .lab-ph{width:230u}
-[data-mode="M"] .lab-show{padding-bottom:28u}
-[data-mode="M"] .lab-show .lab-ph{width:118u;inset-inline-end:-2%;padding:5u;border-radius:24u}
-[data-mode="M"] .lab-show .lab-ph::before{top:9u;width:34u;height:10u;margin-left:-17u}
-[data-mode="M"] .lab-show .lab-ph img{border-radius:19u}
-[data-mode="M"] .lab-duo .lab-ph{width:120u;inset-inline-end:-8u;bottom:-24u;padding:5u;border-radius:24u}
-[data-mode="M"] .lab-duo .lab-ph::before{top:9u;width:34u;height:10u;margin-left:-17u}
-[data-mode="M"] .lab-duo .lab-ph img{border-radius:19u}
+[data-mode="M"] .lab-feat.mob .lab-ph{width:250u}
+[data-mode="M"] .lab-show{padding-top:70u;padding-bottom:28u}
+[data-mode="M"] .lab-show .lab-ph{width:128u;inset-inline-end:-1%}
+[data-mode="M"] .lab-duo .lab-ph{width:128u;inset-inline-end:-8u;bottom:-24u}
 [data-mode="M"] .lab-br{border-radius:12u}
 [data-mode="M"] .lab-br>b{height:26u;gap:5u;padding:0 10u}
 [data-mode="M"] .lab-br>b i{width:7u;height:7u}
@@ -299,6 +304,7 @@
 [data-mode="M"] .lab-hero.prj h1 .l+.l{font-size:.62em}
 [data-mode="M"] .lab-next b{font-size:22u}
 [data-mode="M"] .lab-next a.r{text-align:start}
+[data-mode="M"] .lab-more{margin-top:48u}
 
 @media (prefers-reduced-motion:reduce){.dglab h1 .l>span,.lab-lead,.lab-hero .lab-btns,.lab-hero .lab-meta,.lab-show{animation:none!important}.lab-st i,.labpg #daybg::after,.lab-sk,.lab-stack{animation:none!important}.lab-card,.lab-card .lab-br,.lab-btn{transition:none!important}}
 
