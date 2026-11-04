@@ -1,0 +1,24 @@
+{
+ "name": "Digilago",
+ "short_name": "Digilago",
+ "lang": "fr",
+ "start_url": "/",
+ "display": "browser",
+ "description": "Votre infrastructure digitale, entre de bonnes mains. Aujourd’hui et demain.",
+ "theme_color": "#1B6BDB",
+ "background_color": "#FFFFFF",
+ "icons": [
+  {
+   "src": "/assets/brand/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "/assets/brand/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  }
+ ]
+}

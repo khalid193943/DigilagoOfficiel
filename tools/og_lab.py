@@ -1,13 +1,16 @@
 """Images de partage (1200 × 630) des pages Digilago Lab : assets/lab/og-lab.jpg, og-radar.jpg, og-gestion.jpg.
 
 Même nuit que les pages du Lab, les vraies captures (données de démonstration) dans leurs cadres.
-Pas de phrase dans l'image : seulement les noms (Digilago Lab, Radar, Gestion) et les codes,
+Chaque image porte sa marque (le soleil du Lab, le radar, le registre). Pas de phrase dans l'image : seulement les noms (Digilago Lab, Radar, Gestion) et les codes,
 pour que la même image serve en français, en anglais et en arabe (le titre traduit s'affiche dessous).
 
 Usage : python3 tools/og_lab.py   (le site doit tourner : npm run start, ou LOCAL_URL=…)
 """
-import asyncio, os
+import asyncio, os, sys
 from playwright.async_api import async_playwright
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from brand import MARKS  # noqa: E402  (la famille de logos : le soleil du Lab, le radar, le registre)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 OUT = os.path.join(ROOT, 'site', 'assets', 'lab')
@@ -30,7 +33,9 @@ body::before{content:"";position:absolute;inset:0;opacity:.7;background-image:
   background-size:300px 300px}
 .hz{position:absolute;left:0;right:0;bottom:0;height:150px;background:linear-gradient(180deg,rgba(95,159,249,0),rgba(95,159,249,.1))}
 .side{position:absolute;left:72px;top:64px;bottom:60px;display:flex;flex-direction:column;z-index:2}
-.mark{display:flex;align-items:baseline;gap:9px;font-size:27px;letter-spacing:-.03em}
+.mark{display:flex;align-items:center;gap:9px;font-size:27px;letter-spacing:-.03em}
+.mark svg{flex:none;height:40px;width:auto;margin-right:6px}
+.sun{display:block;width:150px;height:auto;filter:drop-shadow(0 0 40px rgba(245,184,61,.45))}
 .it{font-family:'Playfair Display',serif;font-style:italic;font-weight:500;letter-spacing:-.01em;
   background:linear-gradient(100deg,#DDEBFF 10%,#9FC8FF 55%,#5F9FF9 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
 .code{display:inline-block;align-self:flex-start;margin-top:auto;font:400 17px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#9FC8FF;
@@ -54,6 +59,11 @@ h1.big .it{display:block;font-size:150px;line-height:1;margin-top:-.02em}
 """
 
 
+def mk(kind, cls=''):
+    vb = '-2 -2 48 40' if kind == 'lab' else '14 8 38 48'
+    return '<svg%s viewBox="%s" aria-hidden="true">%s</svg>' % (' class="%s"' % cls if cls else '', vb, MARKS[kind])
+
+
 def frame(img, style):
     return '<div class="br" style="%s"><b><i></i><i></i><i></i></b><img src="assets/lab/%s-1600.webp" alt=""></div>' % (style, img)
 
@@ -62,23 +72,23 @@ def phone(img, style):
     return '<div class="ph" style="%s"><img src="assets/lab/%s-600.webp" alt=""></div>' % (style, img)
 
 
-def project(code, name, shot, mob, at):
+def project(code, name, shot, mob, at, kind):
     return ('<div class="hz"></div>'
             + frame(shot, 'left:612px;top:92px;width:760px;transform:perspective(1600px) rotateY(-14deg) rotateX(4deg);transform-origin:0 50%')
             + phone(mob, at)
-            + '<div class="side"><div class="mark">Digilago <span class="it">Lab</span></div>'
-              '<span class="code">%s</span><h1>%s</h1><p class="url">digilago.ma</p></div>' % (code, name))
+            + '<div class="side"><div class="mark">%sDigilago <span class="it">Lab</span></div>'
+              '<span class="code">%s</span><h1>%s</h1><p class="url">digilago.ma</p></div>' % (mk(kind), code, name))
 
 
 CARDS = {
     'og-lab': '<div class="hz"></div>'
               + frame('gestion-tableau', 'left:720px;top:40px;width:640px;opacity:.75;transform:perspective(1600px) rotateY(-16deg) rotateX(6deg)')
               + frame('radar-carte', 'left:600px;top:190px;width:680px;transform:perspective(1600px) rotateY(-16deg) rotateX(6deg)')
-              + '<div class="side"><h1 class="big">Digilago<span class="it">Lab</span></h1>'
+              + '<div class="side">' + mk('lab', 'sun') + '<h1 class="big">Digilago<span class="it">Lab</span></h1>'
                 '<div class="codes"><span><b>LAB-01</b>Radar</span><span><b>LAB-02</b>Gestion</span></div>'
                 '<p class="url">digilago.ma/lab</p></div>',
-    'og-radar': project('LAB-01', 'Radar', 'radar-carte', 'radar-terrain', 'left:520px;top:236px;transform:rotate(-3deg)'),
-    'og-gestion': project('LAB-02', 'Gestion', 'gestion-tableau', 'gestion-suivi', 'left:930px;top:232px;transform:rotate(3deg)'),
+    'og-radar': project('LAB-01', 'Radar', 'radar-carte', 'radar-terrain', 'left:520px;top:236px;transform:rotate(-3deg)', 'radar'),
+    'og-gestion': project('LAB-02', 'Gestion', 'gestion-tableau', 'gestion-suivi', 'left:930px;top:232px;transform:rotate(3deg)', 'gestion'),
 }
 
 

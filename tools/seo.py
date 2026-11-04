@@ -36,7 +36,8 @@ ORG = {
     'identifier': {'@type': 'PropertyValue', 'propertyID': 'ICE', 'value': '003539032000060'},
     'url': URL + '/',
     'image': URL + OG,
-    'logo': URL + OG,
+    'logo': URL + '/assets/brand/icon-512.png',
+    'slogan': 'Votre infrastructure digitale, entre de bonnes mains. Aujourd’hui et demain.',
     'description': 'Agence web marocaine : sites web, fiche Google, référencement et visibilité dans les IA '
                    'pour les entreprises marocaines, au Maroc comme à l’international.',
     'telephone': '+212649953813',

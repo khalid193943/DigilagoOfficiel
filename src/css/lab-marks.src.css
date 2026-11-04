@@ -1,0 +1,37 @@
+/* La famille de logos (tools/lab.py, mark()) : un seul D, une direction par partie. La couleur de base est currentColor.
+   Lab : le soleil se lève. Radar : un écran gradué, le faisceau balaie avec sa traîne, les cibles trouvées s'allument en vert. Gestion : les lignes du registre se remplissent, la dernière (réglée) est verte et cochée. */
+.dgmk{display:block;flex:none;overflow:visible}
+.dgmk-lab .dgmk-sun{fill:#F5B83D;transform-box:fill-box;transform-origin:50% 100%;animation:mkRise 1.6s .2s cubic-bezier(.16,1,.3,1) both}
+.dgmk-lab .dgmk-hz,.dgmk-bar{fill:currentColor}
+.dgmk-fill{fill:currentColor;fill-opacity:.16}
+.dgmk-rim{fill:none;stroke:currentColor;stroke-width:2}
+.dgmk-arc{fill:none;stroke:currentColor;stroke-width:1.3;stroke-opacity:.7}
+.dgmk-arc.b{stroke-opacity:.5}
+.dgmk-axis{fill:none;stroke:currentColor;stroke-width:.9;stroke-opacity:.45}
+.dgmk-tick{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-opacity:.85}
+.dgmk-sweep{transform-origin:28px 32px;animation:mkSweep 3.2s linear infinite}
+.dgmk-tr{fill:#9FC8FF;fill-opacity:.5}
+.dgmk-tr.b{fill-opacity:.26}
+.dgmk-tr.c{fill-opacity:.1}
+.dgmk-pv{fill:#DDEBFF}
+.dgmk-ping{fill:none;stroke:#3DDC97;stroke-width:1;transform-box:fill-box;transform-origin:center;animation:mkPing 3.2s 1.2s ease-out infinite}
+.dgmk-line{fill:none;stroke:#DDEBFF;stroke-width:2;stroke-linecap:round}
+.dgmk-dot{fill:#3DDC97;animation:mkBlip 3.2s ease-in-out infinite}
+.dgmk-dot{animation-delay:1.2s}
+.dgmk-dot.b{animation-delay:2.4s}
+.dgmk-band{fill:currentColor;transform-box:fill-box;transform-origin:0 50%;animation:mkBand .8s .25s cubic-bezier(.16,1,.3,1) both}
+.dgmk-gestion .dgmk-band{fill:#DDEBFF}
+.dgmk-band.b{animation-delay:.4s}
+.dgmk-band.c{animation-delay:.55s}
+.dgmk-gestion .dgmk-band.b{fill:#A9CBFB}
+.dgmk-gestion .dgmk-band.c{fill:#6FA6F6}
+.dgmk-gestion .dgmk-band.ok{fill:#3DDC97;animation-delay:.7s}
+.dgmk-ck{fill:none;stroke:#071433;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:10;stroke-dashoffset:10;animation:mkCheck .45s 1.1s ease-out forwards}
+.dgmk-gestion .dgmk-bar{fill:#5F9FF9}
+@keyframes mkRise{from{transform:scaleY(0);opacity:0}to{transform:none;opacity:1}}
+@keyframes mkSweep{0%{transform:rotate(-30deg);opacity:0}14%,82%{opacity:1}100%{transform:rotate(105deg);opacity:0}}
+@keyframes mkPing{0%{transform:scale(.4);opacity:0}30%{opacity:.9}100%{transform:scale(1.7);opacity:0}}
+@keyframes mkBlip{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes mkBand{from{transform:scaleX(0)}to{transform:none}}
+@keyframes mkCheck{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.dgmk *{animation:none!important;stroke-dashoffset:0!important}}
