@@ -282,7 +282,10 @@ def finale(h):
            '<a class="ghost fin-wa" href="https://wa.me/212649953813" target="_blank" rel="noopener noreferrer">%sWhatsApp</a></div>'
            '<ul class="fin-trust rv d3"><li>%sPrix écrit avant de commencer</li><li>%sPremière version en 72 h</li><li>%sRéponse le jour même</li></ul>'
            '</div>%s</div></section>') % (HARW, WAI, CHK, CHK, CHK, vis)
-    h = h.replace(old, '', 1)
+    # la section part avec son retour à la ligne (sinon chaque construction ajoutait une ligne vide),
+    # et les lignes vides accumulées avant « La vision » sont ramenées à une seule
+    h = h.replace(old + '\n', '', 1) if old + '\n' in h else h.replace(old, '', 1)
+    h = re.sub(r'\n{3,}(?=<section class="sec" id="vis")', '\n\n', h)
     i = h.index('<section class="sec" id="vis"')     # juste avant « La vision »
     h = h[:i] + new + '\n' + h[i:]
     # rail des sections : « Le bon moment » juste avant « La vision »

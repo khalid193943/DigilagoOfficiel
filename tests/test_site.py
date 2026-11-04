@@ -1027,3 +1027,39 @@ def test_cgv_coherente_avec_la_pratique(page, base_url):
     for s in ('acompte de 50 %', '72 heures', 'valable 30 jours', '15 jours', 'droit marocain', 'contact@digilago.ma', 'loi n° 09-08'):
         assert s in t, s
     assert page.locator('.legal h3').count() >= 12
+
+
+def _une_page_par_formulaire():
+    """Une page par combinaison de champs et par langue (le formulaire de rappel est sur presque toutes les pages)."""
+    vus = {}
+    for lang in ('', 'en/', 'ar/'):
+        d = os.path.join(SITE, lang)
+        for p in sorted(x for x in os.listdir(d) if x.endswith('.html')):
+            h = open(os.path.join(d, p), encoding='utf-8').read()
+            champs = set()
+            for tag, attrs in re.findall(r'<(input|select|textarea)\b([^>]*)>', h):
+                ty = re.search(r'type="([^"]+)"', attrs)
+                if ty and ty.group(1) in ('hidden', 'checkbox', 'radio', 'submit', 'button'):
+                    continue
+                nom = re.search(r'(?:name|id|class)="([^"]+)"', attrs)
+                champs.add(f'{tag}:{ty.group(1) if ty else ""}:{nom.group(1) if nom else ""}')
+            if champs:
+                vus.setdefault((lang, tuple(sorted(champs))), lang + p)
+    return sorted(vus.values())
+
+
+@pytest.mark.parametrize('largeur', [320, 375])
+@pytest.mark.parametrize('name', _une_page_par_formulaire())
+def test_champs_sans_zoom_sur_iphone(browser, base_url, name, largeur):
+    """Sur iPhone, Safari agrandit la page dès qu'on touche un champ écrit en dessous de 16 px (et la page reste
+    décalée). Sur écran tactile, chaque champ doit faire au moins 16 px, même sur les petits iPhone."""
+    ctx = browser.new_context(viewport={'width': largeur, 'height': 700}, device_scale_factor=2, is_mobile=True, has_touch=True)
+    page = ctx.new_page()
+    page.goto(f'{base_url}/{name}')
+    page.wait_for_timeout(600)
+    petits = page.evaluate("""() => [...document.querySelectorAll('input, select, textarea')]
+      .filter((e) => !['checkbox', 'radio', 'range', 'file', 'hidden', 'color', 'submit', 'button', 'image', 'reset'].includes(e.type))
+      .map((e) => [e.name || e.id || e.className, +parseFloat(getComputedStyle(e).fontSize).toFixed(2)])
+      .filter((x) => x[1] < 16)""")
+    ctx.close()
+    assert not petits, f'champs sous 16 px, donc zoom sur iPhone : {petits} (règle à ajouter dans src/css/touch.css)'
