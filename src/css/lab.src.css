@@ -9,6 +9,16 @@
 .labpg #daybg::after{opacity:.35;background-image:radial-gradient(1px 1px at 45% 25%,#fff,transparent),radial-gradient(1.6px 1.6px at 8% 58%,#9FC8FF,transparent),radial-gradient(1px 1px at 72% 74%,#fff,transparent),radial-gradient(1.2px 1.2px at 55% 49%,#DDEBFF,transparent);background-size:520px 520px;animation:labTwinkle 7s ease-in-out infinite alternate}
 @keyframes labTwinkle{from{opacity:.18}to{opacity:.42}}
 .labpg .dayclouds{display:none!important}
+/* le ciel de points (src/js/lab.js) remplace les étoiles dessinées en CSS quand il tourne */
+.lab-dots{position:fixed;inset:0;z-index:1;pointer-events:none}
+.lab-dots-on #daybg::before,.lab-dots-on #daybg::after{display:none}
+.lab-dots-on .lab-hero.idx .lab-stack{display:none}
+/* les marques : « Digilago Lab » avec son soleil, et celle de chaque projet */
+.lab-lock{display:inline-flex;align-items:center;gap:14u;font:500 19u/1 Sora,sans-serif;letter-spacing:-.02em;color:#fff}
+.lab-lock .dgmk{width:46u;height:38u;color:#fff}
+.lab-pmk{display:grid;place-items:center;width:58u;height:58u;border-radius:16u;background:rgba(95,159,249,.1);box-shadow:inset 0 0 0 1px rgba(159,200,255,.28);color:#5F9FF9}
+.lab-pmk .dgmk{width:30u;height:38u}
+.lab-card-top .dgmk{width:24u;height:30u;color:#5F9FF9}
 .labpg .grain{opacity:.075}
 .dglab{color:rgba(221,235,255,.78);font-family:"Instrument Sans",system-ui,sans-serif}
 .dglab ::selection{background:rgba(95,159,249,.4);color:#fff}
@@ -315,8 +325,8 @@ body:has(#sheet.open) .bot{display:none}
 .bot-btn{position:relative;display:flex;align-items:center;gap:12u;height:58u;padding-block:0;padding-inline:8u 22u;border:0;border-radius:999px;background:#fff;color:#0E214E;font:500 15.5u/1 Sora,sans-serif;letter-spacing:-.01em;cursor:pointer;box-shadow:0 18u 40u -16u rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.7);transform:translateY(calc(-1 * var(--lift,0px)));transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .3s,opacity .2s}
 .bot-btn:hover{box-shadow:0 22u 46u -16u rgba(95,159,249,.75),0 0 0 1px #fff}
 .bot-btn:focus-visible,.bot-x:focus-visible,.bot-c:focus-visible,.bot-go:focus-visible{outline:2px solid #9FC8FF;outline-offset:3px}
-.bot-av{position:relative;flex:none;display:grid;place-items:center;width:42u;height:42u;border-radius:50%;background:linear-gradient(140deg,#5F9FF9,#1F57C7)}
-.bot-mk{width:15u;height:19u;fill:#fff;margin-inline-start:2u}
+.bot-av{position:relative;flex:none;display:grid;place-items:center;width:42u;height:42u;border-radius:50%;background:radial-gradient(90% 70% at 50% 100%,rgba(245,184,61,.5),rgba(245,184,61,0) 70%),linear-gradient(160deg,#16306B,#071433);box-shadow:inset 0 0 0 1px rgba(159,200,255,.3)}
+.bot-mk{width:25u;height:21u;color:#fff}
 .bot-av i{position:absolute;inset-inline-end:-1u;bottom:-1u;width:12u;height:12u;border-radius:50%;background:#3DDC97;box-shadow:0 0 0 2.5u #fff}
 .bot.off .bot-av i{background:#A9B6CC}
 .bot-panel{position:absolute;inset-inline-end:0;bottom:calc(72u + var(--lift,0px));display:flex;flex-direction:column;width:384u;height:min(600u,calc(100vh - 150u));border-radius:24u;overflow:hidden;background:rgba(9,20,48,.95);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 0 0 1px rgba(159,200,255,.24),0 40u 90u -30u rgba(0,0,0,.9);color:#DDEBFF;opacity:0;transform:translateY(14u) scale(.98);transform-origin:100% 100%;transition:opacity .22s,transform .32s cubic-bezier(.16,1,.3,1)}

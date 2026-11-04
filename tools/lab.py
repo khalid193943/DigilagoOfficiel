@@ -356,6 +356,36 @@ def profit(kind):
             '<div class="lab-get-side">%s</div><div class="lab-get-main">%s</div></div></div></section>') % (side, form)
 
 
+# ─── la famille de logos : un seul D, une direction par partie ─────────────────────────────────────
+# Lab : le D couché, un soleil d'or sur l'horizon. Radar : le D devient un écran qui balaie (points verts = entreprises
+# trouvées). Gestion : le D tranché en lignes de registre, la dernière verte (réglée). Animés en CSS (lab-marks.src.css).
+
+def mark(kind, cls=''):
+    c = ' class="dgmk dgmk-%s%s"' % (kind, (' ' + cls) if cls else '')
+    if kind == 'lab':
+        return ('<svg%s viewBox="-2 -2 48 40" aria-hidden="true"><path class="dgmk-sun" d="M0 22 A22 22 0 0 1 44 22 Z"/>'
+                '<rect class="dgmk-hz" x="0" y="26" width="44" height="8" rx="1.5"/></svg>') % c
+    base = ('<rect class="dgmk-bar" x="16" y="10" width="8" height="44" rx="1.5"/>'
+            '<path class="dgmk-fill" d="M28 10 A22 22 0 0 1 28 54 Z"/><path class="dgmk-rim" d="M28 10 A22 22 0 0 1 28 54"/>')
+    if kind == 'radar':
+        # Radar : un écran gradué ; le faisceau balaie avec sa traîne, les cibles trouvées s'allument en vert
+        inner = ('<path class="dgmk-arc" d="M28 17 A15 15 0 0 1 28 47"/><path class="dgmk-arc b" d="M28 24 A8 8 0 0 1 28 40"/>'
+                 '<path class="dgmk-axis" d="M28 32H50"/><path class="dgmk-tick" d="M37.6 15.37L38.6 13.64M44.63 22.4L46.36 21.4M44.63 41.6L46.36 42.6M37.6 48.63L38.6 50.36"/>'
+                 '<g class="dgmk-sweep"><path class="dgmk-tr c" d="M28 32L35.88 11.46A22 22 0 0 1 41.85 14.9Z"/><path class="dgmk-tr b" d="M28 32L41.85 14.9A22 22 0 0 1 45.57 18.76Z"/>'
+                 '<path class="dgmk-tr" d="M28 32L45.57 18.76A22 22 0 0 1 47.94 22.7Z"/><path class="dgmk-line" d="M28 32L47.94 22.7"/></g>'
+                 '<circle class="dgmk-ping" cx="39.49" cy="22.36" r="3.6"/><circle class="dgmk-dot" cx="39.49" cy="22.36" r="1.9"/>'
+                 '<circle class="dgmk-dot b" cx="35.36" cy="40.17" r="1.5"/><circle class="dgmk-pv" cx="28" cy="32" r="1.5"/>')
+    else:
+        # Gestion : le demi-disque tranché en quatre lignes de registre ; la dernière, verte, est réglée
+        return ('<svg%s viewBox="14 8 38 48" aria-hidden="true"><rect class="dgmk-bar" x="16" y="10" width="8" height="44" rx="1.5"/>'
+                '<path class="dgmk-band" d="M28 10A22 22 0 0 1 46.1 19.5H28Z"/>'
+                '<path class="dgmk-band b" d="M28 21.5H47.33A22 22 0 0 1 49.98 31H28Z"/>'
+                '<path class="dgmk-band c" d="M28 33H49.98A22 22 0 0 1 47.33 42.5H28Z"/>'
+                '<path class="dgmk-band ok" d="M28 44.5H46.1A22 22 0 0 1 28 54Z"/>'
+                '<path class="dgmk-ck" d="M31.5 48.6l2.3 2.2 4.4-4.2"/></svg>') % c
+    return '<svg%s viewBox="14 8 38 48" aria-hidden="true">%s%s</svg>' % (c, base, inner)
+
+
 # ─── l'assistant du Lab : une conversation guidée, en bas à droite ─────────────────────────────────
 # Pas d'IA : des réponses écrites à l'avance (rien d'inventé), et un relais vers l'équipe (Gestion et WhatsApp).
 # Tout le texte est ici, dans un <template> : il est traduit avec le reste de la page.
@@ -454,9 +484,8 @@ BOT_T = {
     'wa_need': ('Demande', 'Request', 'الطلب'),
     'wa_page': ('Page', 'Page', 'الصفحة'),
 }
-# le « D » de Digilago (le même que dans le logo du site)
-MARK = ('<svg class="bot-mk" viewBox="14 8 38 48" aria-hidden="true"><rect x="16" y="10" width="8" height="44" rx="1.5"/>'
-        '<path d="M28 10 A22 22 0 0 1 28 54 Z"/></svg>')
+# l'assistant est celui du Lab : il porte son soleil
+MARK = mark('lab', 'bot-mk')
 SEND_I = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
           'stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>')
 CLOSE_I = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" '
@@ -638,11 +667,12 @@ LAB = {
 }
 
 
-def card(code, num, href, name, tag, p, tags, image, alt, label):
+def card(code, num, href, name, tag, p, tags, image, alt, label, mk=''):
     return ('<a class="lab-card rv" href="%s"><span class="lab-num" aria-hidden="true">%s</span>%s'
-            '<div class="lab-card-top"><span class="lab-code">%s</span>%s</div><h3>%s<span class="lab-it">%s</span></h3>'
+            '<div class="lab-card-top">%s<span class="lab-code">%s</span>%s</div><h3>%s<span class="lab-it">%s</span></h3>'
             '<p>%s</p><ul class="lab-tags">%s</ul><span class="lab-go">%s%s</span></a>') % (
-        href, num, browser(image, alt, label, sizes='(max-width: 760px) 92vw, 560px'), T(code), status('int'), T(name), T(tag), T(p),
+        href, num, browser(image, alt, label, sizes='(max-width: 760px) 92vw, 560px'), mark(mk) if mk else '', T(code),
+        status('int'), T(name), T(tag), T(p),
         ''.join('<li>%s</li>' % T(t) for t in tags), T(S['see']), ARR)
 
 
@@ -658,7 +688,7 @@ def page_lab():
                       'alt="" decoding="async"></div>') % ((T(RA['label']) if n == 'radar-carte' else T(GE['label'])), n, n, n)
     stack = '<div class="lab-stack" aria-hidden="true"><div class="lab-sk b">%s</div><div class="lab-sk f">%s</div></div>' % (
         deco('gestion-tableau'), deco('radar-carte'))
-    hero = ('<header class="lab-hero idx"><div class="lab-w">%s<div class="lab-tagrow"><span class="lab-code">%s</span></div>'
+    hero = ('<header class="lab-hero idx"><div class="lab-w">%s<div class="lab-tagrow"><span class="lab-lock">' + mark('lab') + '<span>%s</span></span></div>'
             '<h1><span class="l"><span>%s</span></span><span class="l"><span><em>%s</em></span></span></h1>'
             '<p class="lab-lead">%s</p>%s%s</div></header>') % (
         crumbs([(S['home'], 'index.html'), (S['lab'], None)]), T(S['lab_full']), T(L['h1a']), T(L['h1b']), T(L['lead']), idx, stack)
@@ -670,11 +700,11 @@ def page_lab():
         card(CODE[1], '01', 'lab-radar.html', RADAR, L['radar_tag'], L['radar_p'], L['radar_tags'],
              'radar-carte', ('La carte du Maroc dans le Radar : les entreprises détectées, ville par ville (données de démonstration)',
                              'The Morocco map in the Radar: businesses detected, city by city (demo data)',
-                             'خريطة المغرب في الرادار: الشركات المرصودة مدينةً مدينة (بيانات تجريبية)'), RA['label']),
+                             'خريطة المغرب في الرادار: الشركات المرصودة مدينةً مدينة (بيانات تجريبية)'), RA['label'], 'radar'),
         card(CODE[2], '02', 'lab-gestion.html', GE['name'], L['gestion_tag'], L['gestion_p'], L['gestion_tags'],
              'gestion-tableau', ('Le tableau de bord de la Gestion : la journée, les demandes et les villes clientes (données de démonstration)',
                                  'The Gestion dashboard: the day, the requests and the client cities (demo data)',
-                                 'لوحة قيادة تطبيق التدبير: مهام اليوم والطلبات ومدن الزبناء (بيانات تجريبية)'), GE['label']),
+                                 'لوحة قيادة تطبيق التدبير: مهام اليوم والطلبات ومدن الزبناء (بيانات تجريبية)'), GE['label'], 'gestion'),
         T(CODE[3]), status('wip'), T(L['next_h']), T(L['next_p']), svg('info'), T(S['demo_note']))
     leg = ('<section class="lab-sec"><div class="lab-w">%s<ul class="lab-legend">%s</ul></div></section>') % (
         head(L['leg_k'], L['leg_h1'], L['leg_h2']),
@@ -854,7 +884,7 @@ RA['rules'] = [
 
 
 def page_project(P, kind, code, num, crumb_name, hero_img, hero_ph, neighbours):
-    hero = ('<header class="lab-hero prj"><div class="lab-w"><div>%s<div class="lab-tagrow"><span class="lab-code">%s</span>%s</div>'
+    hero = ('<header class="lab-hero prj"><div class="lab-w"><div>%s<div class="lab-tagrow"><span class="lab-pmk">' + mark(kind) + '</span><span class="lab-code">%s</span>%s</div>'
             '<h1><span class="l"><span>%s</span></span><span class="l"><span><em>%s</em></span></span></h1>'
             '<p class="lab-lead">%s</p><ul class="lab-meta"><li>%s</li><li>%s</li><li>%s</li></ul></div>'
             '<figure class="lab-show">%s%s</figure></div></header>') % (
@@ -1057,7 +1087,7 @@ def build(hd, tail, kind, title, desc, body, style, js):
     tail = tail[:i] + bot(kind) + '<script id="lab-js">%s</script>' % js + tail[i:]
     h = re.sub(r'<title>.*?</title>', '<title>%s</title>' % T(title), hd, count=1, flags=re.S)
     h = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="%s">' % A(desc), h, count=1)
-    h = re.sub(r'<style id="lab-css">.*?</style>', '', h, flags=re.S)
+    h = re.sub(r'<style id="(?:lab|lband)-css">.*?</style>', '', h, flags=re.S)
     h = h.replace('</head>', '<style id="lab-css">%s</style></head>' % style, 1)
     h = re.sub(r'<body(?: class="[^"]*")?>', '<body class="labpg">', h, count=1)
     return h + '<main class="pg dglab" id="main" data-lab="%s">%s' % (kind, body) + tail
@@ -1106,15 +1136,15 @@ BAND_START, BAND_END = '<!--dg:lband-->', '<!--/dg:lband-->'
 
 
 def band():
-    card = lambda href, im, code, name, tag: (
+    card = lambda href, im, code, name, tag, mk: (
         '<a class="lband-card" href="%s"><img src="assets/lab/%s-960.webp" width="960" height="600" alt="" loading="lazy" '
-        'decoding="async"><small>%s</small><b>%s</b><span>%s</span></a>') % (href, im, T(code), T(name), T(tag))
+        'decoding="async"><small>%s%s</small><b>%s</b><span>%s</span></a>') % (href, im, mark(mk), T(code), T(name), T(tag))
     return (BAND_START + '<section class="blk lband-sec" id="lab"><div class="lband w rv">'
-            '<div class="lband-txt"><p class="lband-k"><i aria-hidden="true"></i>%s</p><h2>%s <em>%s</em></h2><p>%s</p>'
+            '<div class="lband-txt"><p class="lband-k">' + mark('lab') + '%s</p><h2>%s <em>%s</em></h2><p>%s</p>'
             '<a class="lband-btn" href="lab.html">%s%s</a></div><div class="lband-cards">%s%s</div></div></section>' + BAND_END) % (
         T(S['lab_full']), T(BAND['h1']), T(BAND['h2']), T(BAND['p']), T(BAND['btn']), ARR.replace('<svg', '<svg class="ar"', 1),
-        card('lab-radar.html', 'radar-carte', CODE[1], RADAR, LAB['radar_tag']),
-        card('lab-gestion.html', 'gestion-tableau', CODE[2], GE['name'], LAB['gestion_tag']))
+        card('lab-radar.html', 'radar-carte', CODE[1], RADAR, LAB['radar_tag'], 'radar'),
+        card('lab-gestion.html', 'gestion-tableau', CODE[2], GE['name'], LAB['gestion_tag'], 'gestion'))
 
 
 def add_band(h, style):
@@ -1130,11 +1160,11 @@ def add_band(h, style):
 
 def main():
     hd, tail = shell()
-    style, js = css(), lab_js()
+    style, js = css('lab-marks.src.css') + css(), lab_js()
     pages = {'lab.html': page_lab(), 'lab-radar.html': page_radar(), 'lab-gestion.html': page_gestion()}
     for name, (kind, title, desc, body) in pages.items():
         open(os.path.join(SITE, name), 'w', encoding='utf-8').write(build(hd, tail, kind, title, desc, body, style, js))
-    n, band_css = 0, css('lab-band.src.css')
+    n, band_css = 0, css('lab-marks.src.css') + css('lab-band.src.css')
     for f in glob.glob(os.path.join(SITE, '*.html')):
         h = open(f, encoding='utf-8').read()
         k = nav_links(h)

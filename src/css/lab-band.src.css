@@ -4,7 +4,9 @@
 .lband::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 63% 9%,#DDEBFF,transparent),radial-gradient(1.4px 1.4px at 82% 41%,#fff,transparent),radial-gradient(1px 1px at 37% 66%,#9FC8FF,transparent),radial-gradient(1px 1px at 91% 83%,#fff,transparent);background-size:300px 300px}
 .lband>*{position:relative}
 .lband-k{display:inline-flex;align-items:center;gap:10u;margin:0 0 18u;font:400 13u/1 "JetBrains Mono",monospace;letter-spacing:.06em;color:#9FC8FF}
-.lband-k i{width:8u;height:8u;border-radius:50%;background:#3DDC97;box-shadow:0 0 0 4u rgba(61,220,151,.18)}
+.lband-k .dgmk{width:30u;height:25u;color:#fff}
+.lband-card small{display:flex;align-items:center;gap:8u}
+.lband-card small .dgmk{width:15u;height:19u;color:#5F9FF9}
 .lband h2{margin:0;font:500 46u/1.08 Sora,sans-serif;letter-spacing:-.045em;color:#fff}
 .lband h2 em{display:block;padding-bottom:.08em;font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:500;letter-spacing:-.015em;background:linear-gradient(100deg,#DDEBFF 10%,#9FC8FF 55%,#5F9FF9 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lband-txt>p:not(.lband-k){max-width:480u;margin:20u 0 0;font-size:16.5u;line-height:1.6}

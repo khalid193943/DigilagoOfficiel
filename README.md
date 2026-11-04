@@ -79,6 +79,7 @@ Le dossier `site/` est la version publiée. Les optimisations (vitesse, design, 
 | `tools/og_image.py` | Régénère l'image de partage 1200 × 630 depuis l'accueil (`npm run og`). |
 | `tools/lab.py` | Digilago Lab : `lab.html`, `lab-radar.html`, `lab-gestion.html`, « Digilago Lab » dans le pied de page, encart en bas de Services, Secteurs et À propos, « Profiter d'un projet » et l'assistant du Lab. |
 | `tools/collab.py` | Page « Collaborer » (`collaborer.html`) et son lien dans le pied de page. |
+| `tools/recrutement.py` | Page « Recrutement » (`recrutement.html`) : stages et emplois, candidature vers la Gestion, lien dans le pied de page. |
 | `tools/og_lab.py` | Images de partage des pages du Lab (`site/assets/lab/og-*.jpg`, le site doit tourner). |
 
 Après une modification :

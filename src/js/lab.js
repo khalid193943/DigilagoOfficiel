@@ -63,19 +63,24 @@
       var e = f.elements[n];
       return e && e.value ? String(e.value).trim() : "";
     }
-    function choice() {
-      return f.querySelector("input[type=radio]:checked");
+    // un ou plusieurs groupes de choix (Recrutement : ce que vous cherchez, puis votre métier)
+    function choices() {
+      return Array.prototype.slice.call(f.querySelectorAll("input[type=radio]:checked"));
     }
     // le message WhatsApp tout prêt, dans la langue de la page
     function waHref() {
-      var c = choice(),
-        hello = f.querySelector("[data-t=hello]"),
-        b = c && c.parentNode.querySelector("b"),
+      var hello = f.querySelector("[data-t=hello]"),
+        picked = choices()
+          .map(function (c) {
+            return (c.parentNode.querySelector("b") || c.parentNode).textContent.trim();
+          })
+          .join(" · "),
         out = [hello ? hello.textContent : ""],
         who = [v("name"), v("company")].filter(Boolean).join(", "),
         how = [v("phone"), v("email"), v("city")].filter(Boolean).join(" · ");
-      if (b) out.push("» " + b.textContent + (proj ? " (" + proj + ")" : ""));
+      if (picked) out.push("» " + picked + (proj ? " (" + proj + ")" : ""));
       if (who || how) out.push("", who, how);
+      if (v("link")) out.push(v("link"));
       if (v("message")) out.push("", v("message"));
       return WA + "?text=" + encodeURIComponent(out.join("\n").replace(/\n{3,}/g, "\n\n").trim());
     }
@@ -118,7 +123,12 @@
       if (v("website")) return done(); // champ piège rempli : un robot, on ne transmet rien
       var phone = v("phone"),
         mail = v("email"),
-        c = choice();
+        need = choices()
+          .map(function (c) {
+            return c.getAttribute("data-fr");
+          })
+          .filter(Boolean)
+          .join(" · ");
       if (!v("name")) return fail("name", "name");
       if (digits(phone).length < 8 && !isMail(mail)) return fail("contact", !phone && mail ? "email" : "phone");
       if (f.hasAttribute("data-need-msg") && !v("message")) return fail("message", "message");
@@ -134,8 +144,8 @@
           phone: phone,
           email: mail,
           city: v("city"),
-          need: ((c && c.getAttribute("data-fr")) || f.getAttribute("data-fr") || "") + (proj ? " (" + proj + ")" : ""),
-          message: v("message"),
+          need: (need || f.getAttribute("data-fr") || "") + (proj ? " (" + proj + ")" : ""),
+          message: [v("message"), v("link") ? "Lien : " + v("link") : ""].filter(Boolean).join("\n\n"),
           source: src(f.getAttribute("data-src") || "Site"),
         },
         f.getAttribute("data-form") || "lab",
@@ -533,4 +543,203 @@
       lift();
     }).observe(document.body, { childList: true, subtree: false, attributes: true, attributeFilter: ["class"] });
   setTimeout(lift, 1200);
+})();
+
+// ─── La nuit du Lab : un ciel de points, et la marque de la page dessinée en points ───
+// Pages du Lab seulement. Accueil du Lab : le soleil se lève sur l'horizon. Radar : l'écran balaie, les entreprises
+// s'allument. Gestion : les lignes du registre s'écrivent. Mouvement réduit : une image fixe. Onglet caché : en pause.
+(function () {
+  "use strict";
+  var body = document.body,
+    main = document.querySelector("main[data-lab]");
+  if (!main || !body.classList.contains("labpg")) return;
+  var cv = document.createElement("canvas"),
+    ctx = cv.getContext && cv.getContext("2d");
+  if (!ctx) return;
+  cv.className = "lab-dots";
+  cv.setAttribute("aria-hidden", "true");
+  body.insertBefore(cv, body.firstChild);
+  body.classList.add("lab-dots-on");
+  var kind = main.getAttribute("data-lab"),
+    calm = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches),
+    dpr = Math.min(window.devicePixelRatio || 1, 2),
+    W = 0,
+    H = 0,
+    stars = [],
+    logo = [],
+    geo = null,
+    start = performance.now(),
+    last = 0,
+    raf = 0;
+  function rnd(a, b) {
+    return a + Math.random() * (b - a);
+  }
+  function ease(x) {
+    x = Math.max(0, Math.min(1, x));
+    return 1 - Math.pow(1 - x, 3);
+  }
+  // la marque en points, posée dans l'en-tête de la page (coordonnées de la page)
+  function shape() {
+    var hero = document.querySelector(".lab-hero"),
+      out = [];
+    if (!hero) return out;
+    var r = hero.getBoundingClientRect(),
+      top = r.top + scrollY,
+      mob = W < 760,
+      g;
+    if (kind === "index") {
+      // ordinateur : à droite du titre, à la place des captures (elles sont juste en dessous, dans le catalogue)
+      var R = mob ? W * 0.2 : Math.min(300, W * 0.21),
+        cx = mob ? W * 0.8 : r.left + r.width * 0.74,
+        y0 = top + (mob ? 150 : r.height * 0.74);
+      g = R / 13;
+      geo = { cx: cx, y0: y0, R: R };
+      for (var y = y0 - R; y <= y0 + R * 0.55; y += g)
+        for (var x = cx - R; x <= cx + R; x += g) {
+          var dx = x - cx,
+            dy = y - y0;
+          if (dy <= 0 && dx * dx + dy * dy <= R * R)
+            out.push({ x: x, y: y, k: "sun", h: -dy / R, q: Math.sqrt(dx * dx + dy * dy) / R, p: rnd(0, 6.28) });
+          else if (dy >= (R * 4) / 22 && dy <= (R * 12) / 22) out.push({ x: x, y: y, k: "bar", p: rnd(0, 6.28) });
+        }
+      return out;
+    }
+    var R2 = mob ? W * 0.2 : Math.min(190, W * 0.13),
+      cx2 = mob ? W - R2 * 1.15 : r.right - R2 * 1.25,
+      cy = top + (mob ? 150 : 250);
+    g = R2 / 9;
+    geo = { cx: cx2, cy: cy, R: R2 };
+    for (var yy = cy - R2; yy <= cy + R2; yy += g)
+      for (var xx = cx2 - (R2 * 12) / 22; xx <= cx2 + R2; xx += g) {
+        var ex = xx - cx2,
+          ey = yy - cy;
+        if (ex >= (-R2 * 12) / 22 && ex <= (-R2 * 4) / 22) out.push({ x: xx, y: yy, k: "bar", p: rnd(0, 6.28) });
+        else if (ex >= 0 && ex * ex + ey * ey <= R2 * R2)
+          out.push({ x: xx, y: yy, k: "disc", a: (Math.atan2(ey, ex) * 180) / Math.PI, row: Math.floor(((ey + R2) / (2 * R2)) * 5), p: rnd(0, 6.28), hit: Math.random() < 0.07 });
+      }
+    return out;
+  }
+  function build() {
+    W = innerWidth;
+    H = innerHeight;
+    cv.width = Math.round(W * dpr);
+    cv.height = Math.round(H * dpr);
+    cv.style.width = W + "px";
+    cv.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var gap = W < 760 ? 26 : 22;
+    stars = [];
+    for (var y = 0; y < H * 1.5; y += gap)
+      for (var x = gap / 2; x < W; x += gap)
+        if (Math.random() < 0.5)
+          stars.push({ x: x + rnd(-7, 7), y: y + rnd(-7, 7), r: rnd(0.45, 1.1), a: rnd(0.07, 0.38), s: rnd(0.3, 1.2), p: rnd(0, 6.28), b: Math.random() < 0.2 });
+    logo = shape();
+  }
+  function draw(now) {
+    var t = calm ? 99999 : now - start,
+      sy = scrollY,
+      span = H * 1.5,
+      i,
+      d;
+    ctx.clearRect(0, 0, W, H);
+    // le ciel : de tout petits points qui scintillent, avec un léger décalage au défilement
+    for (i = 0; i < stars.length; i++) {
+      d = stars[i];
+      var y = (((d.y - sy * 0.06) % span) + span) % span - H * 0.25;
+      if (y < -2 || y > H + 2) continue;
+      var a = calm ? d.a : d.a * (0.55 + 0.45 * Math.sin(t * 0.001 * d.s + d.p));
+      ctx.fillStyle = d.b ? "rgba(159,200,255," + a + ")" : "rgba(255,255,255," + a + ")";
+      ctx.fillRect(d.x, y, d.r * 2, d.r * 2);
+    }
+    if (!geo) return;
+    // la lueur du soleil (accueil du Lab), sous les points
+    if (kind === "index") {
+      var gy = geo.y0 - sy,
+        lum = ease((t - 200) / 2200);
+      if (gy > -geo.R * 1.4 && gy < H + geo.R) {
+        var gr = ctx.createRadialGradient(geo.cx, gy, 0, geo.cx, gy, geo.R * 1.35);
+        gr.addColorStop(0, "rgba(245,184,61," + (0.26 * lum).toFixed(3) + ")");
+        gr.addColorStop(0.55, "rgba(245,184,61," + (0.08 * lum).toFixed(3) + ")");
+        gr.addColorStop(1, "rgba(245,184,61,0)");
+        ctx.fillStyle = gr;
+        ctx.fillRect(geo.cx - geo.R * 1.4, gy - geo.R * 1.4, geo.R * 2.8, geo.R * 2.8);
+      }
+    }
+    // la marque
+    var mob2 = W < 760,
+      sweep = -90 + 180 * (0.5 - 0.5 * Math.cos(t * 0.0012)),
+      cycle = (t % 5200) / 5200;
+    for (i = 0; i < logo.length; i++) {
+      d = logo[i];
+      var x = d.x,
+        yy = d.y - sy,
+        al,
+        col,
+        rad = W < 760 ? 1.3 : 1.9;
+      if (kind === "index") {
+        if (d.k === "sun") {
+          // trame : de gros points près de l'horizon, de plus en plus fins vers le bord du soleil
+          var rise = ease((t - 250 - d.h * 900) / 1500);
+          yy = geo.y0 - sy + (d.y - geo.y0) * rise;
+          al = rise * (0.62 + 0.3 * Math.sin(t * 0.0016 + d.p));
+          col = d.q < 0.55 ? "255,214,128" : "245,184,61";
+          rad = (mob2 ? 0.7 : 1) * (0.9 + 2.4 * (1 - d.q));
+        } else {
+          al = ease(t / 900) * (0.7 + 0.2 * Math.sin(t * 0.0012 + d.p));
+          col = "235,243,255";
+          rad = mob2 ? 1.2 : 1.8;
+        }
+      } else if (d.k === "bar") {
+        al = 0.75;
+        col = "95,159,249";
+      } else if (kind === "radar") {
+        var lag = sweep - d.a;
+        if (lag < 0) lag += 360;
+        var trail = lag < 60 ? 1 - lag / 60 : 0;
+        al = 0.2 + 0.78 * trail;
+        rad = (W < 760 ? 1.3 : 1.9) * (1 + 0.5 * trail);
+        col = d.hit && trail > 0.05 ? "61,220,151" : "159,200,255";
+        if (d.hit) al = Math.max(al, 0.35 + 0.25 * Math.sin(t * 0.003 + d.p));
+      } else {
+        var on = ease((cycle * 6 - d.row) * 1.4) * (cycle > 0.86 ? 1 - (cycle - 0.86) / 0.14 : 1);
+        al = 0.2 + 0.75 * on;
+        col = d.row === 4 && on > 0.5 ? "61,220,151" : "221,235,255";
+      }
+      if (yy < -4 || yy > H + 4 || al <= 0.01) continue;
+      ctx.fillStyle = "rgba(" + col + "," + al.toFixed(3) + ")";
+      ctx.beginPath();
+      ctx.arc(x, yy, rad, 0, 6.2832);
+      ctx.fill();
+    }
+  }
+  function loop(now) {
+    raf = requestAnimationFrame(loop);
+    if (now - last < 33) return; // environ 30 images par seconde, cela suffit
+    last = now;
+    draw(now);
+  }
+  function go() {
+    cancelAnimationFrame(raf);
+    if (calm) draw(performance.now());
+    else if (!document.hidden) raf = requestAnimationFrame(loop);
+  }
+  var rt = 0;
+  addEventListener("resize", function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () {
+      build();
+      go();
+    }, 150);
+  });
+  addEventListener("load", function () {
+    logo = shape();
+    go();
+  });
+  if (calm)
+    addEventListener("scroll", function () {
+      draw(performance.now());
+    }, { passive: true });
+  document.addEventListener("visibilitychange", go);
+  build();
+  go();
 })();
