@@ -1,0 +1,13 @@
+/* Page « Recrutement » : la mise en page de « Collaborer » (collab.src.css), plus la carte Stages en tête. */
+.rc-jobs{grid-template-columns:repeat(3,1fr)}
+.rc-intern{grid-row:span 2;background:linear-gradient(160deg,#123A86,#0B1F52 60%,#081638)!important;color:rgba(221,235,255,.84)!important}
+.rc-intern h3{font-size:30u;color:#fff}
+.rc-intern .co-for{color:rgba(221,235,255,.82)}
+.rc-k{margin:0;font:400 12.5u/1 "JetBrains Mono",monospace;letter-spacing:.06em;color:#9FC8FF}
+.rc-tip{margin:6u 0 0;padding:14u 16u;border-radius:14u;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(159,200,255,.22);font-size:14u;line-height:1.5;color:#E8F1FF}
+.rc-intern .co-go{margin-top:auto;color:#fff}
+.rc-job .co-go{margin-top:auto}
+.co-opts+.co-opts{margin-top:-6u}
+[data-mode="M"] .rc-jobs{grid-template-columns:1fr}
+[data-mode="M"] .rc-intern{grid-row:auto}
+[data-mode="M"] .rc-intern h3{font-size:24u}

@@ -63,19 +63,24 @@
       var e = f.elements[n];
       return e && e.value ? String(e.value).trim() : "";
     }
-    function choice() {
-      return f.querySelector("input[type=radio]:checked");
+    // un ou plusieurs groupes de choix (Recrutement : ce que vous cherchez, puis votre métier)
+    function choices() {
+      return Array.prototype.slice.call(f.querySelectorAll("input[type=radio]:checked"));
     }
     // le message WhatsApp tout prêt, dans la langue de la page
     function waHref() {
-      var c = choice(),
-        hello = f.querySelector("[data-t=hello]"),
-        b = c && c.parentNode.querySelector("b"),
+      var hello = f.querySelector("[data-t=hello]"),
+        picked = choices()
+          .map(function (c) {
+            return (c.parentNode.querySelector("b") || c.parentNode).textContent.trim();
+          })
+          .join(" · "),
         out = [hello ? hello.textContent : ""],
         who = [v("name"), v("company")].filter(Boolean).join(", "),
         how = [v("phone"), v("email"), v("city")].filter(Boolean).join(" · ");
-      if (b) out.push("» " + b.textContent + (proj ? " (" + proj + ")" : ""));
+      if (picked) out.push("» " + picked + (proj ? " (" + proj + ")" : ""));
       if (who || how) out.push("", who, how);
+      if (v("link")) out.push(v("link"));
       if (v("message")) out.push("", v("message"));
       return WA + "?text=" + encodeURIComponent(out.join("\n").replace(/\n{3,}/g, "\n\n").trim());
     }
@@ -118,7 +123,12 @@
       if (v("website")) return done(); // champ piège rempli : un robot, on ne transmet rien
       var phone = v("phone"),
         mail = v("email"),
-        c = choice();
+        need = choices()
+          .map(function (c) {
+            return c.getAttribute("data-fr");
+          })
+          .filter(Boolean)
+          .join(" · ");
       if (!v("name")) return fail("name", "name");
       if (digits(phone).length < 8 && !isMail(mail)) return fail("contact", !phone && mail ? "email" : "phone");
       if (f.hasAttribute("data-need-msg") && !v("message")) return fail("message", "message");
@@ -134,8 +144,8 @@
           phone: phone,
           email: mail,
           city: v("city"),
-          need: ((c && c.getAttribute("data-fr")) || f.getAttribute("data-fr") || "") + (proj ? " (" + proj + ")" : ""),
-          message: v("message"),
+          need: (need || f.getAttribute("data-fr") || "") + (proj ? " (" + proj + ")" : ""),
+          message: [v("message"), v("link") ? "Lien : " + v("link") : ""].filter(Boolean).join("\n\n"),
           source: src(f.getAttribute("data-src") || "Site"),
         },
         f.getAttribute("data-form") || "lab",

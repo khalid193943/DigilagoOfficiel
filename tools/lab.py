@@ -1057,7 +1057,7 @@ def build(hd, tail, kind, title, desc, body, style, js):
     tail = tail[:i] + bot(kind) + '<script id="lab-js">%s</script>' % js + tail[i:]
     h = re.sub(r'<title>.*?</title>', '<title>%s</title>' % T(title), hd, count=1, flags=re.S)
     h = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="%s">' % A(desc), h, count=1)
-    h = re.sub(r'<style id="lab-css">.*?</style>', '', h, flags=re.S)
+    h = re.sub(r'<style id="(?:lab|lband)-css">.*?</style>', '', h, flags=re.S)
     h = h.replace('</head>', '<style id="lab-css">%s</style></head>' % style, 1)
     h = re.sub(r'<body(?: class="[^"]*")?>', '<body class="labpg">', h, count=1)
     return h + '<main class="pg dglab" id="main" data-lab="%s">%s' % (kind, body) + tail

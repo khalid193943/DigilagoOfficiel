@@ -26,6 +26,7 @@
 - [Guides pratiques : site web, Google et IA au Maroc](https://www.digilago.ma/guides.html): Des guides clairs pour les entreprises marocaines : prix d’un site web, référencement local, fiche Google, visibilité dans ChatGPT et les IA.
 - [Digilago](https://www.digilago.ma/): Site web, fiche Google et visibilité dans les IA pour les entreprises marocaines. Première version en 72 h.
 - [Exemples de sites web par métier au Maroc](https://www.digilago.ma/realisations.html): Choisissez votre domaine et découvrez un exemple de site : santé, éducation, restauration, commerce… Le vôtre sera adapté à votre logo et à vos couleurs.
+- [Recrutement : stages et emplois chez Digilago](https://www.digilago.ma/recrutement.html): Stage, premier emploi ou poste confirmé : rejoignez Digilago, agence web marocaine. Développement, design, rédaction, vidéo ou vente : candidature en deux minutes.
 - [Services : site web, fiche Google, SEO et IA au Maroc](https://www.digilago.ma/services.html): Sites web sur mesure, fiche Google, référencement, visibilité dans les IA, applications et automatisations pour les entreprises marocaines.
 
 ## Digilago Lab (les outils que Digilago construit pour son propre compte)
@@ -949,6 +950,22 @@ Les annonces peuvent s’afficher dès leur validation et apporter des contacts 
 ### Comment payer Google Ads ou la publicité Meta depuis le Maroc ?
 
 Le paiement se fait généralement par carte bancaire utilisable pour les paiements en ligne à l’international. Renseignez-vous auprès de votre banque sur l’activation, les plafonds et les règles applicables aux paiements à l’étranger, et récupérez les factures pour votre comptabilité. Gardez le compte publicitaire et la carte à votre nom.
+
+### Faut-il un diplôme pour postuler ?
+
+Pas forcément. Montrez-nous ce que vous savez faire : un site, des maquettes, des textes ou des vidéos comptent beaucoup.
+
+### Comment postuler pour un stage de fin d’études ?
+
+Choisissez « Un stage », puis indiquez votre école, vos dates et le sujet de votre projet si vous en avez un.
+
+### Puis-je envoyer mon CV par e-mail ?
+
+Oui, à contact@digilago.ma. Le formulaire reste le plus rapide : un lien vers votre CV suffit.
+
+### Que devient ma candidature ?
+
+L’équipe la lit, et vous recontacte s’il y a une suite. Elle ne sert qu’au recrutement et n’est jamais partagée.
 
 ### Combien de temps faut-il pour apparaître en première page de Google au Maroc ?
 

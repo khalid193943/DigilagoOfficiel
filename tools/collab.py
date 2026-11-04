@@ -338,7 +338,7 @@ def main():
     sky = ph[ph.index('<div class="sky"'):ph.index('<p class="eyebrow')]
     h = re.sub(r'<title>.*?</title>', '<title>%s</title>' % T(C['title']), hd, count=1, flags=re.S)
     h = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="%s">' % A(C['desc']), h, count=1)
-    h = re.sub(r'<style id="co-css">.*?</style>', '', h, flags=re.S)
+    h = re.sub(r'<style id="(?:co|lband)-css">.*?</style>', '', h, flags=re.S)
     h = h.replace('</head>', '<style id="co-css">%s</style></head>' % css(), 1)
     i = tail.rindex('</body>')
     tail = tail[:i] + '<script id="lab-js">%s</script>' % lab.lab_js() + tail[i:]

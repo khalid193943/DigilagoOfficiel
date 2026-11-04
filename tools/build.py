@@ -23,6 +23,7 @@ y compris après avoir régénéré les pages avec l'ancien générateur.
      lab           Digilago Lab : le Radar et la Gestion, nos projets maison (tools/lab.py), menu « Lab »,
                    « Profiter d'un projet » et l'assistant du Lab (src/js/lab.js)
      collab        page « Collaborer » : six façons de travailler avec Digilago, lien dans le pied de page
+     recrutement   page « Recrutement » : stages et emplois, candidature vers la Gestion, lien dans le pied de page
      titles        titres des pages (onglet, Google et grand titre), sauf l'accueil
   4. fonts         polices hébergées sur le site
   5. inject        JavaScript (src/js) et CSS (src/css) minifiés dans chaque page
@@ -36,7 +37,7 @@ Usage : python3 tools/build.py      (ou : npm run build / make build)
 import os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STEPS = ['simplify_map', 'design_html', 'hero_map', 'metiers', 'story_night', 'dedupe_pages', 'articles_tri', 'articles', 'services_page', 'cta_band', 'contact_page', 'demarrer', 'secteurs', 'lab', 'collab', 'merci', 'cgv', 'social', 'analytics', 'titles', 'gradients', 'fonts', 'inject', 'i18n_extract', 'i18n_build', 'seo', 'set_gestion_url']
+STEPS = ['simplify_map', 'design_html', 'hero_map', 'metiers', 'story_night', 'dedupe_pages', 'articles_tri', 'articles', 'services_page', 'cta_band', 'contact_page', 'demarrer', 'secteurs', 'lab', 'collab', 'recrutement', 'merci', 'cgv', 'social', 'analytics', 'titles', 'gradients', 'fonts', 'inject', 'i18n_extract', 'i18n_build', 'seo', 'set_gestion_url']
 
 for s in STEPS:
     print('──', s)

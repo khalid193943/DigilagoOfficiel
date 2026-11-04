@@ -1260,7 +1260,7 @@ def test_lab_et_collaborer_telephone_sans_debordement(page, base_url, lang):
     errors = watch(page)
     page.set_viewport_size({'width': 390, 'height': 844})
     pre = '' if lang == 'fr' else lang + '/'
-    for name in LAB + ['collaborer.html']:
+    for name in LAB + ['collaborer.html', 'recrutement.html']:
         page.goto(f'{base_url}/{pre}{name}'); page.wait_for_timeout(700)
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), (lang, name)
     assert not errors, errors
@@ -1285,4 +1285,39 @@ def test_collaborer_proposer_depuis_une_carte(page, base_url):
     form.locator('button[type=submit]').click()
     page.wait_for_selector('#proposer .ask-ok:not([hidden])', timeout=5000)
     assert sent and sent[0]['need'] == 'Collaboration · Co-création Lab' and sent[0]['source'].startswith('Collaboration')
+    assert not errors, errors
+
+
+# ─── Recrutement ──────────────────────────────────────────────────────────────────────────────────
+
+def test_recrutement_trois_langues_et_pied_de_page():
+    for pre, titre in (('', 'Recrutement'), ('en/', 'Careers'), ('ar/', 'التوظيف')):
+        h = _lire(pre + 'recrutement.html')
+        assert titre in re.search(r'<title>(.*?)</title>', h, re.S).group(1), pre
+        assert f'<link rel="canonical" href="https://www.digilago.ma/{pre}recrutement.html">' in h
+        assert 'FAQPage' in {x['@type'] for x in _ld(h)}
+    for name in PAGES:
+        pied = re.search(r'<nav class="f-col" aria-label="Navigation">(.*?)</nav>', _lire(name), re.S).group(1)
+        assert pied.count('href="recrutement.html"') == 1, name
+    sm = _lire('sitemap.xml')
+    assert all(f'<loc>https://www.digilago.ma/{p}recrutement.html</loc>' in sm for p in ('', 'en/', 'ar/'))
+
+
+def test_recrutement_candidature_vers_la_gestion(page, base_url):
+    """Le bouton « Postuler » d'un métier coche ce métier ; la candidature part avec le type, le métier et le lien du CV."""
+    errors = watch(page)
+    sent = _demandes(page)
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/recrutement.html'); page.wait_for_timeout(800)
+    page.locator('#rc-design .co-go').click(); page.wait_for_timeout(400)
+    assert page.locator('input[value="rc-design"]').is_checked()
+    form = page.locator('#postuler form.ask')
+    form.locator('.co-opt', has_text='Un stage').click()
+    form.locator('input[name=name]').fill('Yasmine Test')
+    form.locator('input[name=email]').fill('yasmine@example.ma')
+    form.locator('input[name=link]').fill('https://example.ma/portfolio')
+    form.locator('button[type=submit]').click()
+    page.wait_for_selector('#postuler .ask-ok:not([hidden])', timeout=5000)
+    assert sent and sent[0]['need'] == 'Recrutement · Stage · Design' and sent[0]['source'].startswith('Recrutement')
+    assert 'https://example.ma/portfolio' in sent[0]['message']
     assert not errors, errors

@@ -287,7 +287,7 @@ def main():
     today = datetime.date.today().isoformat()
     prio = {'index.html': '1.0', 'demarrer.html': '0.9', 'services.html': '0.9', 'realisations.html': '0.8',
             'contact.html': '0.8', 'a-propos.html': '0.7', 'guides.html': '0.7',
-            'lab.html': '0.7', 'lab-radar.html': '0.6', 'lab-gestion.html': '0.6', 'collaborer.html': '0.6'}
+            'lab.html': '0.7', 'lab-radar.html': '0.6', 'lab-gestion.html': '0.6', 'collaborer.html': '0.6', 'recrutement.html': '0.5'}
     names = sorted(os.path.basename(f) for f in glob.glob(os.path.join(SITE, '*.html')) if os.path.basename(f) not in NOINDEX)
     VZ = {n for n in names if 'data-vz="' in open(os.path.join(SITE, n), encoding='utf-8').read()}
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
