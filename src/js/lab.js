@@ -604,10 +604,11 @@
         }
       return out;
     }
-    var R2 = mob ? W * 0.2 : Math.min(190, W * 0.13),
-      cx2 = mob ? W - R2 * 1.15 : r.right - R2 * 1.25,
-      cy = top + (mob ? 150 : 250);
-    g = R2 / 9;
+    // un peu plus grand et plus dense qu'avant : la forme du D (barre + demi-disque) se lit tout de suite
+    var R2 = mob ? W * 0.2 : Math.min(200, W * 0.14),
+      cx2 = mob ? W - R2 * 1.15 : r.right - R2 * 1.12,
+      cy = top + (mob ? 150 : 270);
+    g = R2 / (mob ? 9 : 11);
     geo = { cx: cx2, cy: cy, R: R2 };
     for (var yy = cy - R2; yy <= cy + R2; yy += g)
       for (var xx = cx2 - (R2 * 12) / 22; xx <= cx2 + R2; xx += g) {
@@ -615,7 +616,7 @@
           ey = yy - cy;
         if (ex >= (-R2 * 12) / 22 && ex <= (-R2 * 4) / 22) out.push({ x: xx, y: yy, k: "bar", p: rnd(0, 6.28) });
         else if (ex >= 0 && ex * ex + ey * ey <= R2 * R2)
-          out.push({ x: xx, y: yy, k: "disc", a: (Math.atan2(ey, ex) * 180) / Math.PI, row: Math.floor(((ey + R2) / (2 * R2)) * 5), p: rnd(0, 6.28), hit: Math.random() < 0.07 });
+          out.push({ x: xx, y: yy, k: "disc", a: (Math.atan2(ey, ex) * 180) / Math.PI, q: Math.sqrt(ex * ex + ey * ey) / R2, row: Math.floor(((ey + R2) / (2 * R2)) * 5), p: rnd(0, 6.28), hit: Math.random() < 0.07 });
       }
     return out;
   }
@@ -700,9 +701,13 @@
         rad = (W < 760 ? 1.3 : 1.9) * (1 + 0.5 * trail);
         col = d.hit && trail > 0.05 ? "61,220,151" : "159,200,255";
         if (d.hit) al = Math.max(al, 0.35 + 0.25 * Math.sin(t * 0.003 + d.p));
+        // le bord de l'écran et un anneau intérieur restent allumés : la forme du D se lit même hors du faisceau
+        if (d.q > 0.84) al = Math.max(al, 0.6);
+        else if (Math.abs(d.q - 0.52) < 0.07) al = Math.max(al, 0.36);
       } else {
         var on = ease((cycle * 6 - d.row) * 1.4) * (cycle > 0.86 ? 1 - (cycle - 0.86) / 0.14 : 1);
         al = 0.2 + 0.75 * on;
+        if (d.q > 0.84) al = Math.max(al, 0.55); // le contour du D
         col = d.row === 4 && on > 0.5 ? "61,220,151" : "221,235,255";
       }
       if (yy < -4 || yy > H + 4 || al <= 0.01) continue;
