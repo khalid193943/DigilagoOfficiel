@@ -4,8 +4,25 @@
   var num = function(v){ var n = parseFloat(String(v || '').replace(/\s/g, '').replace(',', '.')); return isFinite(n) ? n : 0; };
   var money = function(n){ var neg = n < 0, p = Math.abs(n).toFixed(2).split('.'); return (neg ? '−' : '') + p[0].replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + ',' + p[1] + '\u00a0DH'; };
 
-  /* impression = PDF */
-  $$('[data-print]').forEach(function(b){ b.addEventListener('click', function(){ window.print(); }); });
+  /* impression = PDF, toujours sur une seule page A4. La mise en page d'impression (html.pfit, dans brand.css) est
+     appliquée, le document est mesuré à la largeur A4, puis réduit juste ce qu'il faut s'il dépasse la page.
+     Même chose avec Ctrl+P ou le menu du navigateur (beforeprint). */
+  var PAGE = 1090; /* 297 mm à 96 ppp, moins une marge de sécurité pour les navigateurs qui ajoutent leurs marges */
+  function fitPage(){
+    document.documentElement.classList.add('pfit');
+    $$('.doc').forEach(function(d){
+      /* réduit de z, le document est élargi de 1/z pour garder toute la largeur de la page (et gagner des lignes) */
+      var set = function(z){ d.style.zoom = z < 1 ? String(z) : ''; d.style.setProperty('--z', String(z)); };
+      var tall = function(z){ d.style.zoom = ''; d.style.setProperty('--z', String(z)); return d.scrollHeight * z; };
+      set(1); var h = d.scrollHeight; if (h <= PAGE) return;
+      var best = Math.floor(PAGE / h * 1000) / 1000, z = best;
+      for (var i = 0; i < 4; i++) { z = Math.floor(PAGE / (tall(z) / z) * 1000) / 1000; if (tall(z) <= PAGE && z > best) best = z; else break; }
+      set(best);
+    });
+  }
+  function unfitPage(){ document.documentElement.classList.remove('pfit'); $$('.doc').forEach(function(d){ d.style.zoom = ''; d.style.removeProperty('--z'); }); }
+  window.addEventListener('beforeprint', fitPage); window.addEventListener('afterprint', unfitPage);
+  $$('[data-print]').forEach(function(b){ b.addEventListener('click', function(){ fitPage(); window.print(); }); });
   /* copier le lien client */
   $$('[data-copy]').forEach(function(b){ b.addEventListener('click', function(){ var i = $(b.dataset.copy); i.select(); try { navigator.clipboard.writeText(i.value); } catch (e) { document.execCommand('copy'); } b.textContent = 'Copié'; setTimeout(function(){ b.textContent = 'Copier'; }, 1500); }); });
   /* envoi de fichiers (espace client et fiche projet) : un fichier à la fois, puis la page se recharge */

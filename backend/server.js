@@ -5,7 +5,7 @@ const crypto = require('node:crypto');
 const express = require('express');
 const { db, init, settings, saveSettings, nextNumber, STEPS, DIAG } = require('./db');
 const { esc, round2, num, money, pct, today, addDays, dateFr, token, totals } = require('./lib/fmt');
-const { renderDoc, KIND, LOGO } = require('./lib/doc');
+const { renderDoc, KIND, LOGO, GLOGO_DAY, GICON } = require('./lib/doc');
 const { layout, badge, Q_STATUS, I_STATUS, P_STATUS, ICONS, ver, chart } = require('./lib/ui');
 const { supervise, findCity } = require('./lib/maroc');
 const { PLANS, planFromBody, planOf, planKey } = require('./lib/plans');
@@ -99,10 +99,10 @@ function authPage(mode, err = '', suite = '') {
   const form = err && /Trop de tentatives/.test(err) ? '' : (inst ? field('pw', 'Choisissez un mot de passe (8 caractères au moins)', 'new-password', ' autofocus') + field('pw2', 'Confirmez-le', 'new-password') : field('pw', 'Mot de passe', 'current-password', ' autofocus'))
     + `<small class="auth-caps" hidden>Majuscules activées</small><button class="auth-cta"><i aria-hidden="true"></i><span>${inst ? 'Créer mon espace' : 'Se connecter'}</span></button>`;
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex"><meta name="theme-color" content="#1C64D8"><title>${inst ? 'Bienvenue' : 'Connexion'} | Digilago Gestion</title>
-<link rel="icon" href="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 8 38 48"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="#1F57C7"/><path d="M28 10 A22 22 0 0 1 28 54 Z" fill="#1F57C7"/></svg>')}">
+<link rel="icon" href="${GICON}">
 <link rel="preload" href="/static/fonts/sora-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/static/fonts/playfair-display-latin-500-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/static/brand.css?v=${ver('brand.css')}"></head><body class="auth2">${cloudsHtml()}
-<header class="auth-top"><a class="auth-brand" href="/">${LOGO}<b>digilago</b><em>Gestion</em></a><a class="auth-site" href="https://digilago.ma" target="_blank" rel="noopener">digilago.ma</a></header>
+<header class="auth-top"><a class="auth-brand" href="/">${GLOGO_DAY}<b>digilago</b><em>Gestion</em></a><a class="auth-site" href="https://digilago.ma" target="_blank" rel="noopener">digilago.ma</a></header>
 <main class="auth-hero"><span class="auth-pill"><i></i>Espace de gestion privé</span>
 <h1>${inst ? 'Bienvenue.' : 'Bon retour.'}<em>${inst ? 'Votre agence, prête en une minute.' : 'Tout Digilago, au même endroit.'}</em></h1>
 <p>${inst ? 'Choisissez le mot de passe de cet espace : demandes, devis, projets, factures et comptabilité, reliés au site et au Radar.' : 'Demandes, devis, projets, factures et comptabilité, reliés au site et au Radar.'}</p>

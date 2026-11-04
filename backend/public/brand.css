@@ -248,3 +248,16 @@ code.cp{display:block;padding:11px 13px;border-radius:10px;background:#F5F8FD;bo
 .cert-legal{margin:24px 0 0;padding-top:16px;border-top:1px solid #E8EEF8;font-size:12px;line-height:1.6;color:var(--mut)}
 @media (max-width:640px){.cert{padding:24px 18px 22px;border-radius:12px}.cert h1{font-size:24px}.cert-g{grid-template-columns:1fr;gap:6px}.cert-tl li{grid-template-columns:1fr;gap:0}}
 @media print{.cert{box-shadow:none;padding:0;max-width:none}.cert-sig{break-inside:avoid}}
+
+/* Devis, bons de commande, factures et reçus : une seule page A4. public/app.js ajoute html.pfit avant l'impression,
+   mesure le document avec ces règles (identiques à l'écran et à l'impression) et le réduit s'il dépasse. */
+html.pfit .doc{width:calc(210mm / var(--z, 1))!important;max-width:none!important;margin:0!important;padding:10mm 12mm 7mm!important;font-size:10.5px!important;border-radius:0!important;box-shadow:none!important}
+html.pfit .d-head{margin-bottom:0}
+html.pfit .d-parties{margin:12px 0 10px!important}html.pfit .d-parties>div{padding:10px 12px!important}
+html.pfit .d-title{margin:2px 0 8px!important;font-size:14px!important}
+html.pfit .d-table td{padding:6px 9px}html.pfit .d-table td small{font-size:9.5px!important;line-height:1.35!important}
+html.pfit .d-sum{margin-top:10px}html.pfit .d-dep{margin-top:8px!important}
+html.pfit .d-delay{margin-top:10px}html.pfit .d-notes{margin-top:10px}html.pfit .d-notes p{font-size:9.5px;line-height:1.45!important}
+html.pfit .d-foot-grid{margin-top:12px}html.pfit .d-sign{min-height:70px!important}
+html.pfit .d-legal{margin-top:12px;padding-top:8px}
+@media print{.doc,.d-table tr,.d-sum,.d-foot-grid{break-inside:avoid}}
