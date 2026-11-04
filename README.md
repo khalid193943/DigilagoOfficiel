@@ -77,6 +77,9 @@ Le dossier `site/` est la version publiée. Les optimisations (vitesse, design, 
 | `tools/i18n_build.py` | Génère les versions anglaise (`site/en/`) et arabe (`site/ar/`), et le sélecteur de langue. |
 | `tools/i18n_extract.py` | Relève les textes français à traduire dans `src/i18n/strings.json`. |
 | `tools/og_image.py` | Régénère l'image de partage 1200 × 630 depuis l'accueil (`npm run og`). |
+| `tools/lab.py` | Digilago Lab : `lab.html`, `lab-radar.html`, `lab-gestion.html`, « Lab » dans les menus, « Profiter d'un projet » et l'assistant du Lab. |
+| `tools/collab.py` | Page « Collaborer » (`collaborer.html`) et son lien dans le pied de page. |
+| `tools/og_lab.py` | Images de partage des pages du Lab (`site/assets/lab/og-*.jpg`, le site doit tourner). |
 
 Après une modification :
 
@@ -130,6 +133,15 @@ Pour un secteur entier, mettez une seule landing dans `src/landings/secteurs/`, 
 - **Avant de construire**, lancez `python3 tools/secteurs_check.py`. Il vérifie les clés, les icônes, les traductions, la longueur des titres pour Google et les noms de fichiers.
 - **Les pages** sont fabriquées par `tools/secteurs.py`, pendant `npm run build`. Ce script range aussi les traductions dans `src/i18n/` et ajoute « Secteurs » au menu de toutes les pages.
 - **Les icônes** sont dans `tools/secteurs_icons.py` et **les styles** dans `src/css/secteurs.src.css`. Dans ce fichier, `12u` veut dire 12 unités d'échelle.
+
+## Digilago Lab et « Collaborer »
+
+Le Lab présente les applications que Digilago construit pour son propre compte (LAB-01 le Radar, LAB-02 la Gestion), dans un décor de nuit. Le Radar et la Gestion sont des outils internes : aucune page ne renvoie vers eux.
+
+- **Les contenus** (français, anglais, arabe) sont dans `tools/lab.py`, **les styles** dans `src/css/lab.src.css`. Les captures (`site/assets/lab/`) sont faites avec des données de démonstration, et les pages le disent.
+- **Nouveau projet au Lab** : ses textes dans `tools/lab.py` (sur le modèle de `RA` et `GE`), ses captures dans `site/assets/lab/`, son image de partage dans `tools/og_lab.py`, puis `npm run build`.
+- **« Profiter d'un projet »** (démo, outil sur mesure, être prévenu, partenariat), **l'assistant du Lab** (en bas à droite) et **le formulaire de « Collaborer »** envoient leurs demandes à la Gestion (`/api/leads`, sources « Lab, … » et « Collaboration »), avec WhatsApp en relais : `src/js/lab.js`. L'assistant n'utilise pas d'IA : ses réponses sont écrites dans `tools/lab.py` (rien d'inventé) ; il affiche « En ligne » du lundi au samedi, de 9 h à 19 h (heure du Maroc).
+- **« Collaborer »** : six façons de travailler avec Digilago, dans `tools/collab.py` et `src/css/collab.src.css`.
 
 ## À faire avant l'ouverture officielle
 

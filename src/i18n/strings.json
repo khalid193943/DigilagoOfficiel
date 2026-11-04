@@ -18,6 +18,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -34,6 +35,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -288,6 +292,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -304,6 +309,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -558,6 +566,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -574,6 +583,283 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
+   "mentions-legales.html",
+   "merci.html",
+   "nom-de-domaine-ma.html",
+   "paiement-en-ligne-maroc.html",
+   "publicite-facebook-instagram-maroc.html",
+   "publicite-google-maroc.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "secteur-agriculture-agroalimentaire-maroc.html",
+   "secteur-artisanat-cooperatives-maroc.html",
+   "secteur-automobile-mobilite-maroc.html",
+   "secteur-beaute-bien-etre-maroc.html",
+   "secteur-btp-batiment-maroc.html",
+   "secteur-commerce-boutique-maroc.html",
+   "secteur-education-formation-maroc.html",
+   "secteur-evenementiel-mariage-maroc.html",
+   "secteur-hotel-riad-hebergement-maroc.html",
+   "secteur-immobilier-maroc.html",
+   "secteur-industrie-b2b-maroc.html",
+   "secteur-juridique-conseil-finance-maroc.html",
+   "secteur-restauration-cafe-maroc.html",
+   "secteur-sante-medical-maroc.html",
+   "secteur-services-tech-maroc.html",
+   "secteur-sport-loisirs-maroc.html",
+   "secteur-tourisme-voyages-maroc.html",
+   "secteur-transport-logistique-maroc.html",
+   "secteurs.html",
+   "services.html",
+   "shopify-maroc.html",
+   "site-web-academie-football-maroc.html",
+   "site-web-adoul-maroc.html",
+   "site-web-agence-de-voyages-maroc.html",
+   "site-web-agence-evenementielle-maroc.html",
+   "site-web-agence-immobiliere-maroc.html",
+   "site-web-agence-interim-maroc.html",
+   "site-web-agence-marketing-communication-maroc.html",
+   "site-web-agence-mice-incentive-maroc.html",
+   "site-web-agence-omra-hajj-maroc.html",
+   "site-web-animation-anniversaire-maroc.html",
+   "site-web-appart-hotel-maroc.html",
+   "site-web-architecte-interieur-maroc.html",
+   "site-web-arts-martiaux-maroc.html",
+   "site-web-auberge-jeunesse-hostel-maroc.html",
+   "site-web-auto-ecole-maroc.html",
+   "site-web-barber-shop-maroc.html",
+   "site-web-bijouterie-maroc.html",
+   "site-web-bijoux-berberes-argent-maroc.html",
+   "site-web-boulangerie-patisserie-maroc.html",
+   "site-web-boutique-caftan-maroc.html",
+   "site-web-boutique-cosmetiques-maroc.html",
+   "site-web-boutique-hotel-maroc.html",
+   "site-web-boutique-pret-a-porter-maroc.html",
+   "site-web-brunch-maroc.html",
+   "site-web-bureaux-locaux-commerciaux-maroc.html",
+   "site-web-cabinet-architecte-maroc.html",
+   "site-web-cabinet-avocat-maroc.html",
+   "site-web-cabinet-conseil-maroc.html",
+   "site-web-cabinet-recrutement-maroc.html",
+   "site-web-camp-desert-bivouac-maroc.html",
+   "site-web-carrosserie-peinture-maroc.html",
+   "site-web-centre-appels-offshoring-maroc.html",
+   "site-web-centre-de-langues-maroc.html",
+   "site-web-centre-de-loisirs-maroc.html",
+   "site-web-centre-fertilite-pma-maroc.html",
+   "site-web-centre-formation-professionnelle-maroc.html",
+   "site-web-centre-massage-maroc.html",
+   "site-web-centre-medecine-esthetique-maroc.html",
+   "site-web-centre-minceur-maroc.html",
+   "site-web-centre-pneus-maroc.html",
+   "site-web-centre-radiologie-maroc.html",
+   "site-web-chauffeur-prive-transfert-maroc.html",
+   "site-web-chirurgie-esthetique-maroc.html",
+   "site-web-circuits-excursions-maroc.html",
+   "site-web-climatisation-chauffage-maroc.html",
+   "site-web-club-padel-maroc.html",
+   "site-web-coach-sportif-maroc.html",
+   "site-web-codage-robotique-enfants-maroc.html",
+   "site-web-coffee-shop-maroc.html",
+   "site-web-concessionnaire-auto-maroc.html",
+   "site-web-conciergerie-airbnb-maroc.html",
+   "site-web-cooperative-argan-maroc.html",
+   "site-web-cours-cuisine-food-tour-maroc.html",
+   "site-web-courtier-assurance-maroc.html",
+   "site-web-courtier-credit-immobilier-maroc.html",
+   "site-web-couture-traditionnelle-djellaba-maroc.html",
+   "site-web-creation-entreprise-maroc.html",
+   "site-web-crossfit-maroc.html",
+   "site-web-cuisine-equipee-dressing-maroc.html",
+   "site-web-cybersecurite-maroc.html",
+   "site-web-dark-kitchen-maroc.html",
+   "site-web-dattes-palmeraie-maroc.html",
+   "site-web-decoration-location-evenement-maroc.html",
+   "site-web-demenagement-maroc.html",
+   "site-web-dentiste-maroc.html",
+   "site-web-depannage-remorquage-maroc.html",
+   "site-web-dermatologue-maroc.html",
+   "site-web-distributeur-grossiste-b2b-maroc.html",
+   "site-web-domiciliation-centre-affaires-maroc.html",
+   "site-web-ecole-de-musique-maroc.html",
+   "site-web-ecole-internationale-maroc.html",
+   "site-web-ecole-natation-maroc.html",
+   "site-web-ecole-paramedicale-maroc.html",
+   "site-web-ecole-privee-maroc.html",
+   "site-web-ecole-superieure-privee-maroc.html",
+   "site-web-ecole-surf-kitesurf-maroc.html",
+   "site-web-ecolodge-maroc.html",
+   "site-web-electricien-maroc.html",
+   "site-web-entreprise-construction-maroc.html",
+   "site-web-epicerie-fine-terroir-maroc.html",
+   "site-web-equipementier-automobile-maroc.html",
+   "site-web-escape-game-maroc.html",
+   "site-web-esn-societe-informatique-maroc.html",
+   "site-web-espace-coworking-maroc.html",
+   "site-web-excursion-desert-maroc.html",
+   "site-web-expert-comptable-maroc.html",
+   "site-web-expert-immobilier-maroc.html",
+   "site-web-export-artisanat-maroc.html",
+   "site-web-exportateur-agrumes-maroc.html",
+   "site-web-extension-cils-sourcils-maroc.html",
+   "site-web-fast-food-maroc.html",
+   "site-web-ferme-bio-vente-directe-maroc.html",
+   "site-web-fiduciaire-maroc.html",
+   "site-web-garage-mecanique-maroc.html",
+   "site-web-gestion-locative-maroc.html",
+   "site-web-guide-touristique-maroc.html",
+   "site-web-gynecologue-maroc.html",
+   "site-web-healthy-food-maroc.html",
+   "site-web-hotel-affaires-maroc.html",
+   "site-web-hotel-luxe-resort-maroc.html",
+   "site-web-immobilier-luxe-maroc.html",
+   "site-web-immobilier-mre-maroc.html",
+   "site-web-imprimerie-signaletique-maroc.html",
+   "site-web-industrie-agroalimentaire-maroc.html",
+   "site-web-installateur-solaire-maroc.html",
+   "site-web-institut-beaute-maroc.html",
+   "site-web-intrants-agricoles-maroc.html",
+   "site-web-irrigation-goutte-a-goutte-maroc.html",
+   "site-web-kinesitherapeute-maroc.html",
+   "site-web-laboratoire-analyses-maroc.html",
+   "site-web-laiterie-fromagerie-maroc.html",
+   "site-web-lavage-detailing-auto-maroc.html",
+   "site-web-location-autocar-maroc.html",
+   "site-web-location-bateau-sortie-mer-maroc.html",
+   "site-web-location-caftan-maroc.html",
+   "site-web-location-saisonniere-villa-maroc.html",
+   "site-web-location-voiture-maroc.html",
+   "site-web-logistique-entreposage-maroc.html",
+   "site-web-lotissement-terrain-maroc.html",
+   "site-web-luminaires-dinanderie-maroc.html",
+   "site-web-magasin-electromenager-maroc.html",
+   "site-web-magasin-meubles-decoration-maroc.html",
+   "site-web-magasin-telephonie-maroc.html",
+   "site-web-maintenance-industrielle-maroc.html",
+   "site-web-maintenance-informatique-maroc.html",
+   "site-web-maison-hotes-maroc.html",
+   "site-web-mandataire-immobilier-maroc.html",
+   "site-web-maquilleuse-mariee-maroc.html",
+   "site-web-maraichage-serres-maroc.html",
+   "site-web-maroquinerie-cuir-maroc.html",
+   "site-web-marque-cosmetique-argan-maroc.html",
+   "site-web-marque-dnvb-maroc.html",
+   "site-web-materiaux-construction-maroc.html",
+   "site-web-materiel-agricole-maroc.html",
+   "site-web-mecanique-precision-chaudronnerie-maroc.html",
+   "site-web-medecin-clinique-maroc.html",
+   "site-web-menuiserie-aluminium-maroc.html",
+   "site-web-miel-apiculteur-maroc.html",
+   "site-web-montgolfiere-maroc.html",
+   "site-web-motos-scooters-maroc.html",
+   "site-web-negafa-maroc.html",
+   "site-web-notaire-maroc.html",
+   "site-web-onglerie-nail-bar-maroc.html",
+   "site-web-ophtalmologue-maroc.html",
+   "site-web-opticien-maroc.html",
+   "site-web-orchestre-dj-mariage-maroc.html",
+   "site-web-organisme-formation-maroc.html",
+   "site-web-parc-jeux-enfants-maroc.html",
+   "site-web-parfumerie-maroc.html",
+   "site-web-pediatre-maroc.html",
+   "site-web-pharmacie-maroc.html",
+   "site-web-photographe-mariage-maroc.html",
+   "site-web-pieces-detachees-auto-maroc.html",
+   "site-web-pisciniste-maroc.html",
+   "site-web-pizzeria-maroc.html",
+   "site-web-plasturgie-emballage-maroc.html",
+   "site-web-plateforme-formation-en-ligne-maroc.html",
+   "site-web-plombier-maroc.html",
+   "site-web-poterie-ceramique-maroc.html",
+   "site-web-preparation-concours-maroc.html",
+   "site-web-producteur-avocat-maroc.html",
+   "site-web-producteur-fruits-rouges-maroc.html",
+   "site-web-projet-immobilier-neuf-maroc.html",
+   "site-web-psychologue-psychiatre-maroc.html",
+   "site-web-quad-buggy-maroc.html",
+   "site-web-recyclage-gestion-dechets-maroc.html",
+   "site-web-renovation-cle-en-main-maroc.html",
+   "site-web-restaurant-gastronomique-maroc.html",
+   "site-web-restaurant-maroc.html",
+   "site-web-restaurant-poisson-maroc.html",
+   "site-web-restaurant-traditionnel-maroc.html",
+   "site-web-riad-hotel-maroc.html",
+   "site-web-rooftop-lounge-maroc.html",
+   "site-web-safran-taliouine-maroc.html",
+   "site-web-salle-de-sport-maroc.html",
+   "site-web-salle-des-fetes-maroc.html",
+   "site-web-salon-coiffure-maroc.html",
+   "site-web-salon-de-the-maroc.html",
+   "site-web-services-a-domicile-maroc.html",
+   "site-web-societe-gardiennage-securite-maroc.html",
+   "site-web-societe-import-export-maroc.html",
+   "site-web-societe-livraison-maroc.html",
+   "site-web-societe-nettoyage-maroc.html",
+   "site-web-sous-traitance-aeronautique-maroc.html",
+   "site-web-soutien-scolaire-maroc.html",
+   "site-web-spa-hammam-maroc.html",
+   "site-web-startup-saas-maroc.html",
+   "site-web-station-conditionnement-maroc.html",
+   "site-web-studio-production-video-maroc.html",
+   "site-web-studio-yoga-pilates-maroc.html",
+   "site-web-superette-epicerie-maroc.html",
+   "site-web-sushi-maroc.html",
+   "site-web-syndic-copropriete-maroc.html",
+   "site-web-tapis-berbere-maroc.html",
+   "site-web-tour-operateur-receptif-maroc.html",
+   "site-web-traducteur-assermente-maroc.html",
+   "site-web-traitement-eau-maroc.html",
+   "site-web-traiteur-maroc.html",
+   "site-web-transitaire-maroc.html",
+   "site-web-transport-colis-mre-maroc.html",
+   "site-web-transport-frigorifique-maroc.html",
+   "site-web-transport-international-maroc.html",
+   "site-web-transport-marchandises-maroc.html",
+   "site-web-transport-personnel-maroc.html",
+   "site-web-trekking-randonnee-maroc.html",
+   "site-web-usine-textile-confection-maroc.html",
+   "site-web-vendeur-instagram-maroc.html",
+   "site-web-voiture-electrique-borne-maroc.html",
+   "site-web-voitures-occasion-maroc.html",
+   "site-web-wedding-planner-maroc.html",
+   "vendre-instagram-whatsapp-maroc.html",
+   "wordpress-ou-sur-mesure-maroc.html"
+  ]
+ },
+ "922073012977": {
+  "fr": "Lab",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "avis-google-maroc.html",
+   "cgv.html",
+   "collaborer.html",
+   "confidentialite.html",
+   "contact.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-btp-construction-maroc.html",
+   "guide-site-location-voiture-maroc.html",
+   "guide-site-mariage-evenementiel-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -828,6 +1114,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -844,6 +1131,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -1098,6 +1388,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -1114,6 +1405,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -1369,6 +1663,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -1385,6 +1680,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -1679,6 +1977,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -1694,6 +1993,9 @@
    "guide-site-mariage-evenementiel-maroc.html",
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -1948,6 +2250,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -1964,6 +2267,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -2791,6 +3097,9 @@
    "guide-site-mariage-evenementiel-maroc.html",
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "nom-de-domaine-ma.html",
    "paiement-en-ligne-maroc.html",
    "publicite-facebook-instagram-maroc.html",
@@ -3056,6 +3365,9 @@
    "guide-site-mariage-evenementiel-maroc.html",
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "nom-de-domaine-ma.html",
    "paiement-en-ligne-maroc.html",
    "publicite-facebook-instagram-maroc.html",
@@ -4364,6 +4676,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -4380,6 +4693,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -4634,6 +4950,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -4650,6 +4967,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -4904,6 +5224,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -4920,6 +5241,557 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
+   "mentions-legales.html",
+   "merci.html",
+   "nom-de-domaine-ma.html",
+   "paiement-en-ligne-maroc.html",
+   "publicite-facebook-instagram-maroc.html",
+   "publicite-google-maroc.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "secteur-agriculture-agroalimentaire-maroc.html",
+   "secteur-artisanat-cooperatives-maroc.html",
+   "secteur-automobile-mobilite-maroc.html",
+   "secteur-beaute-bien-etre-maroc.html",
+   "secteur-btp-batiment-maroc.html",
+   "secteur-commerce-boutique-maroc.html",
+   "secteur-education-formation-maroc.html",
+   "secteur-evenementiel-mariage-maroc.html",
+   "secteur-hotel-riad-hebergement-maroc.html",
+   "secteur-immobilier-maroc.html",
+   "secteur-industrie-b2b-maroc.html",
+   "secteur-juridique-conseil-finance-maroc.html",
+   "secteur-restauration-cafe-maroc.html",
+   "secteur-sante-medical-maroc.html",
+   "secteur-services-tech-maroc.html",
+   "secteur-sport-loisirs-maroc.html",
+   "secteur-tourisme-voyages-maroc.html",
+   "secteur-transport-logistique-maroc.html",
+   "secteurs.html",
+   "services.html",
+   "shopify-maroc.html",
+   "site-web-academie-football-maroc.html",
+   "site-web-adoul-maroc.html",
+   "site-web-agence-de-voyages-maroc.html",
+   "site-web-agence-evenementielle-maroc.html",
+   "site-web-agence-immobiliere-maroc.html",
+   "site-web-agence-interim-maroc.html",
+   "site-web-agence-marketing-communication-maroc.html",
+   "site-web-agence-mice-incentive-maroc.html",
+   "site-web-agence-omra-hajj-maroc.html",
+   "site-web-animation-anniversaire-maroc.html",
+   "site-web-appart-hotel-maroc.html",
+   "site-web-architecte-interieur-maroc.html",
+   "site-web-arts-martiaux-maroc.html",
+   "site-web-auberge-jeunesse-hostel-maroc.html",
+   "site-web-auto-ecole-maroc.html",
+   "site-web-barber-shop-maroc.html",
+   "site-web-bijouterie-maroc.html",
+   "site-web-bijoux-berberes-argent-maroc.html",
+   "site-web-boulangerie-patisserie-maroc.html",
+   "site-web-boutique-caftan-maroc.html",
+   "site-web-boutique-cosmetiques-maroc.html",
+   "site-web-boutique-hotel-maroc.html",
+   "site-web-boutique-pret-a-porter-maroc.html",
+   "site-web-brunch-maroc.html",
+   "site-web-bureaux-locaux-commerciaux-maroc.html",
+   "site-web-cabinet-architecte-maroc.html",
+   "site-web-cabinet-avocat-maroc.html",
+   "site-web-cabinet-conseil-maroc.html",
+   "site-web-cabinet-recrutement-maroc.html",
+   "site-web-camp-desert-bivouac-maroc.html",
+   "site-web-carrosserie-peinture-maroc.html",
+   "site-web-centre-appels-offshoring-maroc.html",
+   "site-web-centre-de-langues-maroc.html",
+   "site-web-centre-de-loisirs-maroc.html",
+   "site-web-centre-fertilite-pma-maroc.html",
+   "site-web-centre-formation-professionnelle-maroc.html",
+   "site-web-centre-massage-maroc.html",
+   "site-web-centre-medecine-esthetique-maroc.html",
+   "site-web-centre-minceur-maroc.html",
+   "site-web-centre-pneus-maroc.html",
+   "site-web-centre-radiologie-maroc.html",
+   "site-web-chauffeur-prive-transfert-maroc.html",
+   "site-web-chirurgie-esthetique-maroc.html",
+   "site-web-circuits-excursions-maroc.html",
+   "site-web-climatisation-chauffage-maroc.html",
+   "site-web-club-padel-maroc.html",
+   "site-web-coach-sportif-maroc.html",
+   "site-web-codage-robotique-enfants-maroc.html",
+   "site-web-coffee-shop-maroc.html",
+   "site-web-concessionnaire-auto-maroc.html",
+   "site-web-conciergerie-airbnb-maroc.html",
+   "site-web-cooperative-argan-maroc.html",
+   "site-web-cours-cuisine-food-tour-maroc.html",
+   "site-web-courtier-assurance-maroc.html",
+   "site-web-courtier-credit-immobilier-maroc.html",
+   "site-web-couture-traditionnelle-djellaba-maroc.html",
+   "site-web-creation-entreprise-maroc.html",
+   "site-web-crossfit-maroc.html",
+   "site-web-cuisine-equipee-dressing-maroc.html",
+   "site-web-cybersecurite-maroc.html",
+   "site-web-dark-kitchen-maroc.html",
+   "site-web-dattes-palmeraie-maroc.html",
+   "site-web-decoration-location-evenement-maroc.html",
+   "site-web-demenagement-maroc.html",
+   "site-web-dentiste-maroc.html",
+   "site-web-depannage-remorquage-maroc.html",
+   "site-web-dermatologue-maroc.html",
+   "site-web-distributeur-grossiste-b2b-maroc.html",
+   "site-web-domiciliation-centre-affaires-maroc.html",
+   "site-web-ecole-de-musique-maroc.html",
+   "site-web-ecole-internationale-maroc.html",
+   "site-web-ecole-natation-maroc.html",
+   "site-web-ecole-paramedicale-maroc.html",
+   "site-web-ecole-privee-maroc.html",
+   "site-web-ecole-superieure-privee-maroc.html",
+   "site-web-ecole-surf-kitesurf-maroc.html",
+   "site-web-ecolodge-maroc.html",
+   "site-web-electricien-maroc.html",
+   "site-web-entreprise-construction-maroc.html",
+   "site-web-epicerie-fine-terroir-maroc.html",
+   "site-web-equipementier-automobile-maroc.html",
+   "site-web-escape-game-maroc.html",
+   "site-web-esn-societe-informatique-maroc.html",
+   "site-web-espace-coworking-maroc.html",
+   "site-web-excursion-desert-maroc.html",
+   "site-web-expert-comptable-maroc.html",
+   "site-web-expert-immobilier-maroc.html",
+   "site-web-export-artisanat-maroc.html",
+   "site-web-exportateur-agrumes-maroc.html",
+   "site-web-extension-cils-sourcils-maroc.html",
+   "site-web-fast-food-maroc.html",
+   "site-web-ferme-bio-vente-directe-maroc.html",
+   "site-web-fiduciaire-maroc.html",
+   "site-web-garage-mecanique-maroc.html",
+   "site-web-gestion-locative-maroc.html",
+   "site-web-guide-touristique-maroc.html",
+   "site-web-gynecologue-maroc.html",
+   "site-web-healthy-food-maroc.html",
+   "site-web-hotel-affaires-maroc.html",
+   "site-web-hotel-luxe-resort-maroc.html",
+   "site-web-immobilier-luxe-maroc.html",
+   "site-web-immobilier-mre-maroc.html",
+   "site-web-imprimerie-signaletique-maroc.html",
+   "site-web-industrie-agroalimentaire-maroc.html",
+   "site-web-installateur-solaire-maroc.html",
+   "site-web-institut-beaute-maroc.html",
+   "site-web-intrants-agricoles-maroc.html",
+   "site-web-irrigation-goutte-a-goutte-maroc.html",
+   "site-web-kinesitherapeute-maroc.html",
+   "site-web-laboratoire-analyses-maroc.html",
+   "site-web-laiterie-fromagerie-maroc.html",
+   "site-web-lavage-detailing-auto-maroc.html",
+   "site-web-location-autocar-maroc.html",
+   "site-web-location-bateau-sortie-mer-maroc.html",
+   "site-web-location-caftan-maroc.html",
+   "site-web-location-saisonniere-villa-maroc.html",
+   "site-web-location-voiture-maroc.html",
+   "site-web-logistique-entreposage-maroc.html",
+   "site-web-lotissement-terrain-maroc.html",
+   "site-web-luminaires-dinanderie-maroc.html",
+   "site-web-magasin-electromenager-maroc.html",
+   "site-web-magasin-meubles-decoration-maroc.html",
+   "site-web-magasin-telephonie-maroc.html",
+   "site-web-maintenance-industrielle-maroc.html",
+   "site-web-maintenance-informatique-maroc.html",
+   "site-web-maison-hotes-maroc.html",
+   "site-web-mandataire-immobilier-maroc.html",
+   "site-web-maquilleuse-mariee-maroc.html",
+   "site-web-maraichage-serres-maroc.html",
+   "site-web-maroquinerie-cuir-maroc.html",
+   "site-web-marque-cosmetique-argan-maroc.html",
+   "site-web-marque-dnvb-maroc.html",
+   "site-web-materiaux-construction-maroc.html",
+   "site-web-materiel-agricole-maroc.html",
+   "site-web-mecanique-precision-chaudronnerie-maroc.html",
+   "site-web-medecin-clinique-maroc.html",
+   "site-web-menuiserie-aluminium-maroc.html",
+   "site-web-miel-apiculteur-maroc.html",
+   "site-web-montgolfiere-maroc.html",
+   "site-web-motos-scooters-maroc.html",
+   "site-web-negafa-maroc.html",
+   "site-web-notaire-maroc.html",
+   "site-web-onglerie-nail-bar-maroc.html",
+   "site-web-ophtalmologue-maroc.html",
+   "site-web-opticien-maroc.html",
+   "site-web-orchestre-dj-mariage-maroc.html",
+   "site-web-organisme-formation-maroc.html",
+   "site-web-parc-jeux-enfants-maroc.html",
+   "site-web-parfumerie-maroc.html",
+   "site-web-pediatre-maroc.html",
+   "site-web-pharmacie-maroc.html",
+   "site-web-photographe-mariage-maroc.html",
+   "site-web-pieces-detachees-auto-maroc.html",
+   "site-web-pisciniste-maroc.html",
+   "site-web-pizzeria-maroc.html",
+   "site-web-plasturgie-emballage-maroc.html",
+   "site-web-plateforme-formation-en-ligne-maroc.html",
+   "site-web-plombier-maroc.html",
+   "site-web-poterie-ceramique-maroc.html",
+   "site-web-preparation-concours-maroc.html",
+   "site-web-producteur-avocat-maroc.html",
+   "site-web-producteur-fruits-rouges-maroc.html",
+   "site-web-projet-immobilier-neuf-maroc.html",
+   "site-web-psychologue-psychiatre-maroc.html",
+   "site-web-quad-buggy-maroc.html",
+   "site-web-recyclage-gestion-dechets-maroc.html",
+   "site-web-renovation-cle-en-main-maroc.html",
+   "site-web-restaurant-gastronomique-maroc.html",
+   "site-web-restaurant-maroc.html",
+   "site-web-restaurant-poisson-maroc.html",
+   "site-web-restaurant-traditionnel-maroc.html",
+   "site-web-riad-hotel-maroc.html",
+   "site-web-rooftop-lounge-maroc.html",
+   "site-web-safran-taliouine-maroc.html",
+   "site-web-salle-de-sport-maroc.html",
+   "site-web-salle-des-fetes-maroc.html",
+   "site-web-salon-coiffure-maroc.html",
+   "site-web-salon-de-the-maroc.html",
+   "site-web-services-a-domicile-maroc.html",
+   "site-web-societe-gardiennage-securite-maroc.html",
+   "site-web-societe-import-export-maroc.html",
+   "site-web-societe-livraison-maroc.html",
+   "site-web-societe-nettoyage-maroc.html",
+   "site-web-sous-traitance-aeronautique-maroc.html",
+   "site-web-soutien-scolaire-maroc.html",
+   "site-web-spa-hammam-maroc.html",
+   "site-web-startup-saas-maroc.html",
+   "site-web-station-conditionnement-maroc.html",
+   "site-web-studio-production-video-maroc.html",
+   "site-web-studio-yoga-pilates-maroc.html",
+   "site-web-superette-epicerie-maroc.html",
+   "site-web-sushi-maroc.html",
+   "site-web-syndic-copropriete-maroc.html",
+   "site-web-tapis-berbere-maroc.html",
+   "site-web-tour-operateur-receptif-maroc.html",
+   "site-web-traducteur-assermente-maroc.html",
+   "site-web-traitement-eau-maroc.html",
+   "site-web-traiteur-maroc.html",
+   "site-web-transitaire-maroc.html",
+   "site-web-transport-colis-mre-maroc.html",
+   "site-web-transport-frigorifique-maroc.html",
+   "site-web-transport-international-maroc.html",
+   "site-web-transport-marchandises-maroc.html",
+   "site-web-transport-personnel-maroc.html",
+   "site-web-trekking-randonnee-maroc.html",
+   "site-web-usine-textile-confection-maroc.html",
+   "site-web-vendeur-instagram-maroc.html",
+   "site-web-voiture-electrique-borne-maroc.html",
+   "site-web-voitures-occasion-maroc.html",
+   "site-web-wedding-planner-maroc.html",
+   "vendre-instagram-whatsapp-maroc.html",
+   "wordpress-ou-sur-mesure-maroc.html"
+  ]
+ },
+ "e73a0eca3815": {
+  "fr": "Digilago Lab",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "avis-google-maroc.html",
+   "cgv.html",
+   "collaborer.html",
+   "confidentialite.html",
+   "contact.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-btp-construction-maroc.html",
+   "guide-site-location-voiture-maroc.html",
+   "guide-site-mariage-evenementiel-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
+   "mentions-legales.html",
+   "merci.html",
+   "nom-de-domaine-ma.html",
+   "paiement-en-ligne-maroc.html",
+   "publicite-facebook-instagram-maroc.html",
+   "publicite-google-maroc.html",
+   "realisations.html",
+   "referencement-seo-maroc.html",
+   "secteur-agriculture-agroalimentaire-maroc.html",
+   "secteur-artisanat-cooperatives-maroc.html",
+   "secteur-automobile-mobilite-maroc.html",
+   "secteur-beaute-bien-etre-maroc.html",
+   "secteur-btp-batiment-maroc.html",
+   "secteur-commerce-boutique-maroc.html",
+   "secteur-education-formation-maroc.html",
+   "secteur-evenementiel-mariage-maroc.html",
+   "secteur-hotel-riad-hebergement-maroc.html",
+   "secteur-immobilier-maroc.html",
+   "secteur-industrie-b2b-maroc.html",
+   "secteur-juridique-conseil-finance-maroc.html",
+   "secteur-restauration-cafe-maroc.html",
+   "secteur-sante-medical-maroc.html",
+   "secteur-services-tech-maroc.html",
+   "secteur-sport-loisirs-maroc.html",
+   "secteur-tourisme-voyages-maroc.html",
+   "secteur-transport-logistique-maroc.html",
+   "secteurs.html",
+   "services.html",
+   "shopify-maroc.html",
+   "site-web-academie-football-maroc.html",
+   "site-web-adoul-maroc.html",
+   "site-web-agence-de-voyages-maroc.html",
+   "site-web-agence-evenementielle-maroc.html",
+   "site-web-agence-immobiliere-maroc.html",
+   "site-web-agence-interim-maroc.html",
+   "site-web-agence-marketing-communication-maroc.html",
+   "site-web-agence-mice-incentive-maroc.html",
+   "site-web-agence-omra-hajj-maroc.html",
+   "site-web-animation-anniversaire-maroc.html",
+   "site-web-appart-hotel-maroc.html",
+   "site-web-architecte-interieur-maroc.html",
+   "site-web-arts-martiaux-maroc.html",
+   "site-web-auberge-jeunesse-hostel-maroc.html",
+   "site-web-auto-ecole-maroc.html",
+   "site-web-barber-shop-maroc.html",
+   "site-web-bijouterie-maroc.html",
+   "site-web-bijoux-berberes-argent-maroc.html",
+   "site-web-boulangerie-patisserie-maroc.html",
+   "site-web-boutique-caftan-maroc.html",
+   "site-web-boutique-cosmetiques-maroc.html",
+   "site-web-boutique-hotel-maroc.html",
+   "site-web-boutique-pret-a-porter-maroc.html",
+   "site-web-brunch-maroc.html",
+   "site-web-bureaux-locaux-commerciaux-maroc.html",
+   "site-web-cabinet-architecte-maroc.html",
+   "site-web-cabinet-avocat-maroc.html",
+   "site-web-cabinet-conseil-maroc.html",
+   "site-web-cabinet-recrutement-maroc.html",
+   "site-web-camp-desert-bivouac-maroc.html",
+   "site-web-carrosserie-peinture-maroc.html",
+   "site-web-centre-appels-offshoring-maroc.html",
+   "site-web-centre-de-langues-maroc.html",
+   "site-web-centre-de-loisirs-maroc.html",
+   "site-web-centre-fertilite-pma-maroc.html",
+   "site-web-centre-formation-professionnelle-maroc.html",
+   "site-web-centre-massage-maroc.html",
+   "site-web-centre-medecine-esthetique-maroc.html",
+   "site-web-centre-minceur-maroc.html",
+   "site-web-centre-pneus-maroc.html",
+   "site-web-centre-radiologie-maroc.html",
+   "site-web-chauffeur-prive-transfert-maroc.html",
+   "site-web-chirurgie-esthetique-maroc.html",
+   "site-web-circuits-excursions-maroc.html",
+   "site-web-climatisation-chauffage-maroc.html",
+   "site-web-club-padel-maroc.html",
+   "site-web-coach-sportif-maroc.html",
+   "site-web-codage-robotique-enfants-maroc.html",
+   "site-web-coffee-shop-maroc.html",
+   "site-web-concessionnaire-auto-maroc.html",
+   "site-web-conciergerie-airbnb-maroc.html",
+   "site-web-cooperative-argan-maroc.html",
+   "site-web-cours-cuisine-food-tour-maroc.html",
+   "site-web-courtier-assurance-maroc.html",
+   "site-web-courtier-credit-immobilier-maroc.html",
+   "site-web-couture-traditionnelle-djellaba-maroc.html",
+   "site-web-creation-entreprise-maroc.html",
+   "site-web-crossfit-maroc.html",
+   "site-web-cuisine-equipee-dressing-maroc.html",
+   "site-web-cybersecurite-maroc.html",
+   "site-web-dark-kitchen-maroc.html",
+   "site-web-dattes-palmeraie-maroc.html",
+   "site-web-decoration-location-evenement-maroc.html",
+   "site-web-demenagement-maroc.html",
+   "site-web-dentiste-maroc.html",
+   "site-web-depannage-remorquage-maroc.html",
+   "site-web-dermatologue-maroc.html",
+   "site-web-distributeur-grossiste-b2b-maroc.html",
+   "site-web-domiciliation-centre-affaires-maroc.html",
+   "site-web-ecole-de-musique-maroc.html",
+   "site-web-ecole-internationale-maroc.html",
+   "site-web-ecole-natation-maroc.html",
+   "site-web-ecole-paramedicale-maroc.html",
+   "site-web-ecole-privee-maroc.html",
+   "site-web-ecole-superieure-privee-maroc.html",
+   "site-web-ecole-surf-kitesurf-maroc.html",
+   "site-web-ecolodge-maroc.html",
+   "site-web-electricien-maroc.html",
+   "site-web-entreprise-construction-maroc.html",
+   "site-web-epicerie-fine-terroir-maroc.html",
+   "site-web-equipementier-automobile-maroc.html",
+   "site-web-escape-game-maroc.html",
+   "site-web-esn-societe-informatique-maroc.html",
+   "site-web-espace-coworking-maroc.html",
+   "site-web-excursion-desert-maroc.html",
+   "site-web-expert-comptable-maroc.html",
+   "site-web-expert-immobilier-maroc.html",
+   "site-web-export-artisanat-maroc.html",
+   "site-web-exportateur-agrumes-maroc.html",
+   "site-web-extension-cils-sourcils-maroc.html",
+   "site-web-fast-food-maroc.html",
+   "site-web-ferme-bio-vente-directe-maroc.html",
+   "site-web-fiduciaire-maroc.html",
+   "site-web-garage-mecanique-maroc.html",
+   "site-web-gestion-locative-maroc.html",
+   "site-web-guide-touristique-maroc.html",
+   "site-web-gynecologue-maroc.html",
+   "site-web-healthy-food-maroc.html",
+   "site-web-hotel-affaires-maroc.html",
+   "site-web-hotel-luxe-resort-maroc.html",
+   "site-web-immobilier-luxe-maroc.html",
+   "site-web-immobilier-mre-maroc.html",
+   "site-web-imprimerie-signaletique-maroc.html",
+   "site-web-industrie-agroalimentaire-maroc.html",
+   "site-web-installateur-solaire-maroc.html",
+   "site-web-institut-beaute-maroc.html",
+   "site-web-intrants-agricoles-maroc.html",
+   "site-web-irrigation-goutte-a-goutte-maroc.html",
+   "site-web-kinesitherapeute-maroc.html",
+   "site-web-laboratoire-analyses-maroc.html",
+   "site-web-laiterie-fromagerie-maroc.html",
+   "site-web-lavage-detailing-auto-maroc.html",
+   "site-web-location-autocar-maroc.html",
+   "site-web-location-bateau-sortie-mer-maroc.html",
+   "site-web-location-caftan-maroc.html",
+   "site-web-location-saisonniere-villa-maroc.html",
+   "site-web-location-voiture-maroc.html",
+   "site-web-logistique-entreposage-maroc.html",
+   "site-web-lotissement-terrain-maroc.html",
+   "site-web-luminaires-dinanderie-maroc.html",
+   "site-web-magasin-electromenager-maroc.html",
+   "site-web-magasin-meubles-decoration-maroc.html",
+   "site-web-magasin-telephonie-maroc.html",
+   "site-web-maintenance-industrielle-maroc.html",
+   "site-web-maintenance-informatique-maroc.html",
+   "site-web-maison-hotes-maroc.html",
+   "site-web-mandataire-immobilier-maroc.html",
+   "site-web-maquilleuse-mariee-maroc.html",
+   "site-web-maraichage-serres-maroc.html",
+   "site-web-maroquinerie-cuir-maroc.html",
+   "site-web-marque-cosmetique-argan-maroc.html",
+   "site-web-marque-dnvb-maroc.html",
+   "site-web-materiaux-construction-maroc.html",
+   "site-web-materiel-agricole-maroc.html",
+   "site-web-mecanique-precision-chaudronnerie-maroc.html",
+   "site-web-medecin-clinique-maroc.html",
+   "site-web-menuiserie-aluminium-maroc.html",
+   "site-web-miel-apiculteur-maroc.html",
+   "site-web-montgolfiere-maroc.html",
+   "site-web-motos-scooters-maroc.html",
+   "site-web-negafa-maroc.html",
+   "site-web-notaire-maroc.html",
+   "site-web-onglerie-nail-bar-maroc.html",
+   "site-web-ophtalmologue-maroc.html",
+   "site-web-opticien-maroc.html",
+   "site-web-orchestre-dj-mariage-maroc.html",
+   "site-web-organisme-formation-maroc.html",
+   "site-web-parc-jeux-enfants-maroc.html",
+   "site-web-parfumerie-maroc.html",
+   "site-web-pediatre-maroc.html",
+   "site-web-pharmacie-maroc.html",
+   "site-web-photographe-mariage-maroc.html",
+   "site-web-pieces-detachees-auto-maroc.html",
+   "site-web-pisciniste-maroc.html",
+   "site-web-pizzeria-maroc.html",
+   "site-web-plasturgie-emballage-maroc.html",
+   "site-web-plateforme-formation-en-ligne-maroc.html",
+   "site-web-plombier-maroc.html",
+   "site-web-poterie-ceramique-maroc.html",
+   "site-web-preparation-concours-maroc.html",
+   "site-web-producteur-avocat-maroc.html",
+   "site-web-producteur-fruits-rouges-maroc.html",
+   "site-web-projet-immobilier-neuf-maroc.html",
+   "site-web-psychologue-psychiatre-maroc.html",
+   "site-web-quad-buggy-maroc.html",
+   "site-web-recyclage-gestion-dechets-maroc.html",
+   "site-web-renovation-cle-en-main-maroc.html",
+   "site-web-restaurant-gastronomique-maroc.html",
+   "site-web-restaurant-maroc.html",
+   "site-web-restaurant-poisson-maroc.html",
+   "site-web-restaurant-traditionnel-maroc.html",
+   "site-web-riad-hotel-maroc.html",
+   "site-web-rooftop-lounge-maroc.html",
+   "site-web-safran-taliouine-maroc.html",
+   "site-web-salle-de-sport-maroc.html",
+   "site-web-salle-des-fetes-maroc.html",
+   "site-web-salon-coiffure-maroc.html",
+   "site-web-salon-de-the-maroc.html",
+   "site-web-services-a-domicile-maroc.html",
+   "site-web-societe-gardiennage-securite-maroc.html",
+   "site-web-societe-import-export-maroc.html",
+   "site-web-societe-livraison-maroc.html",
+   "site-web-societe-nettoyage-maroc.html",
+   "site-web-sous-traitance-aeronautique-maroc.html",
+   "site-web-soutien-scolaire-maroc.html",
+   "site-web-spa-hammam-maroc.html",
+   "site-web-startup-saas-maroc.html",
+   "site-web-station-conditionnement-maroc.html",
+   "site-web-studio-production-video-maroc.html",
+   "site-web-studio-yoga-pilates-maroc.html",
+   "site-web-superette-epicerie-maroc.html",
+   "site-web-sushi-maroc.html",
+   "site-web-syndic-copropriete-maroc.html",
+   "site-web-tapis-berbere-maroc.html",
+   "site-web-tour-operateur-receptif-maroc.html",
+   "site-web-traducteur-assermente-maroc.html",
+   "site-web-traitement-eau-maroc.html",
+   "site-web-traiteur-maroc.html",
+   "site-web-transitaire-maroc.html",
+   "site-web-transport-colis-mre-maroc.html",
+   "site-web-transport-frigorifique-maroc.html",
+   "site-web-transport-international-maroc.html",
+   "site-web-transport-marchandises-maroc.html",
+   "site-web-transport-personnel-maroc.html",
+   "site-web-trekking-randonnee-maroc.html",
+   "site-web-usine-textile-confection-maroc.html",
+   "site-web-vendeur-instagram-maroc.html",
+   "site-web-voiture-electrique-borne-maroc.html",
+   "site-web-voitures-occasion-maroc.html",
+   "site-web-wedding-planner-maroc.html",
+   "vendre-instagram-whatsapp-maroc.html",
+   "wordpress-ou-sur-mesure-maroc.html"
+  ]
+ },
+ "c99ff2ac876f": {
+  "fr": "Collaborer",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "404.html",
+   "a-propos.html",
+   "agence-web-maroc.html",
+   "application-mobile-maroc.html",
+   "avis-google-maroc.html",
+   "cgv.html",
+   "collaborer.html",
+   "confidentialite.html",
+   "contact.html",
+   "creation-site-web-maroc.html",
+   "creer-boutique-en-ligne-maroc.html",
+   "demarrer.html",
+   "faq.html",
+   "guide-bon-moment-maroc.html",
+   "guide-fiche-google-business-maroc.html",
+   "guide-google-chatgpt-maroc.html",
+   "guide-prix-site-web-maroc.html",
+   "guide-site-btp-construction-maroc.html",
+   "guide-site-location-voiture-maroc.html",
+   "guide-site-mariage-evenementiel-maroc.html",
+   "guide-site-vitrine-boutique-application.html",
+   "guides.html",
+   "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -5174,6 +6046,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -5190,6 +6063,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -5444,6 +6320,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -5460,6 +6337,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -5714,6 +6594,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -5730,6 +6611,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -5984,6 +6868,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -6000,6 +6885,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -6254,6 +7142,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -6270,6 +7159,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -6524,6 +7416,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -6540,6 +7433,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -6794,6 +7690,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -6810,6 +7707,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -7064,6 +7964,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -7080,6 +7981,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -7334,6 +8238,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -7350,6 +8255,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -7604,6 +8512,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -7620,6 +8529,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -7874,6 +8786,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -7890,6 +8803,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -8144,6 +9060,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -8160,6 +9077,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -8414,6 +9334,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -8430,6 +9351,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -8684,6 +9608,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -8700,6 +9625,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -8954,6 +9882,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -8970,6 +9899,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -9224,6 +10156,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -9240,6 +10173,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -9494,6 +10430,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -9510,6 +10447,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -9764,6 +10704,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -9780,6 +10721,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -10034,6 +10978,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -10050,6 +10995,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -10304,6 +11252,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -10320,6 +11269,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -10574,6 +11526,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -10590,6 +11543,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -10844,6 +11800,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -10860,6 +11817,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -11114,6 +12074,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -11130,6 +12091,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -11384,6 +12348,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -11400,6 +12365,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -11654,6 +12622,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -11670,6 +12639,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -11924,6 +12896,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -11940,6 +12913,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -12194,6 +13170,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -12210,6 +13187,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -12464,6 +13444,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -12480,6 +13461,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -12734,6 +13718,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -12750,6 +13735,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -13012,6 +14000,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -13028,6 +14017,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -13282,6 +14274,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -13298,6 +14291,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -13552,6 +14548,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -13568,6 +14565,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -13834,6 +14834,9 @@
    "guide-site-mariage-evenementiel-maroc.html",
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "nom-de-domaine-ma.html",
    "paiement-en-ligne-maroc.html",
    "publicite-facebook-instagram-maroc.html",
@@ -14086,6 +15089,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -14102,6 +15106,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -14356,6 +15363,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -14372,6 +15380,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -14626,6 +15637,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -14642,6 +15654,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -14896,6 +15911,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -14912,6 +15928,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -15166,6 +16185,7 @@
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
    "cgv.html",
+   "collaborer.html",
    "confidentialite.html",
    "contact.html",
    "creation-site-web-maroc.html",
@@ -15182,6 +16202,9 @@
    "guide-site-vitrine-boutique-application.html",
    "guides.html",
    "index.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
    "mentions-legales.html",
    "merci.html",
    "nom-de-domaine-ma.html",
@@ -19268,6 +20291,7 @@
    "agence-web-maroc.html",
    "application-mobile-maroc.html",
    "avis-google-maroc.html",
+   "collaborer.html",
    "creation-site-web-maroc.html",
    "creer-boutique-en-ligne-maroc.html",
    "faq.html",
@@ -20583,7 +21607,8 @@
   "kind": "text",
   "ctx": "Usage interne : une application pour vos livreurs, commerciaux ou techniciens.",
   "pages": [
-   "application-mobile-maroc.html"
+   "application-mobile-maroc.html",
+   "lab.html"
   ]
  },
  "b8cef67f8627": {
@@ -24118,6 +25143,811 @@
    "cgv.html"
   ]
  },
+ "892519150d76": {
+  "fr": "Collaborer avec Digilago : partenaires, freelances, sponsors | Digilago",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "2041c3b70f97": {
+  "fr": "Travaillons ensemble :",
+  "kind": "text",
+  "ctx": "Travaillons ensemble : six façons de collaborer.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "60d4756f728f": {
+  "fr": "six façons de collaborer.",
+  "kind": "text",
+  "ctx": "Travaillons ensemble : six façons de collaborer.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "e1ff7836e8b0": {
+  "fr": "Vous recommandez des clients, vous créez, vous organisez, vous investissez : il y a une place pour vous. Chaque collaboration commence par un appel, puis un accord écrit.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "f96cc50febde": {
+  "fr": "Proposer une collaboration",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "63bd77390269": {
+  "fr": "Accord écrit avant de commencer",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "83a5d50ed330": {
+  "fr": "Dans tout le Maroc",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "ac3daf66ffac": {
+  "fr": "Vous",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "9b76f22f0d52": {
+  "fr": "Notre logo tient en deux pièces qui s’emboîtent. C’est aussi notre façon de travailler.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "e789f8f15339": {
+  "fr": "Six façons",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "3d5de2ff64b6": {
+  "fr": "Une place pour chacun,",
+  "kind": "text",
+  "ctx": "Une place pour chacun, selon ce que vous apportez.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "d8ab2805c8da": {
+  "fr": "selon ce que vous apportez.",
+  "kind": "text",
+  "ctx": "Une place pour chacun, selon ce que vous apportez.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "5ac3eb2a1c3c": {
+  "fr": "Chaque carte dit ce que vous apportez, et ce que Digilago apporte de son côté.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "0f56e4a832c6": {
+  "fr": "Apporteur d’affaires",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "c99cf10a595f": {
+  "fr": "Pour qui",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html",
+   "nom-de-domaine-ma.html",
+   "site-web-ecole-privee-maroc.html",
+   "site-web-medecin-clinique-maroc.html",
+   "site-web-restaurant-maroc.html",
+   "site-web-riad-hotel-maroc.html"
+  ]
+ },
+ "54e691632ad1": {
+  "fr": "Vous connaissez des entreprises qui ont besoin d’un site, d’une boutique ou d’être trouvées sur Google.",
+  "kind": "text",
+  "ctx": "Pour qui Vous connaissez des entreprises qui ont besoin d’un site, d’une boutique ou d’être trouvées sur Google.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "2462c842e43d": {
+  "fr": "Une recommandation, une mise en relation.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "b3d069e0e51e": {
+  "fr": "Le projet de A à Z, et une commission fixée par écrit avant le premier contact.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "84d362b448a6": {
+  "fr": "Proposer",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "059cd8361ca6": {
+  "fr": "Freelances et créatifs",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "3289de632023": {
+  "fr": "Photographes, vidéastes, designers, rédacteurs et développeurs.",
+  "kind": "text",
+  "ctx": "Pour qui Photographes, vidéastes, designers, rédacteurs et développeurs.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "0957232de5bc": {
+  "fr": "Votre talent, sur des missions précises.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "e28900f8e390": {
+  "fr": "Des projets clients, un brief clair et un paiement à la date prévue.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "fb3400095e3d": {
+  "fr": "Agences, en marque blanche",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "58adece68eb6": {
+  "fr": "Agences de communication, de marketing ou d’événementiel qui vendent des sites sans les construire.",
+  "kind": "text",
+  "ctx": "Pour qui Agences de communication, de marketing ou d’événementiel qui vendent des sites sans les construire.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "9c29fc87a00c": {
+  "fr": "Vos clients, et la relation avec eux.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "769c9414db37": {
+  "fr": "Le site ou l’application, livré sous votre marque. Nous ne contactons jamais vos clients sans vous.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "f3419ba9216b": {
+  "fr": "Co-création au Lab",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "4ccaf617b2d7": {
+  "fr": "Experts d’un métier qui ont l’idée d’un outil qui manque au Maroc.",
+  "kind": "text",
+  "ctx": "Pour qui Experts d’un métier qui ont l’idée d’un outil qui manque au Maroc.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "19861744ddd7": {
+  "fr": "Le métier, l’idée, les premiers utilisateurs.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "4c5e4d7af561": {
+  "fr": "La conception et le code, comme pour le Radar et la Gestion. Le partage est fixé par écrit.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "355d39d75a83": {
+  "fr": "Sponsoring, événements et écoles",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "f71286b91edb": {
+  "fr": "Événements, associations, clubs, écoles et universités.",
+  "kind": "text",
+  "ctx": "Pour qui Événements, associations, clubs, écoles et universités.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "e4fbe0eded7c": {
+  "fr": "Un public, une occasion, une scène.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "1f19a931f52a": {
+  "fr": "Du sponsoring, des ateliers sur la visibilité en ligne, et des stages quand nous en proposons.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "f0d78c68ea05": {
+  "fr": "Investisseurs et distributeurs",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "a1acf67d0d87": {
+  "fr": "Celles et ceux qui veulent faire grandir un projet du Lab, au Maroc ou ailleurs.",
+  "kind": "text",
+  "ctx": "Pour qui Celles et ceux qui veulent faire grandir un projet du Lab, au Maroc ou ailleurs.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "bd3658f770de": {
+  "fr": "Un financement, un réseau, un marché.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "6d4bda87d56a": {
+  "fr": "Des outils qui tournent déjà pour de vrai, et l’équipe qui les construit.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "d0168876582c": {
+  "fr": "Comment ça se passe",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "44ed39966dc0": {
+  "fr": "Trois étapes,",
+  "kind": "text",
+  "ctx": "Trois étapes, et tout est écrit.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "4586352ca42d": {
+  "fr": "et tout est écrit.",
+  "kind": "text",
+  "ctx": "Trois étapes, et tout est écrit.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "6c869f18e95f": {
+  "fr": "Vous nous écrivez",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "39e3e90c40aa": {
+  "fr": "Par le formulaire ci-dessous ou sur WhatsApp. Deux minutes suffisent.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "2d2b413953e7": {
+  "fr": "Un appel de 20 minutes",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "a6f1ec23e66d": {
+  "fr": "On se présente, on écoute votre proposition et on voit si elle colle.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "3f3c1e9b3655": {
+  "fr": "Un accord écrit",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "97223ea71580": {
+  "fr": "Rôles, rémunération, délais et confidentialité : tout est écrit et signé avant de commencer.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "3c8a3ba134bc": {
+  "fr": "Nos engagements",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html",
+   "site-web-ecolodge-maroc.html"
+  ]
+ },
+ "acdc37a98a74": {
+  "fr": "Ce que vous pouvez",
+  "kind": "text",
+  "ctx": "Ce que vous pouvez attendre de nous.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "294870837a32": {
+  "fr": "attendre de nous.",
+  "kind": "text",
+  "ctx": "Ce que vous pouvez attendre de nous.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "d6ecfaff6f8d": {
+  "fr": "Tout est écrit",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "e217dd4a29c8": {
+  "fr": "Rémunération, délais et rôles sont fixés par écrit avant de commencer. Pas de surprise ensuite.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "5a62f2354813": {
+  "fr": "Payé à la date prévue",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "f60752bd2a65": {
+  "fr": "Commission ou mission : vous êtes payé à la date écrite dans l’accord.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "fd2dfc41b247": {
+  "fr": "Vos contacts restent à vous",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "77cb54e9eae7": {
+  "fr": "En marque blanche, nous ne contactons jamais vos clients sans vous.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "18a37757f582": {
+  "fr": "Le mérite partagé",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "c8aab2319dd3": {
+  "fr": "Avec votre accord, votre nom figure sur les projets que nous faisons ensemble.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "ed63038d6104": {
+  "fr": "Parlons de votre idée,",
+  "kind": "text",
+  "ctx": "Parlons de votre idée, on vous répond le jour même.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "bb65d4df99b2": {
+  "fr": "on vous répond le jour même.",
+  "kind": "text",
+  "ctx": "Parlons de votre idée, on vous répond le jour même.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "bb84c0ac4fcd": {
+  "fr": "Dites-nous qui vous êtes et ce que vous proposez. Un appel de 20 minutes suffit ensuite pour savoir si ça colle.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "3b7eb06f4239": {
+  "fr": "Type de collaboration",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "095798966b79": {
+  "fr": "Autre idée",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "dace9f864449": {
+  "fr": "Prénom et nom",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html",
+   "contact.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "1dafaef0e0bb": {
+  "fr": "Entreprise ou structure",
+  "kind": "text",
+  "ctx": "Entreprise ou structure facultatif",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "1f84e92eaf80": {
+  "fr": "facultatif",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "6a8f6451fa0a": {
+  "fr": "Téléphone ou WhatsApp",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html",
+   "contact.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "0d01e2e86669": {
+  "fr": "E-mail",
+  "kind": "text",
+  "ctx": "E-mail facultatif",
+  "pages": [
+   "collaborer.html",
+   "contact.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "972176113f90": {
+  "fr": "Ville",
+  "kind": "text",
+  "ctx": "Ville facultatif",
+  "pages": [
+   "collaborer.html",
+   "index.html",
+   "js"
+  ]
+ },
+ "9453c88a2940": {
+  "fr": "Votre proposition",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "93e287e40514": {
+  "fr": "Indiquez votre nom.",
+  "kind": "text",
+  "ctx": "Indiquez votre nom. Laissez un numéro ou un e-mail pour qu’on puisse vous répondre. Dites-nous en quelques mots ce que vous proposez. L’envoi n’a pas abouti. Réessayez, ou écrivez-nous sur WhatsApp : votre message est déjà prêt.",
+  "pages": [
+   "collaborer.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "df4816b9dcda": {
+  "fr": "Laissez un numéro ou un e-mail pour qu’on puisse vous répondre.",
+  "kind": "text",
+  "ctx": "Indiquez votre nom. Laissez un numéro ou un e-mail pour qu’on puisse vous répondre. Dites-nous en quelques mots ce que vous proposez. L’envoi n’a pas abouti. Réessayez, ou écrivez-nous sur WhatsApp : votre message est déjà prêt.",
+  "pages": [
+   "collaborer.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "c40fc81e55c0": {
+  "fr": "Dites-nous en quelques mots ce que vous proposez.",
+  "kind": "text",
+  "ctx": "Indiquez votre nom. Laissez un numéro ou un e-mail pour qu’on puisse vous répondre. Dites-nous en quelques mots ce que vous proposez. L’envoi n’a pas abouti. Réessayez, ou écrivez-nous sur WhatsApp : votre message est déjà prêt.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "8795bbcf14fc": {
+  "fr": "L’envoi n’a pas abouti. Réessayez, ou écrivez-nous sur WhatsApp : votre message est déjà prêt.",
+  "kind": "text",
+  "ctx": "Indiquez votre nom. Laissez un numéro ou un e-mail pour qu’on puisse vous répondre. Dites-nous en quelques mots ce que vous proposez. L’envoi n’a pas abouti. Réessayez, ou écrivez-nous sur WhatsApp : votre message est déjà prêt.",
+  "pages": [
+   "collaborer.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "9e905ad0375b": {
+  "fr": "Envoyer ma proposition",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "8a51a01c28f9": {
+  "fr": "ou écrire sur WhatsApp",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "b2cbfd0c8e5c": {
+  "fr": "Vos coordonnées servent seulement à vous répondre, et ne sont jamais revendues.",
+  "kind": "text",
+  "ctx": "Vos coordonnées servent seulement à vous répondre, et ne sont jamais revendues. Confidentialité",
+  "pages": [
+   "collaborer.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "c7955d495a6f": {
+  "fr": "Bonjour Digilago, je vous écris pour une collaboration.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "ccd124aee906": {
+  "fr": "C’est bien reçu.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "058590ab0bd1": {
+  "fr": "Quelqu’un de l’équipe vous répond le jour même, du lundi au samedi, de 9 h à 19 h.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "8e7819149bb4": {
+  "fr": "Ce qu’on nous demande",
+  "kind": "text",
+  "ctx": "Ce qu’on nous demande avant de collaborer.",
+  "pages": [
+   "collaborer.html",
+   "lab.html"
+  ]
+ },
+ "5e5693a2d0df": {
+  "fr": "avant de collaborer.",
+  "kind": "text",
+  "ctx": "Ce qu’on nous demande avant de collaborer.",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "83c81978975c": {
+  "fr": "Faut-il être une entreprise pour collaborer avec Digilago ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "5b25e4ebc976": {
+  "fr": "Non. Indépendants, associations, écoles, étudiants ou entreprises : chacun peut proposer une collaboration.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "b28509e9baa5": {
+  "fr": "Comment est payé un apporteur d’affaires ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "9a8eb78289f0": {
+  "fr": "Par une commission sur le projet signé. Son montant est fixé par écrit avant que nous contactions le client, et elle est versée une fois le client payé.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "6470fcd458cc": {
+  "fr": "Travaillez-vous avec des freelances partout au Maroc ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "cc58b318ec39": {
+  "fr": "Oui. Nous travaillons à distance avec des indépendants dans tout le Maroc, et parfois à l’étranger.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "dfa32924a292": {
+  "fr": "Peut-on proposer une idée d’application pour le Lab ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "031da881ce1a": {
+  "fr": "Oui, c’est le principe de la co-création : vous apportez le métier et l’idée, nous construisons l’outil. Le partage est fixé par écrit avant la première ligne de code.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "82028ae21df9": {
+  "fr": "Digilago peut-il sponsoriser notre événement ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "892824fa622d": {
+  "fr": "Nous étudions chaque demande. Dites-nous ce que vous organisez, pour qui et quand : nous répondons, même quand c’est non.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "e24e877ee137": {
+  "fr": "Apporteur d’affaires, freelance, agence, co-création, sponsoring ou investissement : six façons de collaborer avec Digilago, agence web marocaine. Tout est écrit avant de commencer.",
+  "kind": "attr:content",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
+ "b6767db1546d": {
+  "fr": "Qui vous êtes, ce que vous proposez, et ce que vous attendez de Digilago.",
+  "kind": "attr:placeholder",
+  "ctx": "",
+  "pages": [
+   "collaborer.html"
+  ]
+ },
  "4aaac8cdc7bb": {
   "fr": "Politique de confidentialité | Digilago",
   "kind": "text",
@@ -24323,14 +26153,6 @@
   "fr": "Du lundi au samedi, de 9 h à 19 h.",
   "kind": "text",
   "ctx": "Appeler Du lundi au samedi, de 9 h à 19 h.",
-  "pages": [
-   "contact.html"
-  ]
- },
- "0d01e2e86669": {
-  "fr": "E-mail",
-  "kind": "text",
-  "ctx": "",
   "pages": [
    "contact.html"
   ]
@@ -24620,14 +26442,6 @@
    "contact.html"
   ]
  },
- "6a8f6451fa0a": {
-  "fr": "Téléphone ou WhatsApp",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "contact.html"
-  ]
- },
  "279b29919770": {
   "fr": "Ce qui vous intéresse",
   "kind": "text",
@@ -24710,9 +26524,12 @@
  "65d92a68c22a": {
   "fr": "Votre message",
   "kind": "text",
-  "ctx": "",
+  "ctx": "Votre message facultatif",
   "pages": [
-   "contact.html"
+   "contact.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
   ]
  },
  "e77e54ffa189": {
@@ -24927,7 +26744,10 @@
   "kind": "text",
   "ctx": "",
   "pages": [
-   "contact.html"
+   "contact.html",
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
   ]
  },
  "20fc519e9bf5": {
@@ -25029,14 +26849,6 @@
  "a5e0b79cfbd0": {
   "fr": "Parlons de votre projet : WhatsApp, téléphone ou e-mail. Réponse le jour même.",
   "kind": "attr:content",
-  "ctx": "",
-  "pages": [
-   "contact.html"
-  ]
- },
- "dace9f864449": {
-  "fr": "Prénom et nom",
-  "kind": "attr:placeholder",
   "ctx": "",
   "pages": [
    "contact.html"
@@ -41441,9 +43253,10 @@
  "2810e213c9b3": {
   "fr": "En ligne",
   "kind": "text",
-  "ctx": "",
+  "ctx": "En ligne Ouvert au public : on peut l’utiliser tout de suite.",
   "pages": [
-   "index.html"
+   "index.html",
+   "lab.html"
   ]
  },
  "6806bc572375": {
@@ -44856,15 +46669,6 @@
    "index.html"
   ]
  },
- "972176113f90": {
-  "fr": "Ville",
-  "kind": "text",
-  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
-  "pages": [
-   "index.html",
-   "js"
-  ]
- },
  "da968f712b01": {
   "fr": "Votre visibilité",
   "kind": "text",
@@ -46471,6 +48275,2939 @@
    "index.html"
   ]
  },
+ "e9ae27eca033": {
+  "fr": "Gestion : devis, factures et comptabilité | Digilago Lab",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "30af5a749ca5": {
+  "fr": "Gestion",
+  "kind": "text",
+  "ctx": "LAB-02 Gestion",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "3fff404c50b3": {
+  "fr": "LAB-02",
+  "kind": "text",
+  "ctx": "LAB-02 Gestion",
+  "pages": [
+   "lab-gestion.html",
+   "lab.html"
+  ]
+ },
+ "47f622ba9316": {
+  "fr": "Usage interne · en service",
+  "kind": "text",
+  "ctx": "Radar · usage interne LAB-01 Usage interne · en service Radar Le Maroc, entreprise par entreprise. Il trouve les entreprises par ville et par métier, mesure leur présence en ligne et explique, point par point, ce qui peut les aider. Prospection Diagnostic Cart",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "976f2252cb9e": {
+  "fr": "La Gestion.",
+  "kind": "text",
+  "ctx": "La Gestion. Toute l’agence, de la demande à la facture.",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "143af48ca38e": {
+  "fr": "Toute l’agence, de la demande à la facture.",
+  "kind": "text",
+  "ctx": "Gestion Toute l’agence, de la demande à la facture.",
+  "pages": [
+   "lab-gestion.html",
+   "lab.html"
+  ]
+ },
+ "645e89bb39d0": {
+  "fr": "Notre espace de travail privé. Chaque demande, chaque devis, chaque paiement et chaque projet au même endroit, du premier appel à la mise en ligne.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "8b69c302ffa8": {
+  "fr": "Conçu et codé par Digilago",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "d7706ecb7deb": {
+  "fr": "Ordinateur et téléphone",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "0e431c680cda": {
+  "fr": "Messages en français et en arabe",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "dee847c01b07": {
+  "fr": "Gestion · usage interne",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab.html"
+  ]
+ },
+ "980ec014d66a": {
+  "fr": "Le point de départ",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "0afbe8e2be36": {
+  "fr": "Une agence vit de ses demandes,",
+  "kind": "text",
+  "ctx": "Une agence vit de ses demandes, pas de fichiers éparpillés.",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "64e5e4679eae": {
+  "fr": "pas de fichiers éparpillés.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "b70295a02f1c": {
+  "fr": "Des demandes sur WhatsApp, des devis dans un tableur, des factures en PDF, des paiements à vérifier : tout se perd entre deux appels. La Gestion réunit ce travail dans un seul outil, pensé pour une entreprise marocaine.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "dc0954497b2b": {
+  "fr": "Ce qu’elle fait",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "b15fc2ecf3a7": {
+  "fr": "Six moments,",
+  "kind": "text",
+  "ctx": "Six moments, du premier appel à la livraison.",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "0ddd08a63dee": {
+  "fr": "du premier appel à la livraison.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "20c2dee943a6": {
+  "fr": "01 · Demandes",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "62e3b1608fe7": {
+  "fr": "Toutes les demandes au même endroit.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "6b54b7debeee": {
+  "fr": "Site, WhatsApp, téléphone, recommandation ou Radar : chaque demande arrive dans le même tableau, avec sa provenance et sa date de rappel. Chaque matin, « Ma journée » dit quoi faire en premier.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "f55761919ec9": {
+  "fr": "Une demande inconnue est cherchée dans le Radar, puis reliée",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "78f3f4184bdf": {
+  "fr": "Gagnée ou perdue, toujours avec sa raison",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "49cd23352a47": {
+  "fr": "02 · Devis",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "ed187384c8b9": {
+  "fr": "Un devis prêt en une minute.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "33a463df9427": {
+  "fr": "Pendant l’appel, l’assistant dit quoi demander, recommande les bonnes prestations et prépare le devis et l’échéancier. Un clic crée le client, le projet et le devis.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "845c7bcbe9bf": {
+  "fr": "Numérotation continue, année par année",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "7954eb7d176b": {
+  "fr": "Montant en toutes lettres et mentions légales marocaines",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "caf42164eb36": {
+  "fr": "03 · Signature",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "fa166c1f7986": {
+  "fr": "Signé en ligne, depuis le téléphone.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "afeeafe1d6aa": {
+  "fr": "Le client ouvre son lien, reçoit un code de vérification et signe au doigt. Le bon de commande se crée tout seul, avec un certificat de signature et son dossier de preuve.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "f7730e1d3b92": {
+  "fr": "Code à six chiffres, valable dix minutes",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "4d2ee4ba54f4": {
+  "fr": "Empreinte du devis signé : toute modification se voit",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "78348768d832": {
+  "fr": "04 · Comptabilité",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "95d703219c44": {
+  "fr": "Une comptabilité marocaine, au centime près.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "0590f49af07c": {
+  "fr": "Acompte et solde, trois tranches ou mensualités : chaque échéance se facture d’un clic. TVA par période, écritures au plan comptable marocain et un accès en lecture seule pour le comptable.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "46ab5cf9b27a": {
+  "fr": "ICE, IF et RC sur chaque facture",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "9e8639dbb5c8": {
+  "fr": "Avoirs au lieu de suppressions, mois clôturés verrouillés",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "339bc7c5d7bf": {
+  "fr": "05 · Suivi client",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "56edf1ec5b76": {
+  "fr": "Le client suit son projet.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "52ee275bdf71": {
+  "fr": "Un lien privé montre l’avancement, ce qu’il reste à fournir, les fichiers et les messages, du lancement à la livraison. Sans mot de passe, et jamais indexé par Google.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "f54b13d00ca0": {
+  "fr": "Messages dans les deux sens",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "785bee188eef": {
+  "fr": "À la livraison : l’adresse du site, le domaine et les échéances",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "da2b25c9eea5": {
+  "fr": "06 · Publicité",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "bf7e17ca75e8": {
+  "fr": "Chaque dirham de publicité, suivi.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "146a0aee7929": {
+  "fr": "Chaque demande garde sa provenance : Meta, Google, réseaux sociaux ou assistants IA. Coût par demande, coût par client signé et retour sur la dépense, campagne par campagne.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "4d5f2f41ebac": {
+  "fr": "Clients signés renvoyés à Meta, avec l’accord du visiteur",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "245d348cbb3b": {
+  "fr": "Fichier des conversions prêt pour Google Ads",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "5bc6e2ad16ad": {
+  "fr": "Captures réalisées avec des données de démonstration : les entreprises et les clients affichés sont fictifs.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "b185a9626e5e": {
+  "fr": "Nos règles",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "1aa780c5d7ec": {
+  "fr": "Des chiffres justes,",
+  "kind": "text",
+  "ctx": "Des chiffres justes, des accès protégés.",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "f5f320e40dbe": {
+  "fr": "des accès protégés.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "8182828ac20b": {
+  "fr": "Des montants exacts",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "fefe64f73180": {
+  "fr": "Calculs au centime, échéances facturées dans l’ordre et jamais deux fois, même en cas de double clic.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "f0388fb58ae5": {
+  "fr": "Un mois clôturé ne bouge plus",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "73ead6159c0d": {
+  "fr": "Une fois la période clôturée, ses factures, paiements et dépenses ne peuvent plus être modifiés.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "4732d52bb385": {
+  "fr": "Connexions surveillées",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "eff6fb533b98": {
+  "fr": "Essais limités, sessions signées, et déconnexion de tous les appareils en un clic si un téléphone est perdu.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "a1b81b59d887": {
+  "fr": "Messages vérifiés",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "1f4e4bba4184": {
+  "fr": "Chaque message WhatsApp reçu est vérifié : personne ne peut se faire passer pour un client.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "4c2d46dbfd81": {
+  "fr": "Pages client privées",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "89a58f5089e7": {
+  "fr": "Les liens envoyés aux clients ne sont jamais indexés ni gardés en cache.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "93dc07b93f07": {
+  "fr": "Sauvegarde en un clic",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "f15140f2c693": {
+  "fr": "Toutes les données, sans aucun mot de passe ni jeton dedans.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "21285607a524": {
+  "fr": "Sous le capot",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "services.html"
+  ]
+ },
+ "c21970ebd61c": {
+  "fr": "Les choix techniques,",
+  "kind": "text",
+  "ctx": "Les choix techniques, en clair.",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "0f839edf882e": {
+  "fr": "en clair.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "9707019404ac": {
+  "fr": "Serveur",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "3be61b043964": {
+  "fr": "Node.js et Express ; pages préparées sur le serveur, rapides sur tout téléphone",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "e3e0c5ec8a3b": {
+  "fr": "Données",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "a35c718b4f25": {
+  "fr": "libSQL (Turso), compatible SQLite",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "02939f9ea221": {
+  "fr": "Messagerie",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "7927093b4025": {
+  "fr": "WhatsApp Cloud API et e-mail, 22 modèles de messages en français et en arabe",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "2f32be1dc741": {
+  "fr": "Signature",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "9468756cedf1": {
+  "fr": "Code à usage unique et empreinte SHA-256 du devis signé",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "7e96ac100328": {
+  "fr": "Publicité",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "02a698492b3c": {
+  "fr": "API Conversions de Meta, conversions hors ligne pour Google Ads",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "1c67a3980c44": {
+  "fr": "Application installable, avec la barre d’onglets en bas",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "30de5e847c42": {
+  "fr": "Liaison",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "989e140a8e03": {
+  "fr": "Reliée au Radar par des appels signés, refusés après cinq minutes",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "90c1168806b7": {
+  "fr": "Fiabilité",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "e98d54f3a5f0": {
+  "fr": "Tests automatiques à chaque modification",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "57d7f743bbd1": {
+  "fr": "Journal",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "9a2373bb9cba": {
+  "fr": "Ce qui a changé",
+  "kind": "text",
+  "ctx": "Ce qui a changé dernièrement.",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "562434966e50": {
+  "fr": "dernièrement.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "6a090496be6a": {
+  "fr": "Novembre 2026",
+  "kind": "text",
+  "ctx": "Novembre 2026 Coût par demande fiable : aucun chiffre affiché tant qu’aucune dépense n’est saisie.",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "fd4675736831": {
+  "fr": "Coût par demande fiable : aucun chiffre affiché tant qu’aucune dépense n’est saisie.",
+  "kind": "text",
+  "ctx": "Novembre 2026 Coût par demande fiable : aucun chiffre affiché tant qu’aucune dépense n’est saisie.",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "f31a9c4657fc": {
+  "fr": "Page Publicité et signature électronique des devis.",
+  "kind": "text",
+  "ctx": "Novembre 2026 Page Publicité et signature électronique des devis.",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "bfe1384c1d55": {
+  "fr": "Liaison avec le Radar et design aligné sur digilago.ma.",
+  "kind": "text",
+  "ctx": "Novembre 2026 Liaison avec le Radar et design aligné sur digilago.ma.",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "1d0738028e50": {
+  "fr": "Profiter d’un projet",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "45c7048e4c3f": {
+  "fr": "La Gestion vous intéresse ?",
+  "kind": "text",
+  "ctx": "La Gestion vous intéresse ? Choisissez comment en profiter.",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "df2dc67f9f43": {
+  "fr": "Choisissez comment en profiter.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "91246bbb52e6": {
+  "fr": "La Gestion reste un outil interne : elle n’est ni en vente ni ouverte au public. Voici ce que vous pouvez en tirer quand même.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "9f8dfbbee1e7": {
+  "fr": "Vous cherchez plutôt un site web ?",
+  "kind": "text",
+  "ctx": "Vous cherchez plutôt un site web ? Démarrer un projet",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "5726808a0ecd": {
+  "fr": "Toutes les façons de collaborer",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "d9dd5c0dbd6f": {
+  "fr": "Ce que vous voulez",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "ce2dd8e1c654": {
+  "fr": "Voir une démo",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "0ad704e347ff": {
+  "fr": "Une visio de 30 minutes : la Gestion en marche, avec des données de démonstration.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "7729ac833e64": {
+  "fr": "Le même, à votre nom",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "3cfcbfe5476a": {
+  "fr": "Votre outil de gestion sur ce modèle, avec vos services, vos prix et vos documents.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "d51d78229c2c": {
+  "fr": "Être prévenu",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "7cc6f0bd4e08": {
+  "fr": "Si elle ouvre un jour au public ou à la vente, vous le saurez en premier.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "88472b27824f": {
+  "fr": "Un partenariat",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "bee9df44f56d": {
+  "fr": "La distribuer, la co-construire, la sponsoriser : parlons-en.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "d03e74b6f3e3": {
+  "fr": "Entreprise",
+  "kind": "text",
+  "ctx": "Entreprise facultatif",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
+   "secteur-services-tech-maroc.html",
+   "site-web-startup-saas-maroc.html",
+   "js"
+  ]
+ },
+ "28be9897aaca": {
+  "fr": "Bonjour Digilago, je vous écris depuis le Lab.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "d65cbfefc1a7": {
+  "fr": "Projet précédent · LAB-01",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "aad82db2cb77": {
+  "fr": "Radar",
+  "kind": "text",
+  "ctx": "LAB-01 Radar",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "62ada84910b4": {
+  "fr": "Tout le Lab",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html"
+  ]
+ },
+ "761e002a2f3c": {
+  "fr": "Assistant du Lab",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "2533b72c0ab8": {
+  "fr": "En ligne · réponse rapide",
+  "kind": "text",
+  "ctx": "En ligne · réponse rapide Hors ligne · réponse dès 9 h",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "d041f995fde5": {
+  "fr": "Hors ligne · réponse dès 9 h",
+  "kind": "text",
+  "ctx": "En ligne · réponse rapide Hors ligne · réponse dès 9 h",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "60168dbbb50e": {
+  "fr": "Bonjour ! Bienvenue au Lab. Je peux vous montrer un projet, vous mettre en contact avec l’équipe ou répondre à une question.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "82303f17429f": {
+  "fr": "Bonjour ! Vous regardez le Radar, notre outil de prospection. Que puis-je faire pour vous ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "802d3987e423": {
+  "fr": "Bonjour ! Vous regardez la Gestion, l’application qui fait tourner l’agence. Que puis-je faire pour vous ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "b9c4286f49a1": {
+  "fr": "Autre chose ? Je suis là.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "aac190a50317": {
+  "fr": "Voici ce qu’on me demande le plus souvent :",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "c2e28101ae6d": {
+  "fr": "Pas pour l’instant. Le Radar et la Gestion sont des outils internes, fermés au public. Mais on peut construire le vôtre sur le même modèle.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "7b4bd12556c6": {
+  "fr": "Ça dépend de ce qu’il doit faire. Après un premier échange, vous recevez un prix écrit, avant tout engagement.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "2c397df5d085": {
+  "fr": "Ça dépend de son ampleur. Le délai et les étapes sont écrits dans le devis, et vous suivez l’avancement en ligne.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "8f4a1f79b290": {
+  "fr": "Oui. Elles restent à vous, ne sont jamais revendues, et nous respectons la loi 09-08 sur les données personnelles.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "03ca22faa287": {
+  "fr": "Non. Toutes les captures du Lab sont faites avec des données de démonstration : les entreprises et les clients sont fictifs.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "ce86a8a87879": {
+  "fr": "Avec plaisir. Apporteur d’affaires, freelance, agence, sponsor ou investisseur : chacun a sa place.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "db4e21f14bac": {
+  "fr": "L’équipe est là. Écrivez-nous sur WhatsApp, ou laissez votre numéro et on vous rappelle.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "adf17486b339": {
+  "fr": "L’équipe est hors ligne pour l’instant. Laissez votre numéro : on vous répond dès l’ouverture.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "62900e4f6fa2": {
+  "fr": "Avec plaisir. Quel est votre prénom ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "efd4a69a6f50": {
+  "fr": "Merci ! Sur quel numéro peut-on vous joindre ? WhatsApp, c’est encore mieux.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "230953c7940c": {
+  "fr": "Ce numéro paraît incomplet. Vous pouvez vérifier ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "ed47feb062d7": {
+  "fr": "Un mot sur votre activité ou votre besoin ? C’est facultatif.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "7a0050274e2a": {
+  "fr": "Le message n’est pas parti. Écrivez-nous sur WhatsApp : votre demande est déjà rédigée.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "b385899e4c32": {
+  "fr": "C’est noté ! L’équipe vous répond",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "667d20f904dc": {
+  "fr": "aujourd’hui, avant 19 h",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "61627090b132": {
+  "fr": "aujourd’hui dès 9 h",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "6b2670edd213": {
+  "fr": "demain dès 9 h",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "a3226ef3a7fa": {
+  "fr": "lundi dès 9 h",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "01f1124ba9f2": {
+  "fr": "Un outil comme ça pour moi",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "8f7a84168948": {
+  "fr": "Collaborer avec Digilago",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "f4e288c180a2": {
+  "fr": "J’ai une question",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "348de225db9d": {
+  "fr": "Parler à quelqu’un",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "24b9f5516e3e": {
+  "fr": "Ces outils sont-ils à vendre ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "eded9472ae1b": {
+  "fr": "Combien coûte un outil sur mesure ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "0887f5f51e01": {
+  "fr": "Combien de temps pour le construire ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "648034cb1551": {
+  "fr": "Mes données seront-elles protégées ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "f3584f9d7390": {
+  "fr": "Les captures montrent-elles de vrais clients ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "2c1e3c75eb1d": {
+  "fr": "Une autre question",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "537d92652ddf": {
+  "fr": "Laisser mes coordonnées",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "568f0ffa9fa5": {
+  "fr": "Être rappelé",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "738f6cba9cd7": {
+  "fr": "Autre chose",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "5dc188e52a87": {
+  "fr": "Passer",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "dcee5edbd288": {
+  "fr": "Voir les façons de collaborer",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "ff44066d7b11": {
+  "fr": "Continuer sur WhatsApp",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "8a42d9c5ed10": {
+  "fr": "Demande",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "fb06270f7c21": {
+  "fr": "Page",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
+   "site-web-riad-hotel-maroc.html"
+  ]
+ },
+ "97eca9c536c0": {
+  "fr": "Une question ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "7f122b7d3819": {
+  "fr": "LAB-02 · La Gestion Digilago réunit les demandes, les devis signés en ligne, les acomptes, les factures, la comptabilité marocaine et le suivi des projets. Un outil interne de Digilago.",
+  "kind": "attr:content",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "92635071fa92": {
+  "fr": "Fil d’Ariane",
+  "kind": "attr:aria-label",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html",
+   "secteur-agriculture-agroalimentaire-maroc.html",
+   "secteur-artisanat-cooperatives-maroc.html",
+   "secteur-automobile-mobilite-maroc.html",
+   "secteur-beaute-bien-etre-maroc.html",
+   "secteur-btp-batiment-maroc.html",
+   "secteur-commerce-boutique-maroc.html",
+   "secteur-education-formation-maroc.html",
+   "secteur-evenementiel-mariage-maroc.html",
+   "secteur-hotel-riad-hebergement-maroc.html",
+   "secteur-immobilier-maroc.html",
+   "secteur-industrie-b2b-maroc.html",
+   "secteur-juridique-conseil-finance-maroc.html",
+   "secteur-restauration-cafe-maroc.html",
+   "secteur-sante-medical-maroc.html",
+   "secteur-services-tech-maroc.html",
+   "secteur-sport-loisirs-maroc.html",
+   "secteur-tourisme-voyages-maroc.html",
+   "secteur-transport-logistique-maroc.html",
+   "secteurs.html",
+   "site-web-academie-football-maroc.html",
+   "site-web-adoul-maroc.html",
+   "site-web-agence-de-voyages-maroc.html",
+   "site-web-agence-evenementielle-maroc.html",
+   "site-web-agence-interim-maroc.html",
+   "site-web-agence-marketing-communication-maroc.html",
+   "site-web-agence-mice-incentive-maroc.html",
+   "site-web-agence-omra-hajj-maroc.html",
+   "site-web-animation-anniversaire-maroc.html",
+   "site-web-appart-hotel-maroc.html",
+   "site-web-architecte-interieur-maroc.html",
+   "site-web-arts-martiaux-maroc.html",
+   "site-web-auberge-jeunesse-hostel-maroc.html",
+   "site-web-barber-shop-maroc.html",
+   "site-web-bijouterie-maroc.html",
+   "site-web-bijoux-berberes-argent-maroc.html",
+   "site-web-boulangerie-patisserie-maroc.html",
+   "site-web-boutique-caftan-maroc.html",
+   "site-web-boutique-cosmetiques-maroc.html",
+   "site-web-boutique-hotel-maroc.html",
+   "site-web-boutique-pret-a-porter-maroc.html",
+   "site-web-brunch-maroc.html",
+   "site-web-bureaux-locaux-commerciaux-maroc.html",
+   "site-web-cabinet-architecte-maroc.html",
+   "site-web-cabinet-avocat-maroc.html",
+   "site-web-cabinet-conseil-maroc.html",
+   "site-web-cabinet-recrutement-maroc.html",
+   "site-web-camp-desert-bivouac-maroc.html",
+   "site-web-carrosserie-peinture-maroc.html",
+   "site-web-centre-appels-offshoring-maroc.html",
+   "site-web-centre-de-langues-maroc.html",
+   "site-web-centre-de-loisirs-maroc.html",
+   "site-web-centre-fertilite-pma-maroc.html",
+   "site-web-centre-formation-professionnelle-maroc.html",
+   "site-web-centre-massage-maroc.html",
+   "site-web-centre-medecine-esthetique-maroc.html",
+   "site-web-centre-minceur-maroc.html",
+   "site-web-centre-pneus-maroc.html",
+   "site-web-centre-radiologie-maroc.html",
+   "site-web-chauffeur-prive-transfert-maroc.html",
+   "site-web-chirurgie-esthetique-maroc.html",
+   "site-web-circuits-excursions-maroc.html",
+   "site-web-climatisation-chauffage-maroc.html",
+   "site-web-club-padel-maroc.html",
+   "site-web-coach-sportif-maroc.html",
+   "site-web-codage-robotique-enfants-maroc.html",
+   "site-web-coffee-shop-maroc.html",
+   "site-web-concessionnaire-auto-maroc.html",
+   "site-web-conciergerie-airbnb-maroc.html",
+   "site-web-cooperative-argan-maroc.html",
+   "site-web-cours-cuisine-food-tour-maroc.html",
+   "site-web-courtier-assurance-maroc.html",
+   "site-web-courtier-credit-immobilier-maroc.html",
+   "site-web-couture-traditionnelle-djellaba-maroc.html",
+   "site-web-creation-entreprise-maroc.html",
+   "site-web-crossfit-maroc.html",
+   "site-web-cuisine-equipee-dressing-maroc.html",
+   "site-web-cybersecurite-maroc.html",
+   "site-web-dark-kitchen-maroc.html",
+   "site-web-dattes-palmeraie-maroc.html",
+   "site-web-decoration-location-evenement-maroc.html",
+   "site-web-demenagement-maroc.html",
+   "site-web-depannage-remorquage-maroc.html",
+   "site-web-dermatologue-maroc.html",
+   "site-web-distributeur-grossiste-b2b-maroc.html",
+   "site-web-domiciliation-centre-affaires-maroc.html",
+   "site-web-ecole-de-musique-maroc.html",
+   "site-web-ecole-internationale-maroc.html",
+   "site-web-ecole-natation-maroc.html",
+   "site-web-ecole-paramedicale-maroc.html",
+   "site-web-ecole-superieure-privee-maroc.html",
+   "site-web-ecole-surf-kitesurf-maroc.html",
+   "site-web-ecolodge-maroc.html",
+   "site-web-electricien-maroc.html",
+   "site-web-entreprise-construction-maroc.html",
+   "site-web-epicerie-fine-terroir-maroc.html",
+   "site-web-equipementier-automobile-maroc.html",
+   "site-web-escape-game-maroc.html",
+   "site-web-esn-societe-informatique-maroc.html",
+   "site-web-espace-coworking-maroc.html",
+   "site-web-excursion-desert-maroc.html",
+   "site-web-expert-comptable-maroc.html",
+   "site-web-expert-immobilier-maroc.html",
+   "site-web-export-artisanat-maroc.html",
+   "site-web-exportateur-agrumes-maroc.html",
+   "site-web-extension-cils-sourcils-maroc.html",
+   "site-web-fast-food-maroc.html",
+   "site-web-ferme-bio-vente-directe-maroc.html",
+   "site-web-fiduciaire-maroc.html",
+   "site-web-garage-mecanique-maroc.html",
+   "site-web-gestion-locative-maroc.html",
+   "site-web-guide-touristique-maroc.html",
+   "site-web-gynecologue-maroc.html",
+   "site-web-healthy-food-maroc.html",
+   "site-web-hotel-affaires-maroc.html",
+   "site-web-hotel-luxe-resort-maroc.html",
+   "site-web-immobilier-luxe-maroc.html",
+   "site-web-immobilier-mre-maroc.html",
+   "site-web-imprimerie-signaletique-maroc.html",
+   "site-web-industrie-agroalimentaire-maroc.html",
+   "site-web-installateur-solaire-maroc.html",
+   "site-web-intrants-agricoles-maroc.html",
+   "site-web-irrigation-goutte-a-goutte-maroc.html",
+   "site-web-kinesitherapeute-maroc.html",
+   "site-web-laboratoire-analyses-maroc.html",
+   "site-web-laiterie-fromagerie-maroc.html",
+   "site-web-lavage-detailing-auto-maroc.html",
+   "site-web-location-autocar-maroc.html",
+   "site-web-location-bateau-sortie-mer-maroc.html",
+   "site-web-location-caftan-maroc.html",
+   "site-web-location-saisonniere-villa-maroc.html",
+   "site-web-location-voiture-maroc.html",
+   "site-web-logistique-entreposage-maroc.html",
+   "site-web-lotissement-terrain-maroc.html",
+   "site-web-luminaires-dinanderie-maroc.html",
+   "site-web-magasin-electromenager-maroc.html",
+   "site-web-magasin-meubles-decoration-maroc.html",
+   "site-web-magasin-telephonie-maroc.html",
+   "site-web-maintenance-industrielle-maroc.html",
+   "site-web-maintenance-informatique-maroc.html",
+   "site-web-maison-hotes-maroc.html",
+   "site-web-mandataire-immobilier-maroc.html",
+   "site-web-maquilleuse-mariee-maroc.html",
+   "site-web-maraichage-serres-maroc.html",
+   "site-web-maroquinerie-cuir-maroc.html",
+   "site-web-marque-cosmetique-argan-maroc.html",
+   "site-web-marque-dnvb-maroc.html",
+   "site-web-materiaux-construction-maroc.html",
+   "site-web-materiel-agricole-maroc.html",
+   "site-web-mecanique-precision-chaudronnerie-maroc.html",
+   "site-web-menuiserie-aluminium-maroc.html",
+   "site-web-miel-apiculteur-maroc.html",
+   "site-web-montgolfiere-maroc.html",
+   "site-web-motos-scooters-maroc.html",
+   "site-web-negafa-maroc.html",
+   "site-web-notaire-maroc.html",
+   "site-web-onglerie-nail-bar-maroc.html",
+   "site-web-ophtalmologue-maroc.html",
+   "site-web-opticien-maroc.html",
+   "site-web-orchestre-dj-mariage-maroc.html",
+   "site-web-organisme-formation-maroc.html",
+   "site-web-parc-jeux-enfants-maroc.html",
+   "site-web-parfumerie-maroc.html",
+   "site-web-pediatre-maroc.html",
+   "site-web-pharmacie-maroc.html",
+   "site-web-photographe-mariage-maroc.html",
+   "site-web-pieces-detachees-auto-maroc.html",
+   "site-web-pisciniste-maroc.html",
+   "site-web-pizzeria-maroc.html",
+   "site-web-plasturgie-emballage-maroc.html",
+   "site-web-plateforme-formation-en-ligne-maroc.html",
+   "site-web-plombier-maroc.html",
+   "site-web-poterie-ceramique-maroc.html",
+   "site-web-preparation-concours-maroc.html",
+   "site-web-producteur-avocat-maroc.html",
+   "site-web-producteur-fruits-rouges-maroc.html",
+   "site-web-projet-immobilier-neuf-maroc.html",
+   "site-web-psychologue-psychiatre-maroc.html",
+   "site-web-quad-buggy-maroc.html",
+   "site-web-recyclage-gestion-dechets-maroc.html",
+   "site-web-renovation-cle-en-main-maroc.html",
+   "site-web-restaurant-gastronomique-maroc.html",
+   "site-web-restaurant-poisson-maroc.html",
+   "site-web-restaurant-traditionnel-maroc.html",
+   "site-web-rooftop-lounge-maroc.html",
+   "site-web-safran-taliouine-maroc.html",
+   "site-web-salle-de-sport-maroc.html",
+   "site-web-salle-des-fetes-maroc.html",
+   "site-web-salon-coiffure-maroc.html",
+   "site-web-salon-de-the-maroc.html",
+   "site-web-services-a-domicile-maroc.html",
+   "site-web-societe-gardiennage-securite-maroc.html",
+   "site-web-societe-import-export-maroc.html",
+   "site-web-societe-livraison-maroc.html",
+   "site-web-societe-nettoyage-maroc.html",
+   "site-web-sous-traitance-aeronautique-maroc.html",
+   "site-web-soutien-scolaire-maroc.html",
+   "site-web-spa-hammam-maroc.html",
+   "site-web-startup-saas-maroc.html",
+   "site-web-station-conditionnement-maroc.html",
+   "site-web-studio-production-video-maroc.html",
+   "site-web-studio-yoga-pilates-maroc.html",
+   "site-web-superette-epicerie-maroc.html",
+   "site-web-sushi-maroc.html",
+   "site-web-syndic-copropriete-maroc.html",
+   "site-web-tapis-berbere-maroc.html",
+   "site-web-tour-operateur-receptif-maroc.html",
+   "site-web-traducteur-assermente-maroc.html",
+   "site-web-traitement-eau-maroc.html",
+   "site-web-traiteur-maroc.html",
+   "site-web-transitaire-maroc.html",
+   "site-web-transport-colis-mre-maroc.html",
+   "site-web-transport-frigorifique-maroc.html",
+   "site-web-transport-international-maroc.html",
+   "site-web-transport-marchandises-maroc.html",
+   "site-web-transport-personnel-maroc.html",
+   "site-web-trekking-randonnee-maroc.html",
+   "site-web-usine-textile-confection-maroc.html",
+   "site-web-vendeur-instagram-maroc.html",
+   "site-web-voiture-electrique-borne-maroc.html",
+   "site-web-voitures-occasion-maroc.html",
+   "site-web-wedding-planner-maroc.html"
+  ]
+ },
+ "1f2af36d861f": {
+  "fr": "Le tableau de bord de la Gestion : les actions du jour et l’objectif d’allumer tout le Maroc (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "409be07565d7": {
+  "fr": "La signature d’un devis sur téléphone, depuis le lien envoyé au client (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "a08a6ed0a1be": {
+  "fr": "Le pipeline des demandes dans la Gestion, par étape (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "1c656e894fc5": {
+  "fr": "L’assistant « Nouveau projet » de la Gestion, qui guide l’appel et estime le devis",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "b6a6daa15f1c": {
+  "fr": "Un devis dans la Gestion, avec son échéancier et ses factures (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "de1c7699e181": {
+  "fr": "La page de signature du devis, sur le téléphone du client (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "21f191079577": {
+  "fr": "L’espace Comptabilité de la Gestion : TVA par trimestre et contrôles avant envoi (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "3ae526ce998a": {
+  "fr": "L’espace de suivi d’un projet, sur le téléphone du client (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "4be2d02792ee": {
+  "fr": "La page Publicité de la Gestion : demandes, clients signés et dépenses par canal (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html"
+  ]
+ },
+ "81a2a741c6c9": {
+  "fr": "Votre activité, votre ville, ce que vous aimeriez voir…",
+  "kind": "attr:placeholder",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "8e113f5efa79": {
+  "fr": "Fermer l’assistant",
+  "kind": "attr:aria-label",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "30094264a26d": {
+  "fr": "Votre numéro",
+  "kind": "attr:aria-label",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "66a0b5605317": {
+  "fr": "Votre message (facultatif)",
+  "kind": "attr:placeholder",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "e9ce243b4a8a": {
+  "fr": "Envoyer",
+  "kind": "attr:aria-label",
+  "ctx": "",
+  "pages": [
+   "lab-gestion.html",
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "8f45a15506a2": {
+  "fr": "Radar : notre outil de prospection au Maroc | Digilago Lab",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "4cf56a402b38": {
+  "fr": "LAB-01",
+  "kind": "text",
+  "ctx": "LAB-01 Radar",
+  "pages": [
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "53ac829779bb": {
+  "fr": "Le Radar.",
+  "kind": "text",
+  "ctx": "Le Radar. Le Maroc, entreprise par entreprise.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "7b386cf901a9": {
+  "fr": "Le Maroc, entreprise par entreprise.",
+  "kind": "text",
+  "ctx": "Radar Le Maroc, entreprise par entreprise.",
+  "pages": [
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "6852f0653248": {
+  "fr": "Notre outil de prospection. Il découvre les entreprises par ville et par métier, mesure leur présence en ligne, explique son score point par point et accompagne l’équipe jusqu’au client signé.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "dda8c0dea6b9": {
+  "fr": "Radar · usage interne",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html",
+   "lab.html"
+  ]
+ },
+ "d535271243f7": {
+  "fr": "Des milliers d’entreprises,",
+  "kind": "text",
+  "ctx": "Des milliers d’entreprises, et aucun moyen de savoir lesquelles aider.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "2fca18fc1e16": {
+  "fr": "et aucun moyen de savoir lesquelles aider.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "14efb3aa3ac2": {
+  "fr": "Au Maroc, beaucoup d’entreprises n’ont pas de site, ou un site qui ne leur amène aucun client. Les trouver une par une, vérifier leur présence en ligne et savoir quoi leur proposer prenait des heures. Le Radar fait ce travail avec méthode, et chaque nuit il avance tout seul.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "f2178cd0842e": {
+  "fr": "Ce qu’il fait",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "2d52a3a95f0c": {
+  "fr": "Cinq gestes,",
+  "kind": "text",
+  "ctx": "Cinq gestes, du premier repérage au client signé.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "1524efec5ed9": {
+  "fr": "du premier repérage au client signé.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "0dcebe752f52": {
+  "fr": "01 · Balayage",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "d44125d81a2c": {
+  "fr": "Il balaie le Maroc, rue par rue.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "aec99412e975": {
+  "fr": "Une ville, un point sur la carte, une région ou tout le pays : le Radar découpe la zone en mailles de 3,3 km, écarte la mer, redécoupe les quartiers trop denses et estime le travail avant de lancer.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "bc4de3d94e96": {
+  "fr": "Environ 490 villes et communes au catalogue",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "c5550a114b9d": {
+  "fr": "22 secteurs et plus de 140 métiers",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "4ec1bd811026": {
+  "fr": "Quota du jour atteint : pause, puis reprise le lendemain",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "54b3f47116f4": {
+  "fr": "02 · Diagnostic",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "57d8bdbff045": {
+  "fr": "Il établit un diagnostic honnête.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "ae8b6603c08b": {
+  "fr": "Pour chaque entreprise : son site, sa fiche Google, son référencement et sa visibilité dans les IA. Le score s’explique point par point, et chaque coordonnée garde sa source et sa date.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "05c167f17c4c": {
+  "fr": "« Pourquoi ce score ? » en clair, sur chaque fiche",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "ad010d9a0f5e": {
+  "fr": "Vitesse du site mesurée sur mobile",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "12ca9e67af58": {
+  "fr": "Concurrents proches, pour situer l’entreprise",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "0931ebcdcf5a": {
+  "fr": "03 · Situations",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "3cee47946981": {
+  "fr": "Il range chaque entreprise dans l’une de quatre situations.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "7448212da283": {
+  "fr": "Aucun site trouvé, une page Facebook ou un site Google seulement, un site basique, ou un bon site : à chaque situation son argument, et un message déjà rédigé, en français ou en arabe.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "1e7615866291": {
+  "fr": "Filtres partagés par un simple lien",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "e23564bf4da9": {
+  "fr": "Export Excel avec la source de chaque donnée",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "413a90162662": {
+  "fr": "Doublons fusionnés avec prudence, toujours réversibles",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "fd2c52b042ae": {
+  "fr": "04 · Suivi",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "c1fd0a92a9c5": {
+  "fr": "Il suit chaque affaire jusqu’au client signé.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "ce304d76e6f7": {
+  "fr": "Un tableau du premier contact à la signature, avec les montants, une prévision pondérée et les relances programmées. Un clic sur « Préparer le devis » envoie tout dans la Gestion (LAB-02).",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "9a1cf3522bc4": {
+  "fr": "Relance à J+3 et appel à J+7, annulés dès que l’entreprise répond",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "4bf2ed39ac89": {
+  "fr": "Statuts et montants synchronisés avec la Gestion",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "d88776fe968e": {
+  "fr": "05 · Terrain",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "b5d295ee3842": {
+  "fr": "Il marche aussi sur le terrain.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "afbecde6bada": {
+  "fr": "Installé sur le téléphone, il montre les prospects à 1, 3, 5 ou 10 km, avec l’itinéraire et l’appel en un geste. La position sert au calcul : elle n’est pas enregistrée.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "3c1caf205cf7": {
+  "fr": "« Visite faite » et sa note, gardées dans l’historique",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "34c3f6954ffd": {
+  "fr": "Aucune donnée gardée sur le téléphone",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "9d38f6daaa2f": {
+  "fr": "Des règles,",
+  "kind": "text",
+  "ctx": "Des règles, écrites dans le code.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "735b94941b4c": {
+  "fr": "écrites dans le code.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "03a0adf0acdd": {
+  "fr": "Aucune donnée inventée",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "7c78de1bd80c": {
+  "fr": "Un champ inconnu reste vide, et « aucun site trouvé » ne veut pas dire « pas de site » : la fiche dit quelles sources ont été consultées, et quand.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "6ff5beaadbbd": {
+  "fr": "WhatsApp, seulement avec une preuve",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "d755810c7e21": {
+  "fr": "Un numéro mobile ne suffit pas : il faut un lien publié par l’entreprise, ou l’accord d’un membre de l’équipe qui l’a vérifié.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "f82f64af4ddf": {
+  "fr": "Pas d’envoi automatique",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "3a136ee1b02d": {
+  "fr": "Les messages s’ouvrent déjà rédigés ; un membre de l’équipe les relit et les envoie, un par un.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "0eb0d77525b7": {
+  "fr": "« Ne pas contacter », partout",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "e8bbbfae2d95": {
+  "fr": "Une entreprise qui ne veut pas être contactée ne l’est plus, même si son numéro réapparaît plus tard.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "87ea865a694c": {
+  "fr": "Google pour vérifier, pas pour copier",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "411df120499f": {
+  "fr": "La note et les avis s’affichent en direct, à la demande, et ne sont jamais enregistrés ni exportés.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "bede97b7b3f7": {
+  "fr": "Corrections protégées",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "b5936348eae8": {
+  "fr": "Une correction faite à la main n’est jamais écrasée, et chaque fusion de doublons peut être annulée.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "7b4db7ef1fa2": {
+  "fr": "Interface",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "f36075db5d4c": {
+  "fr": "React et Vite ; application installable sur téléphone",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "8d2e61f1e69b": {
+  "fr": "Fastify et TypeScript",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "eac9f61b3bd1": {
+  "fr": "PostgreSQL, avec une file de travail qui ne fait jamais deux fois la même tâche",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "980cbb42d72c": {
+  "fr": "Temps réel",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "37c5cf74e244": {
+  "fr": "Les détections arrivent en direct à l’écran",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "64d54cba1d40": {
+  "fr": "Sources ouvertes",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "00ff6fd74736": {
+  "fr": "OpenStreetMap, Overture Maps, Geoapify et les listes de data.gov.ma",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "bb27abfb1c89": {
+  "fr": "Vérification",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "9d5030c37da7": {
+  "fr": "Google Places, dans le respect de ses conditions d’utilisation",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "33e96f02748f": {
+  "fr": "Sécurité",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html",
+   "referencement-seo-maroc.html"
+  ]
+ },
+ "0c20216a8687": {
+  "fr": "Sessions protégées, rôles, protection contre la falsification de requêtes, journal des actions",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "be314a9a094a": {
+  "fr": "Tests automatiques à chaque modification, sauvegarde chiffrée chaque semaine",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "4bae5e6a6bdd": {
+  "fr": "Connexion des membres de l’équipe depuis le téléphone, plus fiable.",
+  "kind": "text",
+  "ctx": "Novembre 2026 Connexion des membres de l’équipe depuis le téléphone, plus fiable.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "dc8d774217bc": {
+  "fr": "Carte mobile qu’on déplace et qu’on zoome au doigt.",
+  "kind": "text",
+  "ctx": "Novembre 2026 Carte mobile qu’on déplace et qu’on zoome au doigt.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "d3d326d02fda": {
+  "fr": "22 secteurs et plus de 140 métiers, avec un balayage par métier.",
+  "kind": "text",
+  "ctx": "Novembre 2026 22 secteurs et plus de 140 métiers, avec un balayage par métier.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "a0b3616a58f9": {
+  "fr": "Liaison avec la Gestion : « Préparer le devis », statuts et montants synchronisés.",
+  "kind": "text",
+  "ctx": "Novembre 2026 Liaison avec la Gestion : « Préparer le devis », statuts et montants synchronisés.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "fe89b12c4041": {
+  "fr": "Messages en français et en arabe, relances programmées et application mobile.",
+  "kind": "text",
+  "ctx": "Novembre 2026 Messages en français et en arabe, relances programmées et application mobile.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "b2a64e4222f1": {
+  "fr": "Travail de nuit, tests automatiques et sauvegarde chiffrée.",
+  "kind": "text",
+  "ctx": "Novembre 2026 Travail de nuit, tests automatiques et sauvegarde chiffrée.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "5f6e1824ad7a": {
+  "fr": "Le Radar vous intéresse ?",
+  "kind": "text",
+  "ctx": "Le Radar vous intéresse ? Choisissez comment en profiter.",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "bd57fb885337": {
+  "fr": "Le Radar reste un outil interne : il n’est ni en vente ni ouvert au public. Voici ce que vous pouvez en tirer quand même.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "19c4a98d25a3": {
+  "fr": "Une visio de 30 minutes : le Radar en marche, avec des données de démonstration.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "e3fd38820323": {
+  "fr": "Votre outil de prospection sur ce modèle, avec vos villes, vos métiers et vos règles.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "a956316647aa": {
+  "fr": "S’il ouvre un jour au public ou à la vente, vous le saurez en premier.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "f52a501b79e5": {
+  "fr": "Le distribuer, le co-construire, le sponsoriser : parlons-en.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "9b79f6e7a722": {
+  "fr": "Projet suivant · LAB-02",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "d440136734b4": {
+  "fr": "LAB-01 · Le Radar trouve les entreprises du Maroc par ville et par métier, diagnostique leur présence en ligne et prépare un premier contact utile. Un outil interne de Digilago.",
+  "kind": "attr:content",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "19f736527112": {
+  "fr": "La carte 3D du Maroc dans le Radar, avec le flux des entreprises détectées (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "b1c2af4ba57e": {
+  "fr": "Le Radar sur téléphone : les prospects autour de soi, avec leur distance (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "cc7a2219a0f5": {
+  "fr": "Préparer un balayage d’El Jadida : les mailles de 3,3 km et les secteurs choisis",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "ea3cefc8e1b5": {
+  "fr": "La fiche d’une entreprise fictive dans le Radar : score, présence digitale et les quatre piliers",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "a782b1acd5de": {
+  "fr": "La liste des entreprises du Radar, triées en quatre situations (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "ca418d4b7689": {
+  "fr": "Le pipeline commercial du Radar, du premier contact au client signé (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "402fe900ea5b": {
+  "fr": "Le Radar sur téléphone : les prospects les plus proches, avec leur distance et leur situation (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab-radar.html"
+  ]
+ },
+ "f81359be0a4e": {
+  "fr": "Digilago Lab : les applications que nous construisons | Digilago",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "63b110e76490": {
+  "fr": "Ce qu’on construit",
+  "kind": "text",
+  "ctx": "Ce qu’on construit pour nous.",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "e909782b5820": {
+  "fr": "pour nous.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "fdee2568da7a": {
+  "fr": "Le Lab, c’est l’atelier de Digilago : les applications que nous concevons, utilisons chaque jour et améliorons nous-mêmes. Elles font tourner l’agence, et elles montrent ce que nous savons construire pour vous.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "aa58b1071f73": {
+  "fr": "LAB-03",
+  "kind": "text",
+  "ctx": "LAB-03 En préparation",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "d904d0fe154a": {
+  "fr": "En préparation",
+  "kind": "text",
+  "ctx": "LAB-03 En préparation",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "8f306f2f36ea": {
+  "fr": "Le catalogue",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html",
+   "site-web-decoration-location-evenement-maroc.html",
+   "site-web-magasin-meubles-decoration-maroc.html"
+  ]
+ },
+ "ba43cc88c08b": {
+  "fr": "Chaque projet a son numéro,",
+  "kind": "text",
+  "ctx": "Chaque projet a son numéro, et son statut.",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "56f747b8b2c3": {
+  "fr": "et son statut.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "73a91ece5bad": {
+  "fr": "Un projet entre au Lab quand il tourne pour de vrai. Il y garde son histoire : ce qu’il fait, comment il est construit, ce qui change de version en version.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "68f04ef4578b": {
+  "fr": "Il trouve les entreprises par ville et par métier, mesure leur présence en ligne et explique, point par point, ce qui peut les aider.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "2f8b56f9a4a2": {
+  "fr": "Prospection",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "852a1651293f": {
+  "fr": "Diagnostic",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "211362ee56f4": {
+  "fr": "Carte 3D",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "e7d721bc9ae7": {
+  "fr": "Terrain",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "0610c7c6ddfa": {
+  "fr": "Découvrir le projet",
+  "kind": "text",
+  "ctx": "Radar · usage interne LAB-01 Usage interne · en service Radar Le Maroc, entreprise par entreprise. Il trouve les entreprises par ville et par métier, mesure leur présence en ligne et explique, point par point, ce qui peut les aider. Prospection Diagnostic Cart",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "00c6dc069dcf": {
+  "fr": "Demandes, devis signés en ligne, acomptes, factures, comptabilité marocaine et suivi des projets : tout au même endroit.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "f7622f9041b8": {
+  "fr": "Devis",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "da35e4f29223": {
+  "fr": "Factures",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "20af7266c147": {
+  "fr": "Comptabilité",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "587a14471ad8": {
+  "fr": "Signature en ligne",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "c7ffb30c8ce4": {
+  "fr": "Le prochain projet",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "9bcf41676e02": {
+  "fr": "Il est sur l’établi. Chaque projet que Digilago termine pour son propre compte rejoint le Lab, avec son numéro, son statut et son journal.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "3595ca3dddd3": {
+  "fr": "Les statuts",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "4ca3fedd635f": {
+  "fr": "Une étiquette",
+  "kind": "text",
+  "ctx": "Une étiquette pour chaque projet.",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "fc9a1404ecc6": {
+  "fr": "pour chaque projet.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "04cdadbedea1": {
+  "fr": "Ouvert au public : on peut l’utiliser tout de suite.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "b7dfe704af8d": {
+  "fr": "À vendre",
+  "kind": "text",
+  "ctx": "À vendre Disponible pour une entreprise : en licence, ou adapté à sa façon de travailler.",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "be83158adf07": {
+  "fr": "Disponible pour une entreprise : en licence, ou adapté à sa façon de travailler.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "a2970790b850": {
+  "fr": "Réservé à l’équipe Digilago : présenté ici, mais pas accessible.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "f7e72daaca10": {
+  "fr": "En cours de construction : il rejoindra le Lab quand il tournera.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "b6bcc94b65d9": {
+  "fr": "Quatre règles,",
+  "kind": "text",
+  "ctx": "Quatre règles, dans chaque projet.",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "3c0dfe4ffe34": {
+  "fr": "dans chaque projet.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "937ce9a0c2b7": {
+  "fr": "Rien d’inventé",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "53386f6cbbbe": {
+  "fr": "Une donnée inconnue reste inconnue. Les exemples de démonstration sont marqués comme tels, partout.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "68dfa00a167e": {
+  "fr": "Un humain décide",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "cdfb84bb5e4b": {
+  "fr": "Les outils préparent, l’équipe valide : aucun message ne part tout seul vers un prospect.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "179992121761": {
+  "fr": "La sécurité d’abord",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "b595bb005281": {
+  "fr": "Clés gardées sur le serveur, sessions protégées, connexions limitées, accès par rôle.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "9e0c5f15d6cf": {
+  "fr": "Testé à chaque modification",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "351f458ef070": {
+  "fr": "Chaque changement passe des tests automatiques avant d’être mis en ligne.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "175ec0fb08f2": {
+  "fr": "à propos du Lab.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "f2704206f3cb": {
+  "fr": "Peut-on utiliser le Radar ou la Gestion ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "84cb47a8d3a7": {
+  "fr": "Pas pour l’instant : ce sont des outils internes, réservés à l’équipe Digilago. Ils sont présentés ici pour montrer notre façon de travailler.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "d5127354204c": {
+  "fr": "Pouvez-vous créer une application comme celles-ci pour mon entreprise ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "1630aafacc7a": {
+  "fr": "Oui. Nous concevons des applications sur mesure : prospection, devis et factures, réservations, suivi de clients… Décrivez votre besoin : vous recevez un prix écrit avant de commencer.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "06c64e787578": {
+  "fr": "Les captures montrent-elles de vraies données ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "b773e0bccc0f": {
+  "fr": "Non. Toutes les captures du Lab sont faites avec des données de démonstration : les entreprises et les clients qu’on y voit sont fictifs.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "c5b621a6c481": {
+  "fr": "Quel est le prochain projet du Lab ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "99b198ef566b": {
+  "fr": "Il est en préparation. Chaque projet que Digilago termine pour son propre compte rejoint le Lab, avec son statut : en ligne, à vendre ou à usage interne.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "dc5850a8da4d": {
+  "fr": "Un de ces projets",
+  "kind": "text",
+  "ctx": "Un de ces projets vous intéresse ?",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "44c563a00ee9": {
+  "fr": "vous intéresse ?",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "475cd7b4c6f7": {
+  "fr": "Le Radar et la Gestion restent des outils internes : ni en vente, ni ouverts au public. Voici ce qu’on peut faire pour vous quand même.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "c176d853cb25": {
+  "fr": "Le Radar ou la Gestion, en visio de 30 minutes, avec des données de démonstration.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "aafc66a3a6dc": {
+  "fr": "Un outil sur mesure",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "e2843884d0af": {
+  "fr": "Prospection, devis, réservations, suivi de clients : votre outil, à votre nom.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "913bfcb9c43b": {
+  "fr": "Le jour où LAB-03 sort, vous le saurez en premier.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "8a78064caf11": {
+  "fr": "Co-création, distribution, sponsoring : parlons-en.",
+  "kind": "text",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "3ef5c97b7158": {
+  "fr": "Le Lab Digilago : le Radar, la Gestion et nos prochains projets. Les applications que nous concevons et utilisons chaque jour, et ce qu’elles montrent de notre façon de construire.",
+  "kind": "attr:content",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "6d8c5fdbfeb4": {
+  "fr": "La carte du Maroc dans le Radar : les entreprises détectées, ville par ville (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
+ "5c8a47c0413e": {
+  "fr": "Le tableau de bord de la Gestion : la journée, les demandes et les villes clientes (données de démonstration)",
+  "kind": "attr:alt",
+  "ctx": "",
+  "pages": [
+   "lab.html"
+  ]
+ },
  "72be830999a2": {
   "fr": "Mentions légales | Digilago",
   "kind": "text",
@@ -47564,18 +52301,6 @@
   "ctx": "",
   "pages": [
    "nom-de-domaine-ma.html"
-  ]
- },
- "c99cf10a595f": {
-  "fr": "Pour qui",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "nom-de-domaine-ma.html",
-   "site-web-ecole-privee-maroc.html",
-   "site-web-medecin-clinique-maroc.html",
-   "site-web-restaurant-maroc.html",
-   "site-web-riad-hotel-maroc.html"
   ]
  },
  "2e8f415a2eab": {
@@ -53700,14 +58425,6 @@
  },
  "fbacfbb09301": {
   "fr": "Contenu principal affiché en moins de 2,5 secondes, textes lisibles, boutons faciles à toucher",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "referencement-seo-maroc.html"
-  ]
- },
- "33e96f02748f": {
-  "fr": "Sécurité",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -71545,234 +76262,6 @@
   "ctx": "",
   "pages": [
    "secteur-agriculture-agroalimentaire-maroc.html"
-  ]
- },
- "92635071fa92": {
-  "fr": "Fil d’Ariane",
-  "kind": "attr:aria-label",
-  "ctx": "",
-  "pages": [
-   "secteur-agriculture-agroalimentaire-maroc.html",
-   "secteur-artisanat-cooperatives-maroc.html",
-   "secteur-automobile-mobilite-maroc.html",
-   "secteur-beaute-bien-etre-maroc.html",
-   "secteur-btp-batiment-maroc.html",
-   "secteur-commerce-boutique-maroc.html",
-   "secteur-education-formation-maroc.html",
-   "secteur-evenementiel-mariage-maroc.html",
-   "secteur-hotel-riad-hebergement-maroc.html",
-   "secteur-immobilier-maroc.html",
-   "secteur-industrie-b2b-maroc.html",
-   "secteur-juridique-conseil-finance-maroc.html",
-   "secteur-restauration-cafe-maroc.html",
-   "secteur-sante-medical-maroc.html",
-   "secteur-services-tech-maroc.html",
-   "secteur-sport-loisirs-maroc.html",
-   "secteur-tourisme-voyages-maroc.html",
-   "secteur-transport-logistique-maroc.html",
-   "secteurs.html",
-   "site-web-academie-football-maroc.html",
-   "site-web-adoul-maroc.html",
-   "site-web-agence-de-voyages-maroc.html",
-   "site-web-agence-evenementielle-maroc.html",
-   "site-web-agence-interim-maroc.html",
-   "site-web-agence-marketing-communication-maroc.html",
-   "site-web-agence-mice-incentive-maroc.html",
-   "site-web-agence-omra-hajj-maroc.html",
-   "site-web-animation-anniversaire-maroc.html",
-   "site-web-appart-hotel-maroc.html",
-   "site-web-architecte-interieur-maroc.html",
-   "site-web-arts-martiaux-maroc.html",
-   "site-web-auberge-jeunesse-hostel-maroc.html",
-   "site-web-barber-shop-maroc.html",
-   "site-web-bijouterie-maroc.html",
-   "site-web-bijoux-berberes-argent-maroc.html",
-   "site-web-boulangerie-patisserie-maroc.html",
-   "site-web-boutique-caftan-maroc.html",
-   "site-web-boutique-cosmetiques-maroc.html",
-   "site-web-boutique-hotel-maroc.html",
-   "site-web-boutique-pret-a-porter-maroc.html",
-   "site-web-brunch-maroc.html",
-   "site-web-bureaux-locaux-commerciaux-maroc.html",
-   "site-web-cabinet-architecte-maroc.html",
-   "site-web-cabinet-avocat-maroc.html",
-   "site-web-cabinet-conseil-maroc.html",
-   "site-web-cabinet-recrutement-maroc.html",
-   "site-web-camp-desert-bivouac-maroc.html",
-   "site-web-carrosserie-peinture-maroc.html",
-   "site-web-centre-appels-offshoring-maroc.html",
-   "site-web-centre-de-langues-maroc.html",
-   "site-web-centre-de-loisirs-maroc.html",
-   "site-web-centre-fertilite-pma-maroc.html",
-   "site-web-centre-formation-professionnelle-maroc.html",
-   "site-web-centre-massage-maroc.html",
-   "site-web-centre-medecine-esthetique-maroc.html",
-   "site-web-centre-minceur-maroc.html",
-   "site-web-centre-pneus-maroc.html",
-   "site-web-centre-radiologie-maroc.html",
-   "site-web-chauffeur-prive-transfert-maroc.html",
-   "site-web-chirurgie-esthetique-maroc.html",
-   "site-web-circuits-excursions-maroc.html",
-   "site-web-climatisation-chauffage-maroc.html",
-   "site-web-club-padel-maroc.html",
-   "site-web-coach-sportif-maroc.html",
-   "site-web-codage-robotique-enfants-maroc.html",
-   "site-web-coffee-shop-maroc.html",
-   "site-web-concessionnaire-auto-maroc.html",
-   "site-web-conciergerie-airbnb-maroc.html",
-   "site-web-cooperative-argan-maroc.html",
-   "site-web-cours-cuisine-food-tour-maroc.html",
-   "site-web-courtier-assurance-maroc.html",
-   "site-web-courtier-credit-immobilier-maroc.html",
-   "site-web-couture-traditionnelle-djellaba-maroc.html",
-   "site-web-creation-entreprise-maroc.html",
-   "site-web-crossfit-maroc.html",
-   "site-web-cuisine-equipee-dressing-maroc.html",
-   "site-web-cybersecurite-maroc.html",
-   "site-web-dark-kitchen-maroc.html",
-   "site-web-dattes-palmeraie-maroc.html",
-   "site-web-decoration-location-evenement-maroc.html",
-   "site-web-demenagement-maroc.html",
-   "site-web-depannage-remorquage-maroc.html",
-   "site-web-dermatologue-maroc.html",
-   "site-web-distributeur-grossiste-b2b-maroc.html",
-   "site-web-domiciliation-centre-affaires-maroc.html",
-   "site-web-ecole-de-musique-maroc.html",
-   "site-web-ecole-internationale-maroc.html",
-   "site-web-ecole-natation-maroc.html",
-   "site-web-ecole-paramedicale-maroc.html",
-   "site-web-ecole-superieure-privee-maroc.html",
-   "site-web-ecole-surf-kitesurf-maroc.html",
-   "site-web-ecolodge-maroc.html",
-   "site-web-electricien-maroc.html",
-   "site-web-entreprise-construction-maroc.html",
-   "site-web-epicerie-fine-terroir-maroc.html",
-   "site-web-equipementier-automobile-maroc.html",
-   "site-web-escape-game-maroc.html",
-   "site-web-esn-societe-informatique-maroc.html",
-   "site-web-espace-coworking-maroc.html",
-   "site-web-excursion-desert-maroc.html",
-   "site-web-expert-comptable-maroc.html",
-   "site-web-expert-immobilier-maroc.html",
-   "site-web-export-artisanat-maroc.html",
-   "site-web-exportateur-agrumes-maroc.html",
-   "site-web-extension-cils-sourcils-maroc.html",
-   "site-web-fast-food-maroc.html",
-   "site-web-ferme-bio-vente-directe-maroc.html",
-   "site-web-fiduciaire-maroc.html",
-   "site-web-garage-mecanique-maroc.html",
-   "site-web-gestion-locative-maroc.html",
-   "site-web-guide-touristique-maroc.html",
-   "site-web-gynecologue-maroc.html",
-   "site-web-healthy-food-maroc.html",
-   "site-web-hotel-affaires-maroc.html",
-   "site-web-hotel-luxe-resort-maroc.html",
-   "site-web-immobilier-luxe-maroc.html",
-   "site-web-immobilier-mre-maroc.html",
-   "site-web-imprimerie-signaletique-maroc.html",
-   "site-web-industrie-agroalimentaire-maroc.html",
-   "site-web-installateur-solaire-maroc.html",
-   "site-web-intrants-agricoles-maroc.html",
-   "site-web-irrigation-goutte-a-goutte-maroc.html",
-   "site-web-kinesitherapeute-maroc.html",
-   "site-web-laboratoire-analyses-maroc.html",
-   "site-web-laiterie-fromagerie-maroc.html",
-   "site-web-lavage-detailing-auto-maroc.html",
-   "site-web-location-autocar-maroc.html",
-   "site-web-location-bateau-sortie-mer-maroc.html",
-   "site-web-location-caftan-maroc.html",
-   "site-web-location-saisonniere-villa-maroc.html",
-   "site-web-location-voiture-maroc.html",
-   "site-web-logistique-entreposage-maroc.html",
-   "site-web-lotissement-terrain-maroc.html",
-   "site-web-luminaires-dinanderie-maroc.html",
-   "site-web-magasin-electromenager-maroc.html",
-   "site-web-magasin-meubles-decoration-maroc.html",
-   "site-web-magasin-telephonie-maroc.html",
-   "site-web-maintenance-industrielle-maroc.html",
-   "site-web-maintenance-informatique-maroc.html",
-   "site-web-maison-hotes-maroc.html",
-   "site-web-mandataire-immobilier-maroc.html",
-   "site-web-maquilleuse-mariee-maroc.html",
-   "site-web-maraichage-serres-maroc.html",
-   "site-web-maroquinerie-cuir-maroc.html",
-   "site-web-marque-cosmetique-argan-maroc.html",
-   "site-web-marque-dnvb-maroc.html",
-   "site-web-materiaux-construction-maroc.html",
-   "site-web-materiel-agricole-maroc.html",
-   "site-web-mecanique-precision-chaudronnerie-maroc.html",
-   "site-web-menuiserie-aluminium-maroc.html",
-   "site-web-miel-apiculteur-maroc.html",
-   "site-web-montgolfiere-maroc.html",
-   "site-web-motos-scooters-maroc.html",
-   "site-web-negafa-maroc.html",
-   "site-web-notaire-maroc.html",
-   "site-web-onglerie-nail-bar-maroc.html",
-   "site-web-ophtalmologue-maroc.html",
-   "site-web-opticien-maroc.html",
-   "site-web-orchestre-dj-mariage-maroc.html",
-   "site-web-organisme-formation-maroc.html",
-   "site-web-parc-jeux-enfants-maroc.html",
-   "site-web-parfumerie-maroc.html",
-   "site-web-pediatre-maroc.html",
-   "site-web-pharmacie-maroc.html",
-   "site-web-photographe-mariage-maroc.html",
-   "site-web-pieces-detachees-auto-maroc.html",
-   "site-web-pisciniste-maroc.html",
-   "site-web-pizzeria-maroc.html",
-   "site-web-plasturgie-emballage-maroc.html",
-   "site-web-plateforme-formation-en-ligne-maroc.html",
-   "site-web-plombier-maroc.html",
-   "site-web-poterie-ceramique-maroc.html",
-   "site-web-preparation-concours-maroc.html",
-   "site-web-producteur-avocat-maroc.html",
-   "site-web-producteur-fruits-rouges-maroc.html",
-   "site-web-projet-immobilier-neuf-maroc.html",
-   "site-web-psychologue-psychiatre-maroc.html",
-   "site-web-quad-buggy-maroc.html",
-   "site-web-recyclage-gestion-dechets-maroc.html",
-   "site-web-renovation-cle-en-main-maroc.html",
-   "site-web-restaurant-gastronomique-maroc.html",
-   "site-web-restaurant-poisson-maroc.html",
-   "site-web-restaurant-traditionnel-maroc.html",
-   "site-web-rooftop-lounge-maroc.html",
-   "site-web-safran-taliouine-maroc.html",
-   "site-web-salle-de-sport-maroc.html",
-   "site-web-salle-des-fetes-maroc.html",
-   "site-web-salon-coiffure-maroc.html",
-   "site-web-salon-de-the-maroc.html",
-   "site-web-services-a-domicile-maroc.html",
-   "site-web-societe-gardiennage-securite-maroc.html",
-   "site-web-societe-import-export-maroc.html",
-   "site-web-societe-livraison-maroc.html",
-   "site-web-societe-nettoyage-maroc.html",
-   "site-web-sous-traitance-aeronautique-maroc.html",
-   "site-web-soutien-scolaire-maroc.html",
-   "site-web-spa-hammam-maroc.html",
-   "site-web-startup-saas-maroc.html",
-   "site-web-station-conditionnement-maroc.html",
-   "site-web-studio-production-video-maroc.html",
-   "site-web-studio-yoga-pilates-maroc.html",
-   "site-web-superette-epicerie-maroc.html",
-   "site-web-sushi-maroc.html",
-   "site-web-syndic-copropriete-maroc.html",
-   "site-web-tapis-berbere-maroc.html",
-   "site-web-tour-operateur-receptif-maroc.html",
-   "site-web-traducteur-assermente-maroc.html",
-   "site-web-traitement-eau-maroc.html",
-   "site-web-traiteur-maroc.html",
-   "site-web-transitaire-maroc.html",
-   "site-web-transport-colis-mre-maroc.html",
-   "site-web-transport-frigorifique-maroc.html",
-   "site-web-transport-international-maroc.html",
-   "site-web-transport-marchandises-maroc.html",
-   "site-web-transport-personnel-maroc.html",
-   "site-web-trekking-randonnee-maroc.html",
-   "site-web-usine-textile-confection-maroc.html",
-   "site-web-vendeur-instagram-maroc.html",
-   "site-web-voiture-electrique-borne-maroc.html",
-   "site-web-voitures-occasion-maroc.html",
-   "site-web-wedding-planner-maroc.html"
   ]
  },
  "209d8d071add": {
@@ -95245,16 +99734,6 @@
    "site-web-startup-saas-maroc.html"
   ]
  },
- "d03e74b6f3e3": {
-  "fr": "Entreprise",
-  "kind": "text",
-  "ctx": "texte affiché par le script (garder balises HTML, espaces de début/fin et ponctuation)",
-  "pages": [
-   "secteur-services-tech-maroc.html",
-   "site-web-startup-saas-maroc.html",
-   "js"
-  ]
- },
  "747d19f14c85": {
   "fr": "Essai gratuit · sans carte bancaire",
   "kind": "text",
@@ -101854,14 +106333,6 @@
  },
  "d5f0739bfd19": {
   "fr": "Suivi mensuel",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "services.html"
-  ]
- },
- "21285607a524": {
-  "fr": "Sous le capot",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -128482,15 +132953,6 @@
    "site-web-decoration-location-evenement-maroc.html"
   ]
  },
- "8f306f2f36ea": {
-  "fr": "Le catalogue",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "site-web-decoration-location-evenement-maroc.html",
-   "site-web-magasin-meubles-decoration-maroc.html"
-  ]
- },
  "9a931d675b64": {
   "fr": "Chaise Napoléon",
   "kind": "text",
@@ -134853,14 +139315,6 @@
  },
  "f437a6286f84": {
   "fr": "Pierre, terre et soleil : huit chambres, un potager et le Toubkal en face.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "site-web-ecolodge-maroc.html"
-  ]
- },
- "3c8a3ba134bc": {
-  "fr": "Nos engagements",
   "kind": "text",
   "ctx": "",
   "pages": [
@@ -167387,14 +171841,6 @@
  },
  "a75a29152db0": {
   "fr": "Le site d’un riad doit faire voyager en dix secondes, puis répondre à toutes les questions pratiques : les chambres, les prix, l’accès, les services et la façon de réserver. Le voyageur réserve quand il n’a plus aucun doute.",
-  "kind": "text",
-  "ctx": "",
-  "pages": [
-   "site-web-riad-hotel-maroc.html"
-  ]
- },
- "fb06270f7c21": {
-  "fr": "Page",
   "kind": "text",
   "ctx": "",
   "pages": [

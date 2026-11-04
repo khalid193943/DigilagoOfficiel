@@ -20,12 +20,19 @@
 ## Pages principales
 
 - [À propos de Digilago : agence web marocaine](https://www.digilago.ma/a-propos.html): Onze ans de terrain devenus Digilago : notre histoire, notre mission et nos valeurs.
+- [Collaborer avec Digilago : partenaires, freelances, sponsors](https://www.digilago.ma/collaborer.html): Apporteur d’affaires, freelance, agence, co-création, sponsoring ou investissement : six façons de collaborer avec Digilago, agence web marocaine. Tout est écrit avant de commencer.
 - [Contactez Digilago : réponse le jour même](https://www.digilago.ma/contact.html): Parlons de votre projet : WhatsApp, téléphone ou e-mail. Réponse le jour même.
 - [Démarrer votre projet : première version en 72 h](https://www.digilago.ma/demarrer.html): Lancez votre projet en deux minutes : site web, fiche Google, visibilité IA. Première version en 72 heures.
 - [Guides pratiques : site web, Google et IA au Maroc](https://www.digilago.ma/guides.html): Des guides clairs pour les entreprises marocaines : prix d’un site web, référencement local, fiche Google, visibilité dans ChatGPT et les IA.
 - [Digilago](https://www.digilago.ma/): Site web, fiche Google et visibilité dans les IA pour les entreprises marocaines. Première version en 72 h.
 - [Exemples de sites web par métier au Maroc](https://www.digilago.ma/realisations.html): Choisissez votre domaine et découvrez un exemple de site : santé, éducation, restauration, commerce… Le vôtre sera adapté à votre logo et à vos couleurs.
 - [Services : site web, fiche Google, SEO et IA au Maroc](https://www.digilago.ma/services.html): Sites web sur mesure, fiche Google, référencement, visibilité dans les IA, applications et automatisations pour les entreprises marocaines.
+
+## Digilago Lab (les outils que Digilago construit pour son propre compte)
+
+- [Gestion : devis, factures et comptabilité](https://www.digilago.ma/lab-gestion.html): LAB-02 · La Gestion Digilago réunit les demandes, les devis signés en ligne, les acomptes, les factures, la comptabilité marocaine et le suivi des projets. Un outil interne de Digilago.
+- [Radar : notre outil de prospection au Maroc](https://www.digilago.ma/lab-radar.html): LAB-01 · Le Radar trouve les entreprises du Maroc par ville et par métier, diagnostique leur présence en ligne et prépare un premier contact utile. Un outil interne de Digilago.
+- [Digilago Lab : les applications que nous construisons](https://www.digilago.ma/lab.html): Le Lab Digilago : le Radar, la Gestion et nos prochains projets. Les applications que nous concevons et utilisons chaque jour, et ce qu’elles montrent de notre façon de construire.
 
 ## Guides
 
@@ -615,6 +622,26 @@ Non, c’est un conflit d’intérêts au regard des règles de Google, même si
 
 Dans votre fiche Google Business, utilisez l’option « Demander des avis » : Google fournit un lien court qui ouvre directement la fenêtre de notation. Partagez-le par WhatsApp, dans votre signature e-mail ou sous forme de QR code dans vos locaux.
 
+### Faut-il être une entreprise pour collaborer avec Digilago ?
+
+Non. Indépendants, associations, écoles, étudiants ou entreprises : chacun peut proposer une collaboration.
+
+### Comment est payé un apporteur d’affaires ?
+
+Par une commission sur le projet signé. Son montant est fixé par écrit avant que nous contactions le client, et elle est versée une fois le client payé.
+
+### Travaillez-vous avec des freelances partout au Maroc ?
+
+Oui. Nous travaillons à distance avec des indépendants dans tout le Maroc, et parfois à l’étranger.
+
+### Peut-on proposer une idée d’application pour le Lab ?
+
+Oui, c’est le principe de la co-création : vous apportez le métier et l’idée, nous construisons l’outil. Le partage est fixé par écrit avant la première ligne de code.
+
+### Digilago peut-il sponsoriser notre événement ?
+
+Nous étudions chaque demande. Dites-nous ce que vous organisez, pour qui et quand : nous répondons, même quand c’est non.
+
 ### Combien coûte la création d’un site web au Maroc ?
 
 À titre indicatif, un site vitrine à partir d’un thème coûte environ 3 000 à 8 000 MAD au Maroc, un site vitrine sur-mesure et multilingue environ 8 000 à 25 000 MAD, et une boutique en ligne environ 15 000 à 60 000 MAD. Ces fourchettes varient selon les prestataires : demandez toujours un devis écrit et détaillé.
@@ -794,6 +821,22 @@ Oui. Un site bien construit accueille ensuite une boutique ou un espace de rése
 ### Faut-il une application si l’on a déjà un site ?
 
 Pas forcément. Un site rapide et bien pensé pour le téléphone suffit à beaucoup d’entreprises. L’application devient utile quand vos clients l’utilisent chaque semaine.
+
+### Peut-on utiliser le Radar ou la Gestion ?
+
+Pas pour l’instant : ce sont des outils internes, réservés à l’équipe Digilago. Ils sont présentés ici pour montrer notre façon de travailler.
+
+### Pouvez-vous créer une application comme celles-ci pour mon entreprise ?
+
+Oui. Nous concevons des applications sur mesure : prospection, devis et factures, réservations, suivi de clients… Décrivez votre besoin : vous recevez un prix écrit avant de commencer.
+
+### Les captures montrent-elles de vraies données ?
+
+Non. Toutes les captures du Lab sont faites avec des données de démonstration : les entreprises et les clients qu’on y voit sont fictifs.
+
+### Quel est le prochain projet du Lab ?
+
+Il est en préparation. Chaque projet que Digilago termine pour son propre compte rejoint le Lab, avec son statut : en ligne, à vendre ou à usage interne.
 
 ### Qui peut enregistrer un nom de domaine .ma ?
 

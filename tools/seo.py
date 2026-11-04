@@ -6,7 +6,8 @@ Ajoute dans le <head> de chaque page :
   Facebook, LinkedIn, X…) avec l'image assets/og-digilago.jpg ;
 - les données structurées Schema.org (JSON-LD), lues par Google et les IA :
   l'entreprise (ProfessionalService) sur l'accueil, Article sur chaque guide,
-  FAQPage là où il y a une FAQ, et WebPage partout ailleurs.
+  FAQPage là où il y a une FAQ, et WebPage partout ailleurs ; Digilago Lab : la collection de nos projets
+  maison, puis chaque projet comme une œuvre de Digilago, avec son état et son image de partage.
 
 Toutes les informations viennent du site lui-même (pied de page, titres, FAQ).
 
@@ -20,6 +21,9 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SITE = os.path.join(ROOT, 'site')
 URL = os.environ.get('SITE_URL', 'https://www.digilago.ma').rstrip('/')
 OG = '/assets/og-digilago.jpg'
+# images de partage propres à certaines pages (tools/og_lab.py) ; les autres gardent celle de l'accueil
+OG_PAGE = {'lab.html': '/assets/lab/og-lab.jpg', 'lab-radar.html': '/assets/lab/og-radar.jpg',
+           'lab-gestion.html': '/assets/lab/og-gestion.jpg'}
 START, END = '<!--dg:seo-->', '<!--dg:seo-end-->'
 
 ORG = {
@@ -119,6 +123,46 @@ def secteur_graph(name, h, lang, title, desc, url):
     return out
 
 
+def lab_graph(name, h, lang, title, desc, url):
+    """Digilago Lab : fil d'Ariane ; l'accueil du Lab est une collection (la liste des projets) ; chaque projet est
+    une œuvre de Digilago (CreativeWork) avec son état. Pas de SoftwareApplication : ces outils ne sont ni vendus
+    ni ouverts au public, et Google exige pour ce type un prix et des avis qu'il faudrait inventer."""
+    kind = re.search(r'data-lab="(\w+)"', h).group(1)
+    main = h[h.index('data-lab="'):]
+    site = {'@type': 'WebSite', 'name': 'Digilago', 'url': URL + '/'}
+    items = []
+    nav = re.search(r'<nav class="lab-crumb"[^>]*>(.*?)</nav>', main, re.S)
+    for m in re.finditer(r'<a href="([^"]+)">(.*?)</a>|<span aria-current="page">(.*?)</span>', nav.group(1), re.S):
+        items.append((text(m.group(2) or m.group(3)), page_url(m.group(1), lang) if m.group(1) else url))
+    out = [{'@type': 'BreadcrumbList', '@id': url + '#ariane', 'itemListElement': [
+        {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': u} for i, (n, u) in enumerate(items)]}]
+    if kind == 'index':
+        cards = [(m.group(1), text(m.group(2))) for m in
+                 re.finditer(r'<a class="lab-card[^"]*" href="([^"]+)">.*?<h3>(.*?)<span class="lab-it">', main, re.S)]
+        out.append({'@type': 'CollectionPage', '@id': url + '#lab', 'name': title, 'description': desc, 'url': url,
+                    'inLanguage': lang, 'isPartOf': site, 'breadcrumb': {'@id': url + '#ariane'},
+                    'publisher': {'@id': ORG['@id']}, 'image': URL + OG_PAGE.get(name, OG),
+                    'mainEntity': {'@type': 'ItemList', 'numberOfItems': len(cards), 'itemListElement': [
+                        {'@type': 'ListItem', 'position': i + 1, 'name': n, 'url': page_url(f, lang)}
+                        for i, (f, n) in enumerate(cards)]}})
+        return out
+    lead = text(re.search(r'<p class="lab-lead">(.*?)</p>', main, re.S).group(1))
+    img = re.search(r'<img src="(?:\.\./)?(assets/lab/[^"]+)"', main).group(1)
+    code = text(re.search(r'<span class="lab-code">(.*?)</span>', main, re.S).group(1))
+    state = text(re.search(r'<span class="lab-st [a-z]+"><i aria-hidden="true"></i>(.*?)</span>', main, re.S).group(1))
+    days = re.findall(r'<time datetime="(\d{4}-\d{2}-\d{2})"', main)
+    work = {'@type': 'CreativeWork', '@id': url + '#projet', 'name': items[-1][0], 'identifier': code,
+            'description': lead, 'url': url, 'image': URL + '/' + img, 'inLanguage': lang,
+            'creativeWorkStatus': state, 'creator': {'@id': ORG['@id']}, 'publisher': {'@id': ORG['@id']},
+            'isPartOf': {'@id': page_url('lab.html', lang) + '#lab'}}
+    if days:
+        work['dateModified'] = max(days)
+    out.append({'@type': 'WebPage', 'name': title, 'description': desc, 'url': url, 'inLanguage': lang,
+                'isPartOf': site, 'breadcrumb': {'@id': url + '#ariane'}, 'mainEntity': {'@id': url + '#projet'}})
+    out.append(work)
+    return out
+
+
 def page_url(name, lang):
     return URL + LANGS[lang][0] + ('/' if name == 'index.html' else '/' + name)
 
@@ -141,6 +185,8 @@ def block(name, h, lang='fr'):
             {'@type': 'ListItem', 'position': 3, 'name': title.split(' | ')[0], 'item': url}]})
     elif 'data-vz="' in h:
         graph += secteur_graph(name, h, lang, title, desc, url)
+    elif 'data-lab="' in h:
+        graph += lab_graph(name, h, lang, title, desc, url)
     elif name not in NOINDEX:
         graph.append({'@type': 'WebPage', 'name': title, 'description': desc, 'url': url,
                       'inLanguage': lang, 'isPartOf': {'@type': 'WebSite', 'name': 'Digilago', 'url': URL + '/'}})
@@ -148,6 +194,7 @@ def block(name, h, lang='fr'):
     if f:
         graph.append(f)
     e = lambda s: html.escape(s, quote=True)
+    og = URL + OG_PAGE.get(name, OG)
     tags = []
     if name not in NOINDEX:
         tags.append('<link rel="canonical" href="%s">' % url)
@@ -160,12 +207,12 @@ def block(name, h, lang='fr'):
         '<meta property="og:title" content="%s">' % e(title),
         '<meta property="og:description" content="%s">' % e(desc),
         '<meta property="og:url" content="%s">' % url,
-        '<meta property="og:image" content="%s">' % (URL + OG),
+        '<meta property="og:image" content="%s">' % og,
         '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">',
         '<meta name="twitter:card" content="summary_large_image">',
         '<meta name="twitter:title" content="%s">' % e(title),
         '<meta name="twitter:description" content="%s">' % e(desc),
-        '<meta name="twitter:image" content="%s">' % (URL + OG),
+        '<meta name="twitter:image" content="%s">' % og,
         '<script type="application/ld+json">%s</script>' % json.dumps(
             {'@context': 'https://schema.org', '@graph': graph}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/'),
     ]
@@ -188,7 +235,9 @@ def llms(names):
            '## Services', '']
     out += ['- ' + o['itemOffered']['name'] for o in ORG['hasOfferCatalog']['itemListElement']]
     vz = {n for n in names if 'data-vz="' in open(os.path.join(SITE, n), encoding='utf-8').read()}
-    for title, pick in (('Pages principales', lambda n: not (n.startswith('guide-') or n in ARTICLES or n == 'faq.html' or n in vz)),
+    lab = {n for n in names if n == 'lab.html' or n.startswith('lab-')}
+    for title, pick in (('Pages principales', lambda n: not (n.startswith('guide-') or n in ARTICLES or n == 'faq.html' or n in vz or n in lab)),
+                        ('Digilago Lab (les outils que Digilago construit pour son propre compte)', lambda n: n in lab),
                         ('Guides', lambda n: n.startswith('guide-') or n in ARTICLES or n == 'faq.html'),
                         ('Secteurs et métiers (un site web pour chaque activité au Maroc)', lambda n: n in vz)):
         out += ['', '## ' + title, '']
@@ -237,7 +286,8 @@ def main():
     import datetime
     today = datetime.date.today().isoformat()
     prio = {'index.html': '1.0', 'demarrer.html': '0.9', 'services.html': '0.9', 'realisations.html': '0.8',
-            'contact.html': '0.8', 'a-propos.html': '0.7', 'guides.html': '0.7'}
+            'contact.html': '0.8', 'a-propos.html': '0.7', 'guides.html': '0.7',
+            'lab.html': '0.7', 'lab-radar.html': '0.6', 'lab-gestion.html': '0.6', 'collaborer.html': '0.6'}
     names = sorted(os.path.basename(f) for f in glob.glob(os.path.join(SITE, '*.html')) if os.path.basename(f) not in NOINDEX)
     VZ = {n for n in names if 'data-vz="' in open(os.path.join(SITE, n), encoding='utf-8').read()}
     out = ['<?xml version="1.0" encoding="UTF-8"?>',

@@ -15,4 +15,5 @@
   [data-mode="M"] .smq-in input,[data-mode="M"] .smq2 .smq-in input{font-size:max(16px,calc(15 * var(--u)))!important}
   .st-try input{font-size:max(16px,calc(14 * var(--u)))!important}
   .cbo-more input[type="date"]{font-size:max(16px,calc(20 * var(--u)))!important}
+  .ask-f input,.ask-f textarea,.ask-hp input,.bot-in input,.bot-in textarea{font-size:max(16px,calc(16 * var(--u)))!important}
 }
