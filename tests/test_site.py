@@ -155,7 +155,7 @@ def test_menu_plein_ecran_telephone(page, base_url, name):
     assert page.locator('#dock').count() == 0
     page.click('#mb'); page.wait_for_timeout(1000)
     assert 'open' in page.locator('#sheet').get_attribute('class')
-    assert page.locator('#sheet .fsm-nav a').count() == 7
+    assert page.locator('#sheet .fsm-nav a').count() == 8   # avec « Lab » (Digilago Lab)
     page.click('#closeBtn'); page.wait_for_timeout(900)
     assert 'open' not in page.locator('#sheet').get_attribute('class')
     assert not errors, errors
@@ -1063,3 +1063,183 @@ def test_champs_sans_zoom_sur_iphone(browser, base_url, name, largeur):
       .filter((x) => x[1] < 16)""")
     ctx.close()
     assert not petits, f'champs sous 16 px, donc zoom sur iPhone : {petits} (règle à ajouter dans src/css/touch.css)'
+
+
+# ─── Digilago Lab et page « Collaborer » ─────────────────────────────────────────────────────────────
+
+LAB = ['lab.html', 'lab-radar.html', 'lab-gestion.html']
+LAB_TITRES = {'': ('Digilago Lab', 'Radar', 'Gestion'), 'en/': ('Digilago Lab', 'Radar', 'Gestion'),
+              'ar/': ('مختبر Digilago', 'الرادار', 'تطبيق التدبير')}
+
+
+def _lire(chemin):
+    return open(os.path.join(SITE, chemin), encoding='utf-8').read()
+
+
+def _ld(h):
+    return json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', h, re.S).group(1))['@graph']
+
+
+@pytest.mark.parametrize('name', PAGES)
+def test_lab_et_collaborer_dans_les_menus(name):
+    """« Lab » dans le menu du haut et dans le menu du téléphone ; Lab et Collaborer dans le pied de page."""
+    h = _lire(name)
+    assert re.search(r'<div class="fl">.*?<a href="lab\.html">Lab</a>', h, re.S), 'lien « Lab » absent du menu'
+    assert re.search(r'<nav class="fsm-nav"[^>]*>.*?href="lab\.html"', h, re.S), 'lien « Lab » absent du menu du téléphone'
+    pied = re.search(r'<nav class="f-col" aria-label="Navigation">(.*?)</nav>', h, re.S).group(1)
+    assert pied.count('href="lab.html"') == 1 and pied.count('href="collaborer.html"') == 1, 'pied de page'
+
+
+@pytest.mark.parametrize('pre', ['', 'en/', 'ar/'])
+def test_lab_trois_langues_sans_lien_vers_les_outils(pre):
+    """Les pages du Lab existent dans les 3 langues, sans reste de français, et ne mènent jamais aux outils internes."""
+    for name in LAB + ['collaborer.html']:
+        h = _lire(pre + name)
+        assert f'<link rel="canonical" href="https://www.digilago.ma/{pre}{name}">' in h, name
+        assert 'radar.digilago.ma' not in h, name
+        assert not re.search(r'href="https?://gestion\.digilago\.ma', h), name
+        if pre:
+            corps = re.sub(r'<script\b.*?</script>|<style\b.*?</style>', '', h, flags=re.S)
+            for fr in ('Profiter d’un projet', 'Projet suivant', 'Projet précédent', 'Assistant du Lab', 'Envoyer ma demande',
+                       'Usage interne', 'Collaborer avec Digilago', 'Envoyer ma proposition', 'Voir une démo'):
+                assert fr not in corps, (pre + name, fr)
+    for name, titre in zip(LAB, LAB_TITRES[pre]):
+        h = _lire(pre + name)
+        assert titre in re.search(r'<title>(.*?)</title>', h, re.S).group(1), (pre + name, titre)
+        # les captures sont faites avec des données de démonstration, et la page le dit
+        assert 'class="lab-note' in h, name
+
+
+def test_lab_donnees_structurees_et_partage():
+    for pre in ('', 'en/', 'ar/'):
+        g = {x['@type']: x for x in _ld(_lire(pre + 'lab.html'))}
+        assert {'BreadcrumbList', 'CollectionPage', 'FAQPage'} <= set(g), pre
+        items = g['CollectionPage']['mainEntity']['itemListElement']
+        assert [i['url'].rsplit('/', 1)[1] for i in items] == ['lab-radar.html', 'lab-gestion.html']
+        for name, code in (('lab-radar.html', 'LAB-01'), ('lab-gestion.html', 'LAB-02')):
+            h = _lire(pre + name)
+            w = {x['@type']: x for x in _ld(h)}['CreativeWork']
+            assert w['identifier'] == code and w['creativeWorkStatus'] and w['creator']['@id'].endswith('#digilago')
+            assert 'SoftwareApplication' not in h  # ni prix ni avis à inventer : ce n'est pas un logiciel en vente
+            og = re.search(r'<meta property="og:image" content="https://www\.digilago\.ma/(assets/lab/og-[a-z]+\.jpg)">', h).group(1)
+            assert os.path.exists(os.path.join(SITE, og)), og
+    sm = _lire('sitemap.xml')
+    for pre in ('', 'en/', 'ar/'):
+        for name in LAB + ['collaborer.html']:
+            assert f'<loc>https://www.digilago.ma/{pre}{name}</loc>' in sm, pre + name
+    assert '## Digilago Lab' in _lire('llms.txt')
+    g = {x['@type'] for x in _ld(_lire('collaborer.html'))}
+    assert {'WebPage', 'FAQPage'} <= g, g
+
+
+def _demandes(page):
+    sent = []
+    page.on('request', lambda r: sent.append(json.loads(r.post_data)) if r.url.endswith('/api/leads') and r.method == 'POST' else None)
+    return sent
+
+
+def test_lab_formulaire_envoie_a_la_gestion(page, base_url):
+    """« Profiter d'un projet » : rien ne part sans nom ni moyen de répondre ; la demande arrive avec le choix et la page."""
+    errors = watch(page)
+    sent = _demandes(page)
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/lab-radar.html'); page.wait_for_timeout(800)
+    form = page.locator('#profiter form.ask')
+    form.locator('button[type=submit]').click()
+    page.wait_for_timeout(300)
+    assert page.locator('#profiter [data-e="name"]').is_visible() and not sent
+    form.locator('input[name=name]').fill('Karim Test')
+    form.locator('button[type=submit]').click()
+    page.wait_for_timeout(300)
+    assert page.locator('#profiter [data-e="contact"]').is_visible() and not sent
+    form.locator('.lab-opt', has_text='Le même, à votre nom').click()
+    form.locator('input[name=phone]').fill('06 12 34 56 78')
+    assert 'Karim%20Test' in form.locator('a.ask-wa').get_attribute('href')
+    form.locator('button[type=submit]').click()
+    page.wait_for_selector('#profiter .ask-ok:not([hidden])', timeout=5000)
+    assert len(sent) == 1, sent
+    d = sent[0]
+    assert d['name'] == 'Karim Test' and d['phone'] == '06 12 34 56 78' and d['lang'] == 'fr'
+    assert d['need'] == 'Outil sur mesure, sur le modèle du Radar (Radar)' and d['source'].startswith('Lab, formulaire, Radar')
+    assert not errors, errors
+
+
+def test_lab_assistant_conversation(page, base_url):
+    """L'assistant : il connaît la page, vérifie le numéro, envoie la demande à la Gestion, se ferme au clavier."""
+    errors = watch(page)
+    sent = _demandes(page)
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.emulate_media(reduced_motion='reduce')
+    page.goto(f'{base_url}/lab-gestion.html'); page.wait_for_timeout(800)
+    btn = page.locator('.bot-btn')
+    assert btn.get_attribute('aria-expanded') == 'false'
+    btn.click()
+    panel = page.locator('#labBotPanel')
+    panel.wait_for(state='visible')
+    assert btn.get_attribute('aria-expanded') == 'true'
+    page.wait_for_selector('.bot-msg.it:has-text("la Gestion")')
+    page.locator('.bot-act .bot-c[data-c="demo"]').click()
+    page.locator('.bot-in input').fill('Salma'); page.keyboard.press('Enter')
+    page.locator('.bot-in input[type=tel]').fill('12'); page.keyboard.press('Enter')
+    page.wait_for_selector('.bot-msg.it:has-text("incomplet")')
+    page.locator('.bot-in input[type=tel]').fill('0612345678'); page.keyboard.press('Enter')
+    page.locator('.bot-in .bot-c[data-c="skip"]').click()
+    page.wait_for_selector('.bot-act a[data-c="wa_now"]')
+    assert len(sent) == 1, sent
+    assert sent[0]['need'] == 'Démo (Gestion)' and sent[0]['name'] == 'Salma' and sent[0]['source'].startswith('Lab, assistant, Gestion')
+    assert 'Salma' in page.locator('.bot-act a[data-c="wa_now"]').get_attribute('href').replace('%20', ' ')
+    page.keyboard.press('Escape')
+    page.wait_for_timeout(100)
+    assert btn.get_attribute('aria-expanded') == 'false'
+    assert page.evaluate("document.activeElement.classList.contains('bot-btn')")
+    assert not errors, errors
+
+
+def test_lab_assistant_arabe(page, base_url):
+    """En arabe, l'assistant est en bas à gauche, parle arabe, et un numéro tapé garde son ordre."""
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.emulate_media(reduced_motion='reduce')
+    page.goto(f'{base_url}/ar/lab-radar.html'); page.wait_for_timeout(800)
+    box = page.locator('.bot-btn').bounding_box()
+    assert box['x'] + box['width'] / 2 < 720, box
+    page.locator('.bot-btn').click()
+    page.wait_for_selector('.bot-msg.it:has-text("الرادار")')
+    page.locator('.bot-act .bot-c[data-c="call"], .bot-act .bot-c[data-c="demo"]').first.click()
+    page.locator('.bot-in input').fill('سلمى'); page.keyboard.press('Enter')
+    page.locator('.bot-in input[type=tel]').fill('06 12 34 56 78'); page.keyboard.press('Enter')
+    page.wait_for_selector('.bot-msg.me span[dir="auto"]:has-text("06 12")')
+    # sens déterminé par le texte lui-même : les groupes de chiffres ne s'inversent pas (« 78 56 34 12 06 »)
+    assert page.evaluate("getComputedStyle([...document.querySelectorAll('.bot-msg.me span')].pop()).unicodeBidi") == 'plaintext'
+
+
+@pytest.mark.parametrize('lang', ['fr', 'en', 'ar'])
+def test_lab_et_collaborer_telephone_sans_debordement(page, base_url, lang):
+    errors = watch(page)
+    page.set_viewport_size({'width': 390, 'height': 844})
+    pre = '' if lang == 'fr' else lang + '/'
+    for name in LAB + ['collaborer.html']:
+        page.goto(f'{base_url}/{pre}{name}'); page.wait_for_timeout(700)
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), (lang, name)
+    assert not errors, errors
+
+
+def test_collaborer_proposer_depuis_une_carte(page, base_url):
+    """Le bouton « Proposer » d'une carte coche la bonne case ; la proposition (obligatoire) part à la Gestion."""
+    errors = watch(page)
+    sent = _demandes(page)
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(f'{base_url}/collaborer.html'); page.wait_for_timeout(800)
+    page.locator('#co-cocreation .co-go').click()
+    page.wait_for_timeout(500)
+    assert page.locator('input[value="co-cocreation"]').is_checked()
+    form = page.locator('#proposer form.ask')
+    form.locator('input[name=name]').fill('Dr Amal Test')
+    form.locator('input[name=phone]').fill('0600000000')
+    form.locator('button[type=submit]').click()
+    page.wait_for_timeout(300)
+    assert page.locator('#proposer [data-e="message"]').is_visible() and not sent
+    form.locator('textarea[name=message]').fill('Un outil de rendez-vous pour les kinés.')
+    form.locator('button[type=submit]').click()
+    page.wait_for_selector('#proposer .ask-ok:not([hidden])', timeout=5000)
+    assert sent and sent[0]['need'] == 'Collaboration · Co-création Lab' and sent[0]['source'].startswith('Collaboration')
+    assert not errors, errors

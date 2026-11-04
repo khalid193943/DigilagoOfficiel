@@ -1,0 +1,126 @@
+/* Page « Collaborer » (collaborer.html) : le jour, comme le reste du site, avec le « D » en deux pièces pour fil
+   conducteur (la barre : ce que vous apportez ; le demi-disque : ce que Digilago apporte).
+   « 12u » veut dire 12 unités d'échelle (calc(12 * var(--u))) : ordinateur dessiné pour 1440 de large,
+   téléphone pour 390 ([data-mode="M"]). */
+
+/* ─── haut de page : les deux pièces s'emboîtent, une seule fois ─── */
+.co-mark{position:relative;z-index:2;margin:46u auto 0;direction:ltr}
+.co-d{display:flex;align-items:flex-start;justify-content:center;gap:6.5u}
+.co-d>span{display:flex;flex-direction:column;align-items:center;gap:14u}
+.co-d .co-pc{display:block;width:auto;height:150u;fill:#fff;filter:drop-shadow(0 18u 28u rgba(9,39,109,.32))}
+.co-d small{font:400 13u/1 "JetBrains Mono",monospace;letter-spacing:.06em;color:#153F8C}
+.co-a{animation:coA 1.5s .55s cubic-bezier(.16,1,.3,1) both}
+.co-b{animation:coB 1.5s .55s cubic-bezier(.16,1,.3,1) both}
+@keyframes coA{from{opacity:0;transform:translateX(-130u)}to{opacity:1;transform:none}}
+@keyframes coB{from{opacity:0;transform:translateX(130u)}to{opacity:1;transform:none}}
+.co-mark-p{position:relative;z-index:2;max-width:470u;margin:22u auto 0;font-size:15u;line-height:1.55;text-align:center;color:#153F8C}
+
+/* ─── commun ─── */
+.co-sec{position:relative}
+.co .sh.left{align-items:flex-start;text-align:start;padding:0}
+.co .sh.left h2{font-size:44u}
+.co .sh.left p{font-size:16.5u;line-height:1.6}
+.co-ic{display:grid;place-items:center;width:46u;height:46u;border-radius:14u;background:linear-gradient(135deg,#2F84EC,#1F57C7);color:#fff;box-shadow:0 12u 24u -10u rgba(31,87,199,.7)}
+.co-ic svg{width:22u;height:22u}
+
+/* ─── six façons : chaque carte montre les deux pièces ─── */
+.co-ways{display:grid;grid-template-columns:repeat(3,1fr);gap:18u;margin-top:56u}
+.co-way{position:relative;display:flex;flex-direction:column;gap:10u;padding:28u 26u 24u;border-radius:24u;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 0 0 1px rgba(255,255,255,.9),0 0 0 1px rgba(14,33,78,.05),0 30u 60u -40u rgba(14,33,78,.35);color:var(--ink2);scroll-margin-top:110u}
+.co-way .co-ic{margin-bottom:8u}
+.co-way h3{margin:0;font:500 22u/1.2 Sora,sans-serif;letter-spacing:-.025em;color:var(--ink2)}
+.co-for{margin:0 0 8u;font-size:15u;line-height:1.55;color:var(--grey)}
+.co-for b{margin-inline-end:6u;font:400 12u/1 "JetBrains Mono",monospace;letter-spacing:.04em;color:#1C4FA6}
+.co-two{display:grid;grid-template-columns:1fr 1fr;margin-top:auto;border-radius:16u;background:#F6F8FC;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.co-two>div{display:grid;grid-template-columns:auto 1fr;align-content:start;align-items:center;gap:8u 9u;padding:14u 14u 16u}
+.co-two>div+div{border-inline-start:1px solid var(--line)}
+.co-two .co-pc{display:block;width:auto;height:20u;fill:#5F9FF9}
+.co-us .co-pc{fill:#1F57C7}
+.co-two b{font:500 13.5u/1.2 Sora,sans-serif;color:var(--ink2)}
+.co-two p{grid-column:1/-1;margin:0;font-size:13.5u;line-height:1.5;color:var(--grey)}
+.co-go{display:inline-flex;align-items:center;gap:8u;align-self:flex-start;margin-top:8u;padding:4u 0;font:500 14.5u/1 Sora,sans-serif;color:#1C4FA6;text-decoration:none}
+.co-go svg{width:16u;height:16u;transition:transform .3s}
+.co-go:hover svg{transform:translateX(3u)}
+.co-go:focus-visible,.co-send:focus-visible{outline:2px solid #2F84EC;outline-offset:3px;border-radius:8px}
+
+/* ─── trois étapes, puis les engagements ─── */
+.co-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:28u;margin:56u auto 0;padding:0}
+.co-num{display:block;margin-bottom:18u;font:500 96u/.9 Sora,sans-serif;letter-spacing:-.06em;background:linear-gradient(180deg,#2F6FE0 10%,rgba(47,111,224,.22));-webkit-background-clip:text;background-clip:text;color:transparent}
+.co-steps h3{margin:0 0 10u;font:500 22u/1.2 Sora,sans-serif;letter-spacing:-.02em;color:var(--ink2)}
+.co-steps p{max-width:330u;margin:0;font-size:15.5u;line-height:1.6;color:var(--grey)}
+.co-rules{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:16u;margin:56u auto 0;padding:0}
+.co-rules li{display:flex;align-items:flex-start;gap:16u;padding:24u;border-radius:20u;background:rgba(255,255,255,.72);box-shadow:0 0 0 1px rgba(14,33,78,.06)}
+.co-rules .co-ic{flex:none;width:42u;height:42u;border-radius:13u}
+.co-rules h3{margin:2u 0 6u;font:500 18u/1.25 Sora,sans-serif;color:var(--ink2)}
+.co-rules p{margin:0;font-size:15u;line-height:1.55;color:var(--grey)}
+
+/* ─── le formulaire ─── */
+.co-form-in{display:grid;grid-template-columns:4fr 7fr;gap:56u;align-items:start;padding:56u;border-radius:32u;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 0 0 1px rgba(255,255,255,.9),0 0 0 1px rgba(14,33,78,.06),0 40u 80u -50u rgba(14,33,78,.45)}
+.co-form-side{position:sticky;top:120u}
+.co-opts{display:flex;flex-wrap:wrap;gap:8u;min-width:0;margin:0 0 26u;padding:0;border:0}
+.co-opts legend{float:left;width:100%;margin:0 0 12u;padding:0;font:500 13.5u/1.2 "Instrument Sans",sans-serif;color:var(--ink2)}
+.co-opt{position:relative;display:inline-flex;cursor:pointer}
+.co-opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.co-opt span{display:inline-flex;align-items:center;gap:8u;padding-block:9u;padding-inline:11u 15u;border-radius:999px;background:#F3F6FA;box-shadow:inset 0 0 0 1px var(--line);font:500 14u/1.2 "Instrument Sans",sans-serif;color:var(--ink2);transition:background .2s,box-shadow .2s}
+.co-opt svg{width:17u;height:17u;color:#1C4FA6}
+.co-opt:hover span{box-shadow:inset 0 0 0 1px #9DB8E8}
+.co-opt input:checked+span{background:#E6EFFF;box-shadow:inset 0 0 0 1.5px #2F6FE0}
+.co-opt input:focus-visible+span{outline:2px solid #2F84EC;outline-offset:2px}
+.ask-grid{display:grid;grid-template-columns:1fr 1fr;gap:18u 14u}
+.ask-f{display:flex;flex-direction:column;gap:8u;min-width:0}
+.ask-f.full{grid-column:1/-1}
+.ask-f label{font:500 13.5u/1.2 "Instrument Sans",sans-serif;color:var(--ink2)}
+.ask-f label small{font-size:inherit;font-weight:400;color:var(--soft)}
+.ask-f input,.ask-f textarea{box-sizing:border-box;width:100%;height:52u;padding:0 16u;border:0;border-radius:13u;background:#F6F8FC;box-shadow:inset 0 0 0 1px var(--line);color:var(--ink2);font:400 max(16px,16u)/1.4 "Instrument Sans",sans-serif;outline:none;transition:background .2s,box-shadow .2s}
+.ask-f textarea{height:auto;min-height:118u;padding:14u 16u;resize:vertical}
+.ask-f input::placeholder,.ask-f textarea::placeholder{color:#9AA3B5}
+.ask-f input:focus,.ask-f textarea:focus{background:#fff;box-shadow:inset 0 0 0 1.5px #2F6FE0}
+.ask-f [aria-invalid=true]{box-shadow:inset 0 0 0 1.5px #D93A2B}
+.ask-hp{position:absolute;inset-inline-start:-9999px;width:1px;height:1px;overflow:hidden}
+.ask-err{margin:18u 0 0;padding:12u 15u;border-radius:12u;background:#FFF1EF;box-shadow:inset 0 0 0 1px #F6B9B1;color:#9B2316;font-size:14u;line-height:1.45}
+.ask-err[hidden],.ask-err [hidden]{display:none}
+.ask-go{display:flex;flex-wrap:wrap;align-items:center;gap:14u 24u;margin-top:24u}
+.co-send{display:inline-flex;align-items:center;gap:12u;height:54u;padding:0 24u;border:0;border-radius:14u;background:#0E214E;color:#fff!important;font:500 16u/1 Sora,sans-serif;letter-spacing:-.01em;text-decoration:none;cursor:pointer;transition:background .25s,transform .3s}
+.co-send:hover{background:#153F8C;transform:translateY(-1px)}
+.co-send svg{width:18u;height:18u}
+.ask-wa{display:inline-flex;align-items:center;gap:9u;font-size:15u;color:#1C4FA6!important;text-decoration:none}
+.ask-wa svg{width:18u;height:18u}
+.ask-wa:hover{text-decoration:underline;text-underline-offset:.22em}
+.ask-pv{display:flex;align-items:flex-start;gap:8u;margin:20u 0 0;font-size:12.5u;line-height:1.5;color:var(--grey)}
+.ask-pv svg{flex:none;width:14u;height:14u;margin-top:2u}
+.ask-pv a{color:inherit;text-underline-offset:.2em}
+.busy [type=submit]{cursor:progress;opacity:.75}
+.busy [type=submit] svg{display:none}
+.busy [type=submit]::after{content:"";width:16u;height:16u;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:coSpin .8s linear infinite}
+@keyframes coSpin{to{transform:rotate(360deg)}}
+.co-ok{display:flex;flex-direction:column;align-items:flex-start;gap:12u;padding:40u 36u;border-radius:22u;background:#EFFBF5;box-shadow:inset 0 0 0 1px #A8E6C9;outline:none}
+.co-ok[hidden]{display:none}
+.co-ok>svg{width:36u;height:36u;color:#17A673}
+.co-ok b{font:500 28u/1.2 Sora,sans-serif;letter-spacing:-.025em;color:var(--ink2)}
+.co-ok p{margin:0 0 10u;font-size:16.5u;line-height:1.55;color:var(--grey)}
+.co-faq{display:flex;flex-direction:column;gap:12u;max-width:880u;margin:48u auto 0}
+
+/* ─── téléphone ─── */
+[data-mode="M"] .co-mark{margin-top:34u}
+[data-mode="M"] .co-d .co-pc{height:108u}
+[data-mode="M"] .co-mark-p{font-size:14u;padding:0 10u}
+[data-mode="M"] .co-ways,[data-mode="M"] .co-steps,[data-mode="M"] .co-rules,[data-mode="M"] .co-form-in,[data-mode="M"] .ask-grid{grid-template-columns:1fr}
+[data-mode="M"] .co-ways,[data-mode="M"] .co-steps,[data-mode="M"] .co-rules{margin-top:34u;gap:14u}
+[data-mode="M"] .co-way{padding:22u 18u 20u;border-radius:22u}
+[data-mode="M"] .co-way h3{font-size:21u}
+[data-mode="M"] .co-steps{gap:26u}
+[data-mode="M"] .co-num{font-size:70u;margin-bottom:12u}
+[data-mode="M"] .co-rules li{padding:18u}
+[data-mode="M"] .co-form-in{gap:26u;padding:26u 18u;border-radius:24u}
+[data-mode="M"] .co-form-side{position:static}
+[data-mode="M"] .co .sh.left h2{font-size:32u}
+[data-mode="M"] .ask-go{flex-direction:column;align-items:stretch;text-align:center}
+[data-mode="M"] .co-send,[data-mode="M"] .ask-wa{justify-content:center}
+[data-mode="M"] .co-ok{padding:28u 20u}
+[data-mode="M"] .co-faq{margin-top:30u}
+
+@media (prefers-reduced-motion:reduce){.co-a,.co-b,.busy [type=submit]::after{animation:none!important}.co-send,.co-go svg{transition:none!important}}
+
+/* arabe : flèches dans le sens de la lecture ; le logo, lui, ne se retourne pas */
+html[dir="rtl"] .co-go svg.ar,html[dir="rtl"] .co-send svg.ar{transform:scaleX(-1)}
+html[dir="rtl"] .co-go:hover svg.ar{transform:scaleX(-1) translateX(3u)}
+html[lang="ar"] .co-for b{font-family:"Noto Sans Arabic",sans-serif}
