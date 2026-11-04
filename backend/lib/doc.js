@@ -2,6 +2,15 @@
 const { esc, money, pct, dateFr, amountWords, num, round2 } = require('./fmt');
 
 const LOGO = '<svg viewBox="14 8 38 48" aria-hidden="true"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="currentColor"/><path d="M28 10 A22 22 0 0 1 28 54 Z" fill="currentColor"/></svg>';
+/* Marque de la Gestion (famille de logos Digilago) : le D tranché en lignes de registre ; la dernière, verte et cochée,
+   est réglée. Nuit : menu de l'application. Jour : page de connexion, sur le ciel. Les documents gardent le D de l'agence. */
+const gmark = (day) => {
+  const c = day ? ['#FFFFFF', '#FFFFFF', 'rgba(255,255,255,.8)', 'rgba(255,255,255,.6)'] : ['#5F9FF9', '#DDEBFF', '#A9CBFB', '#6FA6F6'];
+  return `<svg class="gmk" viewBox="14 8 38 48" aria-hidden="true"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="${c[0]}"/><path d="M28 10A22 22 0 0 1 46.1 19.5H28Z" fill="${c[1]}"/><path d="M28 21.5H47.33A22 22 0 0 1 49.98 31H28Z" fill="${c[2]}"/><path d="M28 33H49.98A22 22 0 0 1 47.33 42.5H28Z" fill="${c[3]}"/><path d="M28 44.5H46.1A22 22 0 0 1 28 54Z" fill="#3DDC97"/><path d="M31.5 48.6l2.3 2.2 4.4-4.2" fill="none" stroke="#071433" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+};
+const GLOGO = gmark(false), GLOGO_DAY = gmark(true);
+/* Icône de l'onglet : la même marque sur une tuile de nuit */
+const GICON = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#071433"/><g transform="translate(16 13) scale(0.79) translate(-14 -8)"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="#5F9FF9"/><path d="M28 10A22 22 0 0 1 46.1 19.5H28Z" fill="#DDEBFF"/><path d="M28 21.5H47.33A22 22 0 0 1 49.98 31H28Z" fill="#A9CBFB"/><path d="M28 33H49.98A22 22 0 0 1 47.33 42.5H28Z" fill="#6FA6F6"/><path d="M28 44.5H46.1A22 22 0 0 1 28 54Z" fill="#3DDC97"/><path d="M31.5 48.6l2.3 2.2 4.4-4.2" fill="none" stroke="#071433" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></g></svg>');
 const KIND = { acompte: 'Facture d’acompte', situation: 'Facture de situation', solde: 'Facture de solde', totale: 'Facture', avoir: 'Avoir' };
 const { planOf } = require('./plans');
 
@@ -58,4 +67,4 @@ ${isQ && sig ? `<div class="d-sign ok d-esig"><span class="d-lab">${isBC ? 'Comm
 </article>`;
 }
 
-module.exports = { renderDoc, LOGO, KIND };
+module.exports = { renderDoc, LOGO, GLOGO, GLOGO_DAY, GICON, KIND };

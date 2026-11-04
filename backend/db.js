@@ -38,9 +38,13 @@ const db = {
   client,
 };
 
+/* Signature de l'agence (planche d'identité). L'ancienne phrase, si elle est encore enregistrée, est remplacée à
+   l'affichage ; une phrase personnalisée dans les réglages est gardée telle quelle. */
+const SIGNATURE = 'Votre infrastructure digitale, entre de bonnes mains. Aujourd’hui et demain.';
+const OLD_TAGLINE = 'Sites web, Google et IA pour les entreprises marocaines';
 const DEFAULTS = {
   gads_conversion_name: 'Client signé (Digilago)',
-  company_name: 'Digilago', company_tagline: 'Sites web, Google et IA pour les entreprises marocaines',
+  company_name: 'Digilago', company_tagline: SIGNATURE,
   company_address: '78, bd de la Résistance, Résidence El Marzouki, 5ᵉ étage, appt 68, Casablanca', company_phone: '+212 6 49 95 38 13', company_email: 'contact@digilago.ma',
   company_site: 'digilago.ma', company_ice: '003539032000060', company_if: '66041361', company_rc: '639275 (Casablanca)', company_patente: '32402195', company_cnss: '',
   company_legal: 'LAGODIGITAL SARL AU au capital de 100 000 DH', bank_name: 'Crédit Agricole du Maroc', bank_rib: String(process.env.BANK_RIB || '').trim(), bank_swift: 'CNCAMAMR',
@@ -211,6 +215,7 @@ async function settings() {
   if (SCACHE && Date.now() - SAT < 5000) return { ...SCACHE };
   const out = { ...DEFAULTS };
   for (const r of await db.prepare('SELECT key, value FROM settings').all()) out[r.key] = r.value;
+  if (out.company_tagline === OLD_TAGLINE) out.company_tagline = SIGNATURE;
   SCACHE = out; SAT = Date.now(); return { ...out };
 }
 async function saveSettings(obj) {

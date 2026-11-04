@@ -1,6 +1,6 @@
 'use strict';
 const { esc } = require('./fmt');
-const { LOGO } = require('./doc');
+const { LOGO, GLOGO, GICON } = require('./doc');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 /* Empreinte des fichiers statiques : chaque mise à jour est vue tout de suite malgré le cache de 7 jours. */
 const V = {};
@@ -65,11 +65,11 @@ function layout({ title, active = '', body, flash = '', actions = '' }) {
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>${esc(title)} | Digilago Gestion</title>
 <meta name="theme-color" content="#0E214E"><link rel="manifest" href="/static/manifest.webmanifest"><link rel="apple-touch-icon" href="/static/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Digilago">
-<link rel="icon" href="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 8 38 48"><rect x="16" y="10" width="8" height="44" rx="1.5" fill="#1F57C7"/><path d="M28 10 A22 22 0 0 1 28 54 Z" fill="#1F57C7"/></svg>')}">
+<link rel="icon" href="${GICON}">
 <link rel="preload" href="/static/fonts/instrument-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/static/fonts/sora-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/static/app.css?v=${ver('app.css')}"><link rel="stylesheet" href="/static/brand.css?v=${ver('brand.css')}">
 ${SPEC}</head><body class="admin">
-<aside class="side"><a class="brand" href="/"><span>${LOGO}</span><b>digilago</b><em>Gestion</em></a>
+<aside class="side"><a class="brand" href="/"><span>${GLOGO}</span><b>digilago</b><em>Gestion</em></a>
 <a class="new${active === '/assistant' ? ' on' : ''}" href="/assistant">${ICONS.spark}<span>Nouveau projet</span></a><button type="button" class="kbar" data-cmdk>${ICONS.search || ""}<span>Rechercher</span><kbd>⌘K</kbd></button><nav>${nav}</nav>
 <button type="button" class="alerts" data-alerts hidden>${ICONS.bell}<span>Activer les alertes</span></button>
 <form method="post" action="/deconnexion" class="out"><button type="submit">${ICONS.out}Déconnexion</button></form></aside>
