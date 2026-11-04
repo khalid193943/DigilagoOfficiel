@@ -155,7 +155,7 @@ def test_menu_plein_ecran_telephone(page, base_url, name):
     assert page.locator('#dock').count() == 0
     page.click('#mb'); page.wait_for_timeout(1000)
     assert 'open' in page.locator('#sheet').get_attribute('class')
-    assert page.locator('#sheet .fsm-nav a').count() == 8   # avec « Lab » (Digilago Lab)
+    assert page.locator('#sheet .fsm-nav a').count() == 7   # le Lab est dans le pied de page, pas dans le menu
     page.click('#closeBtn'); page.wait_for_timeout(900)
     assert 'open' not in page.locator('#sheet').get_attribute('class')
     assert not errors, errors
@@ -1081,13 +1081,56 @@ def _ld(h):
 
 
 @pytest.mark.parametrize('name', PAGES)
-def test_lab_et_collaborer_dans_les_menus(name):
-    """« Lab » dans le menu du haut et dans le menu du téléphone ; Lab et Collaborer dans le pied de page."""
+def test_lab_et_collaborer_dans_le_pied_de_page(name):
+    """Le Lab n'est pas dans les menus (haut et téléphone) ; « Digilago Lab » et « Collaborer » sont dans le pied de page."""
     h = _lire(name)
-    assert re.search(r'<div class="fl">.*?<a href="lab\.html">Lab</a>', h, re.S), 'lien « Lab » absent du menu'
-    assert re.search(r'<nav class="fsm-nav"[^>]*>.*?href="lab\.html"', h, re.S), 'lien « Lab » absent du menu du téléphone'
+    haut = re.search(r'<div class="fl">(.*?)</div>', h, re.S)
+    assert not haut or 'href="lab.html"' not in haut.group(1), 'le Lab ne doit pas être dans le menu du haut'
+    tel = re.search(r'<nav class="fsm-nav"[^>]*>(.*?)</nav>', h, re.S)
+    assert not tel or 'href="lab.html"' not in tel.group(1), 'le Lab ne doit pas être dans le menu du téléphone'
     pied = re.search(r'<nav class="f-col" aria-label="Navigation">(.*?)</nav>', h, re.S).group(1)
     assert pied.count('href="lab.html"') == 1 and pied.count('href="collaborer.html"') == 1, 'pied de page'
+
+
+@pytest.mark.parametrize('pre', ['', 'en/', 'ar/'])
+def test_encart_lab_sur_services_secteurs_a_propos(pre):
+    """Un encart présente le Lab en bas de Services, Secteurs et À propos, avant le bandeau « On vous rappelle »."""
+    for name in ('services.html', 'secteurs.html', 'a-propos.html'):
+        h = _lire(pre + name)
+        b = re.search(r'<!--dg:lband-->(.*?)<!--/dg:lband-->', h, re.S)
+        assert b, pre + name
+        assert all(f'href="{x}"' in b.group(1) for x in ('lab.html', 'lab-radar.html', 'lab-gestion.html')), pre + name
+        assert h.count('<style id="lband-css">') == 1
+
+
+def test_lab_rien_de_confidentiel():
+    """Pas de devis, de facture, de comptabilité ni de publicité à l'écran, ni de détail technique (outils, sources)."""
+    interdits = ('gestion-devis', 'gestion-signature', 'gestion-comptabilite', 'gestion-publicite')
+    for f in os.listdir(os.path.join(SITE, 'assets', 'lab')):
+        assert not f.startswith(interdits), f
+    for pre in ('', 'en/', 'ar/'):
+        for name in LAB:
+            h = _lire(pre + name)
+            assert not any(x in h for x in interdits), pre + name
+            corps = re.sub(r'<script\b.*?</script>|<style\b.*?</style>', '', h, flags=re.S)
+            for mot in ('Sous le capot', 'Under the hood', 'Geoapify', 'Overture', 'Fastify', 'PostgreSQL', 'class="lab-log"', 'class="lab-spec"'):
+                assert mot not in corps, (pre + name, mot)
+    # le téléphone a les vraies proportions d'un iPhone (écran 393 × 798 sous la barre d'état)
+    for n in ('radar-terrain-600.webp', 'gestion-suivi-600.webp'):
+        assert _taille_webp(os.path.join(SITE, 'assets', 'lab', n)) == (600, 1218), n
+
+
+def _taille_webp(chemin):
+    """Largeur et hauteur d'une image WebP, lues dans son en-tête (sans bibliothèque d'images)."""
+    d = open(chemin, 'rb').read(30)
+    assert d[:4] == b'RIFF' and d[8:12] == b'WEBP', chemin
+    k = d[12:16]
+    if k == b'VP8X':
+        return 1 + int.from_bytes(d[24:27], 'little'), 1 + int.from_bytes(d[27:30], 'little')
+    if k == b'VP8 ':
+        return int.from_bytes(d[26:28], 'little') & 0x3FFF, int.from_bytes(d[28:30], 'little') & 0x3FFF
+    b = int.from_bytes(d[21:25], 'little')
+    return (b & 0x3FFF) + 1, ((b >> 14) & 0x3FFF) + 1
 
 
 @pytest.mark.parametrize('pre', ['', 'en/', 'ar/'])

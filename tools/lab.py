@@ -8,9 +8,13 @@ Fabrique trois pages, en français (l'anglais et l'arabe suivent avec le reste d
 Les pages reprennent l'en-tête et le pied de page du site (depuis services.html), dans un décor de nuit qui leur
 est propre (src/css/lab.src.css, inséré dans ces trois pages seulement). Chaque page finit par « Profiter d'un
 projet » (démo, outil sur mesure, être prévenu, partenariat), et l'assistant du Lab attend en bas à droite : les deux
-envoient la demande à la Gestion comme les autres formulaires du site (src/js/lab.js, inséré dans ces pages). Le script ajoute
-« Lab » au menu du haut, au menu du téléphone et au pied de page de toutes les pages, et range les traductions
-anglaises et arabes dans src/i18n/ (sans écraser une traduction déjà relue).
+envoient la demande à la Gestion comme les autres formulaires du site (src/js/lab.js, inséré dans ces pages).
+Le Lab n'est pas dans le menu : « Digilago Lab » est dans le pied de page de toutes les pages, et un encart le présente
+en bas de Services, Secteurs et À propos (src/css/lab-band.src.css). Le script range les traductions anglaises et
+arabes dans src/i18n/ (sans écraser une traduction déjà relue).
+
+Confidentialité : aucune capture de devis, de facture, de comptabilité ni de publicité (montants, identifiants légaux,
+logo sur un document) ; aucun détail technique (outils, sources, sécurité) n'est publié.
 
 Règles de contenu : rien d'inventé. Les textes décrivent ce que font réellement les deux applications (voir
 leurs README) ; les captures (site/assets/lab/) sont faites avec des données de démonstration, ce que les pages
@@ -121,16 +125,11 @@ S = {
     'web_phone': ('Ordinateur et téléphone', 'Desktop and phone', 'الحاسوب والهاتف'),
     'nov': ('Novembre 2026', 'November 2026', 'نونبر 2026'),
     'rules_k': ('Nos règles', 'Our rules', 'قواعدنا'),
-    'spec_k': ('Sous le capot', 'Under the hood', 'من الداخل'),
-    'log_k': ('Journal', 'Changelog', 'سجل التحديثات'),
-    'log_h1': ('Ce qui a changé', 'What changed', 'ما الذي تغيّر'),
-    'log_h2': ('dernièrement.', 'recently.', 'مؤخراً.'),
-    'spec_h1': ('Les choix techniques,', 'The technical choices,', 'الاختيارات التقنية،'),
-    'spec_h2': ('en clair.', 'in plain words.', 'بوضوح.'),
     'prev': ('Projet précédent', 'Previous project', 'المشروع السابق'),
     'next': ('Projet suivant', 'Next project', 'المشروع التالي'),
     'all': ('Tout le Lab', 'The whole Lab', 'كل المختبر'),
     'langs': ('Messages en français et en arabe', 'Messages in French and Arabic', 'رسائل بالفرنسية والعربية'),
+    'more': ('Et aussi', 'And also', 'وأيضاً'),
 }
 CODE = {i: ('LAB-%02d' % i,) * 3 for i in (1, 2, 3)}
 RADAR = ('Radar', 'Radar', 'الرادار')
@@ -154,8 +153,10 @@ def browser(name, alt, label, eager=False, sizes='(max-width: 760px) 92vw, 760px
         T(label), img(name, alt, eager=eager, sizes=sizes))
 
 
-def phone(name, alt, eager=False, sizes='(max-width: 760px) 40vw, 300px'):
-    return '<div class="lab-ph">%s</div>' % img(name, alt, big='600', small='390', sizes=sizes, eager=eager, w=600, h=1007)
+def phone(name, alt, eager=False, sizes='(max-width: 760px) 60vw, 330px'):
+    """Un vrai téléphone : cadre, îlot, boutons sur les côtés et barre d'état (dessinés en CSS), écran 393 × 798."""
+    return '<div class="lab-ph"><div class="lab-ph-s">%s</div></div>' % img(
+        name, alt, big='600', small='390', sizes=sizes, eager=eager, w=600, h=1218)
 
 
 def crumbs(items):
@@ -495,15 +496,6 @@ def bot(kind):
 def rules(items, cls=''):
     return '<ul class="lab-rules%s">%s</ul>' % ((' ' + cls) if cls else '', ''.join(
         '<li class="rv d%d">%s<h3>%s</h3><p>%s</p></li>' % (i % 3 + 1, svg(ic), T(t), T(p)) for i, (ic, t, p) in enumerate(items)))
-
-
-def spec(items):
-    return '<dl class="lab-spec">%s</dl>' % ''.join('<div class="rv"><dt>%s</dt><dd>%s</dd></div>' % (T(k), T(v)) for k, v in items)
-
-
-def journal(items):
-    return '<ol class="lab-log">%s</ol>' % ''.join(
-        '<li class="rv"><time datetime="%s">%s</time><span>%s</span></li>' % (d, T(S['nov']), T(t)) for d, t in items)
 
 
 def feats(items):
@@ -859,43 +851,6 @@ RA['rules'] = [
       'A correction made by hand is never overwritten, and every duplicate merge can be undone.',
       'التصحيح اليدوي لا يُستبدل أبداً، وكل دمج للمكررات يمكن إلغاؤه.')),
 ]
-RA['spec'] = [
-    (('Interface', 'Interface', 'الواجهة'), ('React et Vite ; application installable sur téléphone',
-                                              'React and Vite; installable on the phone', 'React وVite؛ تطبيق قابل للتثبيت على الهاتف')),
-    (('Serveur', 'Server', 'الخادم'), ('Fastify et TypeScript', 'Fastify and TypeScript', 'Fastify وTypeScript')),
-    (('Données', 'Data', 'البيانات'), ('PostgreSQL, avec une file de travail qui ne fait jamais deux fois la même tâche',
-                                       'PostgreSQL, with a work queue that never runs the same task twice',
-                                       'PostgreSQL، مع قائمة مهام لا تنفذ المهمة نفسها مرتين أبداً')),
-    (('Temps réel', 'Real time', 'الوقت الحقيقي'), ('Les détections arrivent en direct à l’écran', 'Detections appear live on screen',
-                                                     'تظهر عمليات الرصد مباشرة على الشاشة')),
-    (('Sources ouvertes', 'Open sources', 'مصادر مفتوحة'), ('OpenStreetMap, Overture Maps, Geoapify et les listes de data.gov.ma',
-                                                         'OpenStreetMap, Overture Maps, Geoapify and the lists on data.gov.ma',
-                                                         'OpenStreetMap وOverture Maps وGeoapify وقوائم data.gov.ma')),
-    (('Vérification', 'Verification', 'التحقق'), ('Google Places, dans le respect de ses conditions d’utilisation',
-                                                  'Google Places, within its terms of use', 'Google Places، في احترام لشروط استعماله')),
-    (('Sécurité', 'Security', 'الأمان'), ('Sessions protégées, rôles, protection contre la falsification de requêtes, journal des actions',
-                                          'Protected sessions, roles, protection against request forgery, action log',
-                                          'جلسات محمية، وأدوار، وحماية من تزوير الطلبات، وسجل للعمليات')),
-    (('Fiabilité', 'Reliability', 'الموثوقية'), ('Tests automatiques à chaque modification, sauvegarde chiffrée chaque semaine',
-                                                 'Automated tests on every change, encrypted backup every week',
-                                                 'اختبارات آلية عند كل تعديل، ونسخة احتياطية مشفّرة كل أسبوع')),
-]
-RA['log'] = [
-    ('2026-11-04', ('Connexion des membres de l’équipe depuis le téléphone, plus fiable.',
-                    'More reliable sign-in for team members on the phone.', 'تسجيل دخول أكثر موثوقية لأعضاء الفريق من الهاتف.')),
-    ('2026-11-03', ('Carte mobile qu’on déplace et qu’on zoome au doigt.', 'A mobile map you can pan and zoom with your finger.',
-                    'خريطة على الهاتف تُحرَّك وتُكبَّر بالإصبع.')),
-    ('2026-11-03', ('22 secteurs et plus de 140 métiers, avec un balayage par métier.',
-                    '22 sectors and more than 140 trades, with sweeps by trade.', '22 قطاعاً وأكثر من 140 نشاطاً، مع مسح حسب النشاط.')),
-    ('2026-11-03', ('Liaison avec la Gestion : « Préparer le devis », statuts et montants synchronisés.',
-                    'Link with Gestion: “Prepare the quote”, synced statuses and amounts.',
-                    'الربط مع تطبيق التدبير: «تحضير عرض السعر»، والحالات والمبالغ متزامنة.')),
-    ('2026-11-03', ('Messages en français et en arabe, relances programmées et application mobile.',
-                    'Messages in French and Arabic, scheduled follow-ups and a mobile app.',
-                    'رسائل بالفرنسية والعربية، وتذكيرات مبرمجة، وتطبيق على الهاتف.')),
-    ('2026-11-03', ('Travail de nuit, tests automatiques et sauvegarde chiffrée.', 'Night work, automated tests and encrypted backups.',
-                    'عمل ليلي، واختبارات آلية، ونسخ احتياطية مشفّرة.')),
-]
 
 
 def page_project(P, kind, code, num, crumb_name, hero_img, hero_ph, neighbours):
@@ -906,18 +861,16 @@ def page_project(P, kind, code, num, crumb_name, hero_img, hero_ph, neighbours):
         crumbs([(S['home'], 'index.html'), (S['lab'], 'lab.html'), (crumb_name, None)]), T(code), status('int'),
         T(P['h1a']), T(P['h1b']), T(P['lead']), T(S['made']), T(S['web_phone']), T(S['langs']),
         browser(hero_img, P['hero_alt'], P['label'], eager=True, sizes='(max-width: 760px) 92vw, 1184px'),
-        phone(hero_ph, P['hero_alt2'], sizes='(max-width: 760px) 30vw, 236px'))
+        phone(hero_ph, P['hero_alt2'], sizes='(max-width: 760px) 34vw, 290px'))
     why = ('<section class="lab-sec"><div class="lab-w"><div class="lab-intro"><div class="lab-head"><p class="lab-k rv">%s</p>'
            '<h2 class="rv d1">%s <em>%s</em></h2></div><p class="lab-p rv d2">%s</p></div></div></section>') % (
         T(P['why_k']), T(P['why_h1']), T(P['why_h2']), T(P['why_p']))
-    ft = '<section class="lab-sec"><div class="lab-w">%s%s<p class="lab-note rv">%s%s</p></div></section>' % (
-        head(P['f_k'], P['f_h1'], P['f_h2']), feats(P['feats']), svg('info'), T(S['demo_note']))
+    # « Et aussi » : les fonctions présentées sans capture (aucun devis, aucune facture, aucun montant à l'écran)
+    more = ('<div class="lab-more"><p class="lab-k rv">%s</p>%s</div>' % (T(S['more']), rules(P['extras']))) if P.get('extras') else ''
+    ft = '<section class="lab-sec"><div class="lab-w">%s%s%s<p class="lab-note rv">%s%s</p></div></section>' % (
+        head(P['f_k'], P['f_h1'], P['f_h2']), feats(P['feats']), more, svg('info'), T(S['demo_note']))
     rl = '<section class="lab-sec"><div class="lab-w">%s%s</div></section>' % (
         head(S['rules_k'], P['rules_h1'], P['rules_h2']), rules(P['rules']))
-    sp = '<section class="lab-sec"><div class="lab-w">%s%s</div></section>' % (
-        head(S['spec_k'], S['spec_h1'], S['spec_h2']), spec(P['spec']))
-    lg = '<section class="lab-sec"><div class="lab-w">%s%s</div></section>' % (
-        head(S['log_k'], S['log_h1'], S['log_h2']), journal(P['log']))
     def nlink(code, name, href, side, cls=''):
         # une seule phrase par langue (« Projet suivant · LAB-02 ») : traduite d'un bloc
         small = T(S['all']) if href == 'lab.html' else T(tuple('%s · %s' % (a, b) for a, b in zip(S[side], code)))
@@ -925,7 +878,7 @@ def page_project(P, kind, code, num, crumb_name, hero_img, hero_ph, neighbours):
     (pc, pn, ph), (nc, nn, nh) = neighbours
     nb = ('<section class="lab-sec"><div class="lab-w"><nav class="lab-next" aria-label="%s">%s%s</nav></div></section>') % (
         A(S['lab_full']), nlink(pc, pn, ph, 'prev'), nlink(nc, nn, nh, 'next', ' class="r"'))
-    body = hero + why + ft + rl + sp + lg + profit(kind) + nb
+    body = hero + why + ft + rl + profit(kind) + nb
     return body
 
 
@@ -960,9 +913,9 @@ GE = {
     'hero_alt': ('Le tableau de bord de la Gestion : les actions du jour et l’objectif d’allumer tout le Maroc (données de démonstration)',
                  'The Gestion dashboard: today’s actions and the goal of lighting up all of Morocco (demo data)',
                  'لوحة قيادة تطبيق التدبير: مهام اليوم وهدف إضاءة المغرب كله (بيانات تجريبية)'),
-    'hero_alt2': ('La signature d’un devis sur téléphone, depuis le lien envoyé au client (données de démonstration)',
-                  'Signing a quote on a phone, from the link sent to the client (demo data)',
-                  'توقيع عرض سعر على الهاتف من الرابط المرسَل إلى الزبون (بيانات تجريبية)'),
+    'hero_alt2': ('Le suivi d’un projet sur le téléphone du client (données de démonstration)',
+                  'A project being tracked on the client’s phone (demo data)',
+                  'تتبع مشروع على هاتف الزبون (بيانات تجريبية)'),
     'why_k': ('Le point de départ', 'The starting point', 'نقطة الانطلاق'),
     'why_h1': ('Une agence vit de ses demandes,', 'An agency lives on its requests,', 'الوكالة تعيش من طلباتها،'),
     'why_h2': ('pas de fichiers éparpillés.', 'not on scattered files.', 'لا من ملفات مبعثرة.'),
@@ -973,7 +926,7 @@ GE = {
               'طلبات على WhatsApp، وعروض أسعار في جدول، وفواتير بصيغة PDF، وأداءات يجب التحقق منها: كل شيء يضيع بين '
               'مكالمتين. يجمع تطبيق التدبير هذا العمل في أداة واحدة، صُممت لشركة مغربية.'),
     'f_k': ('Ce qu’elle fait', 'What it does', 'ما يقوم به'),
-    'f_h1': ('Six moments,', 'Six moments,', 'ست لحظات،'),
+    'f_h1': ('L’essentiel,', 'The essentials,', 'الأساسي،'),
     'f_h2': ('du premier appel à la livraison.', 'from the first call to delivery.', 'من أول مكالمة إلى التسليم.'),
     'rules_h1': ('Des chiffres justes,', 'Accurate figures,', 'أرقام دقيقة،'),
     'rules_h2': ('des accès protégés.', 'protected access.', 'وولوج محمي.'),
@@ -1009,39 +962,7 @@ GE['feats'] = [
      'alt': ('L’assistant « Nouveau projet » de la Gestion, qui guide l’appel et estime le devis',
              'Gestion’s “New project” assistant, guiding the call and estimating the quote',
              'مساعد «مشروع جديد» في تطبيق التدبير، يوجّه المكالمة ويقدّر عرض السعر')},
-    {'n': ('03 · Signature', '03 · Signature', '03 · التوقيع'), 'kind': 'duo',
-     'h': ('Signé en ligne, depuis le téléphone.', 'Signed online, from the phone.', 'موقَّع عبر الإنترنت من الهاتف.'),
-     'p': ('Le client ouvre son lien, reçoit un code de vérification et signe au doigt. Le bon de commande se crée tout '
-           'seul, avec un certificat de signature et son dossier de preuve.',
-           'The client opens their link, receives a verification code and signs with a finger. The purchase order is '
-           'created automatically, with a signature certificate and its evidence file.',
-           'يفتح الزبون رابطه، ويتوصل برمز تحقق، ويوقّع بإصبعه. ويُنشأ طلب الشراء تلقائياً، مع شهادة توقيع وملف إثباتها.'),
-     'facts': [('Code à six chiffres, valable dix minutes', 'Six-digit code, valid for ten minutes', 'رمز من ستة أرقام صالح لعشر دقائق'),
-               ('Empreinte du devis signé : toute modification se voit', 'Fingerprint of the signed quote: any change shows',
-                'بصمة لعرض السعر الموقّع: أي تعديل يظهر')],
-     'img': 'gestion-devis', 'label': GE['label'], 'img2': 'gestion-signature',
-     'alt': ('Un devis dans la Gestion, avec son échéancier et ses factures (données de démonstration)',
-             'A quote in Gestion, with its payment schedule and invoices (demo data)',
-             'عرض سعر في تطبيق التدبير مع جدول الأداء والفواتير (بيانات تجريبية)'),
-     'alt2': ('La page de signature du devis, sur le téléphone du client (données de démonstration)',
-              'The quote signing page, on the client’s phone (demo data)',
-              'صفحة توقيع عرض السعر على هاتف الزبون (بيانات تجريبية)')},
-    {'n': ('04 · Comptabilité', '04 · Bookkeeping', '04 · المحاسبة'),
-     'h': ('Une comptabilité marocaine, au centime près.', 'Moroccan bookkeeping, to the cent.', 'محاسبة مغربية دقيقة حتى السنتيم.'),
-     'p': ('Acompte et solde, trois tranches ou mensualités : chaque échéance se facture d’un clic. TVA par période, '
-           'écritures au plan comptable marocain et un accès en lecture seule pour le comptable.',
-           'Deposit and balance, three instalments or monthly payments: each due date is invoiced in one click. VAT by '
-           'period, entries in the Moroccan chart of accounts and read-only access for the accountant.',
-           'عربون وباقي، أو ثلاث دفعات، أو أقساط شهرية: كل استحقاق يُفوتر بنقرة. الضريبة على القيمة المضافة حسب الفترة، '
-           'وقيود وفق المخطط المحاسبي المغربي، وولوج للقراءة فقط لفائدة المحاسب.'),
-     'facts': [('ICE, IF et RC sur chaque facture', 'ICE, IF and RC on every invoice', 'ICE وIF وRC في كل فاتورة'),
-               ('Avoirs au lieu de suppressions, mois clôturés verrouillés', 'Credit notes instead of deletions, closed months locked',
-                'إشعارات دائنة بدل الحذف، والأشهر المختومة مقفلة')],
-     'img': 'gestion-comptabilite', 'label': GE['label'],
-     'alt': ('L’espace Comptabilité de la Gestion : TVA par trimestre et contrôles avant envoi (données de démonstration)',
-             'Gestion’s bookkeeping area: VAT by quarter and checks before sending (demo data)',
-             'فضاء المحاسبة في تطبيق التدبير: الضريبة على القيمة المضافة حسب الفصل والمراقبات قبل الإرسال (بيانات تجريبية)')},
-    {'n': ('05 · Suivi client', '05 · Client tracking', '05 · تتبع الزبون'), 'kind': 'ph',
+    {'n': ('03 · Suivi client', '03 · Client tracking', '03 · تتبع الزبون'), 'kind': 'ph',
      'h': ('Le client suit son projet.', 'The client follows their project.', 'الزبون يتتبع مشروعه.'),
      'p': ('Un lien privé montre l’avancement, ce qu’il reste à fournir, les fichiers et les messages, du lancement à la '
            'livraison. Sans mot de passe, et jamais indexé par Google.',
@@ -1056,21 +977,20 @@ GE['feats'] = [
      'alt': ('L’espace de suivi d’un projet, sur le téléphone du client (données de démonstration)',
              'A project tracking space, on the client’s phone (demo data)',
              'فضاء تتبع مشروع على هاتف الزبون (بيانات تجريبية)')},
-    {'n': ('06 · Publicité', '06 · Advertising', '06 · الإشهار'),
-     'h': ('Chaque dirham de publicité, suivi.', 'Every advertising dirham, tracked.', 'كل درهم إشهار، متتبَّع.'),
-     'p': ('Chaque demande garde sa provenance : Meta, Google, réseaux sociaux ou assistants IA. Coût par demande, coût '
-           'par client signé et retour sur la dépense, campagne par campagne.',
-           'Every request keeps its source: Meta, Google, social networks or AI assistants. Cost per request, cost per '
-           'signed client and return on spend, campaign by campaign.',
-           'كل طلب يحتفظ بمصدره: Meta، أو Google، أو الشبكات الاجتماعية، أو مساعدات الذكاء الاصطناعي. تكلفة الطلب، وتكلفة '
-           'الزبون الموقِّع، والعائد على الإنفاق، حملةً حملة.'),
-     'facts': [('Clients signés renvoyés à Meta, avec l’accord du visiteur', 'Signed clients reported to Meta, with the visitor’s consent',
-                'الزبناء الموقِّعون يُبلَّغ بهم Meta بموافقة الزائر'),
-               ('Fichier des conversions prêt pour Google Ads', 'Conversion file ready for Google Ads', 'ملف التحويلات جاهز لـ Google Ads')],
-     'img': 'gestion-publicite', 'label': GE['label'],
-     'alt': ('La page Publicité de la Gestion : demandes, clients signés et dépenses par canal (données de démonstration)',
-             'Gestion’s Advertising page: requests, signed clients and spend by channel (demo data)',
-             'صفحة الإشهار في تطبيق التدبير: الطلبات والزبناء الموقِّعون والإنفاق حسب القناة (بيانات تجريبية)')},
+]
+GE['extras'] = [
+    ('facts', ('Signé en ligne, depuis le téléphone', 'Signed online, from the phone', 'موقَّع عبر الإنترنت من الهاتف'),
+     ('Le client ouvre son lien, reçoit un code de vérification et signe au doigt. Le bon de commande se crée tout seul.',
+      'The client opens their link, receives a verification code and signs with a finger. The purchase order is created automatically.',
+      'يفتح الزبون رابطه، ويتوصل برمز تحقق، ويوقّع بإصبعه. ويُنشأ طلب الشراء تلقائياً.')),
+    ('cent', ('Une comptabilité marocaine', 'Moroccan bookkeeping', 'محاسبة مغربية'),
+     ('Chaque échéance se facture d’un clic, la TVA se calcule par période et le comptable a son accès en lecture seule.',
+      'Each due date is invoiced in one click, VAT is computed by period and the accountant has read-only access.',
+      'كل استحقاق يُفوتر بنقرة، والضريبة على القيمة المضافة تُحسب حسب الفترة، وللمحاسب ولوج للقراءة فقط.')),
+    ('eye', ('Chaque dirham de publicité, suivi', 'Every advertising dirham, tracked', 'كل درهم إشهار، متتبَّع'),
+     ('Chaque demande garde sa provenance : coût par demande et par client signé, campagne par campagne.',
+      'Every request keeps its source: cost per request and per signed client, campaign by campaign.',
+      'كل طلب يحتفظ بمصدره: تكلفة الطلب وتكلفة الزبون الموقِّع، حملةً حملة.')),
 ]
 GE['rules'] = [
     ('cent', ('Des montants exacts', 'Exact amounts', 'مبالغ دقيقة'),
@@ -1096,49 +1016,18 @@ GE['rules'] = [
      ('Toutes les données, sans aucun mot de passe ni jeton dedans.', 'All the data, without a single password or token inside.',
       'كل البيانات، دون أي كلمة مرور أو رمز بداخلها.')),
 ]
-GE['spec'] = [
-    (('Serveur', 'Server', 'الخادم'), ('Node.js et Express ; pages préparées sur le serveur, rapides sur tout téléphone',
-                                       'Node.js and Express; pages prepared on the server, fast on any phone',
-                                       'Node.js وExpress؛ صفحات تُحضَّر في الخادم، سريعة على أي هاتف')),
-    (('Données', 'Data', 'البيانات'), ('libSQL (Turso), compatible SQLite', 'libSQL (Turso), SQLite-compatible', 'libSQL (Turso) المتوافقة مع SQLite')),
-    (('Messagerie', 'Messaging', 'المراسلة'), ('WhatsApp Cloud API et e-mail, 22 modèles de messages en français et en arabe',
-                                               'WhatsApp Cloud API and e-mail, 22 message templates in French and Arabic',
-                                               'WhatsApp Cloud API والبريد الإلكتروني، و22 نموذج رسالة بالفرنسية والعربية')),
-    (('Signature', 'Signature', 'التوقيع'), ('Code à usage unique et empreinte SHA-256 du devis signé',
-                                             'One-time code and SHA-256 fingerprint of the signed quote',
-                                             'رمز للاستعمال مرة واحدة وبصمة SHA-256 لعرض السعر الموقّع')),
-    (('Publicité', 'Advertising', 'الإشهار'), ('API Conversions de Meta, conversions hors ligne pour Google Ads',
-                                               'Meta Conversions API, offline conversions for Google Ads',
-                                               'Meta Conversions API، وتحويلات خارج الإنترنت لـ Google Ads')),
-    (('Téléphone', 'Phone', 'الهاتف'), ('Application installable, avec la barre d’onglets en bas', 'Installable app, with a bottom tab bar',
-                                        'تطبيق قابل للتثبيت، مع شريط تبويب في الأسفل')),
-    (('Liaison', 'Integration', 'الربط'), ('Reliée au Radar par des appels signés, refusés après cinq minutes',
-                                            'Linked to the Radar through signed calls, rejected after five minutes',
-                                            'مرتبط بالرادار عبر طلبات موقّعة تُرفض بعد خمس دقائق')),
-    (('Fiabilité', 'Reliability', 'الموثوقية'), ('Tests automatiques à chaque modification', 'Automated tests on every change',
-                                                 'اختبارات آلية عند كل تعديل')),
-]
-GE['log'] = [
-    ('2026-11-03', ('Coût par demande fiable : aucun chiffre affiché tant qu’aucune dépense n’est saisie.',
-                    'Reliable cost per request: no figure shown until an expense is entered.',
-                    'تكلفة طلب موثوقة: لا يُعرض أي رقم ما دام لم يُسجَّل أي مصروف.')),
-    ('2026-11-03', ('Page Publicité et signature électronique des devis.', 'Advertising page and electronic signature of quotes.',
-                    'صفحة الإشهار والتوقيع الإلكتروني لعروض الأسعار.')),
-    ('2026-11-03', ('Liaison avec le Radar et design aligné sur digilago.ma.', 'Link with the Radar and design aligned with digilago.ma.',
-                    'الربط مع الرادار وتصميم منسجم مع digilago.ma.')),
-]
 
 
 def page_gestion():
-    body = page_project(GE, 'gestion', CODE[2], '02', GE['name'], 'gestion-tableau', 'gestion-signature',
+    body = page_project(GE, 'gestion', CODE[2], '02', GE['name'], 'gestion-tableau', 'gestion-suivi',
                         ((CODE[1], RADAR, 'lab-radar.html'), (None, S['lab_full'], 'lab.html')))
     return 'gestion', GE['title'], GE['desc'], body
 
 
 # ─── assemblage ──────────────────────────────────────────────────────────
 
-def css():
-    src = open(os.path.join(ROOT, 'src', 'css', 'lab.src.css'), encoding='utf-8').read()
+def css(name='lab.src.css'):
+    src = open(os.path.join(ROOT, 'src', 'css', name), encoding='utf-8').read()
     out = re.sub(r'(?<![\w.#-])(-?\d+(?:\.\d+)?)u\b', r'calc(\1 * var(--u))', src)
     out = re.sub(r'/\*.*?\*/', '', out, flags=re.S)
     out = re.sub(r'\s+', ' ', out)
@@ -1175,26 +1064,17 @@ def build(hd, tail, kind, title, desc, body, style, js):
 
 
 def nav_links(h):
-    """« Lab » dans la barre du haut, le menu plein écran et le pied de page (idempotent)."""
-    lab = T(S['lab'])
-    old = '<a href="realisations.html">'
+    """« Digilago Lab » dans le pied de page de toutes les pages (idempotent). Le Lab n'est pas dans le menu du haut
+    ni dans le menu du téléphone : on l'en retire s'il y était (il a sa place en bas de Services, Secteurs, À propos)."""
     fl = h.find('<div class="fl">')
-    if fl >= 0 and '<a href="lab.html">' not in h[fl:h.find('</div>', fl)]:
-        j = h.find(old, fl)
-        if 0 <= j < h.find('</div>', fl):
-            k = h.index('</a>', j) + 4
-            h = h[:k] + '<a href="lab.html">%s</a>' % lab + h[k:]
+    if fl >= 0:
+        end = h.find('</div>', fl)
+        h = h[:fl] + h[fl:end].replace('<a href="lab.html">%s</a>' % T(S['lab']), '') + h[end:]
     m = re.search(r'<nav class="fsm-nav" aria-label="Pages">(.*?)</nav>', h, re.S)
-    if m and 'href="lab.html"' not in m.group(1):
-        items = re.findall(r'<a [^>]*href="[^"]+"[^>]*>.*?</a>', m.group(1), re.S)
-        out = []
-        for it in items:
-            out.append(it)
-            if 'href="realisations.html"' in it:
-                arrow = re.search(r'<svg.*?</svg>', it, re.S)
-                out.append('<a href="lab.html"><small>00</small><span>%s</span>%s</a>' % (lab, arrow.group(0) if arrow else ''))
+    if m and 'href="lab.html"' in m.group(1):
+        items = [it for it in re.findall(r'<a [^>]*href="[^"]+"[^>]*>.*?</a>', m.group(1), re.S) if 'href="lab.html"' not in it]
         fixed = []
-        for i, it in enumerate(out):
+        for i, it in enumerate(items):
             it = re.sub(r' style="--i:\d+"', '', it)
             it = it.replace('<a ', '<a style="--i:%d" ' % i, 1)
             it = re.sub(r'<small>\d+</small>', '<small>%02d</small>' % (i + 1), it, count=1)
@@ -1208,16 +1088,58 @@ def nav_links(h):
     return h
 
 
+# ─── l'encart « Digilago Lab » en bas de Services, Secteurs et À propos ─────────────────────────────
+
+BAND = {
+    'h1': ('Nous construisons aussi', 'We also build', 'نبني أيضاً'),
+    'h2': ('nos propres applications.', 'our own apps.', 'تطبيقاتنا الخاصة.'),
+    'p': ('Le Radar trouve nos futurs clients partout au Maroc. La Gestion fait tourner l’agence, de la demande à la '
+          'livraison. Deux outils que nous utilisons chaque jour, et la preuve de ce que nous savons construire pour vous.',
+          'The Radar finds our future clients all over Morocco. Gestion runs the agency, from request to delivery. Two '
+          'tools we use every day, and proof of what we can build for you.',
+          'الرادار يعثر على زبنائنا المقبلين في كل أنحاء المغرب. وتطبيق التدبير يُسيّر الوكالة من الطلب إلى التسليم. '
+          'أداتان نستعملهما كل يوم، ودليل على ما نستطيع بناءه لك.'),
+    'btn': ('Découvrir le Lab', 'Explore the Lab', 'اكتشف المختبر'),
+}
+BAND_PAGES = ('services.html', 'secteurs.html', 'a-propos.html')
+BAND_START, BAND_END = '<!--dg:lband-->', '<!--/dg:lband-->'
+
+
+def band():
+    card = lambda href, im, code, name, tag: (
+        '<a class="lband-card" href="%s"><img src="assets/lab/%s-960.webp" width="960" height="600" alt="" loading="lazy" '
+        'decoding="async"><small>%s</small><b>%s</b><span>%s</span></a>') % (href, im, T(code), T(name), T(tag))
+    return (BAND_START + '<section class="blk lband-sec" id="lab"><div class="lband w rv">'
+            '<div class="lband-txt"><p class="lband-k"><i aria-hidden="true"></i>%s</p><h2>%s <em>%s</em></h2><p>%s</p>'
+            '<a class="lband-btn" href="lab.html">%s%s</a></div><div class="lband-cards">%s%s</div></div></section>' + BAND_END) % (
+        T(S['lab_full']), T(BAND['h1']), T(BAND['h2']), T(BAND['p']), T(BAND['btn']), ARR.replace('<svg', '<svg class="ar"', 1),
+        card('lab-radar.html', 'radar-carte', CODE[1], RADAR, LAB['radar_tag']),
+        card('lab-gestion.html', 'gestion-tableau', CODE[2], GE['name'], LAB['gestion_tag']))
+
+
+def add_band(h, style):
+    """Encart avant le bandeau « On vous rappelle » (ou en fin de page), et ses styles dans le <head> (idempotent)."""
+    h = re.sub(re.escape(BAND_START) + '.*?' + re.escape(BAND_END), '', h, flags=re.S)
+    h = re.sub(r'<style id="lband-css">.*?</style>', '', h, flags=re.S)
+    i = h.find('<section class="blk"><div class="cband')
+    if i < 0:
+        i = h.index('</main>')
+    h = h[:i] + band() + h[i:]
+    return h.replace('</head>', '<style id="lband-css">%s</style></head>' % style, 1)
+
+
 def main():
     hd, tail = shell()
     style, js = css(), lab_js()
     pages = {'lab.html': page_lab(), 'lab-radar.html': page_radar(), 'lab-gestion.html': page_gestion()}
     for name, (kind, title, desc, body) in pages.items():
         open(os.path.join(SITE, name), 'w', encoding='utf-8').write(build(hd, tail, kind, title, desc, body, style, js))
-    n = 0
+    n, band_css = 0, css('lab-band.src.css')
     for f in glob.glob(os.path.join(SITE, '*.html')):
         h = open(f, encoding='utf-8').read()
         k = nav_links(h)
+        if os.path.basename(f) in BAND_PAGES:
+            k = add_band(k, band_css)
         if k != h:
             open(f, 'w', encoding='utf-8').write(k)
             n += 1
@@ -1225,7 +1147,7 @@ def main():
                if not os.path.exists(os.path.join(SITE, a))]
     if missing:
         raise SystemExit('lab : images manquantes ' + ', '.join(missing))
-    print('Lab : %d pages, menu ajouté sur %d pages, %d traductions ajoutées' % (len(pages), n, save_tr()))
+    print('Lab : %d pages, pied de page et encarts mis à jour sur %d pages, %d traductions ajoutées' % (len(pages), n, save_tr()))
 
 
 if __name__ == '__main__':
