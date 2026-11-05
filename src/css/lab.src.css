@@ -254,7 +254,9 @@
 .labpg .faq details{background:rgba(255,255,255,.04)!important;box-shadow:inset 0 0 0 1px rgba(159,200,255,.14)!important;color:rgba(234,242,255,.9)}
 .labpg .faq summary{color:#fff}
 .labpg .faq details p{color:rgba(221,235,255,.8)}
-.labpg .faq summary i{filter:invert(1) brightness(1.4)}
+.labpg .faq summary i{filter:none;background:rgba(255,255,255,.08)!important;box-shadow:inset 0 0 0 1px rgba(159,200,255,.3)!important}
+.labpg .faq summary i::before,.labpg .faq summary i::after{background:#DDEBFF}
+.labpg .faq details[open] summary i{background:rgba(95,159,249,.28)!important}
 .lab-faq .faq{margin:40u 0 0;max-width:880u;display:flex;flex-direction:column;gap:12u}
 
 /* ─── téléphone ─── */
@@ -389,3 +391,33 @@ html[dir="rtl"] .lab-card:hover .lab-go svg{transform:scaleX(-1) translateX(4u)}
 html[dir="rtl"] .lab-k::before{background:linear-gradient(270deg,rgba(159,200,255,0),#9FC8FF)}
 html[lang="ar"] .dglab h1,html[lang="ar"] .dglab h2,html[lang="ar"] .lab-card h3{letter-spacing:0;line-height:1.25}
 html[lang="ar"] .dglab h1 .l{padding-bottom:.45em;margin-bottom:-.45em}
+
+/* ——— La nuit du Lab jusqu'au bout ———
+   Le menu, le bandeau des cookies et le pied de page passent en nuit : plus de bande blanche entre la page et le pied,
+   plus de pastille blanche sur le ciel étoilé. */
+.labpg .fnav{background:rgba(10,24,62,.62);box-shadow:0 0 0 1px rgba(159,200,255,.16),inset 0 1px 0 rgba(255,255,255,.07),0 18u 44u -18u rgba(0,0,0,.75);color:#EAF2FF}
+.labpg .fnav .logo,.labpg .fnav .word{color:#fff}
+.labpg .fnav .fl a{color:rgba(221,235,255,.8);transition:color .25s}
+.labpg .fnav .fl a:hover{color:#fff}
+.labpg .fnav .lsw-b{background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(159,200,255,.22)}
+.labpg .fnav .lsw-f.open .lsw-b{background:rgba(95,159,249,.3)}
+.labpg .fnav .mb{background:rgba(255,255,255,.1)}
+.labpg .dgc{background:rgba(9,21,54,.9);color:#DDEBFF;box-shadow:0 0 0 1px rgba(159,200,255,.18),0 30px 70px -24px rgba(0,0,0,.8);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
+.labpg .dgc b,.labpg .dgc .dgc-ch b{color:#fff}
+.labpg .dgc p{color:rgba(221,235,255,.78)}
+.labpg .dgc a{color:#9FC8FF}
+.labpg .dgc button{background:rgba(255,255,255,.07);color:#fff;box-shadow:inset 0 0 0 1px rgba(159,200,255,.26)}
+.labpg .dgc button:hover{background:rgba(255,255,255,.13)}
+.labpg .dgc button[data-c="yes"]{background:#fff;color:#0E214E;box-shadow:none}
+.labpg .dgc button[data-c="yes"]:hover{background:#DDEBFF}
+.labpg .foot{background:linear-gradient(180deg,rgba(4,10,28,0) 0,rgba(6,15,40,.7) 150u,#091A45 290u,#0E214E 430u,#0E214E 100%)!important}
+.labpg .fclouds{display:none!important}
+
+/* ——— Finitions : un liseré de lumière sur les cartes, une lueur sous les captures ——— */
+.lab-legend li,.lab-rules li,.lab-next a,.lab-get-in{isolation:isolate}
+.lab-legend li::after,.lab-rules li::after,.lab-next a::after,.lab-get-in::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(180deg,rgba(159,200,255,.42),rgba(159,200,255,.08) 38%,rgba(159,200,255,0) 70%,rgba(159,200,255,.1));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.lab-legend li,.lab-next a{position:relative}
+.lab-rules li,.lab-next a{transition:transform .45s cubic-bezier(.16,1,.3,1),background .35s}
+.lab-rules li:hover{transform:translateY(-3px);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.015))}
+.lab-next a:hover{transform:translateY(-3px)}
+@media (prefers-reduced-motion:reduce){.lab-rules li,.lab-next a{transition:none}.lab-rules li:hover,.lab-next a:hover{transform:none}}
