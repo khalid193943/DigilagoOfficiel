@@ -1067,9 +1067,9 @@ def test_champs_sans_zoom_sur_iphone(browser, base_url, name, largeur):
 
 # ─── Digilago Lab et page « Collaborer » ─────────────────────────────────────────────────────────────
 
-LAB = ['lab.html', 'lab-radar.html', 'lab-gestion.html']
-LAB_TITRES = {'': ('Digilago Lab', 'Radar', 'Gestion'), 'en/': ('Digilago Lab', 'Radar', 'Gestion'),
-              'ar/': ('مختبر Digilago', 'الرادار', 'تطبيق التدبير')}
+LAB = ['lab.html', 'lab-radar.html', 'lab-gestion.html', 'lab-lago.html']
+LAB_TITRES = {'': ('Digilago Lab', 'Radar', 'Gestion', 'LAGO'), 'en/': ('Digilago Lab', 'Radar', 'Gestion', 'LAGO'),
+              'ar/': ('مختبر Digilago', 'الرادار', 'تطبيق التدبير', 'LAGO')}
 
 
 def _lire(chemin):
@@ -1158,7 +1158,13 @@ def test_lab_donnees_structurees_et_partage():
         g = {x['@type']: x for x in _ld(_lire(pre + 'lab.html'))}
         assert {'BreadcrumbList', 'CollectionPage', 'FAQPage'} <= set(g), pre
         items = g['CollectionPage']['mainEntity']['itemListElement']
-        assert [i['url'].rsplit('/', 1)[1] for i in items] == ['lab-radar.html', 'lab-gestion.html']
+        assert [i['url'].rsplit('/', 1)[1] for i in items] == ['lab-radar.html', 'lab-gestion.html', 'lab-lago.html']
+        # LAB-03 : un jeu gratuit, ouvert à tous (Game, pas SoftwareApplication), avec sa bande-annonce et son lien « Jouer »
+        h = _lire(pre + 'lab-lago.html')
+        w = [x for x in _ld(h) if isinstance(x['@type'], list) and 'Game' in x['@type']][0]
+        assert w['identifier'] == 'LAB-03' and w['isAccessibleForFree'] is True and w['potentialAction']['target'].endswith('/lago/')
+        assert 'SoftwareApplication' not in h and 'href="/lago/"' in h
+        assert os.path.exists(os.path.join(SITE, 'assets/lab/og-lago.jpg'))
         for name, code in (('lab-radar.html', 'LAB-01'), ('lab-gestion.html', 'LAB-02')):
             h = _lire(pre + name)
             w = {x['@type']: x for x in _ld(h)}['CreativeWork']
@@ -1173,6 +1179,22 @@ def test_lab_donnees_structurees_et_partage():
     assert '## Digilago Lab' in _lire('llms.txt')
     g = {x['@type'] for x in _ld(_lire('collaborer.html'))}
     assert {'WebPage', 'FAQPage'} <= g, g
+
+
+def test_jeu_lago_se_lance(page, base_url):
+    """Le jeu (site/lago/) : page autonome, polices du site, et une partie qui démarre sans erreur jusqu'à la carte."""
+    h = _lire('lago/index.html')
+    assert '<link rel="canonical" href="https://www.digilago.ma/lago/">' in h and 'og-lago.jpg' in h
+    assert 'fonts.googleapis' not in h  # la version du site utilise les polices hébergées sur le site
+    errors = []
+    page.on('pageerror', lambda e: errors.append(str(e)))
+    page.set_viewport_size({'width': 390, 'height': 844})
+    page.goto(base_url + '/lago/')
+    page.get_by_role('button', name='Jouer').click()
+    page.get_by_role('button', name='Passer').click()
+    page.get_by_role('button', name='Aller à Casablanca').click()
+    page.locator('.biz[data-id="ecole"]').wait_for()
+    assert not errors, errors
 
 
 def _demandes(page):

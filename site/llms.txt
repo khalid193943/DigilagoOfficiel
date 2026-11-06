@@ -32,6 +32,7 @@
 ## Digilago Lab (les outils que Digilago construit pour son propre compte)
 
 - [Gestion : devis, factures et comptabilité](https://www.digilago.ma/lab-gestion.html): LAB-02 · La Gestion Digilago réunit les demandes, les devis signés en ligne, les acomptes, les factures, la comptabilité marocaine et le suivi des projets. Un outil interne de Digilago.
+- [LAGO, allume le Maroc : le jeu gratuit de Digilago](https://www.digilago.ma/lab-lago.html): LAB-03 · Un jeu gratuit, sur téléphone et ordinateur : aidez Lago, Radar et Gestion à mettre en ligne les entreprises de Casablanca. Devis écrit, site en 72 heures, réponse le jour même. Sans inscription.
 - [Radar : notre outil de prospection au Maroc](https://www.digilago.ma/lab-radar.html): LAB-01 · Le Radar trouve les entreprises du Maroc par ville et par métier, diagnostique leur présence en ligne et prépare un premier contact utile. Un outil interne de Digilago.
 - [Digilago Lab : les applications que nous construisons](https://www.digilago.ma/lab.html): Le Lab Digilago : le Radar, la Gestion et nos prochains projets. Les applications que nous concevons et utilisons chaque jour, et ce qu’elles montrent de notre façon de construire.
 
@@ -823,9 +824,33 @@ Oui. Un site bien construit accueille ensuite une boutique ou un espace de rése
 
 Pas forcément. Un site rapide et bien pensé pour le téléphone suffit à beaucoup d’entreprises. L’application devient utile quand vos clients l’utilisent chaque semaine.
 
+### LAGO est-il vraiment gratuit ?
+
+Oui. Pas d’inscription, pas de publicité, pas d’achat dans le jeu. C’est un projet du Digilago Lab, offert à tous.
+
+### Sur quels appareils peut-on jouer ?
+
+Sur tout téléphone, tablette ou ordinateur récent, directement dans le navigateur. Une version Google Play et App Store est en préparation.
+
+### Ma progression est-elle sauvegardée ?
+
+Oui, sur votre appareil, dans votre navigateur. Rien n’est envoyé à Digilago : si vous changez de téléphone, la partie recommence.
+
+### Les entreprises du jeu existent-elles ?
+
+Non, elles sont fictives. Les métiers, eux, sont ceux que nous accompagnons tous les jours : écoles, cafés, cabinets médicaux, commerces, clubs de sport, hôtels, logistique.
+
+### Pouvez-vous créer un jeu pour ma marque ?
+
+Oui. Un jeu court, à vos couleurs, qui raconte votre métier et se partage facilement : décrivez votre idée, vous recevez un prix écrit avant de commencer.
+
 ### Peut-on utiliser le Radar ou la Gestion ?
 
 Pas pour l’instant : ce sont des outils internes, réservés à l’équipe Digilago. Ils sont présentés ici pour montrer notre façon de travailler.
+
+### Quel projet du Lab peut-on essayer ?
+
+LAGO, notre jeu (LAB-03) : gratuit, sans inscription, sur téléphone et ordinateur.
 
 ### Pouvez-vous créer une application comme celles-ci pour mon entreprise ?
 

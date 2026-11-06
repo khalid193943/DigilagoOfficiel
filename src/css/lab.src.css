@@ -421,3 +421,42 @@ html[lang="ar"] .dglab h1 .l{padding-bottom:.45em;margin-bottom:-.45em}
 .lab-rules li:hover{transform:translateY(-3px);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.015))}
 .lab-next a:hover{transform:translateY(-3px)}
 @media (prefers-reduced-motion:reduce){.lab-rules li,.lab-next a{transition:none}.lab-rules li:hover,.lab-next a:hover{transform:none}}
+
+/* ─── LAB-03 : LAGO, le jeu ─────────────────────────────────────────── */
+.lab-btn svg.pl{width:15u;height:15u;flex:none}
+.lab-show .lago-shot{display:block;color:inherit;text-decoration:none}
+.lab-show .lago-phone{position:absolute;inset-inline-end:3%;bottom:-10u;width:290u;display:block}
+.lab-show .lago-phone .lab-ph{position:relative;inset:auto;width:100%}
+.lago-go{position:absolute;left:50%;top:55%;width:84u;height:84u;margin:-42u 0 0 -42u;border-radius:50%;background:#F5B83D;color:#0E214E;display:grid;place-items:center;box-shadow:0 0 0 10u rgba(245,184,61,.22),0 22u 44u -12u rgba(0,0,0,.7);transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.lago-go svg{width:34u;height:34u;margin-inline-start:5u}
+.lago-phone:hover .lago-go,.lago-phone:focus-visible .lago-go{transform:scale(1.08)}
+.lago-video{margin:48u 0 0;border-radius:22u;overflow:hidden;background:#071433;box-shadow:inset 0 0 0 1px rgba(159,200,255,.18),0 60u 100u -50u rgba(0,0,0,.9)}
+.lago-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#071433}
+.lago-cast{list-style:none;margin:56u 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:20u}
+.lago-cast li{position:relative;padding:22u 24u 26u;border-radius:22u;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));box-shadow:inset 0 0 0 1px rgba(159,200,255,.14)}
+.lago-cast img{display:block;width:62%;height:auto;aspect-ratio:1;margin:0 auto 10u;filter:drop-shadow(0 18u 22u rgba(0,0,0,.45))}
+.lago-cast b{display:block;font:500 24u/1.1 Sora,sans-serif;letter-spacing:-.03em;color:#fff}
+.lago-cast small{display:block;margin-top:6u;font:400 12.5u/1.3 "JetBrains Mono",monospace;color:#F5B83D}
+.lago-cast p{margin:12u 0 0;font-size:15.5u;line-height:1.5;color:rgba(221,235,255,.78)}
+.lago-cities{list-style:none;margin:36u 0 0;padding:0;display:flex;flex-direction:column;gap:2u}
+.lago-cities li{padding:16u 0;border-top:1px solid rgba(159,200,255,.14)}
+.lago-city{display:flex;align-items:center;justify-content:space-between;gap:16u}
+.lago-city b{font:500 21u/1.1 Sora,sans-serif;letter-spacing:-.02em;color:#fff}
+.lago-city em{font:400 12.5u/1 "JetBrains Mono",monospace;font-style:normal;padding:7u 11u;border-radius:999px;color:rgba(221,235,255,.75);box-shadow:inset 0 0 0 1px rgba(159,200,255,.3)}
+.lago-cities li.on .lago-city em{color:#0E214E;background:#3DDC97;box-shadow:none}
+.lago-cities li.next .lago-city em{color:#0E214E;background:#F5B83D;box-shadow:none}
+.lago-cities p{margin:6u 0 0;font-size:15u;line-height:1.5;color:rgba(221,235,255,.7)}
+.lago-cta-in{display:flex;align-items:center;justify-content:space-between;gap:32u;padding:48u 52u;border-radius:28u;background:radial-gradient(80% 140% at 0% 0%,rgba(245,184,61,.2),rgba(245,184,61,0) 60%),linear-gradient(135deg,#123378,#0B1E4E);box-shadow:inset 0 0 0 1px rgba(245,184,61,.25)}
+.lago-cta-in h2{margin:0;font:500 56u/1 Sora,sans-serif;letter-spacing:-.04em;color:#fff}
+.lago-cta-in h2 em{display:block;font-family:"Playfair Display",serif;font-style:italic;font-weight:500;color:#F5B83D;font-size:.72em;margin-top:8u}
+.lago-cta-in .lab-btn{background:#F5B83D;flex:none}
+[data-mode="M"] .lab-show .lago-phone{width:128u;inset-inline-end:-1%}
+[data-mode="M"] .lago-go{width:46u;height:46u;margin:-23u 0 0 -23u;box-shadow:0 0 0 6u rgba(245,184,61,.22)}
+[data-mode="M"] .lago-go svg{width:20u;height:20u}
+[data-mode="M"] .lago-cast{grid-template-columns:1fr 1fr;gap:12u;margin-top:36u}
+[data-mode="M"] .lago-cast li{padding:16u 14u 18u}
+[data-mode="M"] .lago-cast b{font-size:19u}
+[data-mode="M"] .lago-cast p{font-size:13.5u}
+[data-mode="M"] .lago-video{margin-top:32u;border-radius:14u}
+[data-mode="M"] .lago-cta-in{flex-direction:column;align-items:flex-start;padding:30u 24u}
+[data-mode="M"] .lago-cta-in h2{font-size:40u}

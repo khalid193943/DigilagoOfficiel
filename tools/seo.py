@@ -23,7 +23,7 @@ URL = os.environ.get('SITE_URL', 'https://www.digilago.ma').rstrip('/')
 OG = '/assets/og-digilago.jpg'
 # images de partage propres à certaines pages (tools/og_lab.py) ; les autres gardent celle de l'accueil
 OG_PAGE = {'lab.html': '/assets/lab/og-lab.jpg', 'lab-radar.html': '/assets/lab/og-radar.jpg',
-           'lab-gestion.html': '/assets/lab/og-gestion.jpg'}
+           'lab-gestion.html': '/assets/lab/og-gestion.jpg', 'lab-lago.html': '/assets/lab/og-lago.jpg'}
 START, END = '<!--dg:seo-->', '<!--dg:seo-end-->'
 
 ORG = {
@@ -158,6 +158,16 @@ def lab_graph(name, h, lang, title, desc, url):
             'isPartOf': {'@id': page_url('lab.html', lang) + '#lab'}}
     if days:
         work['dateModified'] = max(days)
+    if kind == 'lago':
+        # LAB-03 est un jeu ouvert à tous : « Game » (une œuvre, pas une application vendue), gratuit, jouable en ligne
+        work.update({'@type': ['CreativeWork', 'Game'], 'isAccessibleForFree': True, 'numberOfPlayers': {'@type': 'QuantitativeValue', 'value': 1},
+                     'gameLocation': {'@type': 'Place', 'name': 'Casablanca', 'address': {'@type': 'PostalAddress', 'addressCountry': 'MA'}},
+                     'genre': ['Jeu de gestion', 'Jeu éducatif'], 'image': URL + OG_PAGE['lab-lago.html'],
+                     'subjectOf': {'@type': 'VideoObject', 'name': items[-1][0], 'description': lead,
+                                   'thumbnailUrl': URL + '/assets/lab/lago-bande-annonce.jpg',
+                                   'contentUrl': URL + '/assets/lab/lago-bande-annonce.mp4', 'uploadDate': '2026-11-06',
+                                   'duration': 'PT50S'},
+                     'potentialAction': {'@type': 'PlayAction', 'target': URL + '/lago/'}})
     out.append({'@type': 'WebPage', 'name': title, 'description': desc, 'url': url, 'inLanguage': lang,
                 'isPartOf': site, 'breadcrumb': {'@id': url + '#ariane'}, 'mainEntity': {'@id': url + '#projet'}})
     out.append(work)
@@ -288,7 +298,7 @@ def main():
     today = datetime.date.today().isoformat()
     prio = {'index.html': '1.0', 'demarrer.html': '0.9', 'services.html': '0.9', 'realisations.html': '0.8',
             'contact.html': '0.8', 'a-propos.html': '0.7', 'guides.html': '0.7',
-            'lab.html': '0.7', 'lab-radar.html': '0.6', 'lab-gestion.html': '0.6', 'collaborer.html': '0.6', 'recrutement.html': '0.5'}
+            'lab.html': '0.7', 'lab-radar.html': '0.6', 'lab-gestion.html': '0.6', 'lab-lago.html': '0.7', 'collaborer.html': '0.6', 'recrutement.html': '0.5'}
     names = sorted(os.path.basename(f) for f in glob.glob(os.path.join(SITE, '*.html')) if os.path.basename(f) not in NOINDEX)
     VZ = {n for n in names if 'data-vz="' in open(os.path.join(SITE, n), encoding='utf-8').read()}
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
