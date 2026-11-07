@@ -32,8 +32,6 @@ ORG = {
     'name': 'Digilago',
     'legalName': 'LAGODIGITAL',
     'foundingDate': '2024-08-28',
-    'taxID': '66041361',
-    'identifier': {'@type': 'PropertyValue', 'propertyID': 'ICE', 'value': '003539032000060'},
     'url': URL + '/',
     'image': URL + OG,
     'logo': URL + '/assets/brand/icon-512.png',
