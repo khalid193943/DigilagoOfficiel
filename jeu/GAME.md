@@ -1,27 +1,32 @@
-# LAGO, allume le Maroc : notes de construction (V1)
+# LAGO, allume le Maroc : notes de construction (V2, jeu de plateforme)
 
-Jeu web mobile d'abord (portrait 9:16, s'adapte au paysage), un seul fichier HTML à la fin (dist/jeu.html),
-hors ligne, sans compte, sans pub, sans donnée envoyée. Progression en localStorage (try/catch).
-Ensuite : page Lab « LAB-03 Lago » sur digilago.ma, puis Capacitor pour Google Play et l'App Store.
+Jeu web (paysage d'abord, s'adapte au portrait), assemblé en une seule page : site/lago/index.html.
+Sans compte, sans publicité, sans donnée envoyée : la progression reste en localStorage (`lago-allume-le-maroc-v2`).
+La mesure d'audience (GA4) ne part que si le visiteur l'a acceptée sur digilago.ma (`dg_consent`).
+
+## L'histoire
+Vu de l'espace, la nuit, chaque lumière est une entreprise que l'on trouve en ligne : le Maroc est encore peu éclairé
+(31 % des entreprises ont un site, HCP). Lago, le D de Digilago, part allumer le pays, ville par ville.
+Une ville = un niveau. Casablanca est jouable (trois quartiers) ; Rabat, Marrakech, Fès et Tanger arrivent.
+
+## Les quartiers de Casablanca
+- La médina : Radar prête la Lanterne (allumer un commerce), Salma la photographe donne un cœur en plus.
+- La Corniche : Cumulus offre le double saut, la bulle WhatsApp et le ballon font rebondir (au contact), Youssef
+  l'apporteur d'affaires propose un accord écrit.
+- Le quartier d'affaires : Mehdi le développeur confie l'épingle Google (grappin), ascenseurs avec pause en bas et en
+  haut, montée finale jusqu'au phare.
+Chaque commerce allumé passe « En ligne », affiche en petit l'adresse de son site (exemple fictif, levels.js : DOMS) et
+une note « à quoi ressemble le site de ce métier » (levels.js : METIERS ; `land` accueillera les captures de landings).
+À la fin du niveau : le nom de votre entreprise s'allume, et le code cadeau LAGO-CASA (fiche Google offerte, conditions
+sur digilago.ma/offres.html) mène à « Démarrer un projet » (?source=jeu-lago&code=LAGO-CASA).
 
 ## Fichiers
-- build_assets.py : exporte les SVG (Lago v2 + costumes, Radar, Gestion, humains, décors Casablanca, carte) → src/assets.js
-- src/style.css, src/audio.js (WebAudio, synthèse), src/engine.js (état, scènes, sauvegarde, HUD), src/minigames.js, src/content.js (villes, entreprises, textes)
-- build.py : assemble tout dans dist/jeu.html (polices en base64)
-- test.cjs : Playwright, captures des scènes + parcours automatique
-
-## Boucle (V1 = Casablanca complète, Rabat « bientôt »)
-Titre → intro (4 cartes) → carte du Maroc → Casablanca : deux quartiers (la médina : commerces ; le quartier d'affaires : grands comptes)
-Mission d'une entreprise :
-1. Radar trouve (tap au passage du balayage, 3 touches)
-2. Appel découverte : Lago entre dans Cumulus, ressort en tenue du métier → mini-jeu du métier (10-15 s)
-3. Gestion fait le devis (choisir exactement les bons blocs : étoile « prix juste »)
-4. Lago construit en « 72 h » (20 s) : poser les blocs du site dans l'ordre, écraser les bugs
-5. En ligne : fenêtres (site), repère Google, étincelle IA ; étoiles Prix / Délai / Réponse ; Lumière et Confiance montent
-Systèmes : messages clients « le jour même » (répondre à temps), Cumulus et maintenance (immeuble qui clignote),
-Youssef l'apporteur d'affaires (accord écrit → débloque un grand compte), recrutement d'Anas le stagiaire (aide à répondre),
-fin : « Et votre entreprise ? » → nom tapé → s'allume → Démarrer mon projet (digilago.ma/demarrer.html?source=jeu-lago).
+- gen/build_assets2.py : les dessins (Lago et ses tenues, personnages, façades) → src/assets.js
+- gen/globe.mjs : les points du globe (world-atlas) → src/globe.js
+- src/levels.js (niveaux, métiers, adresses), src/engine.js (physique au 1/120 s, lumière, rendu), src/ui.js (écrans,
+  globe, dialogues, cartes de fin), src/audio.js (WebAudio), src/style.css
+- build.py : assemble tout ; écrit dist/ et, dans le dépôt du site, site/lago/index.html
+- bot.cjs : Playwright, vérifie que chaque passage difficile est franchissable (serveur local sur le port 4190, dossier serve/)
 
 ## Règles de marque
-Lago toujours heureux, expressions symétriques, travaille avec tablette/téléphone/ordinateur, ne montre jamais du doigt.
-Ambiance « Le jour se lève » : la ville part de la nuit et s'éclaire avec la Lumière. Entreprises fictives (mention dans les crédits).
+Lago toujours heureux, expressions symétriques, ne montre jamais du doigt. Entreprises, clients et adresses fictifs.

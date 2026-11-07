@@ -33,7 +33,7 @@
 ## Digilago Lab (les outils que Digilago construit pour son propre compte)
 
 - [Gestion : devis, factures et comptabilité](https://www.digilago.ma/lab-gestion.html): LAB-02 · La Gestion Digilago réunit les demandes, les devis signés en ligne, les acomptes, les factures, la comptabilité marocaine et le suivi des projets. Un outil interne de Digilago.
-- [LAGO, allume le Maroc : le jeu gratuit de Digilago](https://www.digilago.ma/lab-lago.html): LAB-03 · Un jeu gratuit, sur téléphone et ordinateur : aidez Lago, Radar et Gestion à mettre en ligne les entreprises de Casablanca. Devis écrit, site en 72 heures, réponse le jour même. Sans inscription.
+- [LAGO, allume le Maroc : le jeu gratuit de Digilago](https://www.digilago.ma/lab-lago.html): LAB-03 · Un jeu de plateforme gratuit, sur téléphone et ordinateur : vu de l’espace, le Maroc est encore peu éclairé. Courez, sautez et allumez les entreprises de Casablanca avec Lago. Sans inscription.
 - [Radar : notre outil de prospection au Maroc](https://www.digilago.ma/lab-radar.html): LAB-01 · Le Radar trouve les entreprises du Maroc par ville et par métier, diagnostique leur présence en ligne et prépare un premier contact utile. Un outil interne de Digilago.
 - [Digilago Lab : les applications que nous construisons](https://www.digilago.ma/lab.html): Le Lab Digilago : le Radar, la Gestion et nos prochains projets. Les applications que nous concevons et utilisons chaque jour, et ce qu’elles montrent de notre façon de construire.
 
@@ -848,15 +848,19 @@ Oui. Pas d’inscription, pas de publicité, pas d’achat dans le jeu. C’est 
 
 ### Sur quels appareils peut-on jouer ?
 
-Sur tout téléphone, tablette ou ordinateur récent, directement dans le navigateur. Une version Google Play et App Store est en préparation.
+Sur tout téléphone, tablette ou ordinateur récent, directement dans le navigateur. Sur téléphone, tournez-le à l’horizontale pour plus de confort. Une version Google Play et App Store est en préparation.
 
 ### Ma progression est-elle sauvegardée ?
 
 Oui, sur votre appareil, dans votre navigateur. Rien n’est envoyé à Digilago : si vous changez de téléphone, la partie recommence.
 
+### Que gagne-t-on à la fin de Casablanca ?
+
+Un code cadeau : il offre la création et l’optimisation de la fiche Google de votre entreprise, pour la création de votre site avec Digilago. Les conditions sont sur la page Offres.
+
 ### Les entreprises du jeu existent-elles ?
 
-Non, elles sont fictives. Les métiers, eux, sont ceux que nous accompagnons tous les jours : écoles, cafés, cabinets médicaux, commerces, clubs de sport, hôtels, logistique.
+Non, elles sont fictives, tout comme les adresses de leurs sites. Les métiers, eux, sont ceux que nous accompagnons tous les jours : cafés, commerces, riads, cabinets de santé, écoles, clubs de sport, hôtels, industrie.
 
 ### Pouvez-vous créer un jeu pour ma marque ?
 

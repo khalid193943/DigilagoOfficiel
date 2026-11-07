@@ -276,7 +276,7 @@ def sec_game():
                                       (52, 34, .4, 1), (60, 52, 1.3, 1), (68, 44, .1, 0), (77, 60, .8, 1), (86, 38, 1.9, 1),
                                       (92, 66, .5, 0), (47, 72, 1.4, 1)))
     return ('<section class="of-sec" id="jeu"><div class="of-card of-night w"><div class="of-city" aria-hidden="true">%s<span class="of-d"></span></div>'
-            '<div class="of-txt">%s<div class="of-cta rv d3"><a href="lago/" class="of-go of-play"><span class="arw">%s</span><span class="lbl">%s</span></a>'
+            '<div class="of-txt">%s<div class="of-cta rv d3"><a href="/lago/" class="of-go of-play"><span class="arw">%s</span><span class="lbl">%s</span></a>'
             '<a class="of-link" href="demarrer.html">%s</a></div></div></div></section>') % (
         win,
         head(('Le code du jeu LAGO', 'The LAGO game code', 'رمز لعبة LAGO'),
@@ -354,6 +354,7 @@ def page():
     h = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="%s">' % html.escape(DESC[0], quote=True), h, count=1)
     T(DESC)
     h = re.sub(r'(https://www\.digilago\.ma(?:/en|/ar)?)/mentions-legales\.html', r'\1/offres.html', h)
+    h = re.sub(r'href="(en|ar)/mentions-legales\.html"', r'href="\1/offres.html"', h)  # sélecteur de langue
     h = re.sub(r'(<h1 class="hin">).*?(</h1>)', lambda m: m.group(1) + '<span class="l"><span class="lx">%s</span></span><span class="l"><span class="grad">%s</span></span>'
                % (T(H1[0]), T(H1[1])) + m.group(2), h, count=1, flags=re.S)
     h = re.sub(r'(<p class="eyebrow in"><i class="live" aria-hidden="true"></i><span>).*?(</span></p>)', lambda m: m.group(1) + T(EYEBROW) + m.group(2), h, count=1, flags=re.S)
@@ -447,7 +448,7 @@ def game_card():
                   for x, y, d, on in ((10, 60, .3, 1), (22, 44, 1.2, 0), (34, 66, .7, 1), (46, 38, 1.5, 1), (58, 56, .2, 0),
                                       (70, 42, 1.0, 1), (82, 62, .5, 1), (90, 36, 1.8, 0)))
     return ('<section class="of-sec of-gamecard"><div class="of-card of-night w"><div class="of-city" aria-hidden="true">%s<span class="of-d"></span></div>'
-            '<div class="of-txt">%s<div class="of-cta rv d3"><a href="lago/" class="of-go of-play"><span class="arw">%s</span><span class="lbl">%s</span></a>'
+            '<div class="of-txt">%s<div class="of-cta rv d3"><a href="/lago/" class="of-go of-play"><span class="arw">%s</span><span class="lbl">%s</span></a>'
             '<span class="of-small">%s</span></div></div></div></section>') % (
         win,
         head(('Le jeu de Digilago', 'Digilago’s game', 'لعبة Digilago'), ('Vous voulez jouer ?', 'Fancy a game?', 'هل تريد أن تلعب؟'),

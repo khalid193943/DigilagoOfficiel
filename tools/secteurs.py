@@ -457,24 +457,76 @@ def sband(cities):
     return '<div class="sband" aria-hidden="true">%s%s</div>' % (row(lambda i: 'it' if i % 2 else '', -1, a), row(lambda i: 'o', 1, b))
 
 
+# ─── cartes métier : la vitrine du site de chaque métier ─────────────────────────────────────
+# Chaque carte montre en petit le site que nous ferions pour ce métier : la barre d'adresse (exemple de nom de
+# domaine), le menu, le titre, le bouton d'action du secteur et un visuel. Trois mises en page alternent (sombre,
+# claire, visuel à gauche) et chaque secteur a sa couleur d'accent, posée sur le bleu de la marque. Rien ne bouge :
+# au survol, la carte se soulève à peine.
+ACCENT = {'restauration': '#C2552D', 'education': '#2F84EC', 'sante': '#0E9F8E', 'hotellerie': '#B8892A', 'commerce': '#7C4DBF',
+          'industrie': '#D98A0B', 'conseil': '#1F57C7', 'immobilier': '#1E7A55', 'sport': '#0EA5E9', 'beaute': '#B4507E',
+          'tourisme': '#0E7490', 'btp': '#C27A0E', 'automobile': '#3B6FE0', 'evenementiel': '#9B2C5F', 'artisanat': '#B5652F',
+          'transport': '#2F5D8A', 'services': '#4F46E5', 'agriculture': '#4D7C0F'}
+BOOK = ('Réserver', 'Book now', 'احجز الآن')
+QUOTE = ('Demander un devis', 'Request a quote', 'اطلب عرض سعر')
+RDV = ('Prendre rendez-vous', 'Book an appointment', 'احجز موعداً')
+CTA = {'restauration': ('Réserver une table', 'Book a table', 'احجز طاولة'), 'education': ('S’inscrire', 'Enroll', 'سجّل الآن'),
+       'sante': RDV, 'hotellerie': BOOK, 'commerce': ('Commander', 'Order now', 'اطلب الآن'), 'industrie': QUOTE, 'conseil': RDV,
+       'immobilier': ('Voir les biens', 'See listings', 'شاهد العقارات'), 'sport': ('S’inscrire', 'Enroll', 'سجّل الآن'), 'beaute': BOOK,
+       'tourisme': BOOK, 'btp': QUOTE, 'automobile': QUOTE, 'evenementiel': QUOTE, 'artisanat': ('Commander', 'Order now', 'اطلب الآن'),
+       'transport': QUOTE, 'services': QUOTE, 'agriculture': QUOTE}
+STOP = {'et', 'de', 'du', 'des', 'la', 'le', 'les', 'd', 'l', 'pour', 'en', 'a', 'au', 'aux', 'un', 'une', 'sur', 'par', 'avec'}
+
+
+def domain(name):
+    """« Location de voitures » → « location-voitures.ma » : l'adresse d'exemple du site."""
+    import unicodedata
+    s = unicodedata.normalize('NFD', name.lower())
+    s = ''.join(c for c in s if unicodedata.category(c) != 'Mn').replace('’', ' ').replace("'", ' ')
+    words = [w for w in re.split(r'[^a-z0-9]+', s) if w and w not in STOP]
+    out = ''
+    for w in words:
+        if len(out) + len(w) + 1 > 22 and out:
+            break
+        out = (out + '-' + w) if out else w
+        if out.count('-') >= 2:
+            break
+    return (out or 'votre-site') + '.ma'
+
+
+def shade(hx, f):
+    r, g, b = (int(hx[i:i + 2], 16) for i in (1, 3, 5))
+    return '#%02X%02X%02X' % (int(r * f), int(g * f), int(b * f))
+
+
+def vitrine(item, sec_id):
+    v = int(hashlib.md5(item['id'].encode()).hexdigest(), 16) % 3
+    ac = ACCENT.get(sec_id, '#2F84EC')
+    ico = svg(item['icon'])
+    return ('<span class="vz-site v%d" style="--ac:%s;--ac2:%s"><span class="vz-bar" aria-hidden="true"><i></i><i></i><i></i>'
+            '<span class="vz-url">%s</span></span><span class="vz-hero"><span class="vz-nav" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'
+            '<span class="vz-mk" aria-hidden="true">%s</span><b>%s</b><span class="vz-btns" aria-hidden="true"><span class="vz-cta">%s</span>'
+            '<span class="vz-gh"></span></span><span class="vz-ph" aria-hidden="true">%s</span></span></span>') % (
+        v, ac, shade(ac, .58), domain(item['name'][0]), ico, T(item['name']), T(CTA.get(sec_id, QUOTE)), ico)
+
+
 def card_type(t, sec_id=''):
     new = ('<span class="vz-new">%s</span>' % T(S['trend'])) if t.get('trend') else ''
-    return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s">%s<span class="vz-ic oct" hidden>%s</span><b>%s</b>'
-            '<span class="vz-d">%s</span><span class="vz-go">%s%s</span></a>') % (
-        t['id'], t['file'], t['group'], kw(t['k'], t['name']), art(t['icon'], sec_id, new), svg(t['icon']),
-        T(t['name']), T(t['short']), T(S['see']), ARR)
+    return ('<a class="vz-card vz-v rv" id="t-%s" href="%s" data-g="%s" data-k="%s">%s<span class="vz-ic oct" hidden>%s</span>'
+            '<span class="vz-d">%s</span><span class="vz-ft"><span class="vz-go">%s%s</span>%s</span></a>') % (
+        t['id'], t['file'], t['group'], kw(t['k'], t['name']), vitrine(t, sec_id), svg(t['icon']),
+        T(t['short']), T(S['see']), ARR, new)
 
 
 def card_more(c, sec_id=''):
     tags = '<span class="vz-tags">%s</span>' % ''.join('<i>%s</i>' % T(x) for x in c['tags'])
     new = ('<span class="vz-new">%s</span>' % T(S['trend'])) if c.get('trend') else ''
     if c.get('href'):
-        return ('<a class="vz-card rv" id="t-%s" href="%s" data-g="%s" data-k="%s">%s<span class="vz-ic oct" hidden>%s</span><b>%s</b>'
-                '<span class="vz-d">%s</span><span class="vz-go">%s%s</span></a>') % (
-            c['id'], c['href'], c['group'], kw(c['k'], c['name']), art(c['icon'], sec_id, new), svg(c['icon']), T(c['name']), T(c['short']), T(S['see']), ARR)
-    return ('<button type="button" class="vz-card vz-c rv" id="t-%s" data-g="%s" data-k="%s" data-met="%s">%s<span class="vz-ic oct" hidden>%s</span>'
-            '<b>%s</b><span class="vz-d">%s</span><span class="vz-more">%s</span><span class="vz-go">%s%s</span></button>') % (
-        c['id'], c['group'], kw(c['k'], c['name']), A(c['name']), art(c['icon'], sec_id, new), svg(c['icon']), T(c['name']), T(c['short']), tags, T(S['forU']), ARR)
+        return ('<a class="vz-card vz-v rv" id="t-%s" href="%s" data-g="%s" data-k="%s">%s<span class="vz-ic oct" hidden>%s</span>'
+                '<span class="vz-d">%s</span><span class="vz-ft"><span class="vz-go">%s%s</span>%s</span></a>') % (
+            c['id'], c['href'], c['group'], kw(c['k'], c['name']), vitrine(c, sec_id), svg(c['icon']), T(c['short']), T(S['see']), ARR, new)
+    return ('<button type="button" class="vz-card vz-v vz-c rv" id="t-%s" data-g="%s" data-k="%s" data-met="%s">%s<span class="vz-ic oct" hidden>%s</span>'
+            '<span class="vz-d">%s</span><span class="vz-more">%s</span><span class="vz-ft"><span class="vz-go">%s%s</span>%s</span></button>') % (
+        c['id'], c['group'], kw(c['k'], c['name']), A(c['name']), vitrine(c, sec_id), svg(c['icon']), T(c['short']), tags, T(S['forU']), ARR, new)
 
 
 def dialog():

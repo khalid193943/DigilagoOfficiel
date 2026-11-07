@@ -1184,7 +1184,7 @@ def test_lab_donnees_structurees_et_partage():
 
 
 def test_jeu_lago_se_lance(page, base_url):
-    """Le jeu (site/lago/) : page autonome, polices du site, et une partie qui démarre sans erreur jusqu'à la carte."""
+    """Le jeu (site/lago/) : page autonome, polices du site, et une partie qui démarre sans erreur jusque dans la médina."""
     h = _lire('lago/index.html')
     assert '<link rel="canonical" href="https://www.digilago.ma/lago/">' in h and 'og-lago.jpg' in h
     assert 'fonts.googleapis' not in h  # la version du site utilise les polices hébergées sur le site
@@ -1192,10 +1192,18 @@ def test_jeu_lago_se_lance(page, base_url):
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.set_viewport_size({'width': 390, 'height': 844})
     page.goto(base_url + '/lago/')
-    page.get_by_role('button', name='Jouer').click()
+    page.get_by_role('button', name='Jouer', exact=True).click()
     page.get_by_role('button', name='Passer').click()
-    page.get_by_role('button', name='Aller à Casablanca').click()
-    page.locator('.biz[data-id="ecole"]').wait_for()
+    go = page.get_by_role('button', name='C’est parti')
+    for _ in range(15):  # les dialogues du Studio, puis l'entrée dans la médina
+        if go.is_visible():
+            break
+        nx = page.locator('.dlg .nx button')
+        if nx.is_visible():
+            nx.click()
+        page.wait_for_timeout(400)
+    go.click()
+    page.wait_for_function('window.ENGINE && ENGINE.G.running && ENGINE.G.P && ENGINE.G.P.id === "medina"', timeout=8000)
     assert not errors, errors
 
 

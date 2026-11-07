@@ -72,6 +72,16 @@ window.SND = (() => {
     pour: () => noise(now(), 0.25, 0.08, 800, 1200, sfxGain, 'lowpass'),
     kickball: () => { kick(now(), 0.5); noise(now(), 0.06, 0.2, 1000, 3000); },
     goal: () => { const t = now(); noise(t, 0.8, 0.12, 800, 2400); [74, 78, 81, 86, 90].forEach((m, i) => glock(m, t + 0.1 + i * 0.07, 0.15)); },
+    jump: () => { const t = now(); const o = tone(420, t, 0.12, 'sine', 0.16); o && o.frequency.exponentialRampToValueAtTime(760, t + 0.1); },
+    dbl: () => { const t = now(); noise(t, 0.18, 0.12, 1800, 5000); const o = tone(620, t, 0.14, 'sine', 0.12); o && o.frequency.exponentialRampToValueAtTime(1100, t + 0.12); },
+    land: () => noise(now(), 0.07, 0.12, 300, 900, sfxGain, 'lowpass'),
+    spark: () => { const t = now(); glock(98 + Math.floor(Math.random() * 3) * 2, t, 0.09); },
+    burst: () => { const t = now(); noise(t, 0.35, 0.16, 600, 7000); tone(880, t, 0.25, 'sine', 0.1); },
+    hurt: () => { const t = now(); const o = tone(300, t, 0.3, 'triangle', 0.2); o && o.frequency.exponentialRampToValueAtTime(120, t + 0.28); },
+    bounce: () => { const t = now(); const o = tone(300, t, 0.2, 'sine', 0.22); o && o.frequency.exponentialRampToValueAtTime(900, t + 0.16); },
+    grapple: () => { const t = now(); noise(t, 0.15, 0.1, 3000, 6000); tone(1200, t, 0.08, 'sine', 0.1); },
+    poof: () => { const t = now(); noise(t, 0.25, 0.14, 1200, 300, sfxGain, 'lowpass'); glock(91, t + 0.05, 0.08); },
+    fall: () => { const t = now(); const o = tone(600, t, 0.6, 'sine', 0.14); o && o.frequency.exponentialRampToValueAtTime(140, t + 0.55); },
     online: () => { const t = now(); kick(t, 0.5); [62, 66, 69, 74, 78, 81, 86].forEach((m, i) => glock(m + 12, t + i * 0.07, 0.15)); noise(t, 1.2, 0.06, 6000, 9000); },
   };
   function play(name) { if (!on) return; init(); if (ctx && fx[name]) try { fx[name](); } catch (e) {} }

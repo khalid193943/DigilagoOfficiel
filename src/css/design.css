@@ -1220,3 +1220,6 @@ html[dir="rtl"] .of-play .arw svg,html[dir="rtl"] .of-play:hover .arw svg{transf
 .of-gamecard{padding:calc(56 * var(--u)) 0 calc(20 * var(--u))}
 [data-mode="M"] .of-gamecard{padding:calc(28 * var(--u)) 0 0}
 .of-small{font-size:calc(13.5 * var(--u));color:#9FB4D6}
+/* accueil : le menu du haut de l'intro descend sous le bandeau tant qu'il est affiché */
+#hero>.nav{transition:top .5s cubic-bezier(.16,1,.3,1)}
+html.ob #hero>.nav{top:var(--obh)}
