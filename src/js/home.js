@@ -2065,8 +2065,10 @@
     // centres (et non bords) : la petite mise à l'échelle des cartes ne les déplace pas
     mtC0 = (r0.left + r0.right) / 2;
     mtDir = r1.left < r0.left ? -1 : 1;
+    // chaque métier reste un moment au centre : une demi-hauteur d'écran de défilement par carte,
+    // plus un temps d'arrêt au début et à la fin
     mtSec.style.height =
-      Math.round(H + (MC.length - 1) * (mtCW + mtGap) * 0.55) + "px";
+      Math.round(H + (MC.length - 1) * H * (mode === "M" ? 0.32 : 0.48) + H * (mode === "M" ? 0.4 : 0.5)) + "px";
   }
   // Photos des métiers : les cartes hors du cadre ne se chargeraient qu'au dernier moment (vides pendant
   // le défilement) ; elles sont toutes demandées dès que la section approche.
@@ -2090,7 +2092,13 @@
     var B = POS.mt,
       top = B.top - sy;
     if (top + B.h < 0 || top > VH) return;
-    var p = clamp01(-top / Math.max(1, B.h - VH)),
+    // la file avance par paliers : chaque carte se pose au centre et y reste avant que la suivante n'arrive
+    var nN = Math.max(1, MC.length - 1),
+      g = Math.max(0, Math.min(nN, clamp01(-top / Math.max(1, B.h - VH)) * (nN + 0.5) - 0.25)),
+      gk = Math.min(nN - 1, Math.floor(g)),
+      ge = clamp01((g - gk - 0.4) / 0.6);
+    ge = ge * ge * (3 - 2 * ge);
+    var p = RM ? clamp01(g / nN) : g >= nN ? 1 : (gk + ge) / nN,
       W = CW;
     var step = mtCW + mtGap,
       x = W / 2 - mtC0 - mtDir * p * (MC.length - 1) * step;
@@ -2148,7 +2156,8 @@
   });
   var mani = $("mani"),
     maniStage = $("maniStage"),
-    mw = document.querySelectorAll("#maniT .w, #maniT .ip");
+    mw = document.querySelectorAll("#maniT .w, #maniT .ip"),
+    maniSig = $("maniSig");
   var cards = document.querySelectorAll("#stack .sc"),
     cardH = 600,
     // un temps d'arrêt après la dernière carte : la pile complète reste un moment à l'écran
@@ -2161,8 +2170,9 @@
     vchips = document.querySelectorAll("#vmap .vchip");
   function layoutMore(H) {
     var M = mode === "M";
-    // durées de défilement raccourcies : les animations se jouent plus vite, le visiteur avance
-    mani.style.height = 1.7 * H + "px";
+    // Manifeste : le texte se révèle sur la première moitié du défilement, puis reste en place (avec la
+    // signature) le temps d'être lu, avant que la section ne parte
+    mani.style.height = (M ? 2.4 : 2.9) * H + "px";
     maniStage.style.height = H + "px";
     // chaque carte se pose sous l'onglet de la précédente : les titres des cartes réduites restent lisibles
     var top0 = (M ? 70 : 104) * u,
@@ -2247,8 +2257,9 @@
     fnavEl0.classList.toggle("on", sy > introH - H * 0.1);
     var mt = POS.mani.top - sy;
     if (mt < H && mt + POS.mani.h > 0) {
-      var pm = RM ? 1 : clamp01((-mt / (POS.mani.h - H)) * 1.15 + 0.04),
-        n = Math.floor(pm * mw.length);
+      var pm = RM ? 1 : clamp01((-mt / (POS.mani.h - H) - 0.04) / 0.5),
+        n = pm >= 1 ? mw.length : Math.floor(pm * mw.length);
+      if (maniSig) maniSig.classList.toggle("on", n >= mw.length);
       if (n !== moreStep.n) {
         moreStep.n = n;
         mw.forEach(function (w, i) {

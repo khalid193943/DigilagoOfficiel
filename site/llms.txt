@@ -42,6 +42,7 @@
 - [Avis Google au Maroc : en obtenir plus sans tricher](https://www.digilago.ma/avis-google-maroc.html): Avis Google au Maroc : obtenir plus d’avis clients, y répondre et améliorer votre note Google Maps, sans enfreindre les règles de Google.
 - [Création de site web au Maroc : le guide complet](https://www.digilago.ma/creation-site-web-maroc.html): Création de site web au Maroc : types de sites, étapes, prix indicatifs, délais, domaine .ma, FR/AR/EN et SEO. Tout pour lancer un site qui rapporte.
 - [Créer une boutique en ligne au Maroc : guide 2026](https://www.digilago.ma/creer-boutique-en-ligne-maroc.html): Créer une boutique en ligne au Maroc : plateforme, paiement CMI ou à la livraison, transport, cadre légal, coûts et check-list pour vendre en ligne.
+- [31 % des entreprises marocaines ont un site web : ce que ça change](https://www.digilago.ma/entreprises-marocaines-site-web.html): Selon le HCP, seules 31 % des entreprises au Maroc avaient un site web en 2019, contre 70 % en France et 89 % en Allemagne. Ce que ce retard veut dire, et comment en faire une avance.
 - [FAQ site web, e-commerce, Shopify et SEO au Maroc](https://www.digilago.ma/faq.html): Prix d’un site web, délais, boutique en ligne, Shopify, application, SEO, ChatGPT : 60 réponses claires avant de vous lancer au Maroc.
 - [Mettre son entreprise en ligne au Maroc : pourquoi maintenant](https://www.digilago.ma/guide-bon-moment-maroc.html): Vos futurs clients vous cherchent déjà sur leur téléphone. Ailleurs, la première place coûte cher. Au Maroc, elle est encore à prendre.
 - [Fiche Google Business au Maroc : apparaître sur Maps](https://www.digilago.ma/guide-fiche-google-business-maroc.html): Créer, vérifier et optimiser votre fiche Google Business : les étapes, les informations qui comptent et les erreurs à éviter pour apparaître sur la carte.
@@ -710,6 +711,22 @@ Oui : les noms, téléphones et adresses collectés par une boutique en ligne so
 ### Combien de temps faut-il pour lancer une boutique en ligne au Maroc ?
 
 Le délai dépend surtout de la préparation du catalogue et de l’activation du paiement par carte, qui demande des échanges avec la banque ; le paiement à la livraison peut fonctionner dès le premier jour. Chez Digilago, vous découvrez une première version en 72 heures, puis la mise en ligne suit vos validations.
+
+### Combien d’entreprises marocaines ont un site web ?
+
+Selon le HCP, 31 % des entreprises interrogées en 2019 disposaient d’un site web. Plus de 3 TPME sur 5 n’avaient ni site web ni page sur les réseaux sociaux.
+
+### Comment le Maroc se compare-t-il à l’Europe ?
+
+La comparaison citée par Hespress à partir de la note du HCP donne 89 % d’entreprises avec un site web en Allemagne, 70 % en France et 49 % en Turquie, contre 31 % au Maroc.
+
+### Une page Facebook ou Instagram suffit-elle ?
+
+C’est un bon début, mais elle ne remplace pas un site : vous ne maîtrisez ni sa présentation ni sa durée de vie, et elle ressort moins bien dans les recherches Google. L’idéal est un site, une fiche Google et vos réseaux, reliés entre eux.
+
+### Combien de temps faut-il pour mettre une entreprise en ligne ?
+
+Chez Digilago, la première version de votre site est prête en 72 heures, avec un prix écrit avant de commencer.
 
 ### Mes clients viennent surtout par le bouche-à-oreille. J’en ai vraiment besoin ?
 

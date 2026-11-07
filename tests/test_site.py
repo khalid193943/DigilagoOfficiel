@@ -622,7 +622,7 @@ def test_essayez_resultats_entiers(page, base_url):
 
 
 @pytest.mark.parametrize('lang', ['', 'en/', 'ar/'])
-@pytest.mark.parametrize('size,pages', [((1440, 900), 4), ((390, 844), 5)])
+@pytest.mark.parametrize('size,pages', [((1440, 900), 5), ((390, 844), 6)])
 def test_guides_carrousel(page, base_url, lang, size, pages):
     """« Nos guides » : cartes alignées (aucun décalage), un point par position, flèches jusqu'au bout."""
     page.set_viewport_size({'width': size[0], 'height': size[1]})
@@ -732,11 +732,12 @@ def test_pages_suivantes_chargees_d_avance(page, base_url, name):
 
 
 def test_accueil_pas_trop_long_a_parcourir(page, base_url):
-    """Téléphone : les sections qui épinglent l'écran restent courtes ; l'accueil se parcourt sans s'éterniser."""
+    """Téléphone : les sections qui épinglent l'écran restent courtes ; l'accueil se parcourt sans s'éterniser.
+    (Le manifeste et les métiers gardent un temps de lecture : ils comptent pour environ deux écrans de plus.)"""
     page.set_viewport_size({'width': 390, 'height': 844})
     page.goto(f'{base_url}/index.html'); page.wait_for_timeout(1500)
     screens = page.evaluate('document.documentElement.scrollHeight / innerHeight')
-    assert screens < 31, f'accueil de {screens:.1f} écrans'
+    assert screens < 33.5, f'accueil de {screens:.1f} écrans'
 
 
 # ─── Secteurs : tous les métiers du Maroc ───────────────────────────────
