@@ -1,0 +1,4 @@
+dist/
+check/
+serve/
+gen/node_modules/

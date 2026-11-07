@@ -60,9 +60,9 @@ FOOT = ('Conditions de vente', 'Terms of sale', 'شروط البيع')
 # (titre, [paragraphes]) — chaque élément est un triplet (français, anglais, arabe)
 SECTIONS = [
     (('Qui vend', 'Who is selling', 'من هو البائع'), [
-        ('Ces conditions s’appliquent à toute prestation vendue par LAGODIGITAL, société à responsabilité limitée à associé unique (SARL AU) au capital de 100 000 dirhams, qui exploite la marque Digilago. Siège social : 78, boulevard de la Résistance, Résidence El Marzouki, 5ᵉ étage, appartement 68, Casablanca. Registre du commerce de Casablanca n° 639275. ICE : 003539032000060.',
-         'These terms apply to every service sold by LAGODIGITAL, a single-member limited liability company (SARL AU) with a share capital of 100,000 dirhams, which operates the Digilago brand. Registered office: 78, boulevard de la Résistance, Résidence El Marzouki, 5th floor, apartment 68, Casablanca. Casablanca Trade Register no. 639275. ICE: 003539032000060.',
-         'تسري هذه الشروط على كل خدمة تبيعها شركة LAGODIGITAL، وهي شركة ذات مسؤولية محدودة بشريك وحيد (SARL AU) رأسمالها 100 000 درهم، وتستغل العلامة التجارية Digilago. المقر الاجتماعي: 78، شارع المقاومة، إقامة المرزوقي، الطابق الخامس، الشقة 68، الدار البيضاء. السجل التجاري بالدار البيضاء رقم 639275. رقم التعريف الموحد للمقاولة: 003539032000060.'),
+        ('Ces conditions s’appliquent à toute prestation vendue par LAGODIGITAL, société à responsabilité limitée à associé unique (SARL AU) basée à Casablanca, qui exploite la marque Digilago. Registre du commerce de Casablanca n° 639275.',
+         'These terms apply to every service sold by LAGODIGITAL, a single-member limited liability company (SARL AU) based in Casablanca, which operates the Digilago brand. Casablanca Trade Register no. 639275.',
+         'تسري هذه الشروط على كل خدمة تبيعها شركة LAGODIGITAL، وهي شركة ذات مسؤولية محدودة بشريك وحيد (SARL AU) مقرها الدار البيضاء، وتستغل العلامة التجارية Digilago. السجل التجاري بالدار البيضاء رقم 639275.'),
         ('Elles s’appliquent avec le devis accepté par le client. En cas de différence entre ces conditions et le devis, le devis prévaut.',
          'They apply together with the quote accepted by the client. If these terms and the quote differ, the quote prevails.',
          'تسري مع عرض السعر الذي قبله الزبون. وفي حال وجود اختلاف بين هذه الشروط وعرض السعر، يُعتمد عرض السعر.'),

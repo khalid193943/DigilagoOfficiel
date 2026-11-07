@@ -583,3 +583,59 @@ html[dir="rtl"] .mc-row dt{font-family:"Noto Sans Arabic",sans-serif;font-size:1
 [data-mode="M"] .vz-card .vz-art{margin:-20u -18u 2u;border-radius:20u 20u 0 0}
 [data-mode="M"] .vz-art .vz-new{position:absolute;bottom:8u;right:10u;left:auto;margin:0}
 @media (prefers-reduced-motion:reduce){.vz-art *{animation:none!important;transition:none!important}}
+
+/* ——— Cartes métier : la vitrine du site de chaque métier (statique, aux couleurs de la marque) ——— */
+.vz-card.vz-v{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:0;overflow:hidden;border-radius:22u;background:#fff;box-shadow:0 0 0 1px rgba(14,33,78,.07),0 18u 40u -28u rgba(14,33,78,.4);transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s ease;text-align:start}
+.vz-card.vz-v::before,.vz-card.vz-v::after{display:none}
+.vz-card.vz-v:hover,.vz-card.vz-v:focus-visible{transform:translateY(-4u);background:#fff;box-shadow:0 0 0 1px rgba(47,132,236,.4),0 30u 60u -30u rgba(14,33,78,.5)}
+.vz-card.vz-v.vz-hl{box-shadow:0 0 0 2px #5F9FF9,0 30u 60u -30u rgba(14,33,78,.5)}
+.vz-site{display:flex;flex-direction:column;margin:12u 12u 0;border-radius:14u;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(14,33,78,.08),0 10u 22u -16u rgba(14,33,78,.45)}
+.vz-bar{display:flex;align-items:center;gap:5u;height:26u;padding:0 10u;background:#F3F6FB;border-bottom:1px solid #E6ECF5}
+.vz-bar i{flex:none;width:7u;height:7u;border-radius:50%;background:#D3DCE9}
+.vz-url{display:flex;align-items:center;gap:5u;flex:1;min-width:0;height:17u;margin-inline-start:8u;padding:0 9u;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px #E3E9F3;font-family:"Instrument Sans",sans-serif;font-size:10.5u;font-weight:500;line-height:1;color:#51617F;white-space:nowrap;overflow:hidden;direction:ltr}
+.vz-url::before{content:"";flex:none;width:6u;height:6u;border-radius:50%;background:#22A06B}
+.vz-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 36%;grid-template-rows:auto auto auto 1fr;column-gap:14u;min-height:158u;padding:12u 14u 14u;background:radial-gradient(120% 90% at 0% 0%,#1F3F8A 0%,#0E214E 62%);color:#fff}
+.vz-nav{grid-column:1/-1;display:flex;align-items:center;gap:6u;margin-bottom:12u}
+.vz-nav i{height:4u;width:15u;border-radius:2u;background:rgba(255,255,255,.26)}
+.vz-nav i:first-child{width:11u;height:11u;margin-inline-end:auto;border-radius:3.5u;background:var(--ac)}
+.vz-mk{grid-column:1;display:flex;align-items:center;justify-content:center;width:28u;height:28u;border-radius:8u;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);color:#fff}
+.vz-mk svg{width:16u;height:16u}
+.vz-card.vz-v b{grid-column:1;margin:9u 0 0;font-family:Sora,sans-serif;font-weight:600;font-size:17u;line-height:1.16;letter-spacing:-.03em;color:inherit;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.vz-btns{grid-column:1;align-self:end;display:flex;align-items:center;gap:6u;margin-top:12u}
+.vz-cta{display:inline-flex;align-items:center;height:24u;padding:0 11u;border-radius:999px;background:var(--ac);color:#fff;font-family:"Instrument Sans",sans-serif;font-size:10.5u;font-weight:600;white-space:nowrap}
+.vz-gh{flex:none;width:40u;height:24u;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.32)}
+.vz-ph{position:relative;grid-column:2;grid-row:2/5;align-self:stretch;display:flex;align-items:center;justify-content:center;min-height:96u;border-radius:11u;overflow:hidden;background:linear-gradient(150deg,var(--ac) 0%,var(--ac2) 100%);color:rgba(255,255,255,.95)}
+.vz-ph::before{content:"";position:absolute;inset:0;background:radial-gradient(110% 80% at 15% 0%,rgba(255,255,255,.3),transparent 55%),repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 1px,transparent 1px 9u)}
+.vz-ph svg{position:relative;width:46%;max-width:54u;height:auto;stroke-width:1.4}
+/* deuxième mise en page : claire */
+.vz-site.v1 .vz-hero{background:linear-gradient(180deg,#F2F7FF 0%,#FFFFFF 100%);color:#0E214E}
+.vz-site.v1 .vz-nav i{background:#D6E1F1}
+.vz-site.v1 .vz-nav i:first-child{background:var(--ac)}
+.vz-site.v1 .vz-mk{background:#fff;box-shadow:inset 0 0 0 1px #DCE6F5;color:var(--ac2)}
+.vz-site.v1 .vz-cta{background:#0E214E}
+.vz-site.v1 .vz-gh{box-shadow:inset 0 0 0 1px #C8D5EA}
+/* troisième : le visuel à gauche */
+.vz-site.v2 .vz-hero{grid-template-columns:38% minmax(0,1fr);background:#fff;color:#0E214E}
+.vz-site.v2 .vz-nav,.vz-site.v2 .vz-mk,.vz-site.v2 b,.vz-site.v2 .vz-btns{grid-column:2}
+.vz-site.v2 .vz-ph{grid-column:1;grid-row:1/5}
+.vz-site.v2 .vz-nav i{background:#D6E1F1}
+.vz-site.v2 .vz-nav i:first-child{background:#0E214E}
+.vz-site.v2 .vz-mk{background:#F2F6FC;box-shadow:inset 0 0 0 1px #DCE6F5;color:var(--ac2)}
+.vz-site.v2 .vz-gh{box-shadow:inset 0 0 0 1px #C8D5EA}
+/* le bas de la carte : ce que fait le site, le lien, « Tendance » */
+.vz-card.vz-v .vz-d{display:block;padding:16u 20u 0;font-size:14.5u;line-height:1.55;color:#4A5878}
+.vz-card.vz-v .vz-more{display:none}
+.vz-ft{display:flex;align-items:center;justify-content:space-between;gap:10u;margin-top:auto;padding:14u 20u 18u}
+.vz-card.vz-v .vz-go{margin:0;padding:0;font-size:14u}
+.vz-card.vz-v .vz-new{position:static;inset:auto;flex:none;margin:0;padding:5u 10u;border-radius:999px;background:#EEF4FF;color:#1F57C7;box-shadow:inset 0 0 0 1px #D2E0F7;font-size:10.5u}
+.vz-card.vz-v .vz-new::before{animation:none;background:#22A06B}
+.vz-card.vz-v:hover .vz-cta{filter:brightness(1.08)}
+[data-mode="M"] .vz-card.vz-v{display:flex;padding:0;border-radius:20u}
+[data-mode="M"] .vz-card.vz-v>*{grid-column:auto}
+[data-mode="M"] .vz-site{margin:10u 10u 0;border-radius:13u}
+[data-mode="M"] .vz-hero{min-height:142u;padding:11u 12u 12u;column-gap:12u}
+[data-mode="M"] .vz-card.vz-v b{font-size:16.5u;margin-top:8u}
+[data-mode="M"] .vz-card.vz-v .vz-d{padding:14u 16u 0;font-size:14u}
+[data-mode="M"] .vz-ft{padding:12u 16u 16u}
+[data-mode="M"] .vz-card.vz-v .vz-new{position:static;order:0;margin:0}
+@media (prefers-reduced-motion:reduce){.vz-card.vz-v{transition:none}}

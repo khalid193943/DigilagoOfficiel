@@ -155,7 +155,8 @@ def test_menu_plein_ecran_telephone(page, base_url, name):
     assert page.locator('#dock').count() == 0
     page.click('#mb'); page.wait_for_timeout(1000)
     assert 'open' in page.locator('#sheet').get_attribute('class')
-    assert page.locator('#sheet .fsm-nav a').count() == 7   # le Lab est dans le pied de page, pas dans le menu
+    assert page.locator('#sheet .fsm-nav a').count() == 8   # le Lab est dans le pied de page, pas dans le menu ; « Offres » en dernier
+    assert page.locator('#sheet .fsm-nav a').last.get_attribute('href') == 'offres.html'
     page.click('#closeBtn'); page.wait_for_timeout(900)
     assert 'open' not in page.locator('#sheet').get_attribute('class')
     assert not errors, errors
@@ -1068,9 +1069,9 @@ def test_champs_sans_zoom_sur_iphone(browser, base_url, name, largeur):
 
 # ─── Digilago Lab et page « Collaborer » ─────────────────────────────────────────────────────────────
 
-LAB = ['lab.html', 'lab-radar.html', 'lab-gestion.html']
-LAB_TITRES = {'': ('Digilago Lab', 'Radar', 'Gestion'), 'en/': ('Digilago Lab', 'Radar', 'Gestion'),
-              'ar/': ('مختبر Digilago', 'الرادار', 'تطبيق التدبير')}
+LAB = ['lab.html', 'lab-radar.html', 'lab-gestion.html', 'lab-lago.html']
+LAB_TITRES = {'': ('Digilago Lab', 'Radar', 'Gestion', 'LAGO'), 'en/': ('Digilago Lab', 'Radar', 'Gestion', 'LAGO'),
+              'ar/': ('مختبر Digilago', 'الرادار', 'تطبيق التدبير', 'LAGO')}
 
 
 def _lire(chemin):
@@ -1159,7 +1160,13 @@ def test_lab_donnees_structurees_et_partage():
         g = {x['@type']: x for x in _ld(_lire(pre + 'lab.html'))}
         assert {'BreadcrumbList', 'CollectionPage', 'FAQPage'} <= set(g), pre
         items = g['CollectionPage']['mainEntity']['itemListElement']
-        assert [i['url'].rsplit('/', 1)[1] for i in items] == ['lab-radar.html', 'lab-gestion.html']
+        assert [i['url'].rsplit('/', 1)[1] for i in items] == ['lab-radar.html', 'lab-gestion.html', 'lab-lago.html']
+        # LAB-03 : un jeu gratuit, ouvert à tous (Game, pas SoftwareApplication), avec sa bande-annonce et son lien « Jouer »
+        h = _lire(pre + 'lab-lago.html')
+        w = [x for x in _ld(h) if isinstance(x['@type'], list) and 'Game' in x['@type']][0]
+        assert w['identifier'] == 'LAB-03' and w['isAccessibleForFree'] is True and w['potentialAction']['target'].endswith('/lago/')
+        assert 'SoftwareApplication' not in h and 'href="/lago/"' in h
+        assert os.path.exists(os.path.join(SITE, 'assets/lab/og-lago.jpg'))
         for name, code in (('lab-radar.html', 'LAB-01'), ('lab-gestion.html', 'LAB-02')):
             h = _lire(pre + name)
             w = {x['@type']: x for x in _ld(h)}['CreativeWork']
@@ -1174,6 +1181,30 @@ def test_lab_donnees_structurees_et_partage():
     assert '## Digilago Lab' in _lire('llms.txt')
     g = {x['@type'] for x in _ld(_lire('collaborer.html'))}
     assert {'WebPage', 'FAQPage'} <= g, g
+
+
+def test_jeu_lago_se_lance(page, base_url):
+    """Le jeu (site/lago/) : page autonome, polices du site, et une partie qui démarre sans erreur jusque dans la médina."""
+    h = _lire('lago/index.html')
+    assert '<link rel="canonical" href="https://www.digilago.ma/lago/">' in h and 'og-lago.jpg' in h
+    assert 'fonts.googleapis' not in h  # la version du site utilise les polices hébergées sur le site
+    errors = []
+    page.on('pageerror', lambda e: errors.append(str(e)))
+    page.set_viewport_size({'width': 390, 'height': 844})
+    page.goto(base_url + '/lago/')
+    page.get_by_role('button', name='Jouer', exact=True).click()
+    page.get_by_role('button', name='Passer').click()
+    go = page.get_by_role('button', name='C’est parti')
+    for _ in range(15):  # les dialogues du Studio, puis l'entrée dans la médina
+        if go.is_visible():
+            break
+        nx = page.locator('.dlg .nx button')
+        if nx.is_visible():
+            nx.click()
+        page.wait_for_timeout(400)
+    go.click()
+    page.wait_for_function('window.ENGINE && ENGINE.G.running && ENGINE.G.P && ENGINE.G.P.id === "medina"', timeout=8000)
+    assert not errors, errors
 
 
 def _demandes(page):

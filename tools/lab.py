@@ -3,7 +3,8 @@
 Fabrique trois pages, en français (l'anglais et l'arabe suivent avec le reste de la chaîne) :
 - lab.html         le Lab : ce que Digilago construit pour lui-même, chaque projet avec son numéro et son statut ;
 - lab-radar.html   LAB-01, le Radar (prospection et diagnostic des entreprises du Maroc) ;
-- lab-gestion.html LAB-02, la Gestion (demandes, devis signés en ligne, factures, comptabilité, suivi des projets).
+- lab-gestion.html LAB-02, la Gestion (demandes, devis signés en ligne, factures, comptabilité, suivi des projets) ;
+- lab-lago.html    LAB-03, LAGO, le jeu gratuit (le jeu lui-même est dans site/lago/, construit à part).
 
 Les pages reprennent l'en-tête et le pied de page du site (depuis services.html), dans un décor de nuit qui leur
 est propre (src/css/lab.src.css, inséré dans ces trois pages seulement). Chaque page finit par « Profiter d'un
@@ -130,8 +131,9 @@ S = {
     'all': ('Tout le Lab', 'The whole Lab', 'كل المختبر'),
     'langs': ('Messages en français et en arabe', 'Messages in French and Arabic', 'رسائل بالفرنسية والعربية'),
     'more': ('Et aussi', 'And also', 'وأيضاً'),
+    'live': ('En ligne · gratuit', 'Live · free', 'متاح · مجاناً'),
 }
-CODE = {i: ('LAB-%02d' % i,) * 3 for i in (1, 2, 3)}
+CODE = {i: ('LAB-%02d' % i,) * 3 for i in (1, 2, 3, 4)}
 RADAR = ('Radar', 'Radar', 'الرادار')
 
 
@@ -235,8 +237,8 @@ GET_PAGE = {
               'Prospecting, quotes, bookings, client tracking: your tool, under your name.',
               'التنقيب عن الزبناء، وعروض الأسعار، والحجوزات، وتتبع الزبناء: أداتك، باسمك.')),
             ('notify', 'Être prévenu du prochain projet', ('Le prochain projet', 'The next project', 'المشروع المقبل'),
-             ('Le jour où LAB-03 sort, vous le saurez en premier.', 'The day LAB-03 comes out, you will be the first to know.',
-              'يوم يصدر LAB-03، ستكون أول من يعلم.')),
+             ('Le jour où LAB-04 sort, vous le saurez en premier.', 'The day LAB-04 comes out, you will be the first to know.',
+              'يوم يصدر LAB-04، ستكون أول من يعلم.')),
             ('partner', 'Partenariat', GET['partner'],
              ('Co-création, distribution, sponsoring : parlons-en.', 'Co-creation, distribution, sponsorship: let’s talk.',
               'الإبداع المشترك، والتوزيع، والرعاية: لنتحدث.')),
@@ -295,7 +297,33 @@ GET_PAGE = {
         ],
     },
 }
-PROJECT = {'index': '', 'radar': 'Radar', 'gestion': 'Gestion'}
+GET_PAGE['lago'] = {
+    'h1': ('Un jeu comme LAGO,', 'A game like LAGO,', 'لعبة مثل LAGO،'),
+    'h2': ('pour votre marque ?', 'for your brand?', 'لعلامتك التجارية؟'),
+    'p': ('Un jeu court, à vos couleurs, qui raconte votre métier et se partage tout seul. Ou simplement : être prévenu '
+          'quand Rabat et la version mobile arrivent.',
+          'A short game in your colours, telling the story of your trade and sharing itself. Or simply: be told when '
+          'Rabat and the mobile version arrive.',
+          'لعبة قصيرة بألوانك، تحكي نشاطك وتنتشر وحدها. أو ببساطة: أن تُخبَر حين تصل الرباط والنسخة المحمولة.'),
+    'opts': [
+        ('jeu', 'Un jeu pour ma marque', ('Un jeu pour ma marque', 'A game for my brand', 'لعبة لعلامتي التجارية'),
+         ('Votre métier en mini-jeu : pour vos réseaux, un salon, une campagne ou une école.',
+          'Your trade as a mini-game: for your social media, a trade show, a campaign or a school.',
+          'نشاطك في لعبة صغيرة: لشبكاتك الاجتماعية، أو معرض، أو حملة، أو مدرسة.')),
+        ('notify', 'Être prévenu : Rabat et version mobile', ('Être prévenu', 'Get notified', 'كن أول من يعلم'),
+         ('Rabat, Google Play et l’App Store : vous le saurez en premier.',
+          'Rabat, Google Play and the App Store: you will be the first to know.',
+          'الرباط وGoogle Play وApp Store: ستكون أول من يعلم.')),
+        ('site', 'Mon entreprise en ligne', ('Mon entreprise en ligne', 'My business online', 'شركتي على الإنترنت'),
+         ('Comme dans le jeu, mais pour de vrai : site, fiche Google, réservations, WhatsApp.',
+          'Like in the game, but for real: website, Google profile, bookings, WhatsApp.',
+          'كما في اللعبة، لكن على أرض الواقع: موقع، وملف Google، وحجوزات، وWhatsApp.')),
+        ('partner', 'Partenariat', GET['partner'],
+         ('Sponsoriser une ville, une école ou un tournoi : parlons-en.',
+          'Sponsor a city, a school or a tournament: let’s talk.', 'رعاية مدينة أو مدرسة أو دوري: لنتحدث.')),
+    ],
+}
+PROJECT = {'index': '', 'radar': 'Radar', 'gestion': 'Gestion', 'lago': 'Lago'}
 
 
 def field(name, label, kind='text', auto='', opt=False, ph='', mx=120, full=False):
@@ -401,6 +429,9 @@ BOT_M = [  # (clé, texte) : les messages de l'assistant
     ('hello_gestion', ('Bonjour ! Vous regardez la Gestion, l’application qui fait tourner l’agence. Que puis-je faire pour vous ?',
                        'Hello! You are looking at Gestion, the app that runs the agency. What can I do for you?',
                        'مرحباً! أنت تتصفح تطبيق التدبير، التطبيق الذي تشتغل به الوكالة. كيف يمكنني مساعدتك؟')),
+    ('hello_lago', ('Bonjour ! Vous regardez LAGO, notre jeu gratuit. Une question, ou une idée de jeu pour votre marque ?',
+                    'Hello! You are looking at LAGO, our free game. A question, or a game idea for your brand?',
+                    'مرحباً! أنت تتصفح LAGO، لعبتنا المجانية. سؤال، أو فكرة لعبة لعلامتك التجارية؟')),
     ('again', ('Autre chose ? Je suis là.', 'Anything else? I am here.', 'شيء آخر؟ أنا هنا.')),
     ('q_intro', ('Voici ce qu’on me demande le plus souvent :', 'Here is what people ask me most often:', 'إليك أكثر ما يُسأل عنه:')),
     ('a_sale', ('Pas pour l’instant. Le Radar et la Gestion sont des outils internes, fermés au public. Mais on peut '
@@ -591,6 +622,15 @@ LAB = {
                   'كل شيء في مكان واحد.'),
     'gestion_tags': [('Devis', 'Quotes', 'عروض الأسعار'), ('Factures', 'Invoices', 'الفواتير'),
                      ('Comptabilité', 'Bookkeeping', 'المحاسبة'), ('Signature en ligne', 'Online signature', 'التوقيع عبر الإنترنت')],
+    'lago_tag': ('Le jeu : allume le Maroc.', 'The game: light up Morocco.', 'اللعبة: أضِئ المغرب.'),
+    'lago_p': ('Notre premier jeu, gratuit et ouvert à tous : vu de l’espace, le Maroc est encore peu éclairé. Courez, '
+               'sautez et allumez les entreprises de Casablanca avec Lago.',
+               'Our first game, free and open to all: seen from space, Morocco is still dimly lit. Run, jump and light up '
+               'the businesses of Casablanca with Lago.',
+               'لعبتنا الأولى، مجانية ومتاحة للجميع: من الفضاء ما زال المغرب قليل الإضاءة. اركض واقفز وأضِئ مقاولات الدار '
+               'البيضاء مع Lago.'),
+    'lago_tags': [('Jeu gratuit', 'Free game', 'لعبة مجانية'), ('Téléphone', 'Phone', 'الهاتف'),
+                  ('Casablanca', 'Casablanca', 'الدار البيضاء'), ('Sans inscription', 'No sign-up', 'دون تسجيل')],
     'next_h': ('Le prochain projet', 'The next project', 'المشروع المقبل'),
     'next_p': ('Il est sur l’établi. Chaque projet que Digilago termine pour son propre compte rejoint le Lab, avec son '
                'numéro, son statut et son journal.',
@@ -643,6 +683,10 @@ LAB = {
               'Not for now: they are internal tools, reserved for the Digilago team. They are shown here to illustrate '
               'the way we work.',
               'ليس حالياً: إنهما أداتان داخليتان مخصصتان لفريق Digilago. نعرضهما هنا لنُظهر طريقة عملنا.')),
+            (('Quel projet du Lab peut-on essayer ?', 'Which Lab project can I try?', 'أي مشروع في المختبر يمكنني تجربته؟'),
+             ('LAGO, notre jeu (LAB-03) : gratuit, sans inscription, sur téléphone et ordinateur.',
+              'LAGO, our game (LAB-03): free, no sign-up, on phone and computer.',
+              'LAGO، لعبتنا (LAB-03): مجانية ودون تسجيل، على الهاتف والحاسوب.')),
             (('Pouvez-vous créer une application comme celles-ci pour mon entreprise ?',
               'Can you build an app like these for my business?', 'هل يمكنكم إنشاء تطبيق مثل هذين لشركتي؟'),
              ('Oui. Nous concevons des applications sur mesure : prospection, devis et factures, réservations, suivi de '
@@ -667,12 +711,12 @@ LAB = {
 }
 
 
-def card(code, num, href, name, tag, p, tags, image, alt, label, mk=''):
+def card(code, num, href, name, tag, p, tags, image, alt, label, mk='', st='int'):
     return ('<a class="lab-card rv" href="%s"><span class="lab-num" aria-hidden="true">%s</span>%s'
             '<div class="lab-card-top">%s<span class="lab-code">%s</span>%s</div><h3>%s<span class="lab-it">%s</span></h3>'
             '<p>%s</p><ul class="lab-tags">%s</ul><span class="lab-go">%s%s</span></a>') % (
         href, num, browser(image, alt, label, sizes='(max-width: 760px) 92vw, 560px'), mark(mk) if mk else '', T(code),
-        status('int'), T(name), T(tag), T(p),
+        status_on() if st == 'on' else status(st), T(name), T(tag), T(p),
         ''.join('<li>%s</li>' % T(t) for t in tags), T(S['see']), ARR)
 
 
@@ -681,8 +725,9 @@ def page_lab():
     idx = ('<ul class="lab-idx">'
            '<li><a href="lab-radar.html"><span>%s</span>%s</a></li>'
            '<li><a href="lab-gestion.html"><span>%s</span>%s</a></li>'
+           '<li><a href="lab-lago.html"><span>%s</span>%s</a></li>'
            '<li class="wip"><b><span>%s</span>%s</b></li></ul>') % (
-        T(CODE[1]), T(RADAR), T(CODE[2]), T(GE['name']), T(CODE[3]), T(S['wip']))
+        T(CODE[1]), T(RADAR), T(CODE[2]), T(GE['name']), T(CODE[3]), T(LAGO), T(CODE[4]), T(S['wip']))
     deco = lambda n: ('<div class="lab-br"><b><i></i><i></i><i></i><span>%s</span></b><img src="assets/lab/%s-960.webp" '
                       'srcset="assets/lab/%s-960.webp 960w, assets/lab/%s-1600.webp 1600w" sizes="470px" width="960" height="600" '
                       'alt="" decoding="async"></div>') % ((T(RA['label']) if n == 'radar-carte' else T(GE['label'])), n, n, n)
@@ -693,7 +738,7 @@ def page_lab():
             '<p class="lab-lead">%s</p>%s%s</div></header>') % (
         crumbs([(S['home'], 'index.html'), (S['lab'], None)]), T(S['lab_full']), T(L['h1a']), T(L['h1b']), T(L['lead']), idx, stack)
     cat = ('<section class="lab-sec" id="catalogue"><div class="lab-w">%s<div class="lab-cat">%s%s'
-           '<div class="lab-card next rv"><span class="lab-num" aria-hidden="true">03</span><div>'
+           '%s<div class="lab-card next rv"><span class="lab-num" aria-hidden="true">04</span><div>'
            '<div class="lab-card-top" style="margin-top:0"><span class="lab-code">%s</span>%s</div><h3>%s</h3><p>%s</p></div></div>'
            '</div><p class="lab-note rv">%s%s</p></div></section>') % (
         head(L['cat_k'], L['cat_h1'], L['cat_h2'], L['cat_p']),
@@ -705,7 +750,9 @@ def page_lab():
              'gestion-tableau', ('Le tableau de bord de la Gestion : la journée, les demandes et les villes clientes (données de démonstration)',
                                  'The Gestion dashboard: the day, the requests and the client cities (demo data)',
                                  'لوحة قيادة تطبيق التدبير: مهام اليوم والطلبات ومدن الزبناء (بيانات تجريبية)'), GE['label'], 'gestion'),
-        T(CODE[3]), status('wip'), T(L['next_h']), T(L['next_p']), svg('info'), T(S['demo_note']))
+        card(CODE[3], '03', 'lab-lago.html', LAGO, L['lago_tag'], L['lago_p'], L['lago_tags'], 'lago-rue', LG['hero_alt'],
+             LG['label'], 'lab', st='on'),
+        T(CODE[4]), status('wip'), T(L['next_h']), T(L['next_p']), svg('info'), T(S['demo_note']))
     leg = ('<section class="lab-sec"><div class="lab-w">%s<ul class="lab-legend">%s</ul></div></section>') % (
         head(L['leg_k'], L['leg_h1'], L['leg_h2']),
         ''.join('<li class="rv d%d"><span class="lab-st %s"><i aria-hidden="true"></i>%s</span><p>%s</p></li>' % (
@@ -1050,8 +1097,279 @@ GE['rules'] = [
 
 def page_gestion():
     body = page_project(GE, 'gestion', CODE[2], '02', GE['name'], 'gestion-tableau', 'gestion-suivi',
-                        ((CODE[1], RADAR, 'lab-radar.html'), (None, S['lab_full'], 'lab.html')))
+                        ((CODE[1], RADAR, 'lab-radar.html'), (CODE[3], LAGO, 'lab-lago.html')))
     return 'gestion', GE['title'], GE['desc'], body
+
+
+# ─── LAB-03 : LAGO, le jeu ───────────────────────────────────────────────
+# Le seul projet du Lab ouvert au public : un jeu gratuit, sur téléphone et ordinateur (site/lago/, construit à part).
+# Il rejoue ce que Digilago fait chaque jour : repérer une entreprise, comprendre son métier, écrire un prix juste,
+# construire en 72 heures, répondre le jour même, rester après la mise en ligne. Entreprises fictives ; aucune donnée
+# collectée (la progression reste sur l'appareil du joueur).
+
+GAME_URL = '/lago/'
+LAGO = ('Lago', 'Lago', 'Lago')
+LG = {
+    'label': ('Lago · le jeu', 'Lago · the game', 'Lago · اللعبة'),
+    'title': ('LAGO, allume le Maroc : le jeu gratuit de Digilago | Digilago Lab',
+              'LAGO, light up Morocco: Digilago’s free game | Digilago Lab',
+              'LAGO، أضِئ المغرب: لعبة Digilago المجانية | Digilago Lab'),
+    'desc': ('LAB-03 · Un jeu de plateforme gratuit, sur téléphone et ordinateur : vu de l’espace, le Maroc est encore peu '
+             'éclairé. Courez, sautez et allumez les entreprises de Casablanca avec Lago. Sans inscription.',
+             'LAB-03 · A free platform game for phone and computer: seen from space, Morocco is still dimly lit. Run, jump '
+             'and light up the businesses of Casablanca with Lago. No sign-up.',
+             'LAB-03 · لعبة منصات مجانية على الهاتف والحاسوب: من الفضاء، ما زال المغرب قليل الإضاءة. اركض واقفز وأضِئ '
+             'مقاولات الدار البيضاء مع Lago. دون تسجيل.'),
+    'h1a': ('Lago.', 'Lago.', 'Lago.'),
+    'h1b': ('Allume le Maroc.', 'Light up Morocco.', 'أضِئ المغرب.'),
+    'lead': ('Notre premier jeu. Vu de l’espace, le Maroc est encore peu éclairé : courez, sautez et allumez les '
+             'entreprises de Casablanca avec Lago, de la médina au quartier d’affaires.',
+             'Our first game. Seen from space, Morocco is still dimly lit: run, jump and light up the businesses of '
+             'Casablanca with Lago, from the medina to the business district.',
+             'لعبتنا الأولى. من الفضاء، ما زال المغرب قليل الإضاءة: اركض واقفز وأضِئ مقاولات الدار البيضاء مع Lago، من '
+             'المدينة القديمة إلى حي الأعمال.'),
+    'play': ('Jouer maintenant', 'Play now', 'العب الآن'),
+    'trailer_btn': ('Comment on joue', 'How to play', 'كيف تلعب'),
+    'm1': ('Gratuit, sans inscription', 'Free, no sign-up', 'مجانية ودون تسجيل'),
+    'm2': ('Téléphone et ordinateur', 'Phone and computer', 'الهاتف والحاسوب'),
+    'm3': ('Jeu en français', 'Game in French', 'اللعبة بالفرنسية'),
+    'hero_alt': ('La médina de Casablanca dans le jeu LAGO : une épicerie allumée affiche l’adresse de son site',
+                 'The Casablanca medina in the LAGO game: a lit-up grocery shows its website address',
+                 'المدينة القديمة بالدار البيضاء في لعبة LAGO: بقالة مضاءة تعرض عنوان موقعها'),
+    'hero_alt2': ('L’écran d’accueil du jeu LAGO sur téléphone : la Terre la nuit',
+                  'The LAGO game start screen on a phone: the Earth at night', 'شاشة بداية لعبة LAGO على الهاتف: الأرض ليلاً'),
+    'why_k': ('L’idée', 'The idea', 'الفكرة'),
+    'why_h1': ('Un pays à allumer,', 'A country to light up,', 'بلد ننيره،'),
+    'why_h2': ('une entreprise après l’autre.', 'one business at a time.', 'مقاولة تلو الأخرى.'),
+    'why_p': ('Vu de l’espace, la nuit, chaque lumière est une entreprise que l’on trouve en ligne. Au Maroc, beaucoup '
+              'd’entreprises font un travail remarquable et restent dans l’ombre. Dans LAGO, chaque commerce que vous '
+              'allumez montre à quoi ressemblerait son site, et la ville s’éclaire un peu plus : c’est exactement le '
+              'métier de Digilago.',
+              'Seen from space at night, every light is a business you can find online. In Morocco, many businesses do '
+              'remarkable work and stay in the dark. In LAGO, every shop you light up shows what its website would look '
+              'like, and the city grows a little brighter: that is exactly what Digilago does.',
+              'من الفضاء ليلاً، كل ضوء مقاولة يمكن العثور عليها على الإنترنت. في المغرب، مقاولات كثيرة تقوم بعمل رائع '
+              'وتبقى في الظل. في LAGO، كل متجر تضيئه يُظهر كيف سيبدو موقعه، وتزداد المدينة إشراقاً: هذا بالضبط عمل Digilago.'),
+    'note': ('Captures du jeu : les entreprises, les clients et les messages sont fictifs.',
+             'Game screenshots: the businesses, clients and messages are fictional.',
+             'لقطات من اللعبة: الشركات والزبناء والرسائل وهمية.'),
+    'f_k': ('Comment on joue', 'How to play', 'كيف تلعب'),
+    'f_h1': ('Trois quartiers,', 'Three districts,', 'ثلاثة أحياء،'),
+    'f_h2': ('une ville qui s’allume.', 'one city lighting up.', 'ومدينة تُضاء.'),
+    'c_k': ('Les personnages', 'The characters', 'الشخصيات'),
+    'c_h1': ('Une équipe,', 'A team,', 'فريق،'),
+    'c_h2': ('et ceux qu’on rencontre en chemin.', 'and those you meet along the way.', 'ومن نلتقيهم في الطريق.'),
+    'map_k': ('Les villes', 'The cities', 'المدن'),
+    'map_h1': ('Une ville,', 'One city,', 'مدينة،'),
+    'map_h2': ('un niveau.', 'one level.', 'مرحلة.'),
+    'map_p': ('Casablanca ouvre la route avec trois quartiers : la médina, la Corniche et le quartier d’affaires. Chaque '
+              'ville arrive ensuite avec son identité, ses métiers et ses entreprises.',
+              'Casablanca leads the way with three districts: the medina, the Corniche and the business district. Each '
+              'city then arrives with its own identity, its trades and its businesses.',
+              'تفتح الدار البيضاء الطريق بثلاثة أحياء: المدينة القديمة والكورنيش وحي الأعمال. ثم تأتي كل مدينة بهويتها '
+              'وأنشطتها ومقاولاتها.'),
+    'map_alt': ('Les villes du jeu : Casablanca jouable, Rabat, Marrakech, Fès et Tanger bientôt',
+                'The cities in the game: Casablanca playable, Rabat, Marrakech, Fez and Tangier coming soon',
+                'مدن اللعبة: الدار البيضاء متاحة للعب، والرباط ومراكش وفاس وطنجة قريباً'),
+    'r_h1': ('Nos règles,', 'Our rules,', 'قواعدنا،'),
+    'r_h2': ('dans le jeu aussi.', 'in the game too.', 'في اللعبة أيضاً.'),
+    'faq_h1': ('Ce qu’on nous demande', 'What people ask us', 'ما يسألنا عنه الناس'),
+    'faq_h2': ('à propos de LAGO.', 'about LAGO.', 'عن LAGO.'),
+}
+LG['feats'] = [
+    {'n': ('01 · Le prologue', '01 · The prologue', '01 · المقدمة'), 'img': 'lago-globe', 'label': LG['label'],
+     'h': ('Vu de l’espace, le Maroc est peu éclairé.', 'Seen from space, Morocco is dimly lit.', 'من الفضاء، المغرب قليل الإضاءة.'),
+     'p': ('La Terre, la nuit : chaque lumière est une entreprise que l’on trouve en ligne. Au Maroc, seulement 31 % des '
+           'entreprises ont un site web (HCP). Lago, le D de Digilago, se met en route.',
+           'The Earth at night: every light is a business you can find online. In Morocco, only 31% of businesses have a '
+           'website (HCP). Lago, the D of Digilago, sets off.',
+           'الأرض ليلاً: كل ضوء مقاولة يمكن العثور عليها على الإنترنت. في المغرب، 31 ٪ فقط من المقاولات لها موقع إلكتروني '
+           '(المندوبية السامية للتخطيط). وينطلق Lago، حرف D في Digilago.'),
+     'alt': ('Le globe du prologue : l’Amérique et l’Europe brillent, le Maroc reste sombre',
+             'The prologue globe: America and Europe shine, Morocco stays dark', 'كرة المقدمة: أمريكا وأوروبا تلمعان، والمغرب يبقى مظلماً')},
+    {'n': ('02 · La médina', '02 · The medina', '02 · المدينة القديمة'), 'img': 'lago-medina', 'label': LG['label'],
+     'h': ('Courez, sautez, allumez.', 'Run, jump, light up.', 'اركض، اقفز، أضِئ.'),
+     'p': ('Avec la Lanterne de Radar, chaque commerce s’allume : il passe « en ligne », affiche l’adresse de son site, et '
+           'une petite note montre à quoi ressemble le site de ce métier.',
+           'With Radar’s Lantern, every shop lights up: it goes “online”, shows its website address, and a small note '
+           'shows what a website for that trade looks like.',
+           'بمصباح الرادار يُضاء كل متجر: يصبح «على الإنترنت»، ويعرض عنوان موقعه، وتُظهر ملاحظة صغيرة كيف يبدو موقع هذا النشاط.'),
+     'facts': [('Café, épicerie, riad, cabinet, école : chaque métier a sa note', 'Café, grocery, riad, practice, school: every trade has its note',
+                'مقهى، بقالة، رياض، عيادة، مدرسة: لكل نشاط ملاحظته')],
+     'alt': ('Le Café de l’Horloge vient de s’allumer, avec la note « Le site d’un café »',
+             'The Café de l’Horloge has just lit up, with the note “A café’s website”', 'مقهى الساعة أُضيء للتو، مع ملاحظة «موقع مقهى»')},
+    {'n': ('03 · La Corniche', '03 · The Corniche', '03 · الكورنيش'), 'img': 'lago-corniche', 'label': LG['label'],
+     'h': ('Cumulus, la bulle WhatsApp et le ballon.', 'Cumulus, the WhatsApp bubble and the ball.', 'Cumulus وفقاعة واتساب والكرة.'),
+     'p': ('Cumulus, le nuage de l’hébergement, offre le double saut. Rebondissez sur la bulle WhatsApp, franchissez les '
+           'mâts du port, et rencontrez Youssef, l’apporteur d’affaires : un accord écrit avant le premier contact.',
+           'Cumulus, the hosting cloud, gives you the double jump. Bounce on the WhatsApp bubble, cross the harbour masts, '
+           'and meet Youssef, the referral partner: an agreement written before the first contact.',
+           'Cumulus، سحابة الاستضافة، يمنحك القفزة المزدوجة. ارتدّ على فقاعة واتساب، واعبر صواري الميناء، والتقِ يوسف، وسيط '
+           'الأعمال: اتفاق مكتوب قبل أول تواصل.'),
+     'alt': ('Lago rebondit sur la bulle WhatsApp au-dessus de la Corniche', 'Lago bounces on the WhatsApp bubble above the Corniche',
+             'Lago يرتد على فقاعة واتساب فوق الكورنيش')},
+    {'n': ('04 · Le quartier d’affaires', '04 · The business district', '04 · حي الأعمال'), 'img': 'lago-affaires', 'label': LG['label'],
+     'h': ('L’épingle Google pour s’élancer.', 'The Google pin to swing across.', 'دبوس Google للانطلاق.'),
+     'p': ('Mehdi, le développeur, vous confie l’épingle Google : accrochez-vous, balancez-vous entre les tours, prenez '
+           'les ascenseurs et grimpez jusqu’au phare pour allumer les grands comptes.',
+           'Mehdi, the developer, hands you the Google pin: hook on, swing between the towers, take the lifts and climb '
+           'to the beacon to light up the major accounts.',
+           'يسلّمك مهدي، المطوّر، دبوس Google: تعلّق به، وتأرجح بين الأبراج، واركب المصاعد، واصعد إلى المنارة لتضيء كبار الزبناء.'),
+     'alt': ('Lago se balance au bout de l’épingle Google entre les tours', 'Lago swings from the Google pin between the towers',
+             'Lago يتأرجح بدبوس Google بين الأبراج')},
+    {'n': ('05 · La fin', '05 · The finale', '05 · النهاية'), 'img': 'lago-fin', 'label': LG['label'],
+     'h': ('Casablanca brille. Et votre entreprise ?', 'Casablanca shines. What about your business?', 'الدار البيضاء تلمع. وماذا عن مقاولتك؟'),
+     'p': ('Tapez le nom de votre entreprise et regardez-la s’allumer. À la fin du niveau, un code cadeau vous attend : '
+           'la fiche Google de votre entreprise offerte, pour la création de votre site.',
+           'Type your business name and watch it light up. At the end of the level, a gift code awaits: your business’s '
+           'Google profile free when you create your website.',
+           'اكتب اسم مقاولتك وشاهدها تُضاء. في نهاية المرحلة ينتظرك رمز هدية: ملف Google لمقاولتك مجاناً عند إنشاء موقعك.'),
+     'alt': ('La carte de fin de niveau : Casablanca est allumée, le nom de l’entreprise et le code cadeau',
+             'The end-of-level card: Casablanca is lit, the business name and the gift code',
+             'بطاقة نهاية المرحلة: الدار البيضاء مضاءة، واسم المقاولة ورمز الهدية')},
+]
+LG['cast'] = [
+    ('lago', ('Lago', 'Lago', 'Lago'), ('Le D de Digilago', 'The D of Digilago', 'حرف D في Digilago'),
+     ('Il court, saute et allume les entreprises, ville après ville.', 'He runs, jumps and lights up businesses, city after city.',
+      'يركض ويقفز ويضيء المقاولات، مدينة بعد مدينة.')),
+    ('radar', RADAR, ('La Lanterne', 'The Lantern', 'المصباح'),
+     ('Il trouve les entreprises invisibles et prête sa Lanterne pour les allumer.', 'He finds the invisible businesses and lends his Lantern to light them up.',
+      'يعثر على المقاولات غير المرئية ويعير مصباحه لإضاءتها.')),
+    ('gestion', ('Gestion', 'Gestion', 'تطبيق التدبير'), ('Les devis', 'The quotes', 'عروض الأسعار'),
+     ('Ses kiosques gardent votre progression : chez Digilago, tout est écrit avant de commencer.',
+      'Its kiosks save your progress: at Digilago, everything is written down before we start.',
+      'أكشاكه تحفظ تقدمك: عند Digilago، كل شيء مكتوب قبل البدء.')),
+    ('cumulus', ('Cumulus', 'Cumulus', 'Cumulus'), ('L’hébergement', 'The hosting', 'الاستضافة'),
+     ('Le nuage qui garde les sites allumés, et qui offre le double saut.', 'The cloud that keeps websites lit, and gives you the double jump.',
+      'السحابة التي تُبقي المواقع مضاءة، وتمنحك القفزة المزدوجة.')),
+    ('mehdi', ('Mehdi', 'Mehdi', 'مهدي'), ('Développeur', 'Developer', 'مطوّر'),
+     ('Il confie l’épingle Google pour traverser le quartier d’affaires.', 'He hands over the Google pin to cross the business district.',
+      'يسلّمك دبوس Google لعبور حي الأعمال.')),
+    ('youssef', ('Youssef', 'Youssef', 'يوسف'), ('Apporteur d’affaires', 'Referral partner', 'وسيط أعمال'),
+     ('Il ouvre le quartier d’affaires, avec un accord écrit avant le premier contact.', 'He opens the business district, with an agreement written before the first contact.',
+      'يفتح حي الأعمال، باتفاق مكتوب قبل أول تواصل.')),
+]
+LG['cities'] = [
+    (('Casablanca', 'Casablanca', 'الدار البيضاء'), 'on', ('Jouable', 'Playable', 'متاحة للعب'),
+     ('La médina, la Corniche et le quartier d’affaires : trois quartiers à allumer.',
+      'The medina, the Corniche and the business district: three districts to light up.',
+      'المدينة القديمة والكورنيش وحي الأعمال: ثلاثة أحياء لإضاءتها.')),
+    (('Rabat', 'Rabat', 'الرباط'), 'next', ('Prochaine mise à jour', 'Next update', 'التحديث المقبل'),
+     ('Les Oudayas, la vallée du Bouregreg et les institutions.', 'The Oudayas, the Bouregreg valley and the institutions.',
+      'الأوداية ووادي أبي رقراق والمؤسسات.')),
+    (('Marrakech', 'Marrakech', 'مراكش'), 'wip', ('Bientôt', 'Coming soon', 'قريباً'),
+     ('Les riads, les souks et le tourisme.', 'Riads, souks and tourism.', 'الرياضات والأسواق والسياحة.')),
+    (('Fès', 'Fez', 'فاس'), 'wip', ('Bientôt', 'Coming soon', 'قريباً'),
+     ('Les artisans de la médina et les écoles.', 'The medina’s artisans and its schools.', 'صناع المدينة العتيقة ومدارسها.')),
+    (('Tanger', 'Tangier', 'طنجة'), 'wip', ('Bientôt', 'Coming soon', 'قريباً'),
+     ('Le port, la logistique et le détroit.', 'The port, logistics and the strait.', 'الميناء واللوجستيك والمضيق.')),
+]
+LG['rules'] = [
+    ('facts', ('Entreprises fictives', 'Fictional businesses', 'شركات وهمية'),
+     ('Les entreprises, les clients et les messages du jeu sont inventés pour le jeu. Les métiers et les promesses, eux, sont vrais.',
+      'The game’s businesses, clients and messages are made up for the game. The trades and the promises are real.',
+      'الشركات والزبناء والرسائل في اللعبة مختلَقة لأجلها. أما الأنشطة والوعود فحقيقية.')),
+    ('hidden', ('Aucune donnée collectée', 'No data collected', 'لا جمع للبيانات'),
+     ('Pas de compte, pas de formulaire : la progression reste sur votre appareil, et le nom que vous tapez à la fin ne nous est pas envoyé.',
+      'No account, no form: your progress stays on your device, and the name you type at the end is not sent to us.',
+      'لا حساب ولا استمارة: يبقى تقدمك على جهازك، والاسم الذي تكتبه في النهاية لا يُرسَل إلينا.')),
+    ('stop', ('Sans publicité', 'No ads', 'دون إعلانات'),
+     ('Pas de publicité, pas d’achat dans le jeu, pas de compte à rebours pour vous retenir.',
+      'No ads, no in-game purchases, no countdown to keep you hooked.', 'لا إعلانات، ولا مشتريات داخل اللعبة، ولا عدّاد لإبقائك.')),
+    ('devices', ('Partout, tout de suite', 'Anywhere, right away', 'في كل مكان وفوراً'),
+     ('Dans le navigateur, sur téléphone comme sur ordinateur, sans rien installer.',
+      'In the browser, on phone or computer, with nothing to install.', 'في المتصفح، على الهاتف أو الحاسوب، دون تثبيت أي شيء.')),
+]
+LG['faq'] = [
+    (('LAGO est-il vraiment gratuit ?', 'Is LAGO really free?', 'هل LAGO مجانية فعلاً؟'),
+     ('Oui. Pas d’inscription, pas de publicité, pas d’achat dans le jeu. C’est un projet du Digilago Lab, offert à tous.',
+      'Yes. No sign-up, no ads, no in-game purchases. It is a Digilago Lab project, open to everyone.',
+      'نعم. لا تسجيل ولا إعلانات ولا مشتريات داخل اللعبة. إنها مشروع من مختبر Digilago، متاح للجميع.')),
+    (('Sur quels appareils peut-on jouer ?', 'Which devices can I play on?', 'على أي أجهزة يمكن اللعب؟'),
+     ('Sur tout téléphone, tablette ou ordinateur récent, directement dans le navigateur. Sur téléphone, tournez-le à '
+      'l’horizontale pour plus de confort. Une version Google Play et App Store est en préparation.',
+      'On any recent phone, tablet or computer, right in the browser. On a phone, turn it sideways for more comfort. A '
+      'Google Play and App Store version is in the works.',
+      'على أي هاتف أو لوحة أو حاسوب حديث، مباشرة في المتصفح. على الهاتف، أدِره أفقياً لراحة أكبر. ونسخة Google Play '
+      'وApp Store قيد الإعداد.')),
+    (('Ma progression est-elle sauvegardée ?', 'Is my progress saved?', 'هل يُحفظ تقدمي؟'),
+     ('Oui, sur votre appareil, dans votre navigateur. Rien n’est envoyé à Digilago : si vous changez de téléphone, la '
+      'partie recommence.',
+      'Yes, on your device, in your browser. Nothing is sent to Digilago: if you change phones, the game starts over.',
+      'نعم، على جهازك داخل متصفحك. لا يُرسَل أي شيء إلى Digilago: إذا غيّرت هاتفك، تبدأ اللعبة من جديد.')),
+    (('Que gagne-t-on à la fin de Casablanca ?', 'What do you win at the end of Casablanca?', 'ماذا تربح في نهاية الدار البيضاء؟'),
+     ('Un code cadeau : il offre la création et l’optimisation de la fiche Google de votre entreprise, pour la création '
+      'de votre site avec Digilago. Les conditions sont sur la page Offres.',
+      'A gift code: it gives you the creation and optimization of your business’s Google profile when you create your '
+      'website with Digilago. The terms are on the Offers page.',
+      'رمز هدية: يمنحك إنشاء ملف Google لمقاولتك وتحسينه عند إنشاء موقعك مع Digilago. الشروط في صفحة العروض.')),
+    (('Les entreprises du jeu existent-elles ?', 'Do the businesses in the game exist?', 'هل الشركات في اللعبة موجودة؟'),
+     ('Non, elles sont fictives, tout comme les adresses de leurs sites. Les métiers, eux, sont ceux que nous '
+      'accompagnons tous les jours : cafés, commerces, riads, cabinets de santé, écoles, clubs de sport, hôtels, industrie.',
+      'No, they are fictional, and so are their website addresses. The trades, however, are the ones we work with every '
+      'day: cafés, shops, riads, health practices, schools, sports clubs, hotels, industry.',
+      'لا، إنها وهمية، وكذلك عناوين مواقعها. أما الأنشطة فهي التي نرافقها كل يوم: المقاهي والمتاجر والرياضات والعيادات '
+      'والمدارس والنوادي الرياضية والفنادق والصناعة.')),
+    (('Pouvez-vous créer un jeu pour ma marque ?', 'Can you make a game for my brand?', 'هل يمكنكم صنع لعبة لعلامتي التجارية؟'),
+     ('Oui. Un jeu court, à vos couleurs, qui raconte votre métier et se partage facilement : décrivez votre idée, vous '
+      'recevez un prix écrit avant de commencer.',
+      'Yes. A short game in your colours, telling the story of your trade and easy to share: describe your idea, and '
+      'you get a written price before we start.',
+      'نعم. لعبة قصيرة بألوانك، تحكي نشاطك ويسهل تداولها: صِف فكرتك، وتتوصل بثمن مكتوب قبل البدء.')),
+]
+
+
+def status_on():
+    return '<span class="lab-st on"><i aria-hidden="true"></i>%s</span>' % T(S['live'])
+
+
+def page_lago():
+    P = LG
+    play_ic = '<svg class="pl" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>'
+    hero = ('<header class="lab-hero prj lago"><div class="lab-w"><div>%s<div class="lab-tagrow"><span class="lab-pmk">'
+            + mark('lab') + '</span><span class="lab-code">%s</span>%s</div>'
+            '<h1><span class="l"><span>%s</span></span><span class="l"><span><em>%s</em></span></span></h1>'
+            '<p class="lab-lead">%s</p><div class="lab-btns"><a class="lab-btn" href="%s" data-play="hero">%s%s</a>'
+            '<a class="lab-btn gh" href="#comment-jouer">%s</a></div>'
+            '<ul class="lab-meta"><li>%s</li><li>%s</li><li>%s</li></ul></div>'
+            '<figure class="lab-show"><a class="lago-shot" href="%s" data-play="image" aria-label="%s">%s</a>'
+            '<a class="lago-phone" href="%s" data-play="phone" tabindex="-1" aria-hidden="true">%s<span class="lago-go">%s</span></a></figure></div></header>') % (
+        crumbs([(S['home'], 'index.html'), (S['lab'], 'lab.html'), (LAGO, None)]), T(CODE[3]), status_on(),
+        T(P['h1a']), T(P['h1b']), T(P['lead']), GAME_URL, T(P['play']), play_ic, T(P['trailer_btn']),
+        T(P['m1']), T(P['m2']), T(P['m3']),
+        GAME_URL, A(P['play']), browser('lago-rue', P['hero_alt'], P['label'], eager=True, sizes='(max-width: 760px) 92vw, 1184px'),
+        GAME_URL, phone('lago-titre', P['hero_alt2'], sizes='(max-width: 760px) 34vw, 290px'), play_ic)
+    why = ('<section class="lab-sec"><div class="lab-w"><div class="lab-intro"><div class="lab-head"><p class="lab-k rv">%s</p>'
+           '<h2 class="rv d1">%s <em>%s</em></h2></div><p class="lab-p rv d2">%s</p></div></div></section>') % (
+        T(P['why_k']), T(P['why_h1']), T(P['why_h2']), T(P['why_p']))
+    ft = '<section class="lab-sec" id="comment-jouer"><div class="lab-w">%s%s<p class="lab-note rv">%s%s</p></div></section>' % (
+        head(P['f_k'], P['f_h1'], P['f_h2']), feats(P['feats']), svg('info'), T(P['note']))
+    cast = ''.join(
+        '<li class="rv d%d"><img src="assets/lab/lago-perso-%s.webp" width="480" height="480" alt="%s" loading="lazy" decoding="async">'
+        '<b>%s</b><small>%s</small><p>%s</p></li>' % (i % 3 + 1, k, A(n), T(n), T(r), T(p))
+        for i, (k, n, r, p) in enumerate(P['cast']))
+    cs = '<section class="lab-sec" id="personnages"><div class="lab-w">%s<ul class="lago-cast">%s</ul></div></section>' % (
+        head(P['c_k'], P['c_h1'], P['c_h2']), cast)
+    cities = ''.join('<li class="%s"><span class="lago-city"><b>%s</b><em>%s</em></span><p>%s</p></li>' % (
+        st, T(n), T(lab), T(p)) for n, st, lab, p in P['cities'])
+    mp = ('<section class="lab-sec" id="carte"><div class="lab-w"><article class="lab-feat mob"><div class="lab-ft">%s'
+          '<ul class="lago-cities rv d2">%s</ul></div><figure class="lab-fig rv d1">%s</figure></article></div></section>') % (
+        head(P['map_k'], P['map_h1'], P['map_h2'], P['map_p']), cities, phone('lago-carte', P['map_alt']))
+    rl = '<section class="lab-sec"><div class="lab-w">%s%s</div></section>' % (
+        head(S['rules_k'], P['r_h1'], P['r_h2']), rules(P['rules'], 'four'))
+    cta = ('<section class="lab-sec lago-cta"><div class="lab-w"><div class="lago-cta-in rv"><h2>%s <em>%s</em></h2>'
+           '<a class="lab-btn" href="%s" data-play="bas">%s%s</a></div></div></section>') % (
+        T(P['h1a']), T(P['h1b']), GAME_URL, T(P['play']), play_ic)
+    fq = '<section class="lab-sec lab-faq" id="faq"><div class="lab-w">%s%s</div></section>' % (
+        head(LAB['faq_k'], P['faq_h1'], P['faq_h2']), faq(P['faq']))
+
+    def nlink(code, name, href, side, cls=''):
+        small = T(S['all']) if href == 'lab.html' else T(tuple('%s · %s' % (a, b) for a, b in zip(S[side], code)))
+        return '<a%s href="%s"><small>%s</small><b>%s</b></a>' % (cls, href, small, T(name))
+    nb = ('<section class="lab-sec"><div class="lab-w"><nav class="lab-next" aria-label="%s">%s%s</nav></div></section>') % (
+        A(S['lab_full']), nlink(CODE[2], GE['name'], 'lab-gestion.html', 'prev'), nlink(None, S['lab_full'], 'lab.html', 'next', ' class="r"'))
+    body = hero + why + ft + cs + mp + rl + cta + fq + profit('lago') + nb
+    return 'lago', P['title'], P['desc'], body
 
 
 # ─── assemblage ──────────────────────────────────────────────────────────
@@ -1161,7 +1479,7 @@ def add_band(h, style):
 def main():
     hd, tail = shell()
     style, js = css('lab-marks.src.css') + css(), lab_js()
-    pages = {'lab.html': page_lab(), 'lab-radar.html': page_radar(), 'lab-gestion.html': page_gestion()}
+    pages = {'lab.html': page_lab(), 'lab-radar.html': page_radar(), 'lab-gestion.html': page_gestion(), 'lab-lago.html': page_lago()}
     for name, (kind, title, desc, body) in pages.items():
         open(os.path.join(SITE, name), 'w', encoding='utf-8').write(build(hd, tail, kind, title, desc, body, style, js))
     n, band_css = 0, css('lab-marks.src.css') + css('lab-band.src.css')

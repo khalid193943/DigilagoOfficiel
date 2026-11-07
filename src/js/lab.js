@@ -16,6 +16,12 @@
       Array.prototype.forEach.call(list, fn);
     };
 
+  // LAB-03 : chaque « Jouer » compte (mesure d'audience et publicité, seulement si le visiteur les a acceptées)
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("[data-play]");
+    if (a && window.dgTrack) window.dgTrack("jeu_lago_jouer", { position: a.getAttribute("data-play"), page: location.pathname });
+  });
+
   function digits(s) {
     return String(s || "").replace(/\D/g, "");
   }
