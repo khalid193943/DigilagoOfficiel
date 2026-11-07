@@ -2932,25 +2932,109 @@
       });
     }, 300);
   })();
+  /* « Le bon moment » : le téléphone tape une recherche (un métier, une ville), les fiches apparaissent,
+     puis « votre » fiche monte à la 1re place. Un exemple toutes les 7 secondes, seulement quand la
+     section est à l'écran ; les pastilles sous le téléphone choisissent l'exemple. */
   (function () {
     var m = document.getElementById("moment");
     if (!m) return;
-    if (!("IntersectionObserver" in window)) {
+    var bm = m.querySelector(".bm");
+    if (!bm) {
       m.classList.add("go");
       return;
     }
-    var io = new IntersectionObserver(
+    var sets = [].slice.call(bm.querySelectorAll(".bm-set")),
+      chips = [].slice.call(bm.querySelectorAll(".bm-chips button")),
+      qt = bm.querySelector(".bm-qt"),
+      reduce = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches),
+      DUR = 7000,
+      cur = 0,
+      timers = [],
+      seen = false,
+      running = false;
+    function at(ms, f) {
+      timers.push(setTimeout(f, ms));
+    }
+    function stop() {
+      timers.forEach(clearTimeout);
+      timers = [];
+      running = false;
+    }
+    function show(i) {
+      stop();
+      cur = i;
+      var s = sets[i],
+        q = s.getAttribute("data-q") || "";
+      sets.forEach(function (x, k) {
+        x.classList.toggle("on", k === i);
+        x.classList.remove("bm-in", "bm-up");
+      });
+      chips.forEach(function (c, k) {
+        c.classList.toggle("on", k === i);
+        c.setAttribute("aria-pressed", k === i ? "true" : "false");
+      });
+      bm.classList.remove("won", "run", "paused", "typing");
+      if (reduce) {
+        qt.textContent = q;
+        s.classList.add("bm-in", "bm-up");
+        bm.classList.add("won");
+        return;
+      }
+      void bm.offsetWidth; // la barre de progression de la pastille repart de zéro
+      bm.classList.add("run");
+      running = true;
+      qt.textContent = "";
+      bm.classList.add("typing");
+      var n = 0;
+      (function type() {
+        if (n < q.length) {
+          qt.textContent = q.slice(0, ++n);
+          at(n === 1 ? 300 : 55, type);
+          return;
+        }
+        at(350, function () {
+          bm.classList.remove("typing");
+          s.classList.add("bm-in");
+          at(1000, function () {
+            s.classList.add("bm-up");
+            at(950, function () {
+              bm.classList.add("won");
+            });
+          });
+        });
+      })();
+      at(DUR, function () {
+        show((cur + 1) % sets.length);
+      });
+    }
+    chips.forEach(function (c, k) {
+      c.addEventListener("click", function () {
+        show(k);
+      });
+    });
+    if (!("IntersectionObserver" in window)) {
+      m.classList.add("go");
+      show(0);
+      return;
+    }
+    new IntersectionObserver(
       function (es) {
         es.forEach(function (en) {
           if (en.isIntersecting) {
             m.classList.add("go");
-            io.disconnect();
+            if (!running) {
+              bm.classList.remove("paused");
+              show(seen ? (cur + 1) % sets.length : 0);
+              seen = true;
+            }
+          } else if (running) {
+            stop();
+            bm.classList.add("paused");
           }
         });
       },
-      { threshold: 0.35 },
-    );
-    io.observe(m);
+      { threshold: 0.3 },
+    ).observe(m);
   })();
   /* mur des réalisations : un seul bouton met les trois rangées en pause */
   document.querySelectorAll(".sw-play").forEach(function (b) {

@@ -155,7 +155,8 @@ def test_menu_plein_ecran_telephone(page, base_url, name):
     assert page.locator('#dock').count() == 0
     page.click('#mb'); page.wait_for_timeout(1000)
     assert 'open' in page.locator('#sheet').get_attribute('class')
-    assert page.locator('#sheet .fsm-nav a').count() == 7   # le Lab est dans le pied de page, pas dans le menu
+    assert page.locator('#sheet .fsm-nav a').count() == 8   # le Lab est dans le pied de page, pas dans le menu ; « Offres » en dernier
+    assert page.locator('#sheet .fsm-nav a').last.get_attribute('href') == 'offres.html'
     page.click('#closeBtn'); page.wait_for_timeout(900)
     assert 'open' not in page.locator('#sheet').get_attribute('class')
     assert not errors, errors
