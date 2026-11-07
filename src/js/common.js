@@ -478,3 +478,217 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();
+
+// Offres (tools/offres.py) : le bandeau du haut, la fin de l'offre de fin d'année, le code du jeu et le parrainage
+// joints aux demandes, l'audit gratuit et le lien de parrainage de la page « Offres ».
+(function () {
+  var END = Date.UTC(2027, 0, 1), // le 31 décembre 2026 compris
+    now = Date.now(),
+    live = now < END,
+    de = document.documentElement,
+    CODE = "LAGO-CASA";
+  function ss(k, v) {
+    try {
+      if (v === undefined) return sessionStorage.getItem(k) || "";
+      sessionStorage.setItem(k, v);
+    } catch (e) {
+      return "";
+    }
+  }
+  function msg(k) {
+    var e = document.querySelector('[data-of-msg="' + k + '"]');
+    return e ? e.textContent.trim() : "";
+  }
+  if (!live)
+    document.querySelectorAll("[data-of-end]").forEach(function (e) {
+      e.parentNode.removeChild(e);
+    });
+  // le bandeau : il arrive une fois la page affichée, s'efface quand on descend, reste fermé 7 jours si on le ferme
+  var bar = document.getElementById("obar");
+  if (bar && live) {
+    var shut = 0;
+    try {
+      shut = +localStorage.getItem("dg_obar") || 0;
+    } catch (e) {}
+    if (now - shut > 7 * 864e5) {
+      bar.hidden = false;
+      var up = null,
+        onScroll = function () {
+          var u = (window.scrollY || 0) > 40;
+          if (u !== up) {
+            up = u;
+            de.classList.toggle("ob-up", u);
+          }
+        };
+      onScroll();
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          de.classList.add("ob");
+        });
+      });
+      addEventListener("scroll", onScroll, { passive: true });
+      bar.querySelector(".ob-x").addEventListener("click", function () {
+        de.classList.remove("ob");
+        try {
+          localStorage.setItem("dg_obar", String(Date.now()));
+        } catch (e) {}
+        setTimeout(function () {
+          bar.hidden = true;
+        }, 600);
+      });
+    }
+  }
+  // jours restants (page « Offres »)
+  document.querySelectorAll("[data-of-days]").forEach(function (e) {
+    e.textContent = Math.max(1, Math.ceil((END - now) / 864e5));
+    var box = e.closest(".of-days");
+    if (box) box.hidden = !live;
+  });
+  // un code ou un parrain arrivé par l'adresse (?code=…, ?parrain=…) suit le visiteur jusqu'à sa demande
+  try {
+    var q = new URLSearchParams(location.search),
+      qc = (q.get("code") || "").replace(/[^\w-]/g, "").toUpperCase().slice(0, 30),
+      qp = (q.get("parrain") || "").replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, 60);
+    if (qc) ss("dg_code", qc);
+    if (qp) ss("dg_parrain", qp);
+  } catch (e) {}
+  function perks() {
+    var c = ss("dg_code"),
+      p = ss("dg_parrain"),
+      f = document.getElementById("wCode"),
+      v = f ? f.value.trim() : "";
+    if (v) {
+      if (v.toUpperCase() === CODE) c = CODE;
+      else if (v !== p) c = v.slice(0, 50);
+    }
+    var out = [];
+    if (live) out.push("offre de fin d'année en cours");
+    if (c) out.push("code " + c);
+    if (p) out.push("parrain : " + p);
+    return { list: out, c: c, p: p };
+  }
+  var base = window.dgLeadExtra;
+  window.dgLeadExtra = function (o) {
+    o = base ? base(o) : o || {};
+    var k = perks();
+    if (k.list.length) o.message = (o.message ? o.message + "\n" : "") + "Avantages : " + k.list.join(" ; ");
+    if (k.c) o.source = (o.source || "") + " · code " + k.c;
+    if (k.p) o.source = (o.source || "") + " · parrain " + k.p;
+    return o;
+  };
+  // « Démarrer un projet » : le champ code ou parrain
+  var wc = document.getElementById("wCode"),
+    wm = document.getElementById("wCodeMsg");
+  if (wc && wm) {
+    wc.value = ss("dg_code") || ss("dg_parrain") || "";
+    var say = function () {
+      var v = wc.value.trim(),
+        k = !v ? "" : v.toUpperCase() === CODE ? "code" : v === ss("dg_parrain") ? "parrain" : "autre";
+      wm.textContent = k ? msg(k) : "";
+      wm.className = "of-codemsg" + (k === "code" || k === "parrain" ? " of-yes" : "");
+    };
+    wc.addEventListener("input", say);
+    say();
+  }
+  // page « Offres » : l'audit gratuit
+  var af = document.getElementById("ofAudit");
+  if (af)
+    af.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var g = function (n) {
+          return (af.elements[n].value || "").trim();
+        },
+        first = g("first"),
+        tel = g("tel"),
+        co = g("company"),
+        city = g("city"),
+        site = g("site"),
+        miss = !first ? "first" : tel.replace(/\D/g, "").length < 9 ? "tel" : !co ? "company" : !city ? "city" : "";
+      af.classList.remove("fail");
+      af.classList.toggle("err", !!miss);
+      if (miss) {
+        af.elements[miss].focus();
+        return;
+      }
+      var api = (de.getAttribute("data-api") || "").replace(/\/$/, ""),
+        btn = af.querySelector('button[type="submit"]'),
+        payload = {
+          name: first,
+          company: co,
+          phone: tel,
+          need: "Audit gratuit",
+          message: "Audit gratuit de visibilité Google\nVille : " + city + (site ? "\nSite : " + site : ""),
+          source: "Offres : audit gratuit" + (window.dgSrc ? window.dgSrc() : ""),
+          lang: (de.lang || "fr").slice(0, 2),
+        },
+        wa = af.querySelector(".of-wa");
+      if (wa)
+        wa.href =
+          "https://wa.me/212649953813?text=" +
+          encodeURIComponent("Bonjour Digilago, je voudrais mon audit gratuit.\n" + first + ", " + co + " (" + city + ")" + (site ? "\n" + site : ""));
+      var done = function (ok) {
+        af.classList.remove("sending");
+        btn.disabled = false;
+        af.classList.add(ok ? "sent" : "fail");
+        if (ok && window.dgTrack) window.dgTrack("generate_lead", { form: "audit", event_id: window.dgEventId ? window.dgEventId() : "" });
+      };
+      if (!api || !window.fetch) return done(false);
+      af.classList.add("sending");
+      btn.disabled = true;
+      fetch(api + "/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(window.dgLeadExtra ? window.dgLeadExtra(payload) : payload),
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          done(true);
+        })
+        .catch(function () {
+          done(false);
+        });
+    });
+  // page « Offres » : le lien de parrainage, à copier ou à envoyer sur WhatsApp
+  var rn = document.getElementById("ofRefName");
+  if (rn) {
+    var out = document.getElementById("ofRefLink"),
+      ok = document.getElementById("ofRefOk"),
+      waB = document.getElementById("ofRefWa"),
+      lang = (de.lang || "fr").slice(0, 2),
+      link = function () {
+        var v = rn.value.trim().slice(0, 50);
+        return v ? "https://www.digilago.ma/" + (lang === "fr" ? "" : lang + "/") + "demarrer.html?parrain=" + encodeURIComponent(v) : "";
+      },
+      upd = function () {
+        var l = link();
+        out.textContent = l ? l.replace("https://www.", "") : "digilago.ma/demarrer.html?parrain=…";
+        waB.href = l ? "https://wa.me/?text=" + encodeURIComponent(msg("wa") + " " + l) : "https://wa.me/";
+        ok.textContent = "";
+        ok.className = "of-ref-ok";
+      },
+      need = function (e) {
+        if (link()) return true;
+        if (e) e.preventDefault();
+        ok.textContent = msg("name");
+        ok.className = "of-ref-ok of-bad";
+        rn.focus();
+        return false;
+      };
+    rn.addEventListener("input", upd);
+    upd();
+    document.getElementById("ofRefCopy").addEventListener("click", function () {
+      if (!need()) return;
+      var l = link(),
+        said = function () {
+          ok.textContent = msg("copied");
+          ok.className = "of-ref-ok";
+        };
+      if (navigator.clipboard) navigator.clipboard.writeText(l).then(said, said);
+      else said();
+      if (window.dgTrack) window.dgTrack("parrainage_lien", {});
+    });
+    waB.addEventListener("click", function (e) {
+      if (need(e) && window.dgTrack) window.dgTrack("parrainage_whatsapp", {});
+    });
+  }
+})();

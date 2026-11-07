@@ -264,13 +264,71 @@ WAI = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d=
        ' 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>')
 
 
+# « Le bon moment » : sur le téléphone, une vraie recherche Google, un métier et une ville à la fois ;
+# votre entreprise passe de la 4e à la 1re place. Les concurrents sont des exemples génériques (fictifs).
+# (pastille, recherche tapée, [concurrents : nom, état de la fiche, étoiles], votre fiche, ce qu'elle montre)
+MOMENTS = [
+    ('Dentiste', 'dentiste casablanca',
+     [('Cabinet dentaire du centre', 'Ouvert, ferme à 19:00', 3), ('Clinique dentaire de la ville', 'Horaires non renseignés', 2),
+      ('Dentiste du quartier', 'Pas de site web', 0)],
+     'Votre cabinet dentaire', 'Rendez-vous en ligne'),
+    ('Riad', 'riad marrakech',
+     [('Riad de la médina', 'Photos anciennes', 3), ('Maison d’hôtes du souk', 'Réservation par téléphone', 2),
+      ('Riad près de la place', 'Pas de site web', 0)],
+     'Votre riad', 'Réservation directe'),
+    ('Restaurant', 'restaurant rabat',
+     [('Restaurant du centre-ville', 'Menu non disponible', 3), ('Grill de l’avenue', 'Horaires non renseignés', 2),
+      ('Snack de la gare', 'Pas de site web', 0)],
+     'Votre restaurant', 'Menu et réservation'),
+    ('Sport', 'salle de sport tanger',
+     [('Fitness club du centre', 'Tarifs non affichés', 3), ('Gym de la plage', 'Horaires non renseignés', 2),
+      ('Salle de sport du quartier', 'Pas de site web', 0)],
+     'Votre salle de sport', 'Tarifs et inscription'),
+    ('École', 'école privée agadir',
+     [('École privée du centre', 'Frais non affichés', 3), ('Groupe scolaire de la ville', 'Horaires non renseignés', 2),
+      ('École du quartier', 'Pas de site web', 0)],
+     'Votre école', 'Inscriptions en ligne'),
+]
+PIN = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7z'
+       'm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2z"/></svg>')
+ACT = {'web': '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/>'
+              '<path d="M3.5 12h17M12 3.5c2.6 2.4 3.8 5.2 3.8 8.5s-1.2 6.1-3.8 8.5c-2.6-2.4-3.8-5.2-3.8-8.5s1.2-6.1 3.8-8.5z" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+       'route': '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.7 11.3l-9-9a1 1 0 0 0-1.4 0l-9 9a1 1 0 0 0 0 1.4l9 9a1 1 0 0 0 1.4 0l9-9a1 1 0 0 0 0-1.4zM14 14.5V12h-4v3H8v-4a1 1 0 0 1 1-1h5V7.5l3.5 3.5z"/></svg>',
+       'call': '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>'}
+
+
+def moment_vis():
+    stars = lambda n: '<em>%s<i>%s</i></em>' % ('★' * n, '★' * (5 - n))
+    sets = ''
+    for i, (_, q, others, you, what) in enumerate(MOMENTS):
+        rows = ''.join('<div class="bmr c%d"><span class="bmr-av"></span><span class="bmr-tx"><b>%s</b><small>%s</small>%s</span></div>'
+                       % (k + 1, n, st, stars(r)) for k, (n, st, r) in enumerate(others))
+        rows += ('<div class="bmr you"><span class="bmr-av">%s</span><span class="bmr-tx"><b>%s</b><small>%s</small>%s</span>'
+                 '<span class="bmr-rk">1er</span></div>' % (PIN, you, what, stars(5)))
+        sets += '<div class="bm-set%s" data-q="%s">%s</div>' % (' on bm-in bm-up' if i == 0 else '', q, rows)
+    chips = ''.join('<button type="button" data-i="%d" aria-pressed="%s"%s>%s<i></i></button>'
+                    % (i, 'true' if i == 0 else 'false', ' class="on"' if i == 0 else '', m[0]) for i, m in enumerate(MOMENTS))
+    return ('<div class="mom-vis bm won rv d2"><div class="mom-ph" aria-hidden="true"><i class="mom-btn b1"></i><i class="mom-btn b2"></i>'
+            '<i class="mom-btn b3"></i><div class="mom-scr"><span class="mom-isl"></span><div class="mom-st"><b>9:41</b>'
+            '<span class="mom-sig"><i></i><i></i><i></i><i></i></span><span class="mom-bat"><i></i></span></div>'
+            '<div class="mom-g"><span class="mom-gl"><i></i><i></i><i></i><i></i></span></div>'
+            '<div class="mom-sb"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>'
+            '<path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+            '<span class="mom-q"><span class="bm-qt">%s</span><i></i></span><span class="mom-mic"></span></div>'
+            '<div class="mom-tabs"><b>Tous</b><span>Maps</span><span>Images</span><span>Vidéos</span></div>'
+            '<div class="mom-list bm-sets"><div class="bm-skel"><i></i><i></i><i></i><i></i></div>%s</div>'
+            '<div class="bm-acts"><span>%sSite web</span><span>%sItinéraire</span><span>%sAppeler</span></div>'
+            '<span class="mom-home"></span></div></div>'
+            '<div class="bm-chips" role="group" aria-label="Exemples de recherches sur Google">%s</div></div>'
+            % (MOMENTS[0][1], sets, ACT['web'], ACT['route'], ACT['call'], chips))
+
+
 def finale(h):
     m = re.search(r'<section class="(?:blk mom|fin mom)" id="moment">.*?</section>', h, re.S)
     if not m:
         return h
     old = m.group(0)
-    vis = re.search(r'<div class="mom-vis rv d2" aria-hidden="true">.*?</span></div>\n?</div>', old, re.S)
-    vis = vis.group(0) if vis else ''
+    vis = moment_vis()
     pts = re.findall(r'<b>([^<]+)</b></span></li>', old)[:3] or [
         'Vos clients cherchent déjà sur leur téléphone', 'Ailleurs, la première place se paie cher', 'Au Maroc, elle est encore libre']
     new = ('<section class="fin mom" id="moment"><div class="fin-sky" aria-hidden="true"><i class="a1"></i><i class="a2"></i></div>'
