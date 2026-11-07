@@ -1,0 +1,68 @@
+{
+ "file": "entreprises-marocaines-site-web.html",
+ "date": "2026-11-07",
+ "title": "31 % des entreprises marocaines ont un site web : ce que ça change | Digilago",
+ "description": "Selon le HCP, seules 31 % des entreprises au Maroc avaient un site web en 2019, contre 70 % en France et 89 % en Allemagne. Ce que ce retard veut dire, et comment en faire une avance.",
+ "eyebrow": "Analyse, 6 min de lecture",
+ "h1": ["Au Maroc, 7 entreprises sur 10", "restent invisibles en ligne."],
+ "lead": "En 2019, seules 31 % des entreprises marocaines avaient un site web, selon le Haut-Commissariat au Plan. Le chiffre dit un retard. Il dit surtout qu’il reste une place à prendre pour les entreprises qui se lancent maintenant.",
+ "headline": "Seules 31 % des entreprises au Maroc ont un site web : les chiffres du HCP, la comparaison avec la France et l’Allemagne, et comment rattraper le retard",
+ "keywords": ["entreprises marocaines site web", "31 % des entreprises site web Maroc", "digitalisation des PME au Maroc", "HCP intégration des TIC entreprises", "présence en ligne des entreprises au Maroc", "site web TPE PME Maroc"],
+ "cover": "ma31hcp2019",
+ "sections": [
+  {"h2": "Le chiffre : 31 % des entreprises ont un site web", "blocks": [
+   {"p": "Le Haut-Commissariat au Plan (HCP) a publié le 1er février 2022 une note sur l’intégration des technologies de l’information dans les entreprises marocaines. Elle s’appuie sur une enquête menée en 2019 auprès de 2 101 entreprises de l’industrie, de la construction, du commerce et des services marchands non financiers."},
+   {"p": "Le constat est net : seules 31 % des entreprises interrogées disposaient d’un site web. Autrement dit, près de 7 entreprises sur 10 n’avaient aucune page à elles sur internet."},
+   {"p": "Pour les très petites, petites et moyennes entreprises (TPME), qui représentent 93 % des entreprises du pays, l’écart est encore plus marqué : plus de 3 TPME sur 5 n’avaient ni site web, ni page sur les réseaux sociaux."},
+   {"note": "Ces chiffres portent sur l’année 2019. Ce sont, à notre connaissance, les plus récents publiés par le HCP sur ce sujet. La situation a évolué depuis, mais l’écart avec les pays voisins reste un repère utile."}
+  ]},
+  {"h2": "Le Maroc face à ses voisins", "blocks": [
+   {"p": "La comparaison relayée par la presse parle d’elle-même. Vu depuis internet, le Maroc reste peu éclairé : nos entreprises existent et travaillent bien, mais une grande partie d’entre elles n’apparaît pas quand un client les cherche."},
+   {"table": {"head": ["Pays", "Entreprises avec un site web"], "rows": [["Allemagne", "89 %"], ["France", "70 %"], ["Turquie", "49 %"], ["Maroc", "31 %"]]}},
+   {"note": "Comparaison citée par Hespress à partir de la note du HCP, publiée le 1er février 2022."}
+  ]},
+  {"h2": "Le problème n’est pas l’accès à internet", "blocks": [
+   {"p": "Internet est déjà là. En 2019, 81 % des très petites entreprises, 97,9 % des PME et 99,5 % des grandes entreprises y avaient accès, selon le HCP. Et 92 % des entreprises s’en servaient d’abord pour échanger des e-mails."},
+   {"p": "Le retard ne vient donc pas du réseau. Il vient de la visibilité : être connecté ne veut pas dire être trouvé. Une entreprise sans site ni fiche Google reste invisible pour le client qui cherche « dentiste à Agadir » ou « location de voiture à Tanger », même si elle a une adresse e-mail."}
+  ]},
+  {"h2": "Ce que coûte l’invisibilité", "blocks": [
+   {"ul": [
+    "Des clients perdus en silence : la personne qui ne vous trouve pas appelle un concurrent, et vous ne le saurez jamais.",
+    "Moins de confiance : un client compare souvent deux entreprises en regardant leur site. Sans site, la comparaison se fait sans vous.",
+    "Une image que vous ne choisissez pas : sans page claire, ce sont des annuaires ou des avis épars qui parlent de votre activité.",
+    "Absent des réponses des IA : les assistants comme ChatGPT ou Gemini s’appuient sur ce qu’ils trouvent en ligne. Sans présence en ligne, une entreprise a peu de chances d’y être citée."
+   ]}
+  ]},
+  {"h2": "Un retard qui est aussi une opportunité", "blocks": [
+   {"p": "Quand 7 entreprises sur 10 n’ont pas de site, celle qui en a un se distingue tout de suite. Dans beaucoup de métiers et de villes, peu de concurrents sont bien présentés en ligne : un site clair, une fiche Google soignée et des réponses rapides vous placent devant."},
+   {"p": "C’est aussi le bon moment. Les clients marocains cherchent déjà sur leur téléphone, comparent, et écrivent sur WhatsApp. Les entreprises qui s’installent en ligne aujourd’hui prennent une place que les autres devront conquérir plus tard."}
+  ]},
+  {"h2": "Par où commencer", "blocks": [
+   {"ol": [
+    "Une fiche Google à jour : nom, horaires, téléphone et photos. C’est souvent la première chose que voit un client.",
+    "Un site simple et rapide : qui vous êtes, ce que vous faites, où vous trouver et comment vous contacter.",
+    "Un contact direct : un bouton WhatsApp ou un formulaire, et une réponse le jour même.",
+    "Des contenus qui répondent aux vraies questions de vos clients, pour être trouvé sur Google et cité par les IA."
+   ]},
+   {"p": "Nos guides détaillent chaque étape : le prix d’un site au Maroc, la fiche Google, et la présence dans les réponses des IA."}
+  ]},
+  {"h2": "Allumer le Maroc, une entreprise à la fois", "blocks": [
+   {"p": "Chez Digilago, c’est notre point de départ. Imaginez la carte du monde la nuit, où chaque entreprise visible en ligne serait une lumière : l’Europe brille, le Maroc beaucoup moins. Notre travail consiste à allumer ces lumières une par une."},
+   {"p": "Concrètement : un prix écrit avant de commencer, une première version de votre site en 72 heures, une réponse le jour même, et un seul interlocuteur après la mise en ligne."}
+  ]},
+  {"h2": "Sources", "blocks": [
+   {"ul": [
+    "<a href=\"https://www.hcp.ma/Integration-des-TIC-au-niveau-entreprises-au-Maroc_a3370.html\" target=\"_blank\" rel=\"noopener\">Haut-Commissariat au Plan, « Intégration des TIC au niveau entreprises au Maroc », 1er février 2022</a>",
+    "<a href=\"https://fr.hespress.com/246236-tic-pres-de-7-entreprises-sur-10-nont-pas-cree-une-page-web.html\" target=\"_blank\" rel=\"noopener\">Hespress, « TIC : près de 7 entreprises sur 10 n’ont pas créé une page web », 1er février 2022</a>",
+    "<a href=\"https://lematin.ma/express/2022/integration-tic-seules-31-entreprises-maroc-disposent-d-site-web/371399.html\" target=\"_blank\" rel=\"noopener\">Le Matin, « Seules 31 % des entreprises au Maroc disposent d’un site web (HCP) », 1er février 2022</a>"
+   ]}
+  ]}
+ ],
+ "faq": [
+  {"q": "Combien d’entreprises marocaines ont un site web ?", "a": "Selon le HCP, 31 % des entreprises interrogées en 2019 disposaient d’un site web. Plus de 3 TPME sur 5 n’avaient ni site web ni page sur les réseaux sociaux."},
+  {"q": "Comment le Maroc se compare-t-il à l’Europe ?", "a": "La comparaison citée par Hespress à partir de la note du HCP donne 89 % d’entreprises avec un site web en Allemagne, 70 % en France et 49 % en Turquie, contre 31 % au Maroc."},
+  {"q": "Une page Facebook ou Instagram suffit-elle ?", "a": "C’est un bon début, mais elle ne remplace pas un site : vous ne maîtrisez ni sa présentation ni sa durée de vie, et elle ressort moins bien dans les recherches Google. L’idéal est un site, une fiche Google et vos réseaux, reliés entre eux."},
+  {"q": "Combien de temps faut-il pour mettre une entreprise en ligne ?", "a": "Chez Digilago, la première version de votre site est prête en 72 heures, avec un prix écrit avant de commencer."}
+ ],
+ "related": ["guide-prix-site-web-maroc.html", "guide-fiche-google-business-maroc.html", "guide-google-chatgpt-maroc.html"]
+}

@@ -913,3 +913,24 @@ html[lang="ar"] .mv small{font-family:"Noto Sans Arabic",Sora,sans-serif!importa
 .f-soc .soc-i a:hover,.f-soc .soc-i a:focus-visible,.soc-line .soc-i a:hover,.soc-line .soc-i a:focus-visible{opacity:1;background:#5F9FF9;border-color:#5F9FF9;color:#0C1D43}
 .soc-line{margin-top:34px;text-align:center}
 .soc-line .soc-i{justify-content:center}
+/* Manifeste : la signature de Digilago (le D se dessine quand le texte est entièrement lu) */
+.mani-sig{display:flex;flex-direction:column;align-items:center;gap:calc(14 * var(--u));margin-top:calc(46 * var(--u));text-align:center}
+.mani-sig .sig-row{display:flex;align-items:center;gap:calc(22 * var(--u))}
+.mani-sig .sig-rule{display:block;width:calc(120 * var(--u));height:1px;background:linear-gradient(90deg,rgba(201,165,92,0),#C9A55C 60%,#E9CF8F);transform:scaleX(0);transform-origin:100% 50%;transition:transform 1.1s cubic-bezier(.16,1,.3,1) .5s}
+.mani-sig .sig-rule:last-child{background:linear-gradient(90deg,#E9CF8F,#C9A55C 40%,rgba(201,165,92,0));transform-origin:0 50%}
+.mani-sig .sig-mark{width:calc(52 * var(--u));height:auto;overflow:visible;filter:drop-shadow(0 calc(10 * var(--u)) calc(18 * var(--u)) rgba(31,87,199,.28))}
+.mani-sig .sig-s{fill:none;stroke:#0E214E;stroke-width:1.6;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.4s cubic-bezier(.65,0,.35,1)}
+.mani-sig .sig-f{fill:url(#sigFill);opacity:0;transition:opacity .9s ease 1.1s}
+.mani-sig .sig-name{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:500;font-size:calc(34 * var(--u));line-height:1;letter-spacing:.01em;color:var(--navy,#0E214E);opacity:0;transform:translateY(calc(8 * var(--u)));transition:opacity .9s ease 1.2s,transform .9s cubic-bezier(.16,1,.3,1) 1.2s}
+.mani-sig .sig-sub{font-family:Sora,sans-serif;font-size:calc(14 * var(--u));letter-spacing:.01em;color:var(--grey);opacity:0;transition:opacity .9s ease 1.5s}
+.mani-sig.on .sig-rule{transform:scaleX(1)}
+.mani-sig.on .sig-s{stroke-dashoffset:0}
+.mani-sig.on .sig-f{opacity:1}
+.mani-sig.on .sig-name{opacity:1;transform:none}
+.mani-sig.on .sig-sub{opacity:1}
+[data-mode="M"] .mani-sig{margin-top:calc(30 * var(--u));gap:calc(10 * var(--u))}
+[data-mode="M"] .mani-sig .sig-rule{width:calc(64 * var(--u))}
+[data-mode="M"] .mani-sig .sig-mark{width:calc(40 * var(--u))}
+[data-mode="M"] .mani-sig .sig-name{font-size:calc(28 * var(--u))}
+[data-mode="M"] .mani-sig .sig-sub{font-size:calc(12.5 * var(--u));max-width:calc(280 * var(--u))}
+@media (prefers-reduced-motion:reduce){.mani-sig *{transition:none!important}}

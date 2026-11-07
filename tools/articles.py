@@ -19,7 +19,7 @@ BASE = os.path.join(SITE, 'guide-prix-site-web-maroc.html')
 # Page Guides : trois familles (une page absente est simplement ignorée), la FAQ à la fin
 GROUPS = [
     ('Créer et réussir en ligne', 'Les bases,', 'expliquées simplement.',
-     ['creation-site-web-maroc.html', 'guide-prix-site-web-maroc.html', 'creer-boutique-en-ligne-maroc.html', 'shopify-maroc.html',
+     ['entreprises-marocaines-site-web.html', 'creation-site-web-maroc.html', 'guide-prix-site-web-maroc.html', 'creer-boutique-en-ligne-maroc.html', 'shopify-maroc.html',
       'application-mobile-maroc.html', 'agence-web-maroc.html', 'wordpress-ou-sur-mesure-maroc.html',
       'guide-site-vitrine-boutique-application.html', 'nom-de-domaine-ma.html', 'guide-bon-moment-maroc.html']),
     ('Par métier', 'Un guide', 'pour votre activité.',
